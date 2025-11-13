@@ -1,4 +1,4 @@
-# E2E Testing in Legacy Code (TypeScript)
+# Modern Acceptance Testing in Legacy Code (TypeScript)
 
 ## License
 
