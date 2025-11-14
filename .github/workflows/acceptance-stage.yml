@@ -103,7 +103,7 @@ jobs:
 
     - name: Run E2E Tests
       working-directory: system-test
-      run: npm test -- tests/api.spec.ts tests/ui.spec.ts
+      run: npm test -- tests/e2e-tests
   
   prerelease:
     needs: [find-latest-images, should-run, system-test]
