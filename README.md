@@ -37,9 +37,9 @@ This will:
 4. Run all System Tests
 
 You can open these URLs in your browser:
-- Monolith Application: [http://localhost:8080](http://localhost:8080)
-- ERP API (JSON Server): [http://localhost:3000](http://localhost:3000)
-- Tax API (JSON Server): [http://localhost:3001](http://localhost:3001)
+- Monolith Application: [http://localhost:8082](http://localhost:8082)
+- ERP API (JSON Server): [http://localhost:3200](http://localhost:3200)
+- Tax API (JSON Server): [http://localhost:3201](http://localhost:3201)
 
 ## Separate Commands
 
@@ -60,10 +60,10 @@ Starts the Docker containers:
 ```
 
 You can open these URLs in your browser:
-- Monolith Application: [http://localhost:8080](http://localhost:8080)
-- ERP API (JSON Server): [http://localhost:3000](http://localhost:3000)
-- Tax API (JSON Server): [http://localhost:3001](http://localhost:3001)
-- PostgreSQL Database: localhost:5432 (database: `eshop`, user: `eshop_user`, password: `eshop_password`)
+- Monolith Application: [http://localhost:8082](http://localhost:8082)
+- ERP API (JSON Server): [http://localhost:3200](http://localhost:3200)
+- Tax API (JSON Server): [http://localhost:3201](http://localhost:3201)
+- PostgreSQL Database: localhost:5434 (database: `eshop`, user: `eshop_user`, password: `eshop_password`)
 
 ### Run Tests
 ```powershell
