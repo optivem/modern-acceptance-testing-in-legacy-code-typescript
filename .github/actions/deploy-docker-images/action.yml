@@ -69,6 +69,6 @@ runs:
       working-directory: system-test
         
     - name: Run Smoke Tests
-      run: npm test -- test/smoke-tests
+      run: npm test -- tests/smoke-tests
       shell: bash
       working-directory: system-test
