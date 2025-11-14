@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  monolith:
+    build: ./monolith
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=eshop
+      - DB_USER=eshop_user
+      - DB_PASSWORD=eshop_password
+      - ERP_API_URL=http://erp-api:3000
+      - TAX_API_URL=http://tax-api:3001
+    depends_on:
+      - postgres
+      - erp-api
+      - tax-api
+    networks:
+      - eshop-network
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=eshop
+      - POSTGRES_USER=eshop_user
+      - POSTGRES_PASSWORD=eshop_password
+    networks:
+      - eshop-network
+
+  erp-api:
+    image: williamyeh/json-server
+    volumes:
+      - ./mock-apis/erp-api.json:/data/db.json
+    networks:
+      - eshop-network
+
+  tax-api:
+    image: williamyeh/json-server
+    volumes:
+      - ./mock-apis/tax-api.json:/data/db.json
+    command: ["--port", "3001", "--watch", "/data/db.json"]
+    networks:
+      - eshop-network
+
+networks:
+  eshop-network:
+    driver: bridge

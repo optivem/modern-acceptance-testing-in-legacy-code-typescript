@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - E-Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0052a3;
+        }
+        button.cancel {
+            background-color: #dc3545;
+        }
+        button.cancel:hover {
+            background-color: #c82333;
+        }
+        .order-details {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .order-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-details th {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 2px solid #ddd;
+        }
+        .order-details td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status.placed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Order History</h1>
+    <a href="index.html">← Back to Home</a>
+
+    <form id="searchForm">
+        <div class="form-group">
+            <label for="orderNumber">Order Number:</label>
+            <input type="text" id="orderNumber" name="orderNumber" required>
+        </div>
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="message"></div>
+    <div id="orderDetails" style="display: none;">
+        <div class="order-details">
+            <h2>Order Details</h2>
+            <table>
+                <tr>
+                    <th>Order Number:</th>
+                    <td id="detailOrderNumber"></td>
+                </tr>
+                <tr>
+                    <th>Product SKU:</th>
+                    <td id="detailSku"></td>
+                </tr>
+                <tr>
+                    <th>Quantity:</th>
+                    <td id="detailQuantity"></td>
+                </tr>
+                <tr>
+                    <th>Country:</th>
+                    <td id="detailCountry"></td>
+                </tr>
+                <tr>
+                    <th>Unit Price:</th>
+                    <td id="detailUnitPrice"></td>
+                </tr>
+                <tr>
+                    <th>Original Price:</th>
+                    <td id="detailOriginalPrice"></td>
+                </tr>
+                <tr>
+                    <th>Discount Rate:</th>
+                    <td id="detailDiscountRate"></td>
+                </tr>
+                <tr>
+                    <th>Discount Amount:</th>
+                    <td id="detailDiscountAmount"></td>
+                </tr>
+                <tr>
+                    <th>Subtotal Price:</th>
+                    <td id="detailSubtotalPrice"></td>
+                </tr>
+                <tr>
+                    <th>Tax Rate:</th>
+                    <td id="detailTaxRate"></td>
+                </tr>
+                <tr>
+                    <th>Tax Amount:</th>
+                    <td id="detailTaxAmount"></td>
+                </tr>
+                <tr>
+                    <th>Total Price:</th>
+                    <td id="detailTotalPrice"></td>
+                </tr>
+                <tr>
+                    <th>Status:</th>
+                    <td id="detailStatus"></td>
+                </tr>
+            </table>
+            <div style="margin-top: 20px;">
+                <button id="cancelButton" class="cancel" style="display: none;">Cancel Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOrderNumber = null;
+
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const orderNumber = document.getElementById('orderNumber').value;
+            currentOrderNumber = orderNumber;
+            await loadOrderDetails(orderNumber);
+        });
+
+        async function loadOrderDetails(orderNumber) {
+            document.getElementById('message').innerHTML = '';
+            document.getElementById('orderDetails').style.display = 'none';
+
+            try {
+                const response = await fetch(`/api/orders/${orderNumber}`);
+
+                if (response.status === 200) {
+                    const order = await response.json();
+                    displayOrderDetails(order);
+                } else if (response.status === 404) {
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message error">Order not found</div>`;
+                } else {
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message error">Failed to retrieve order</div>`;
+                }
+            } catch (error) {
+                document.getElementById('message').innerHTML = 
+                    `<div class="message error">Network error. Please try again.</div>`;
+            }
+        }
+
+        function displayOrderDetails(order) {
+            document.getElementById('detailOrderNumber').textContent = order.orderNumber;
+            document.getElementById('detailSku').textContent = order.sku;
+            document.getElementById('detailQuantity').textContent = order.quantity;
+            document.getElementById('detailCountry').textContent = order.country;
+            document.getElementById('detailUnitPrice').textContent = formatCurrency(order.unitPrice);
+            document.getElementById('detailOriginalPrice').textContent = formatCurrency(order.originalPrice);
+            document.getElementById('detailDiscountRate').textContent = formatPercent(order.discountRate);
+            document.getElementById('detailDiscountAmount').textContent = formatCurrency(order.discountAmount);
+            document.getElementById('detailSubtotalPrice').textContent = formatCurrency(order.subtotalPrice);
+            document.getElementById('detailTaxRate').textContent = formatPercent(order.taxRate);
+            document.getElementById('detailTaxAmount').textContent = formatCurrency(order.taxAmount);
+            document.getElementById('detailTotalPrice').textContent = formatCurrency(order.totalPrice);
+            
+            const statusElement = document.getElementById('detailStatus');
+            statusElement.innerHTML = `<span class="status ${order.status.toLowerCase()}">${order.status}</span>`;
+
+            document.getElementById('orderDetails').style.display = 'block';
+
+            const cancelButton = document.getElementById('cancelButton');
+            if (order.status === 'PLACED') {
+                cancelButton.style.display = 'inline-block';
+            } else {
+                cancelButton.style.display = 'none';
+            }
+        }
+
+        document.getElementById('cancelButton').addEventListener('click', async () => {
+            if (!currentOrderNumber) return;
+
+            if (!confirm('Are you sure you want to cancel this order?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/orders/${currentOrderNumber}/cancel`, {
+                    method: 'POST'
+                });
+
+                if (response.status === 204) {
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message success">Order cancelled successfully</div>`;
+                    await loadOrderDetails(currentOrderNumber);
+                } else if (response.status === 422) {
+                    const error = await response.json();
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message error">${error.message}</div>`;
+                } else if (response.status === 404) {
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message error">Order not found</div>`;
+                } else {
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message error">Failed to cancel order</div>`;
+                }
+            } catch (error) {
+                document.getElementById('message').innerHTML = 
+                    `<div class="message error">Network error. Please try again.</div>`;
+            }
+        });
+
+        function formatCurrency(value) {
+            return `$${parseFloat(value).toFixed(2)}`;
+        }
+
+        function formatPercent(value) {
+            return `${(parseFloat(value) * 100).toFixed(2)}%`;
+        }
+    </script>
+</body>
+</html>

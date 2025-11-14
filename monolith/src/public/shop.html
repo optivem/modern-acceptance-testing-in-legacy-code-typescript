@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - E-Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0052a3;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .validation-error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Place Order</h1>
+    <a href="index.html">← Back to Home</a>
+
+    <form id="orderForm">
+        <div class="form-group">
+            <label for="sku">Product SKU:</label>
+            <input type="text" id="sku" name="sku" required>
+            <div id="skuError" class="validation-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+            <div id="quantityError" class="validation-error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" required>
+            <div id="countryError" class="validation-error"></div>
+        </div>
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Clear previous validation errors
+            document.getElementById('skuError').textContent = '';
+            document.getElementById('quantityError').textContent = '';
+            document.getElementById('countryError').textContent = '';
+            document.getElementById('message').innerHTML = '';
+
+            const formData = {
+                sku: document.getElementById('sku').value,
+                quantity: parseInt(document.getElementById('quantity').value),
+                country: document.getElementById('country').value
+            };
+
+            try {
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.status === 201) {
+                    const data = await response.json();
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message success">Order placed successfully! Order Number: ${data.orderNumber}</div>`;
+                    document.getElementById('orderForm').reset();
+                } else if (response.status === 422) {
+                    const errors = await response.json();
+                    if (errors.sku) {
+                        document.getElementById('skuError').textContent = errors.sku;
+                    }
+                    if (errors.quantity) {
+                        document.getElementById('quantityError').textContent = errors.quantity;
+                    }
+                    if (errors.country) {
+                        document.getElementById('countryError').textContent = errors.country;
+                    }
+                    if (errors.message) {
+                        document.getElementById('message').innerHTML = 
+                            `<div class="message error">${errors.message}</div>`;
+                    }
+                } else {
+                    const errorData = await response.json();
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message error">Error: ${errorData.message || 'Failed to place order'}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('message').innerHTML = 
+                    `<div class="message error">Network error. Please try again.</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

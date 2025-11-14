@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=eshop
+      - POSTGRES_USER=eshop_user
+      - POSTGRES_PASSWORD=eshop_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - eshop-network
+
+  erp-api:
+    image: williamyeh/json-server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./mock-apis/erp-api.json:/data/db.json
+    networks:
+      - eshop-network
+
+  tax-api:
+    image: williamyeh/json-server
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./mock-apis/tax-api.json:/data/db.json
+    command: ["--port", "3001", "--watch", "/data/db.json"]
+    networks:
+      - eshop-network
+
+volumes:
+  postgres-data:
+
+networks:
+  eshop-network:
+    driver: bridge
