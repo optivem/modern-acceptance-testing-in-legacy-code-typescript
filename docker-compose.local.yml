@@ -1,6 +1,25 @@
-version: '3.8'
-
 services:
+
+  monolith:
+    build:
+      context: ./monolith
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=eshop
+      - DB_USER=eshop_user
+      - DB_PASSWORD=eshop_password
+      - DB_DROP_SCHEMA=true
+      - ERP_API_URL=http://erp-api:3200
+      - TAX_API_URL=http://tax-api:3201
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:16-alpine
     ports:
@@ -13,35 +32,26 @@ services:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U eshop_user -d eshop"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - eshop-network
 
   erp-api:
     image: williamyeh/json-server
     ports:
       - "3200:3200"
-    command: ["--port", "3200", "--watch", "/data/db.json"]
     volumes:
-      - ./mock-apis/erp-api.json:/data/db.json
-    networks:
-      - eshop-network
+      - ./json-server-db.erp-api.json:/data/db.json
+    command: ["--port", "3200", "--watch", "/data/db.json"]
 
   tax-api:
     image: williamyeh/json-server
     ports:
       - "3201:3201"
     volumes:
-      - ./mock-apis/tax-api.json:/data/db.json
+      - ./json-server-db.tax-api.json:/data/db.json
     command: ["--port", "3201", "--watch", "/data/db.json"]
-    networks:
-      - eshop-network
 
 volumes:
   postgres-data:
 
-networks:
-  eshop-network:
-    driver: bridge

@@ -30,6 +30,7 @@ const initializeDatabase = async () => {
         database: process.env.DB_NAME || 'eshop',
         entities: [Order],
         synchronize: true, // Auto-create schema in development
+        dropSchema: process.env.DB_DROP_SCHEMA === 'true',
         logging: false,
       });
       console.log('Database connected');

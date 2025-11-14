@@ -71,7 +71,6 @@ function Wait-ForServices {
 function Build-System {
     if ($Mode -eq "local") {
         Write-Host "Building monolith application..." -ForegroundColor Cyan
-        $originalLocation = Get-Location
         Set-Location monolith
 
         npm install
@@ -79,11 +78,10 @@ function Build-System {
 
         if ($LASTEXITCODE -ne 0) {
             Write-Host "Build failed!" -ForegroundColor Red
-            Set-Location $originalLocation
+            Set-Location ..
             exit $LASTEXITCODE
         }
 
-        Set-Location $originalLocation
         Write-Host ""
         Write-Host "Build completed successfully!" -ForegroundColor Green
         Write-Host "Compiled files created in: " -NoNewline
@@ -261,3 +259,4 @@ switch ($Command)
     "logs"  { Show-Logs }
     "all"   { Run-All }
 }
+

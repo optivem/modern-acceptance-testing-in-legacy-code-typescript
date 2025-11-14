@@ -1,49 +1,54 @@
-version: '3.8'
-
 services:
-  monolith:
-    build: ./monolith
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=eshop
-      - DB_USER=eshop_user
-      - DB_PASSWORD=eshop_password
-      - ERP_API_URL=http://erp-api:3000
-      - TAX_API_URL=http://tax-api:3001
-    depends_on:
-      - postgres
-      - erp-api
-      - tax-api
-    networks:
-      - eshop-network
 
   postgres:
     image: postgres:16-alpine
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=eshop
       - POSTGRES_USER=eshop_user
       - POSTGRES_PASSWORD=eshop_password
-    networks:
-      - eshop-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eshop_user -d eshop"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   erp-api:
     image: williamyeh/json-server
+    ports:
+      - "3000:3000"
     volumes:
-      - ./mock-apis/erp-api.json:/data/db.json
-    networks:
-      - eshop-network
+      - ./json-server-db.erp-api.json:/data/db.json
+    command: --watch /data/db.json --host 0.0.0.0
 
   tax-api:
     image: williamyeh/json-server
+    ports:
+      - "3001:3001"
     volumes:
-      - ./mock-apis/tax-api.json:/data/db.json
-    command: ["--port", "3001", "--watch", "/data/db.json"]
-    networks:
-      - eshop-network
+      - ./json-server-db.tax-api.json:/data/db.json
+    command: --watch /data/db.json --host 0.0.0.0 --port 3001
 
-networks:
-  eshop-network:
-    driver: bridge
+  monolith:
+    image: ghcr.io/optivem/modern-acceptance-testing-in-legacy-code-java/monolith:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=e2e
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/eshop
+      - SPRING_DATASOURCE_USERNAME=eshop_user
+      - SPRING_DATASOURCE_PASSWORD=eshop_password
+    depends_on:
+      postgres:
+        condition: service_healthy
+      erp-api:
+        condition: service_started
+      tax-api:
+        condition: service_started
+
+volumes:
+  postgres-data:
+
