@@ -162,20 +162,20 @@
                     resultDiv.innerHTML = `
                         <h2>Order Details</h2>
                         <div>
-                            <label for="displayOrderNumber">Order Number:</label>
-                            <input type="text" id="displayOrderNumber" aria-label="Display Order Number" value="${order.orderNumber}" readonly />
+                            <label>Order Number:</label>
+                            <div id="detailOrderNumber">${order.orderNumber}</div>
                         </div>
                         <div>
-                            <label for="displayProductId">SKU:</label>
-                            <input type="text" id="displayProductId" aria-label="Display Product ID" value="${order.sku}" readonly />
+                            <label>SKU:</label>
+                            <div id="detailSku">${order.sku}</div>
                         </div>
                         <div>
-                            <label for="displayCountry">Country:</label>
-                            <input type="text" id="displayCountry" aria-label="Display Country" value="${order.country}" readonly />
+                            <label>Country:</label>
+                            <div id="detailCountry">${order.country}</div>
                         </div>
                         <div>
-                            <label for="displayQuantity">Quantity:</label>
-                            <input type="text" id="displayQuantity" aria-label="Display Quantity" value="${order.quantity}" readonly />
+                            <label>Quantity:</label>
+                            <div id="detailQuantity">${order.quantity}</div>
                         </div>
                         <div>
                             <label for="displayUnitPrice">Unit Price:</label>
@@ -216,10 +216,10 @@
                         ${cancelButtonHtml}
                     `;
                 } else {
-                    resultDiv.textContent = 'Order not found. Please check the order number.';
+                    resultDiv.innerHTML = '<div id="message"><div class="error">Order not found. Please check the order number.</div></div>';
                 }
             } catch (error) {
-                resultDiv.textContent = 'Error retrieving order. Please try again.';
+                resultDiv.innerHTML = '<div id="message"><div class="error">Error retrieving order. Please try again.</div></div>';
                 console.error('Error:', error);
             }
         }
