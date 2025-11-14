@@ -1,7 +1,7 @@
 services:
 
   monolith:
-    image: ghcr.io/optivem/modern-acceptance-testing-in-legacy-code-java/monolith:latest
+    image: ghcr.io/optivem/modern-acceptance-testing-in-legacy-code-typescript/monolith:latest
     ports:
       - "8082:8082"
     environment:
