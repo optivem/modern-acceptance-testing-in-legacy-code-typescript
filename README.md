@@ -6,9 +6,6 @@
 [![qa-signoff](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-typescript/actions/workflows/qa-signoff.yml/badge.svg)](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-typescript/actions/workflows/qa-signoff.yml)
 [![prod-stage](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-typescript/actions/workflows/prod-stage.yml/badge.svg)](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-typescript/actions/workflows/prod-stage.yml)
 
-
-[![MIT License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
-
 ## Prerequisites
 
 - Node.js 20+ (LTS)
