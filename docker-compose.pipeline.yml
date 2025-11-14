@@ -1,9 +1,27 @@
 services:
 
+  monolith:
+    image: ghcr.io/optivem/modern-acceptance-testing-in-legacy-code-java/monolith:latest
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=eshop
+      - DB_USER=eshop_user
+      - DB_PASSWORD=eshop_password
+      - DB_DROP_SCHEMA=true
+      - ERP_API_URL=http://erp-api:3200
+      - TAX_API_URL=http://tax-api:3201
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:16-alpine
     ports:
-      - "5432:5432"
+      - "5434:5432"
     environment:
       - POSTGRES_DB=eshop
       - POSTGRES_USER=eshop_user
@@ -19,35 +37,18 @@ services:
   erp-api:
     image: williamyeh/json-server
     ports:
-      - "3000:3000"
+      - "3200:3200"
     volumes:
       - ./json-server-db.erp-api.json:/data/db.json
-    command: --watch /data/db.json --host 0.0.0.0
+    command: ["--port", "3200", "--watch", "/data/db.json"]
 
   tax-api:
     image: williamyeh/json-server
     ports:
-      - "3001:3001"
+      - "3201:3201"
     volumes:
       - ./json-server-db.tax-api.json:/data/db.json
-    command: --watch /data/db.json --host 0.0.0.0 --port 3001
-
-  monolith:
-    image: ghcr.io/optivem/modern-acceptance-testing-in-legacy-code-java/monolith:latest
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=e2e
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/eshop
-      - SPRING_DATASOURCE_USERNAME=eshop_user
-      - SPRING_DATASOURCE_PASSWORD=eshop_password
-    depends_on:
-      postgres:
-        condition: service_healthy
-      erp-api:
-        condition: service_started
-      tax-api:
-        condition: service_started
+    command: ["--port", "3201", "--watch", "/data/db.json"]
 
 volumes:
   postgres-data:
