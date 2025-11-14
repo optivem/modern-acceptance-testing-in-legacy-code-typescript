@@ -4,9 +4,9 @@ export class PlaceOrderRequest {
   @IsNotEmpty({ message: 'SKU must not be empty' })
   sku!: string;
 
-  @IsNotEmpty({ message: 'Quantity must not be empty' })
-  @IsInt({ message: 'Quantity must be an integer' })
   @IsPositive({ message: 'Quantity must be positive' })
+  @IsInt({ message: 'Quantity must be an integer' })
+  @IsNotEmpty({ message: 'Quantity must not be empty' })
   quantity!: number;
 
   @IsNotEmpty({ message: 'Country must not be empty' })

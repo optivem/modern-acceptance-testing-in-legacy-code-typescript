@@ -8,7 +8,7 @@ export class TaxGateway {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.TAX_API_URL || 'http://localhost:3001';
+    this.baseUrl = process.env.TAX_API_URL || 'http://localhost:3201';
   }
 
   async getTaxDetails(country: string): Promise<TaxDetails | null> {

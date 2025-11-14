@@ -8,7 +8,7 @@ export default defineConfig({
   workers: 1,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:8082',
     trace: 'on-first-retry',
   },
   projects: [
@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   webServer: process.env.CI ? undefined : {
     command: 'echo "Using already running server"',
-    url: 'http://localhost:8080/api/echo',
+    url: 'http://localhost:8082/api/echo',
     reuseExistingServer: true,
   },
 });

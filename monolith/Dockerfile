@@ -13,7 +13,7 @@ COPY dist ./dist
 COPY src/public ./dist/public
 
 # Expose port
-EXPOSE 8080
+EXPOSE 8082
 
 # Start the application
 CMD ["node", "dist/server.js"]

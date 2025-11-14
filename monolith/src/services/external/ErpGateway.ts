@@ -8,7 +8,7 @@ export class ErpGateway {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.ERP_API_URL || 'http://localhost:3000';
+    this.baseUrl = process.env.ERP_API_URL || 'http://localhost:3200';
   }
 
   async getProductDetails(sku: string): Promise<ProductDetails | null> {

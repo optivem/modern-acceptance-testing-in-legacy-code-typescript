@@ -5,7 +5,15 @@ import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 
 const router = Router();
-const orderService = new OrderService();
+let orderService: OrderService;
+
+// Initialize service after database connection
+function getOrderService(): OrderService {
+  if (!orderService) {
+    orderService = new OrderService();
+  }
+  return orderService;
+}
 
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,15 +22,15 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
     if (errors.length > 0) {
       const errorMap: Record<string, string> = {};
-      errors.forEach(error => {
+      errors.forEach((error: any) => {
         if (error.constraints) {
-          errorMap[error.property] = Object.values(error.constraints)[0];
+          errorMap[error.property] = Object.values(error.constraints)[0] as string;
         }
       });
       return res.status(422).json(errorMap);
     }
 
-    const response = await orderService.placeOrder(request);
+    const response = await getOrderService().placeOrder(request);
     res.status(201)
       .location(`/api/orders/${response.orderNumber}`)
       .json(response);
@@ -33,7 +41,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/:orderNumber', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const response = await orderService.getOrder(req.params.orderNumber);
+    const response = await getOrderService().getOrder(req.params.orderNumber);
     res.json(response);
   } catch (error) {
     next(error);
@@ -42,7 +50,7 @@ router.get('/:orderNumber', async (req: Request, res: Response, next: NextFuncti
 
 router.post('/:orderNumber/cancel', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await orderService.cancelOrder(req.params.orderNumber);
+    await getOrderService().cancelOrder(req.params.orderNumber);
     res.status(204).send();
   } catch (error) {
     next(error);

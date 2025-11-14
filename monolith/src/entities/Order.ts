@@ -22,28 +22,28 @@ export class Order {
   @Column({ name: 'quantity', type: 'int' })
   quantity!: number;
 
-  @Column({ name: 'unit_price', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'unit_price', type: 'float' })
   unitPrice!: number;
 
-  @Column({ name: 'original_price', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'original_price', type: 'float' })
   originalPrice!: number;
 
-  @Column({ name: 'discount_rate', type: 'decimal', precision: 5, scale: 4 })
+  @Column({ name: 'discount_rate', type: 'float' })
   discountRate!: number;
 
-  @Column({ name: 'discount_amount', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'discount_amount', type: 'float' })
   discountAmount!: number;
 
-  @Column({ name: 'subtotal_price', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'subtotal_price', type: 'float' })
   subtotalPrice!: number;
 
-  @Column({ name: 'tax_rate', type: 'decimal', precision: 5, scale: 4 })
+  @Column({ name: 'tax_rate', type: 'float' })
   taxRate!: number;
 
-  @Column({ name: 'tax_amount', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'tax_amount', type: 'float' })
   taxAmount!: number;
 
-  @Column({ name: 'total_price', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'total_price', type: 'float' })
   totalPrice!: number;
 
   @Column({ name: 'status', type: 'varchar', length: 20 })

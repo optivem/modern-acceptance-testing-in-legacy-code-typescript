@@ -77,26 +77,26 @@
     <form id="orderForm">
         <div class="form-group">
             <label for="sku">Product SKU:</label>
-            <input type="text" id="sku" name="sku" required>
+            <input type="text" id="sku" name="sku" aria-label="Product ID">
             <div id="skuError" class="validation-error"></div>
         </div>
 
         <div class="form-group">
             <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" min="1" required>
+            <input type="text" id="quantity" name="quantity" aria-label="Quantity" inputmode="numeric">
             <div id="quantityError" class="validation-error"></div>
         </div>
 
         <div class="form-group">
             <label for="country">Country:</label>
-            <input type="text" id="country" name="country" required>
+            <input type="text" id="country" name="country" aria-label="Country" value="US" maxlength="2">
             <div id="countryError" class="validation-error"></div>
         </div>
 
-        <button type="submit">Place Order</button>
+        <button type="submit" aria-label="Place Order">Place Order</button>
     </form>
 
-    <div id="message"></div>
+    <div role="alert" id="message"></div>
 
     <script>
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
@@ -106,51 +106,105 @@
             document.getElementById('skuError').textContent = '';
             document.getElementById('quantityError').textContent = '';
             document.getElementById('countryError').textContent = '';
-            document.getElementById('message').innerHTML = '';
+            
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = '';
+            messageDiv.className = '';
 
-            const formData = {
-                sku: document.getElementById('sku').value,
-                quantity: parseInt(document.getElementById('quantity').value),
-                country: document.getElementById('country').value
-            };
+            const productIdValue = document.getElementById('sku').value;
+            const quantityValue = document.getElementById('quantity').value;
+            const countryValue = document.getElementById('country').value;
 
             try {
+                // Client-side validation matching Java version
+                
+                // Validate that quantity is an integer
+                const quantityNum = parseFloat(quantityValue);
+                if (quantityValue.trim() !== '' && (isNaN(quantityNum) || !Number.isInteger(quantityNum))) {
+                    messageDiv.textContent = 'Quantity must be an integer';
+                    messageDiv.className = 'message';
+                    return;
+                }
+
+                const sku = productIdValue.trim();
+                const quantity = parseInt(quantityValue);
+                const country = countryValue.trim();
+
+                // Validate that SKU is not empty
+                if (!sku) {
+                    messageDiv.textContent = 'SKU must not be empty';
+                    messageDiv.className = 'message';
+                    return;
+                }
+
+                // Validate that quantity is positive
+                if (quantity <= 0) {
+                    messageDiv.textContent = 'Quantity must be positive';
+                    messageDiv.className = 'message';
+                    return;
+                }
+
+                // Validate that country is not empty
+                if (!country) {
+                    messageDiv.textContent = 'Country must not be empty';
+                    messageDiv.className = 'message';
+                    return;
+                }
+
                 const response = await fetch('/api/orders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify({
+                        sku: sku,
+                        quantity: quantity,
+                        country: country
+                    })
                 });
 
-                if (response.status === 201) {
-                    const data = await response.json();
-                    document.getElementById('message').innerHTML = 
-                        `<div class="message success">Order placed successfully! Order Number: ${data.orderNumber}</div>`;
-                    document.getElementById('orderForm').reset();
-                } else if (response.status === 422) {
-                    const errors = await response.json();
-                    if (errors.sku) {
-                        document.getElementById('skuError').textContent = errors.sku;
+                if (response.ok) {
+                    const order = await response.json();
+
+                    // Fetch order details to get the original price
+                    const orderDetailsResponse = await fetch('/api/orders/' + order.orderNumber);
+
+                    if (orderDetailsResponse.ok) {
+                        const orderDetails = await orderDetailsResponse.json();
+
+                        if (orderDetails.originalPrice !== undefined && orderDetails.originalPrice !== null) {
+                            messageDiv.textContent = 'Success! Order has been created with Order Number ' + 
+                                order.orderNumber + ' and Original Price $' + orderDetails.originalPrice.toFixed(2);
+                        } else {
+                            messageDiv.textContent = 'Success! Order has been created with Order Number ' + order.orderNumber;
+                        }
+                        messageDiv.className = 'message';
+                    } else {
+                        messageDiv.textContent = 'Order created but failed to fetch details. Order Number: ' + order.orderNumber;
+                        messageDiv.className = 'message';
                     }
-                    if (errors.quantity) {
-                        document.getElementById('quantityError').textContent = errors.quantity;
-                    }
-                    if (errors.country) {
-                        document.getElementById('countryError').textContent = errors.country;
-                    }
-                    if (errors.message) {
-                        document.getElementById('message').innerHTML = 
-                            `<div class="message error">${errors.message}</div>`;
+                } else if (response.status === 400 || response.status === 422) {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const errorData = await response.json();
+                        if (errorData.message) {
+                            messageDiv.textContent = errorData.message;
+                        } else {
+                            const errorMessages = Object.values(errorData).join(', ');
+                            messageDiv.textContent = errorMessages;
+                        }
+                        messageDiv.className = 'message';
+                    } else {
+                        messageDiv.textContent = 'Validation error. Please check your input.';
+                        messageDiv.className = 'message';
                     }
                 } else {
-                    const errorData = await response.json();
-                    document.getElementById('message').innerHTML = 
-                        `<div class="message error">Error: ${errorData.message || 'Failed to place order'}</div>`;
+                    messageDiv.textContent = 'Error placing order. Please try again. (Status: ' + response.status + ')';
+                    messageDiv.className = 'message';
                 }
             } catch (error) {
-                document.getElementById('message').innerHTML = 
-                    `<div class="message error">Network error. Please try again.</div>`;
+                messageDiv.textContent = 'Error placing order. Please try again. (Exception: ' + error.message + ')';
+                messageDiv.className = 'message';
             }
         });
     </script>
