@@ -118,36 +118,43 @@
             try {
                 // Client-side validation matching Java version
                 
-                // Validate that quantity is an integer
-                const quantityNum = parseFloat(quantityValue);
-                if (quantityValue.trim() !== '' && (isNaN(quantityNum) || !Number.isInteger(quantityNum))) {
-                    messageDiv.textContent = 'Quantity must be an integer';
-                    messageDiv.className = 'message';
-                    return;
-                }
-
+                const productIdValue = document.getElementById('sku').value;
+                const quantityValue = document.getElementById('quantity').value;
+                const countryValue = document.getElementById('country').value;
+                
                 const sku = productIdValue.trim();
-                const quantity = parseInt(quantityValue);
                 const country = countryValue.trim();
 
                 // Validate that SKU is not empty
                 if (!sku) {
-                    messageDiv.textContent = 'SKU must not be empty';
-                    messageDiv.className = 'message';
+                    document.getElementById('skuError').textContent = 'SKU must not be empty';
                     return;
                 }
 
+                // Validate that quantity is not empty
+                if (!quantityValue || quantityValue.trim() === '') {
+                    document.getElementById('quantityError').textContent = 'Quantity must not be empty';
+                    return;
+                }
+
+                // Validate that quantity is an integer
+                const quantityNum = parseFloat(quantityValue);
+                if (isNaN(quantityNum) || !Number.isInteger(quantityNum)) {
+                    document.getElementById('quantityError').textContent = 'Quantity must be an integer';
+                    return;
+                }
+
+                const quantity = parseInt(quantityValue);
+
                 // Validate that quantity is positive
                 if (quantity <= 0) {
-                    messageDiv.textContent = 'Quantity must be positive';
-                    messageDiv.className = 'message';
+                    document.getElementById('quantityError').textContent = 'Quantity must be positive';
                     return;
                 }
 
                 // Validate that country is not empty
                 if (!country) {
-                    messageDiv.textContent = 'Country must not be empty';
-                    messageDiv.className = 'message';
+                    document.getElementById('countryError').textContent = 'Country must not be empty';
                     return;
                 }
 
@@ -173,38 +180,32 @@
                         const orderDetails = await orderDetailsResponse.json();
 
                         if (orderDetails.originalPrice !== undefined && orderDetails.originalPrice !== null) {
-                            messageDiv.textContent = 'Success! Order has been created with Order Number ' + 
-                                order.orderNumber + ' and Original Price $' + orderDetails.originalPrice.toFixed(2);
+                            messageDiv.innerHTML = '<div class="success">Order placed successfully! Order Number: ' + 
+                                order.orderNumber + ', Original Price: $' + orderDetails.originalPrice.toFixed(2) + '</div>';
                         } else {
-                            messageDiv.textContent = 'Success! Order has been created with Order Number ' + order.orderNumber;
+                            messageDiv.innerHTML = '<div class="success">Order placed successfully! Order Number: ' + order.orderNumber + '</div>';
                         }
-                        messageDiv.className = 'message';
                     } else {
-                        messageDiv.textContent = 'Order created but failed to fetch details. Order Number: ' + order.orderNumber;
-                        messageDiv.className = 'message';
+                        messageDiv.innerHTML = '<div class="success">Order placed successfully! Order Number: ' + order.orderNumber + '</div>';
                     }
                 } else if (response.status === 400 || response.status === 422) {
                     const contentType = response.headers.get("content-type");
                     if (contentType && contentType.includes("application/json")) {
                         const errorData = await response.json();
                         if (errorData.message) {
-                            messageDiv.textContent = errorData.message;
+                            messageDiv.innerHTML = '<div class="error">' + errorData.message + '</div>';
                         } else {
                             const errorMessages = Object.values(errorData).join(', ');
-                            messageDiv.textContent = errorMessages;
+                            messageDiv.innerHTML = '<div class="error">' + errorMessages + '</div>';
                         }
-                        messageDiv.className = 'message';
                     } else {
-                        messageDiv.textContent = 'Validation error. Please check your input.';
-                        messageDiv.className = 'message';
+                        messageDiv.innerHTML = '<div class="error">Validation error. Please check your input.</div>';
                     }
                 } else {
-                    messageDiv.textContent = 'Error placing order. Please try again. (Status: ' + response.status + ')';
-                    messageDiv.className = 'message';
+                    messageDiv.innerHTML = '<div class="error">Error placing order. Please try again. (Status: ' + response.status + ')</div>';
                 }
             } catch (error) {
-                messageDiv.textContent = 'Error placing order. Please try again. (Exception: ' + error.message + ')';
-                messageDiv.className = 'message';
+                messageDiv.innerHTML = '<div class="error">Error placing order. Please try again. (Exception: ' + error.message + ')</div>';
             }
         });
     </script>
