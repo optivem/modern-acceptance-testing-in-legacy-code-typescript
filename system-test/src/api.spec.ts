@@ -118,13 +118,40 @@ test.describe('API E2E Tests', () => {
     expect(getResponse.status()).toBe(200);
     
     const orderDetails = await getResponse.json();
+    
+    // Assert all fields from GetOrderResponse
     expect(orderDetails.orderNumber).toBe(orderNumber);
     expect(orderDetails.sku).toBe('ABC-123');
     expect(orderDetails.quantity).toBe(2);
     expect(orderDetails.country).toBe('US');
-    expect(orderDetails.status).toBe('PLACED');
     expect(orderDetails.unitPrice).toBe(1500.00);
-    expect(orderDetails.originalPrice).toBe(3000.00);
+    
+    const expectedOriginalPrice = 3000.00;
+    expect(orderDetails.originalPrice).toBe(expectedOriginalPrice);
+    
+    // Assert discount fields
+    expect(orderDetails.discountRate).not.toBeNull();
+    expect(orderDetails.discountRate).toBeGreaterThanOrEqual(0);
+    expect(orderDetails.discountAmount).not.toBeNull();
+    expect(orderDetails.discountAmount).toBeGreaterThanOrEqual(0);
+    
+    // Assert subtotal
+    expect(orderDetails.subtotalPrice).not.toBeNull();
+    expect(orderDetails.subtotalPrice).toBeGreaterThan(0);
+    
+    // Assert tax fields
+    expect(orderDetails.taxRate).not.toBeNull();
+    expect(orderDetails.taxRate).toBeGreaterThan(0);
+    expect(orderDetails.taxAmount).not.toBeNull();
+    expect(orderDetails.taxAmount).toBeGreaterThan(0);
+    
+    // Assert total price
+    expect(orderDetails.totalPrice).not.toBeNull();
+    expect(orderDetails.totalPrice).toBeGreaterThan(0);
+    
+    // Assert status
+    expect(orderDetails.status).not.toBeNull();
+    expect(orderDetails.status).toBe('PLACED');
   });
 
   test('should return 404 for non-existent order', async ({ request }) => {

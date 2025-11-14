@@ -111,6 +111,33 @@ test.describe('UI E2E Tests', () => {
     await expect(page.locator('#detailSku')).toContainText('ABC-123');
     await expect(page.locator('#detailQuantity')).toContainText('1');
     await expect(page.locator('#detailCountry')).toContainText('US');
+    await expect(page.locator('#detailUnitPrice')).toContainText('$1500.00');
+    await expect(page.locator('#detailOriginalPrice')).toContainText('$1500.00');
+    
+    // Verify discount fields are present and formatted
+    const discountRate = await page.locator('#displayDiscountRate').inputValue();
+    expect(discountRate).toMatch(/%$/);
+    const discountAmount = await page.locator('#displayDiscountAmount').inputValue();
+    expect(discountAmount).toMatch(/^\$/);
+    
+    // Verify subtotal is present and formatted
+    const subtotalPrice = await page.locator('#displaySubtotalPrice').inputValue();
+    expect(subtotalPrice).toMatch(/^\$/);
+    expect(parseFloat(subtotalPrice.replace('$', ''))).toBeGreaterThan(0);
+    
+    // Verify tax fields are present and formatted
+    const taxRate = await page.locator('#displayTaxRate').inputValue();
+    expect(taxRate).toMatch(/%$/);
+    const taxAmount = await page.locator('#displayTaxAmount').inputValue();
+    expect(taxAmount).toMatch(/^\$/);
+    expect(parseFloat(taxAmount.replace('$', ''))).toBeGreaterThan(0);
+    
+    // Verify total price is present and formatted
+    const totalPrice = await page.locator('#displayTotalPrice').inputValue();
+    expect(totalPrice).toMatch(/^\$/);
+    expect(parseFloat(totalPrice.replace('$', ''))).toBeGreaterThan(0);
+    
+    // Verify status
     await expect(page.locator('#detailStatus .status')).toContainText('PLACED');
   });
 

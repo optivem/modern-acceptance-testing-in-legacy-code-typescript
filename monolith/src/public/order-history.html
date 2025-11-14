@@ -178,12 +178,12 @@
                             <div id="detailQuantity">${order.quantity}</div>
                         </div>
                         <div>
-                            <label for="displayUnitPrice">Unit Price:</label>
-                            <input type="text" id="displayUnitPrice" aria-label="Display Unit Price" value="$${order.unitPrice.toFixed(2)}" readonly />
+                            <label>Unit Price:</label>
+                            <div id="detailUnitPrice">$${order.unitPrice.toFixed(2)}</div>
                         </div>
                         <div>
-                            <label for="displayOriginalPrice">Original Price:</label>
-                            <input type="text" id="displayOriginalPrice" aria-label="Display Original Price" value="$${order.originalPrice.toFixed(2)}" readonly />
+                            <label>Original Price:</label>
+                            <div id="detailOriginalPrice">$${order.originalPrice.toFixed(2)}</div>
                         </div>
                         <div>
                             <label for="displayDiscountRate">Discount Rate:</label>
