@@ -1,20 +1,23 @@
 import { test } from '@playwright/test';
 import { ClientFactory } from '../../core/clients/ClientFactory';
 import { ClientCloser } from '../../core/clients/ClientCloser';
+import { ShopUiClient } from '../../core/clients/system/ui/ShopUiClient';
+
+let shopUiClient: ShopUiClient;
+
+test.beforeEach(async () => {
+  shopUiClient = await ClientFactory.createShopUiClient();
+});
+
+test.afterEach(async () => {
+  await ClientCloser.close(shopUiClient);
+});
 
 test('home should return HTML content', async () => {
-  // Arrange
-  const shopUiClient = await ClientFactory.createShopUiClient();
+  // Act
+  await shopUiClient.openHomePage();
 
-  try {
-    // Act
-    await shopUiClient.openHomePage();
-
-    // Assert
-    shopUiClient.assertHomePageLoaded();
-  } finally {
-    // Cleanup
-    await ClientCloser.close(shopUiClient);
-  }
+  // Assert
+  shopUiClient.assertHomePageLoaded();
 });
 
