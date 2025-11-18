@@ -8,7 +8,7 @@
 
 ## Prerequisites
 
-- Node.js 20+ (LTS)
+- Node.js 22 (LTS)
 - Docker Desktop
 - PowerShell 7+
 
