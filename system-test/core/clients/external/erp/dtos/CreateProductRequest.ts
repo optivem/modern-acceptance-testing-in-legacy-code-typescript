@@ -1,4 +1,4 @@
 export interface CreateProductRequest {
-  sku: string;
+  id: string;  // JSON Server uses 'id' field for lookups
   price: number;
 }
