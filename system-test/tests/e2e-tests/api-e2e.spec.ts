@@ -1,123 +1,77 @@
-import { test, expect, request } from '@playwright/test';
-
-const BASE_URL = 'http://localhost:8082';
+import { test, expect } from '@playwright/test';
+import { ClientFactory } from '../../core/clients/ClientFactory';
+import { ClientCloser } from '../../core/clients/ClientCloser';
+import { ShopApiClient } from '../../core/clients/system/api/ShopApiClient';
 
 test.describe('API E2E Tests', () => {
+  let shopApiClient: ShopApiClient;
+
+  test.beforeEach(async () => {
+    shopApiClient = await ClientFactory.createShopApiClient();
+  });
+
+  test.afterEach(async () => {
+    await ClientCloser.close(shopApiClient);
+  });
   
-  test('should successfully place an order with valid data', async ({ request }) => {
-    const response = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: 1,
-        country: 'US'
-      }
-    });
+  test('should successfully place an order with valid data', async () => {
+    const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
     
-    expect(response.status()).toBe(201);
-    
-    const body = await response.json();
-    expect(body.orderNumber).toMatch(/ORD-/);
-    
-    const locationHeader = response.headers()['location'];
-    expect(locationHeader).toContain(`/api/orders/${body.orderNumber}`);
+    await shopApiClient.orders().assertOrderPlacedSuccessfully(response);
   });
 
-  test('should return validation errors for empty fields', async ({ request }) => {
-    const response = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: '',
-        quantity: '',
-        country: ''
-      }
-    });
+  test('should return validation errors for empty fields', async () => {
+    const response = await shopApiClient.orders().placeOrder('', '', '');
     
-    expect(response.status()).toBe(422);
-    
-    const body = await response.json();
-    expect(body.sku).toContain('SKU must not be empty');
-    expect(body.quantity).toContain('Quantity must not be empty');
-    expect(body.country).toContain('Country must not be empty');
+    shopApiClient.orders().assertOrderPlacementFailed(response);
+    const errorBody = await response.json();
+    expect(errorBody.sku).toContain('SKU must not be empty');
+    expect(errorBody.quantity).toContain('Quantity must not be empty');
+    expect(errorBody.country).toContain('Country must not be empty');
   });
 
-  test('should return validation error for non-positive quantity', async ({ request }) => {
-    const response = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: -1,
-        country: 'US'
-      }
-    });
+  test('should return validation error for non-positive quantity', async () => {
+    const response = await shopApiClient.orders().placeOrder('ABC-123', '-1', 'US');
     
-    expect(response.status()).toBe(422);
-    
-    const body = await response.json();
-    expect(body.quantity).toContain('Quantity must be positive');
+    shopApiClient.orders().assertOrderPlacementFailed(response);
+    const errorBody = await response.json();
+    expect(errorBody.quantity).toContain('Quantity must be positive');
   });
 
-  test('should return validation error for zero quantity', async ({ request }) => {
-    const response = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: 0,
-        country: 'US'
-      }
-    });
+  test('should return validation error for zero quantity', async () => {
+    const response = await shopApiClient.orders().placeOrder('ABC-123', '0', 'US');
     
-    expect(response.status()).toBe(422);
-    
-    const body = await response.json();
-    expect(body.quantity).toContain('Quantity must be positive');
+    shopApiClient.orders().assertOrderPlacementFailed(response);
+    const errorBody = await response.json();
+    expect(errorBody.quantity).toContain('Quantity must be positive');
   });
 
-  test('should return validation error for non-existent product', async ({ request }) => {
-    const response = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'NON-EXISTENT',
-        quantity: 1,
-        country: 'US'
-      }
-    });
+  test('should return validation error for non-existent product', async () => {
+    const response = await shopApiClient.orders().placeOrder('NON-EXISTENT', '1', 'US');
     
-    expect(response.status()).toBe(422);
-    
-    const body = await response.json();
-    expect(body.message).toContain('Product does not exist');
+    shopApiClient.orders().assertOrderPlacementFailed(response);
+    const errorBody = await response.json();
+    expect(errorBody.message).toContain('Product does not exist');
   });
 
-  test('should return validation error for non-existent country', async ({ request }) => {
-    const response = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: 1,
-        country: 'XX'
-      }
-    });
+  test('should return validation error for non-existent country', async () => {
+    const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'XX');
     
-    expect(response.status()).toBe(422);
-    
-    const body = await response.json();
-    expect(body.message).toContain('Country does not exist');
+    shopApiClient.orders().assertOrderPlacementFailed(response);
+    const errorBody = await response.json();
+    expect(errorBody.message).toContain('Country does not exist');
   });
 
-  test('should get order details', async ({ request }) => {
+  test('should get order details', async () => {
     // First place an order
-    const createResponse = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: 2,
-        country: 'US'
-      }
-    });
+    const createResponse = await shopApiClient.orders().placeOrder('ABC-123', '2', 'US');
     
-    const createBody = await createResponse.json();
-    const orderNumber = createBody.orderNumber;
+    const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
+    const orderNumber = placeOrderResponse.orderNumber;
     
     // Get order details
-    const getResponse = await request.get(`${BASE_URL}/api/orders/${orderNumber}`);
-    
-    expect(getResponse.status()).toBe(200);
-    
-    const orderDetails = await getResponse.json();
+    const getResponse = await shopApiClient.orders().viewOrder(orderNumber);
+    const orderDetails = await shopApiClient.orders().assertOrderViewedSuccessfully(getResponse);
     
     // Assert all fields from GetOrderResponse
     expect(orderDetails.orderNumber).toBe(orderNumber);
@@ -154,76 +108,52 @@ test.describe('API E2E Tests', () => {
     expect(orderDetails.status).toBe('PLACED');
   });
 
-  test('should return 404 for non-existent order', async ({ request }) => {
-    const response = await request.get(`${BASE_URL}/api/orders/NON-EXISTENT`);
-    
+  test('should return 404 for non-existent order', async () => {
+    const response = await shopApiClient.orders().viewOrder('NON-EXISTENT');
     expect(response.status()).toBe(404);
   });
 
-  test('should successfully cancel an order', async ({ request }) => {
+  test('should successfully cancel an order', async () => {
     // First place an order
-    const createResponse = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: 1,
-        country: 'US'
-      }
-    });
+    const createResponse = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
     
-    const createBody = await createResponse.json();
-    const orderNumber = createBody.orderNumber;
+    const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
+    const orderNumber = placeOrderResponse.orderNumber;
     
     // Cancel the order
-    const cancelResponse = await request.post(`${BASE_URL}/api/orders/${orderNumber}/cancel`);
-    
-    expect(cancelResponse.status()).toBe(204);
+    const cancelResponse = await shopApiClient.orders().cancelOrder(orderNumber);
+    shopApiClient.orders().assertOrderCancelledSuccessfully(cancelResponse);
     
     // Verify order is cancelled
-    const getResponse = await request.get(`${BASE_URL}/api/orders/${orderNumber}`);
-    const orderDetails = await getResponse.json();
+    const getResponse = await shopApiClient.orders().viewOrder(orderNumber);
+    const orderDetails = await shopApiClient.orders().assertOrderViewedSuccessfully(getResponse);
     expect(orderDetails.status).toBe('CANCELLED');
   });
 
-  test('should return 404 when cancelling non-existent order', async ({ request }) => {
-    const response = await request.post(`${BASE_URL}/api/orders/NON-EXISTENT/cancel`);
-    
+  test('should return 404 when cancelling non-existent order', async () => {
+    const response = await shopApiClient.orders().cancelOrder('NON-EXISTENT');
     expect(response.status()).toBe(404);
   });
 
-  test('should apply discount for orders placed after 17:00', async ({ request }) => {
+  test('should apply discount for orders placed after 17:00', async () => {
     // This test depends on the current time
-    const now = new Date();
-    const hour = now.getHours();
+    const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
     
-    const response = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: 1,
-        country: 'US'
-      }
-    });
-    
-    const createBody = await response.json();
-    const getResponse = await request.get(`${BASE_URL}/api/orders/${createBody.orderNumber}`);
-    const orderDetails = await getResponse.json();
+    const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(response);
+    const getResponse = await shopApiClient.orders().viewOrder(placeOrderResponse.orderNumber);
+    const orderDetails = await shopApiClient.orders().assertOrderViewedSuccessfully(getResponse);
     
     // Discount rate changes based on time, just verify it's valid
     expect(orderDetails.discountRate).toBeGreaterThanOrEqual(0);
     expect(orderDetails.discountAmount).toBeGreaterThanOrEqual(0);
   });
 
-  test('should calculate tax correctly', async ({ request }) => {
-    const createResponse = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'ABC-123',
-        quantity: 1,
-        country: 'US'
-      }
-    });
+  test('should calculate tax correctly', async () => {
+    const createResponse = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
     
-    const createBody = await createResponse.json();
-    const getResponse = await request.get(`${BASE_URL}/api/orders/${createBody.orderNumber}`);
-    const orderDetails = await getResponse.json();
+    const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
+    const getResponse = await shopApiClient.orders().viewOrder(placeOrderResponse.orderNumber);
+    const orderDetails = await shopApiClient.orders().assertOrderViewedSuccessfully(getResponse);
     
     // US tax rate is 7.25%
     expect(orderDetails.taxRate).toBe(0.0725);
@@ -232,18 +162,12 @@ test.describe('API E2E Tests', () => {
     expect(Math.abs(orderDetails.taxAmount - expectedTaxAmount)).toBeLessThan(0.01);
   });
 
-  test('should calculate total price correctly', async ({ request }) => {
-    const createResponse = await request.post(`${BASE_URL}/api/orders`, {
-      data: {
-        sku: 'DEF-456',
-        quantity: 3,
-        country: 'GB'
-      }
-    });
+  test('should calculate total price correctly', async () => {
+    const createResponse = await shopApiClient.orders().placeOrder('DEF-456', '3', 'GB');
     
-    const createBody = await createResponse.json();
-    const getResponse = await request.get(`${BASE_URL}/api/orders/${createBody.orderNumber}`);
-    const orderDetails = await getResponse.json();
+    const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
+    const getResponse = await shopApiClient.orders().viewOrder(placeOrderResponse.orderNumber);
+    const orderDetails = await shopApiClient.orders().assertOrderViewedSuccessfully(getResponse);
     
     // Unit price: 25.00, Quantity: 3
     expect(orderDetails.unitPrice).toBe(25.00);
@@ -256,7 +180,7 @@ test.describe('API E2E Tests', () => {
     expect(Math.abs(orderDetails.totalPrice - expectedTotal)).toBeLessThan(0.01);
   });
 
-  test('should handle different countries with different tax rates', async ({ request }) => {
+  test('should handle different countries with different tax rates', async () => {
     const countries = [
       { code: 'US', taxRate: 0.0725 },
       { code: 'GB', taxRate: 0.20 },
@@ -267,38 +191,23 @@ test.describe('API E2E Tests', () => {
     ];
     
     for (const country of countries) {
-      const createResponse = await request.post(`${BASE_URL}/api/orders`, {
-        data: {
-          sku: 'ABC-123',
-          quantity: 1,
-          country: country.code
-        }
-      });
+      const createResponse = await shopApiClient.orders().placeOrder('ABC-123', '1', country.code);
       
-      const createBody = await createResponse.json();
-      const getResponse = await request.get(`${BASE_URL}/api/orders/${createBody.orderNumber}`);
-      const orderDetails = await getResponse.json();
+      const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
+      const getResponse = await shopApiClient.orders().viewOrder(placeOrderResponse.orderNumber);
+      const orderDetails = await shopApiClient.orders().assertOrderViewedSuccessfully(getResponse);
       
       expect(orderDetails.taxRate).toBe(country.taxRate);
     }
   });
 
-  test('should handle multiple products', async ({ request }) => {
+  test('should handle multiple products', async () => {
     const products = ['ABC-123', 'DEF-456', 'GHI-789', 'JKL-012', 'MNO-345'];
     
     for (const sku of products) {
-      const response = await request.post(`${BASE_URL}/api/orders`, {
-        data: {
-          sku: sku,
-          quantity: 1,
-          country: 'US'
-        }
-      });
+      const response = await shopApiClient.orders().placeOrder(sku, '1', 'US');
       
-      expect(response.status()).toBe(201);
-      
-      const body = await response.json();
-      expect(body.orderNumber).toMatch(/ORD-/);
+      await shopApiClient.orders().assertOrderPlacedSuccessfully(response);
     }
   });
 });
