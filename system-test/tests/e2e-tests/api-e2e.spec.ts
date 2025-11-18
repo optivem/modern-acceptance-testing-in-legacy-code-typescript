@@ -23,7 +23,7 @@ test.describe('API E2E Tests', () => {
   test('should return validation errors for empty fields', async () => {
     const response = await shopApiClient.orders().placeOrder('', '', '');
     
-    shopApiClient.orders().assertOrderPlacementFailed(response);
+    await shopApiClient.orders().assertOrderPlacementFailed(response);
     const errorBody = await response.json();
     expect(errorBody.sku).toContain('SKU must not be empty');
     expect(errorBody.quantity).toContain('Quantity must not be empty');
@@ -33,7 +33,7 @@ test.describe('API E2E Tests', () => {
   test('should return validation error for non-positive quantity', async () => {
     const response = await shopApiClient.orders().placeOrder('ABC-123', '-1', 'US');
     
-    shopApiClient.orders().assertOrderPlacementFailed(response);
+    await shopApiClient.orders().assertOrderPlacementFailed(response);
     const errorBody = await response.json();
     expect(errorBody.quantity).toContain('Quantity must be positive');
   });
@@ -41,7 +41,7 @@ test.describe('API E2E Tests', () => {
   test('should return validation error for zero quantity', async () => {
     const response = await shopApiClient.orders().placeOrder('ABC-123', '0', 'US');
     
-    shopApiClient.orders().assertOrderPlacementFailed(response);
+    await shopApiClient.orders().assertOrderPlacementFailed(response);
     const errorBody = await response.json();
     expect(errorBody.quantity).toContain('Quantity must be positive');
   });
@@ -49,7 +49,7 @@ test.describe('API E2E Tests', () => {
   test('should return validation error for non-existent product', async () => {
     const response = await shopApiClient.orders().placeOrder('NON-EXISTENT', '1', 'US');
     
-    shopApiClient.orders().assertOrderPlacementFailed(response);
+    await shopApiClient.orders().assertOrderPlacementFailed(response);
     const errorBody = await response.json();
     expect(errorBody.message).toContain('Product does not exist');
   });
@@ -57,7 +57,7 @@ test.describe('API E2E Tests', () => {
   test('should return validation error for non-existent country', async () => {
     const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'XX');
     
-    shopApiClient.orders().assertOrderPlacementFailed(response);
+    await shopApiClient.orders().assertOrderPlacementFailed(response);
     const errorBody = await response.json();
     expect(errorBody.message).toContain('Country does not exist');
   });

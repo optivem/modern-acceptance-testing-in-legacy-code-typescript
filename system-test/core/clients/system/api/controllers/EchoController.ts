@@ -12,7 +12,7 @@ export class EchoController {
     return await this.httpClient.get(EchoController.ENDPOINT);
   }
 
-  assertEchoSuccessful(response: any): void {
-    this.httpClient.assertOk(response);
+  async assertEchoSuccessful(response: any): Promise<void> {
+    await this.httpClient.assertOk(response);
   }
 }

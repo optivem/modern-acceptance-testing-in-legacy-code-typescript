@@ -11,7 +11,7 @@ test('echo should return 200 OK', async () => {
     const response = await shopApiClient.echo().echo();
 
     // Assert
-    shopApiClient.echo().assertEchoSuccessful(response);
+    await shopApiClient.echo().assertEchoSuccessful(response);
   } finally {
     // Cleanup
     await ClientCloser.close(shopApiClient);

@@ -11,22 +11,22 @@ export class OrderController {
     this.httpClient = httpClient;
   }
 
-  async placeOrder(sku: string, quantity: string, country: string) {
+  async placeOrder(sku: string, quantity: number | string, country: string): Promise<PlaceOrderResponse> {
     const request: PlaceOrderRequest = {
       sku,
-      quantity,
+      quantity: quantity === '' ? '' as any : Number(quantity),
       country,
     };
     return await this.httpClient.post(OrderController.ENDPOINT, request);
   }
 
   async assertOrderPlacedSuccessfully(response: any): Promise<PlaceOrderResponse> {
-    this.httpClient.assertCreated(response);
+    await this.httpClient.assertCreated(response);
     return await this.httpClient.readBody<PlaceOrderResponse>(response);
   }
 
-  assertOrderPlacementFailed(response: any): void {
-    this.httpClient.assertUnprocessableEntity(response);
+  async assertOrderPlacementFailed(response: any): Promise<void> {
+    await this.httpClient.assertUnprocessableEntity(response);
   }
 
   async getErrorMessage(response: any): Promise<string> {
@@ -38,7 +38,7 @@ export class OrderController {
   }
 
   async assertOrderViewedSuccessfully(response: any): Promise<GetOrderResponse> {
-    this.httpClient.assertOk(response);
+    await this.httpClient.assertOk(response);
     return await this.httpClient.readBody<GetOrderResponse>(response);
   }
 
@@ -46,7 +46,7 @@ export class OrderController {
     return await this.httpClient.post(`${OrderController.ENDPOINT}/${orderNumber}/cancel`);
   }
 
-  assertOrderCancelledSuccessfully(response: any): void {
-    this.httpClient.assertNoContent(response);
+  async assertOrderCancelledSuccessfully(response: any): Promise<void> {
+    await this.httpClient.assertNoContent(response);
   }
 }

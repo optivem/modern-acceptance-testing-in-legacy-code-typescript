@@ -24,26 +24,33 @@ export class TestHttpClient {
     });
   }
 
-  assertOk(response: any) {
-    this.assertStatus(response, 200);
+  async assertOk(response: any) {
+    await this.assertStatus(response, 200);
   }
 
-  assertCreated(response: any) {
-    this.assertStatus(response, 201);
+  async assertCreated(response: any) {
+    await this.assertStatus(response, 201);
   }
 
-  assertNoContent(response: any) {
-    this.assertStatus(response, 204);
+  async assertNoContent(response: any) {
+    await this.assertStatus(response, 204);
   }
 
-  assertUnprocessableEntity(response: any) {
-    this.assertStatus(response, 422);
+  async assertUnprocessableEntity(response: any) {
+    await this.assertStatus(response, 422);
   }
 
-  private assertStatus(response: any, expectedStatus: number) {
+  private async assertStatus(response: any, expectedStatus: number) {
     if (response.status() !== expectedStatus) {
+      let bodyText = '';
+      try {
+        const body = await response.json();
+        bodyText = JSON.stringify(body);
+      } catch {
+        bodyText = await response.text();
+      }
       throw new Error(
-        `Expected status ${expectedStatus} but got ${response.status()}. Response body: ${JSON.stringify(response.body())}`
+        `Expected status ${expectedStatus} but got ${response.status()}. Response body: ${bodyText}`
       );
     }
   }

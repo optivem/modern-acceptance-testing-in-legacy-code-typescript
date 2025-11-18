@@ -1,4 +1,6 @@
 import { TestPageClient } from '../../../commons/TestPageClient';
+import { NewOrderPage } from './NewOrderPage';
+import { OrderHistoryPage } from './OrderHistoryPage';
 
 export class HomePage {
   private static readonly SHOP_BUTTON_SELECTOR = "a[href='/shop.html']";
@@ -10,20 +12,17 @@ export class HomePage {
     this.pageClient = pageClient;
   }
 
-  async clickShop(): Promise<import('./NewOrderPage').NewOrderPage> {
-    const { NewOrderPage } = await import('./NewOrderPage');
+  async clickShop(): Promise<NewOrderPage> {
     await this.pageClient.click(HomePage.SHOP_BUTTON_SELECTOR);
     return new NewOrderPage(this.pageClient);
   }
 
-  async clickNewOrder(): Promise<import('./NewOrderPage').NewOrderPage> {
-    const { NewOrderPage } = await import('./NewOrderPage');
+  async clickNewOrder(): Promise<NewOrderPage> {
     await this.pageClient.click(HomePage.SHOP_BUTTON_SELECTOR);
     return new NewOrderPage(this.pageClient);
   }
 
-  async clickOrderHistory(): Promise<import('./OrderHistoryPage').OrderHistoryPage> {
-    const { OrderHistoryPage } = await import('./OrderHistoryPage');
+  async clickOrderHistory(): Promise<OrderHistoryPage> {
     await this.pageClient.click(HomePage.ORDER_HISTORY_BUTTON_SELECTOR);
     return new OrderHistoryPage(this.pageClient);
   }
