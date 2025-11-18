@@ -16,7 +16,7 @@ test.describe('UI E2E Tests', () => {
   
   test('should successfully place an order with valid data', async () => {
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('ABC-123');
     await newOrderPage.inputQuantity(2);
@@ -29,7 +29,7 @@ test.describe('UI E2E Tests', () => {
 
   test('should show validation error for empty SKU', async () => {
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('');
     await newOrderPage.inputQuantity(1);
@@ -42,7 +42,7 @@ test.describe('UI E2E Tests', () => {
 
   test('should show validation error for empty quantity', async () => {
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('ABC-123');
     await newOrderPage.inputQuantity('');
@@ -55,7 +55,7 @@ test.describe('UI E2E Tests', () => {
 
   test('should show validation error for non-positive quantity', async () => {
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('ABC-123');
     await newOrderPage.inputQuantity(-1);
@@ -68,7 +68,7 @@ test.describe('UI E2E Tests', () => {
 
   test('should show validation error for empty country', async () => {
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('ABC-123');
     await newOrderPage.inputQuantity(1);
@@ -81,7 +81,7 @@ test.describe('UI E2E Tests', () => {
 
   test('should show error for non-existent product SKU', async () => {
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('NON-EXISTENT');
     await newOrderPage.inputQuantity(1);
@@ -94,7 +94,7 @@ test.describe('UI E2E Tests', () => {
 
   test('should show error for non-existent country', async () => {
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('ABC-123');
     await newOrderPage.inputQuantity(1);
@@ -108,7 +108,7 @@ test.describe('UI E2E Tests', () => {
   test('should display order details', async () => {
     // First place an order
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('ABC-123');
     await newOrderPage.inputQuantity(1);
@@ -142,7 +142,7 @@ test.describe('UI E2E Tests', () => {
   test('should successfully cancel an order', async () => {
     // First place an order
     const homePage = await shopUiClient.openHomePage();
-    const newOrderPage = await homePage.clickShop();
+    const newOrderPage = await homePage.clickNewOrder();
     
     await newOrderPage.inputProductId('ABC-123');
     await newOrderPage.inputQuantity(1);

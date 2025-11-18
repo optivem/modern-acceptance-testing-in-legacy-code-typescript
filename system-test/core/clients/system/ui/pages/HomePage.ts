@@ -12,11 +12,6 @@ export class HomePage {
     this.pageClient = pageClient;
   }
 
-  async clickShop(): Promise<NewOrderPage> {
-    await this.pageClient.click(HomePage.SHOP_BUTTON_SELECTOR);
-    return new NewOrderPage(this.pageClient);
-  }
-
   async clickNewOrder(): Promise<NewOrderPage> {
     await this.pageClient.click(HomePage.SHOP_BUTTON_SELECTOR);
     return new NewOrderPage(this.pageClient);
