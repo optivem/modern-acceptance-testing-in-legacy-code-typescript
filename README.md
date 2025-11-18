@@ -12,16 +12,28 @@
 - Docker Desktop
 - PowerShell 7+
 
-Ensure you have Node.js installed:
-
-```shell
-node --version
-```
-
-Check that you have PowerShell 7:
+Check that you have Powershell 7
 
 ```shell
 $PSVersionTable.PSVersion
+```
+
+Check that you have Node.js 22 installed
+
+```shell
+node -v
+```
+
+Inside `monolith` and `system-test` install dependencies
+
+```shell
+npm install
+```
+
+Inside `system-test` install:
+
+```shell
+npx playwright install
 ```
 
 ## Run Everything
