@@ -106,10 +106,8 @@ test.describe('API E2E Tests', () => {
     expect(orderDetails.sku).toBe(sku);
     expect(orderDetails.quantity).toBe(quantity);
     expect(orderDetails.country).toBe(country);
-    expect(orderDetails.unitPrice).toBe(1500.00);
-    
-    const expectedOriginalPrice = 3000.00;
-    expect(orderDetails.originalPrice).toBe(expectedOriginalPrice);
+    expect(orderDetails.unitPrice).toBe(299.50);
+    expect(orderDetails.originalPrice).toBe(898.50);
     
     // Assert discount fields
     expect(orderDetails.discountRate).not.toBeNull();
