@@ -1,4 +1,5 @@
 import { TestHttpClient } from '../../../commons/TestHttpClient';
+import { AxiosResponse } from 'axios';
 
 export class EchoController {
   private static readonly ENDPOINT = '/echo';
@@ -8,11 +9,11 @@ export class EchoController {
     this.httpClient = httpClient;
   }
 
-  async echo() {
+  async echo(): Promise<AxiosResponse> {
     return await this.httpClient.get(EchoController.ENDPOINT);
   }
 
-  async assertEchoSuccessful(response: any): Promise<void> {
-    await this.httpClient.assertOk(response);
+  async assertEchoSuccessful(response: AxiosResponse): Promise<void> {
+    this.httpClient.assertOk(response);
   }
 }

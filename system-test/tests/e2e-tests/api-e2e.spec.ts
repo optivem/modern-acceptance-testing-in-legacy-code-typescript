@@ -24,7 +24,7 @@ test.describe('API E2E Tests', () => {
     const response = await shopApiClient.orders().placeOrder('', '', '');
     
     await shopApiClient.orders().assertOrderPlacementFailed(response);
-    const errorBody = await response.json();
+    const errorBody = response.data;
     expect(errorBody.sku).toContain('SKU must not be empty');
     expect(errorBody.quantity).toContain('Quantity must not be empty');
     expect(errorBody.country).toContain('Country must not be empty');
@@ -34,7 +34,7 @@ test.describe('API E2E Tests', () => {
     const response = await shopApiClient.orders().placeOrder('ABC-123', '-1', 'US');
     
     await shopApiClient.orders().assertOrderPlacementFailed(response);
-    const errorBody = await response.json();
+    const errorBody = response.data;
     expect(errorBody.quantity).toContain('Quantity must be positive');
   });
 
@@ -42,7 +42,7 @@ test.describe('API E2E Tests', () => {
     const response = await shopApiClient.orders().placeOrder('ABC-123', '0', 'US');
     
     await shopApiClient.orders().assertOrderPlacementFailed(response);
-    const errorBody = await response.json();
+    const errorBody = response.data;
     expect(errorBody.quantity).toContain('Quantity must be positive');
   });
 
@@ -50,7 +50,7 @@ test.describe('API E2E Tests', () => {
     const response = await shopApiClient.orders().placeOrder('NON-EXISTENT', '1', 'US');
     
     await shopApiClient.orders().assertOrderPlacementFailed(response);
-    const errorBody = await response.json();
+    const errorBody = response.data;
     expect(errorBody.message).toContain('Product does not exist');
   });
 
@@ -58,7 +58,7 @@ test.describe('API E2E Tests', () => {
     const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'XX');
     
     await shopApiClient.orders().assertOrderPlacementFailed(response);
-    const errorBody = await response.json();
+    const errorBody = response.data;
     expect(errorBody.message).toContain('Country does not exist');
   });
 
@@ -110,7 +110,7 @@ test.describe('API E2E Tests', () => {
 
   test('should return 404 for non-existent order', async () => {
     const response = await shopApiClient.orders().viewOrder('NON-EXISTENT');
-    expect(response.status()).toBe(404);
+    expect(response.status).toBe(404);
   });
 
   test('should successfully cancel an order', async () => {
@@ -132,7 +132,7 @@ test.describe('API E2E Tests', () => {
 
   test('should return 404 when cancelling non-existent order', async () => {
     const response = await shopApiClient.orders().cancelOrder('NON-EXISTENT');
-    expect(response.status()).toBe(404);
+    expect(response.status).toBe(404);
   });
 
   test('should apply discount for orders placed after 17:00', async () => {

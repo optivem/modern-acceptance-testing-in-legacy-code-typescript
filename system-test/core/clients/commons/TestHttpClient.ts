@@ -1,65 +1,54 @@
-import { APIRequestContext } from '@playwright/test';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 export class TestHttpClient {
-  private readonly baseUrl: string;
-  private readonly requestContext: APIRequestContext;
+  private readonly httpClient: AxiosInstance;
 
-  constructor(requestContext: APIRequestContext, baseUrl: string) {
-    this.requestContext = requestContext;
-    this.baseUrl = baseUrl;
-  }
-
-  async get(path: string) {
-    const url = this.getUrl(path);
-    return await this.requestContext.get(url);
-  }
-
-  async post(path: string, requestBody?: any) {
-    const url = this.getUrl(path);
-    return await this.requestContext.post(url, {
-      data: requestBody,
+  constructor(baseUrl: string) {
+    this.httpClient = axios.create({
+      baseURL: baseUrl,
       headers: {
         'Content-Type': 'application/json',
       },
+      validateStatus: () => true, // Don't throw on any status code, we'll handle it ourselves
     });
   }
 
-  async assertOk(response: any) {
-    await this.assertStatus(response, 200);
+  async get(path: string): Promise<AxiosResponse> {
+    return await this.httpClient.get(path);
   }
 
-  async assertCreated(response: any) {
-    await this.assertStatus(response, 201);
+  async post(path: string, requestBody?: any): Promise<AxiosResponse> {
+    return await this.httpClient.post(path, requestBody);
   }
 
-  async assertNoContent(response: any) {
-    await this.assertStatus(response, 204);
+  assertOk(response: AxiosResponse): void {
+    this.assertStatus(response, 200);
   }
 
-  async assertUnprocessableEntity(response: any) {
-    await this.assertStatus(response, 422);
+  assertCreated(response: AxiosResponse): void {
+    this.assertStatus(response, 201);
   }
 
-  private async assertStatus(response: any, expectedStatus: number) {
-    if (response.status() !== expectedStatus) {
-      let bodyText = '';
-      try {
-        const body = await response.json();
-        bodyText = JSON.stringify(body);
-      } catch {
-        bodyText = await response.text();
-      }
+  assertNoContent(response: AxiosResponse): void {
+    this.assertStatus(response, 204);
+  }
+
+  assertUnprocessableEntity(response: AxiosResponse): void {
+    this.assertStatus(response, 422);
+  }
+
+  private assertStatus(response: AxiosResponse, expectedStatus: number): void {
+    if (response.status !== expectedStatus) {
+      const bodyText = typeof response.data === 'string' 
+        ? response.data 
+        : JSON.stringify(response.data);
       throw new Error(
-        `Expected status ${expectedStatus} but got ${response.status()}. Response body: ${bodyText}`
+        `Expected status ${expectedStatus} but got ${response.status}. Response body: ${bodyText}`
       );
     }
   }
 
-  private getUrl(path: string): string {
-    return `${this.baseUrl}${path}`;
-  }
-
-  async readBody<T>(response: any): Promise<T> {
-    return await response.json();
+  readBody<T>(response: AxiosResponse): T {
+    return response.data;
   }
 }
