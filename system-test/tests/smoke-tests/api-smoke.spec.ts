@@ -1,6 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { ClientFactory } from '../../core/clients/ClientFactory';
+import { ClientCloser } from '../../core/clients/ClientCloser';
 
-test('echo should return 200 OK', async ({ request }) => {
-  const response = await request.get('/api/echo');
-  expect(response.status()).toBe(200);
+test('echo should return 200 OK', async () => {
+  // Arrange
+  const shopApiClient = await ClientFactory.createShopApiClient();
+
+  try {
+    // Act
+    const response = await shopApiClient.echo().echo();
+
+    // Assert
+    shopApiClient.echo().assertEchoSuccessful(response);
+  } finally {
+    // Cleanup
+    await ClientCloser.close(shopApiClient);
+  }
 });
+

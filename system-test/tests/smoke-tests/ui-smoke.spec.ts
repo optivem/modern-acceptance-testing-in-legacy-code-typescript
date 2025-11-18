@@ -1,14 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { ClientFactory } from '../../core/clients/ClientFactory';
+import { ClientCloser } from '../../core/clients/ClientCloser';
 
-test('home should return HTML content', async ({ page }) => {
-  const response = await page.goto('/');
-  
-  expect(response?.status()).toBe(200);
-  
-  const contentType = response?.headers()['content-type'];
-  expect(contentType).toContain('text/html');
-  
-  const pageContent = await page.content();
-  expect(pageContent).toContain('<html');
-  expect(pageContent).toContain('</html>');
+test('home should return HTML content', async () => {
+  // Arrange
+  const shopUiClient = await ClientFactory.createShopUiClient();
+
+  try {
+    // Act
+    await shopUiClient.openHomePage();
+
+    // Assert
+    shopUiClient.assertHomePageLoaded();
+  } finally {
+    // Cleanup
+    await ClientCloser.close(shopUiClient);
+  }
 });
+

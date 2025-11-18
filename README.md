@@ -92,6 +92,113 @@ You can open these URLs in your browser:
 .\run.ps1 stop
 ```
 
+## Client Layer Architecture
+
+This project implements the **Client Layer Pattern** for test automation, providing a clean abstraction over Playwright API and UI interactions. The Client Layer separates test logic from implementation details and makes tests more maintainable.
+
+### Structure
+
+```
+system-test/
+└── core/
+    ├── clients/
+    │   ├── commons/               # Shared test utilities
+    │   │   ├── TestHttpClient.ts  # HTTP request wrapper
+    │   │   └── TestPageClient.ts  # Browser interaction wrapper
+    │   ├── system/                # System under test clients
+    │   │   ├── api/               # API client
+    │   │   │   ├── controllers/   # API endpoint controllers
+    │   │   │   │   ├── EchoController.ts
+    │   │   │   │   └── OrderController.ts
+    │   │   │   ├── dtos/          # Data transfer objects
+    │   │   │   │   ├── PlaceOrderRequest.ts
+    │   │   │   │   ├── PlaceOrderResponse.ts
+    │   │   │   │   ├── GetOrderResponse.ts
+    │   │   │   │   └── OrderStatus.ts
+    │   │   │   └── ShopApiClient.ts
+    │   │   └── ui/                # UI client
+    │   │       ├── pages/         # Page objects
+    │   │       │   ├── HomePage.ts
+    │   │       │   ├── NewOrderPage.ts
+    │   │       │   └── OrderHistoryPage.ts
+    │   │       └── ShopUiClient.ts
+    │   ├── external/              # External system clients
+    │   │   └── erp/
+    │   │       ├── controllers/
+    │   │       │   └── ProductController.ts
+    │   │       ├── dtos/
+    │   │       │   └── CreateProductResponse.ts
+    │   │       └── ErpApiClient.ts
+    │   ├── ClientFactory.ts       # Creates client instances
+    │   └── ClientCloser.ts        # Manages resource cleanup
+    └── TestConfiguration.ts        # Test environment configuration
+```
+
+### Key Components
+
+#### 1. Commons Layer
+- **TestHttpClient**: Wraps Playwright's API request functionality with methods like `get()`, `post()`, and assertion helpers (`assertOk()`, `assertCreated()`, etc.)
+- **TestPageClient**: Wraps Playwright's Page API with methods like `fill()`, `click()`, `readTextContent()`, providing consistent timeouts and error handling
+
+#### 2. System Clients
+- **ShopApiClient**: API client for the shop system with controller-based organization
+- **ShopUiClient**: UI client for browser-based testing with page object pattern
+- **Controllers**: Organize API endpoints (e.g., `OrderController` handles `/orders` endpoints)
+- **Pages**: Encapsulate UI page interactions (e.g., `NewOrderPage` handles the order form)
+
+#### 3. External Clients
+- **ErpApiClient**: Client for interacting with external ERP system
+- Allows tests to set up test data in external systems
+
+#### 4. DTOs (Data Transfer Objects)
+- Type-safe request/response objects
+- Ensures consistency between tests and API contracts
+
+### Usage Example
+
+```typescript
+import { test } from '@playwright/test';
+import { ClientFactory } from '../../core/clients/ClientFactory';
+import { ClientCloser } from '../../core/clients/ClientCloser';
+
+test('should place an order via API', async () => {
+  // Arrange
+  const shopApiClient = await ClientFactory.createShopApiClient();
+  const erpApiClient = await ClientFactory.createErpApiClient();
+
+  try {
+    // Create product in ERP system
+    const sku = await erpApiClient.products().createProduct('TEST-SKU', 99.99);
+
+    // Act - Place order
+    const response = await shopApiClient.orders().placeOrder(sku, '5', 'US');
+
+    // Assert
+    const orderResponse = await shopApiClient.orders()
+      .assertOrderPlacedSuccessfully(response);
+    
+    expect(orderResponse.orderNumber).toMatch(/ORD-/);
+  } finally {
+    // Cleanup
+    await ClientCloser.close(shopApiClient);
+    await ClientCloser.close(erpApiClient);
+  }
+});
+```
+
+### Benefits
+
+1. **Separation of Concerns**: Tests focus on business logic, not technical details
+2. **Reusability**: Clients and pages can be reused across multiple tests
+3. **Maintainability**: Changes to API/UI only require updating the client layer
+4. **Type Safety**: TypeScript ensures compile-time type checking
+5. **Readability**: Tests read like business scenarios
+6. **Resource Management**: Consistent cleanup with `ClientCloser`
+
+### Reference
+
+This Client Layer implementation is based on the [Java reference project](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-java/tree/main/system-test/src/test/java/com/optivem/eshop/systemtest/core/clients).
+
 ## License
 
 [![MIT License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
