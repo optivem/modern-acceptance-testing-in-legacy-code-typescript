@@ -2,21 +2,33 @@ import { test, expect } from '@playwright/test';
 import { ClientFactory } from '../../core/clients/ClientFactory';
 import { ClientCloser } from '../../core/clients/ClientCloser';
 import { ShopApiClient } from '../../core/clients/system/api/ShopApiClient';
+import { ErpApiClient } from '../../core/clients/external/erp/ErpApiClient';
 
 test.describe('API E2E Tests', () => {
   let shopApiClient: ShopApiClient;
+  let erpApiClient: ErpApiClient;
 
   test.beforeEach(async () => {
     shopApiClient = await ClientFactory.createShopApiClient();
+    erpApiClient = await ClientFactory.createErpApiClient();
   });
 
   test.afterEach(async () => {
     await ClientCloser.close(shopApiClient);
+    await ClientCloser.close(erpApiClient);
   });
   
   test('should successfully place an order with valid data', async () => {
-    const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
+    // Arrange - Set up product in ERP first
+    const baseSku = 'AUTO-PO-100';
+    const unitPrice = 199.99;
     
+    const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+    
+    // Act
+    const response = await shopApiClient.orders().placeOrder(sku, '1', 'US');
+    
+    // Assert
     await shopApiClient.orders().assertOrderPlacedSuccessfully(response);
   });
 
@@ -55,16 +67,32 @@ test.describe('API E2E Tests', () => {
   });
 
   test('should return validation error for non-existent country', async () => {
-    const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'XX');
+    // Arrange - Set up product in ERP first
+    const baseSku = 'AUTO-NC-300';
+    const unitPrice = 89.99;
     
+    const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+    
+    // Act
+    const response = await shopApiClient.orders().placeOrder(sku, '1', 'XX');
+    
+    // Assert
     await shopApiClient.orders().assertOrderPlacementFailed(response);
     const errorBody = response.data;
     expect(errorBody.message).toContain('Country does not exist');
   });
 
   test('should get order details', async () => {
-    // First place an order
-    const createResponse = await shopApiClient.orders().placeOrder('ABC-123', '2', 'US');
+    // Arrange - Set up product in ERP first
+    const baseSku = 'AUTO-GO-200';
+    const unitPrice = 299.50;
+    const quantity = 3;
+    const country = 'DE';
+    
+    const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+    
+    // Act - Place order
+    const createResponse = await shopApiClient.orders().placeOrder(sku, String(quantity), country);
     
     const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
     const orderNumber = placeOrderResponse.orderNumber;
@@ -75,9 +103,9 @@ test.describe('API E2E Tests', () => {
     
     // Assert all fields from GetOrderResponse
     expect(orderDetails.orderNumber).toBe(orderNumber);
-    expect(orderDetails.sku).toBe('ABC-123');
-    expect(orderDetails.quantity).toBe(2);
-    expect(orderDetails.country).toBe('US');
+    expect(orderDetails.sku).toBe(sku);
+    expect(orderDetails.quantity).toBe(quantity);
+    expect(orderDetails.country).toBe(country);
     expect(orderDetails.unitPrice).toBe(1500.00);
     
     const expectedOriginalPrice = 3000.00;
@@ -114,8 +142,14 @@ test.describe('API E2E Tests', () => {
   });
 
   test('should successfully cancel an order', async () => {
-    // First place an order
-    const createResponse = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
+    // Arrange - Set up product in ERP first
+    const baseSku = 'AUTO-CO-150';
+    const unitPrice = 129.99;
+    
+    const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+    
+    // Act - Place order
+    const createResponse = await shopApiClient.orders().placeOrder(sku, '1', 'US');
     
     const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
     const orderNumber = placeOrderResponse.orderNumber;
@@ -136,9 +170,16 @@ test.describe('API E2E Tests', () => {
   });
 
   test('should apply discount for orders placed after 17:00', async () => {
-    // This test depends on the current time
-    const response = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
+    // Arrange - Set up product in ERP first
+    const baseSku = 'AUTO-D-400';
+    const unitPrice = 159.99;
     
+    const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+    
+    // Act
+    const response = await shopApiClient.orders().placeOrder(sku, '1', 'US');
+    
+    // Assert
     const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(response);
     const getResponse = await shopApiClient.orders().viewOrder(placeOrderResponse.orderNumber);
     const orderDetails = await shopApiClient.orders().assertOrderViewedSuccessfully(getResponse);
@@ -149,7 +190,14 @@ test.describe('API E2E Tests', () => {
   });
 
   test('should calculate tax correctly', async () => {
-    const createResponse = await shopApiClient.orders().placeOrder('ABC-123', '1', 'US');
+    // Arrange - Set up product in ERP first
+    const baseSku = 'AUTO-T-500';
+    const unitPrice = 99.99;
+    
+    const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+    
+    // Act
+    const createResponse = await shopApiClient.orders().placeOrder(sku, '1', 'US');
     
     const placeOrderResponse = await shopApiClient.orders().assertOrderPlacedSuccessfully(createResponse);
     const getResponse = await shopApiClient.orders().viewOrder(placeOrderResponse.orderNumber);
