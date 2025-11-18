@@ -3,8 +3,8 @@ import { NewOrderPage } from './NewOrderPage';
 import { OrderHistoryPage } from './OrderHistoryPage';
 
 export class HomePage {
-  private static readonly SHOP_BUTTON_SELECTOR = "a[href='/shop.html']";
-  private static readonly ORDER_HISTORY_BUTTON_SELECTOR = "a[href='/order-history.html']";
+  private static readonly SHOP_BUTTON_SELECTOR = "a[href='shop.html']";
+  private static readonly ORDER_HISTORY_BUTTON_SELECTOR = "a[href='order-history.html']";
 
   private readonly pageClient: TestPageClient;
 

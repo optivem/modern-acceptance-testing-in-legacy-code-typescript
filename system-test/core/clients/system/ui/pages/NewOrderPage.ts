@@ -12,7 +12,7 @@ export class NewOrderPage {
   private static readonly COUNTRY_ERROR_SELECTOR = '#countryError';
   private static readonly SUCCESS_MESSAGE_SELECTOR = '#message .success';
   private static readonly ERROR_MESSAGE_SELECTOR = '#message .error';
-  private static readonly ORDER_NUMBER_REGEX = /Success! Order has been created with Order Number ([\w-]+)/;
+  private static readonly ORDER_NUMBER_REGEX = /Order Number:\s*(ORD-[\w-]+)/;
   private static readonly ORDER_NUMBER_MATCHER_GROUP = 1;
   private static readonly ORIGINAL_PRICE_REGEX = /Original Price \$(\d+(?:\.\d{2})?)/;
   private static readonly ORIGINAL_PRICE_MATCHER_GROUP = 1;

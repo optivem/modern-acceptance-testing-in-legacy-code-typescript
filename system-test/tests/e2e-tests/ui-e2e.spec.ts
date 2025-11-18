@@ -45,7 +45,7 @@ test.describe('UI E2E Tests', () => {
     const newOrderPage = await homePage.clickShop();
     
     await newOrderPage.inputProductId('ABC-123');
-    await newOrderPage.inputQuantity(0);
+    await newOrderPage.inputQuantity('');
     await newOrderPage.inputCountry('US');
     
     await newOrderPage.clickPlaceOrder();
@@ -119,8 +119,11 @@ test.describe('UI E2E Tests', () => {
     const orderNumber = await newOrderPage.extractOrderNumber();
     expect(orderNumber).toBeTruthy();
     
+    // Navigate back to home page first
+    const homePageAgain = await shopUiClient.openHomePage();
+    
     // Navigate to order history
-    const orderHistoryPage = await homePage.clickOrderHistory();
+    const orderHistoryPage = await homePageAgain.clickOrderHistory();
     await orderHistoryPage.inputOrderNumber(orderNumber!);
     await orderHistoryPage.clickViewOrder();
     
@@ -147,9 +150,13 @@ test.describe('UI E2E Tests', () => {
     await newOrderPage.clickPlaceOrder();
     
     const orderNumber = await newOrderPage.extractOrderNumber();
+    expect(orderNumber).toBeTruthy();
+    
+    // Navigate back to home page first
+    const homePageAgain = await shopUiClient.openHomePage();
     
     // Navigate to order history
-    const orderHistoryPage = await homePage.clickOrderHistory();
+    const orderHistoryPage = await homePageAgain.clickOrderHistory();
     await orderHistoryPage.inputOrderNumber(orderNumber!);
     await orderHistoryPage.clickViewOrder();
     
