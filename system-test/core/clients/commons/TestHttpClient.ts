@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 
 export class TestHttpClient {
   private readonly httpClient: AxiosInstance;
@@ -22,19 +23,19 @@ export class TestHttpClient {
   }
 
   assertOk(response: AxiosResponse): void {
-    this.assertStatus(response, 200);
+    this.assertStatus(response, StatusCodes.OK);
   }
 
   assertCreated(response: AxiosResponse): void {
-    this.assertStatus(response, 201);
+    this.assertStatus(response, StatusCodes.CREATED);
   }
 
   assertNoContent(response: AxiosResponse): void {
-    this.assertStatus(response, 204);
+    this.assertStatus(response, StatusCodes.NO_CONTENT);
   }
 
   assertUnprocessableEntity(response: AxiosResponse): void {
-    this.assertStatus(response, 422);
+    this.assertStatus(response, StatusCodes.UNPROCESSABLE_ENTITY);
   }
 
   private assertStatus(response: AxiosResponse, expectedStatus: number): void {

@@ -13,7 +13,7 @@ export class ProductController {
   async createProduct(baseSku: string, unitPrice: number): Promise<string> {
     const uniqueSku = `${baseSku}-${crypto.randomUUID()}`;
     const request = {
-      id: uniqueSku,  // JSON Server uses 'id' for resource lookup
+      id: uniqueSku,
       price: unitPrice,
     };
 
