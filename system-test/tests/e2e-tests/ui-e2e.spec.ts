@@ -175,18 +175,25 @@ test.describe('UI E2E Tests', () => {
     // Navigate to order history
     const orderHistoryPage = await homePageAgain.clickOrderHistory();
     await orderHistoryPage.inputOrderNumber(orderNumber!);
-    await orderHistoryPage.clickViewOrder();
+    await orderHistoryPage.clickSearch();
+    await orderHistoryPage.waitForOrderDetails();
     
     // Assert - Verify order details
-    await orderHistoryPage.assertOrderNumber(orderNumber!);
-    await orderHistoryPage.assertOrderDetails({
-      sku: sku,
-      quantity: '1',
-      country: 'US',
-      unitPrice: '$299.50',
-      originalPrice: '$299.50',
-      status: 'PLACED'
-    });
+    const displayOrderNumber = await orderHistoryPage.getOrderNumber();
+    const displayProductId = await orderHistoryPage.getProductId();
+    const displayCountry = await orderHistoryPage.getCountry();
+    const displayQuantity = await orderHistoryPage.getQuantity();
+    const displayUnitPrice = await orderHistoryPage.getUnitPrice();
+    const displayOriginalPrice = await orderHistoryPage.getOriginalPrice();
+    const displayStatus = await orderHistoryPage.getStatus();
+    
+    expect(displayOrderNumber).toBe(orderNumber);
+    expect(displayProductId).toBe(sku);
+    expect(displayCountry).toBe('US');
+    expect(displayQuantity).toBe('1');
+    expect(displayUnitPrice).toBe('$299.50');
+    expect(displayOriginalPrice).toBe('$299.50');
+    expect(displayStatus).toBe('PLACED');
   });
 
   test('should successfully cancel an order', async () => {
@@ -214,14 +221,22 @@ test.describe('UI E2E Tests', () => {
     // Navigate to order history
     const orderHistoryPage = await homePageAgain.clickOrderHistory();
     await orderHistoryPage.inputOrderNumber(orderNumber!);
-    await orderHistoryPage.clickViewOrder();
+    await orderHistoryPage.clickSearch();
+    await orderHistoryPage.waitForOrderDetails();
+    
+    // Verify initial status is PLACED
+    const displayStatusBeforeCancel = await orderHistoryPage.getStatus();
+    expect(displayStatusBeforeCancel).toBe('PLACED');
     
     // Cancel the order
     await orderHistoryPage.clickCancelOrder();
     
-    // Verify cancellation
-    await orderHistoryPage.assertCancellationSuccess();
-    await orderHistoryPage.assertOrderDetails({ status: 'CANCELLED' });
+    // Verify status changed to CANCELLED
+    const displayStatusAfterCancel = await orderHistoryPage.getStatus();
+    expect(displayStatusAfterCancel).toBe('CANCELLED');
+    
+    // Verify Cancel button is no longer visible
+    await orderHistoryPage.assertCancelButtonNotVisible();
   });
 
   test('should show not found for non-existent order', async () => {
@@ -229,8 +244,10 @@ test.describe('UI E2E Tests', () => {
     const orderHistoryPage = await homePage.clickOrderHistory();
     
     await orderHistoryPage.inputOrderNumber('NON-EXISTENT-ORDER');
-    await orderHistoryPage.clickViewOrder();
+    await orderHistoryPage.clickSearch();
     
-    await orderHistoryPage.assertOrderNotFound();
+    // Verify "Order not found" message is displayed
+    const confirmationMessage = await orderHistoryPage.readConfirmationMessageText();
+    expect(confirmationMessage).toContain('Order not found');
   });
 });

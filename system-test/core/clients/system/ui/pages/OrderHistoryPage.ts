@@ -4,29 +4,23 @@ import { expect } from '@playwright/test';
 export class OrderHistoryPage {
   private static readonly ORDER_NUMBER_INPUT_SELECTOR = '[aria-label="Order Number"]';
   private static readonly SEARCH_BUTTON_SELECTOR = '[aria-label="Search"]';
-  private static readonly VIEW_ORDER_BUTTON_SELECTOR = 'button[type="submit"]';
-  private static readonly CANCEL_BUTTON_SELECTOR = '[aria-label="Cancel Order"]';
-  private static readonly ORDER_NUMBER_DISPLAY_SELECTOR = '#detailOrderNumber';
-  private static readonly SKU_OUTPUT_SELECTOR = '[aria-label="SKU Output"]';
-  private static readonly SKU_DISPLAY_SELECTOR = '#detailSku';
-  private static readonly QUANTITY_OUTPUT_SELECTOR = '[aria-label="Quantity Output"]';
-  private static readonly QUANTITY_DISPLAY_SELECTOR = '#detailQuantity';
-  private static readonly COUNTRY_DISPLAY_SELECTOR = '#detailCountry';
-  private static readonly UNIT_PRICE_OUTPUT_SELECTOR = '[aria-label="Unit Price Output"]';
-  private static readonly UNIT_PRICE_DISPLAY_SELECTOR = '#detailUnitPrice';
-  private static readonly ORIGINAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Original Price Output"]';
-  private static readonly ORIGINAL_PRICE_DISPLAY_SELECTOR = '#detailOriginalPrice';
-  private static readonly DISCOUNT_RATE_OUTPUT_SELECTOR = '[aria-label="Discount Rate Output"]';
-  private static readonly DISCOUNT_AMOUNT_OUTPUT_SELECTOR = '[aria-label="Discount Amount Output"]';
-  private static readonly SUBTOTAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Subtotal Price Output"]';
-  private static readonly TAX_RATE_OUTPUT_SELECTOR = '[aria-label="Tax Rate Output"]';
-  private static readonly TAX_AMOUNT_OUTPUT_SELECTOR = '[aria-label="Tax Amount Output"]';
-  private static readonly TOTAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Total Price Output"]';
-  private static readonly STATUS_OUTPUT_SELECTOR = '[aria-label="Status Output"]';
-  private static readonly STATUS_DISPLAY_SELECTOR = '#detailStatus .status';
-  private static readonly COUNTRY_OUTPUT_SELECTOR = '[aria-label="Country Output"]';
-  private static readonly SUCCESS_MESSAGE_SELECTOR = '#message .success';
-  private static readonly ERROR_MESSAGE_SELECTOR = '#message .error';
+  private static readonly CONFIRMATION_MESSAGE_SELECTOR = '[role="alert"]';
+  private static readonly ORDER_NUMBER_OUTPUT_SELECTOR = '[aria-label="Display Order Number"]';
+  private static readonly PRODUCT_ID_OUTPUT_SELECTOR = '[aria-label="Display Product ID"]';
+  private static readonly COUNTRY_OUTPUT_SELECTOR = '[aria-label="Display Country"]';
+  private static readonly QUANTITY_OUTPUT_SELECTOR = '[aria-label="Display Quantity"]';
+  private static readonly UNIT_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Unit Price"]';
+  private static readonly ORIGINAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Original Price"]';
+  private static readonly DISCOUNT_RATE_OUTPUT_SELECTOR = '[aria-label="Display Discount Rate"]';
+  private static readonly DISCOUNT_AMOUNT_OUTPUT_SELECTOR = '[aria-label="Display Discount Amount"]';
+  private static readonly SUBTOTAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Subtotal Price"]';
+  private static readonly TAX_RATE_OUTPUT_SELECTOR = '[aria-label="Display Tax Rate"]';
+  private static readonly TAX_AMOUNT_OUTPUT_SELECTOR = '[aria-label="Display Tax Amount"]';
+  private static readonly TOTAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Total Price"]';
+  private static readonly STATUS_OUTPUT_SELECTOR = '[aria-label="Display Status"]';
+  private static readonly CANCEL_ORDER_OUTPUT_SELECTOR = '[aria-label="Cancel Order"]';
+
+  private static readonly ORDER_DETAILS_HEADING_TEXT = 'Order Details';
 
   private readonly pageClient: TestPageClient;
 
@@ -42,24 +36,25 @@ export class OrderHistoryPage {
     await this.pageClient.click(OrderHistoryPage.SEARCH_BUTTON_SELECTOR);
   }
 
-  async clickViewOrder(): Promise<void> {
-    await this.pageClient.click(OrderHistoryPage.VIEW_ORDER_BUTTON_SELECTOR);
-  }
-
-  async clickCancelOrder(): Promise<void> {
-    this.pageClient.getPage().on('dialog', dialog => dialog.accept());
-    await this.pageClient.click(OrderHistoryPage.CANCEL_BUTTON_SELECTOR);
-  }
-
   async waitForOrderDetails(): Promise<void> {
-    // Wait for the SKU field to be visible as an indicator that order details loaded
-    await this.pageClient.getPage().waitForSelector(OrderHistoryPage.SKU_OUTPUT_SELECTOR, {
-      state: 'visible',
-    });
+    const orderDetailsText = await this.pageClient.readTextContent(OrderHistoryPage.CONFIRMATION_MESSAGE_SELECTOR);
+    expect(orderDetailsText).toContain(OrderHistoryPage.ORDER_DETAILS_HEADING_TEXT);
   }
 
-  async getSku(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.SKU_OUTPUT_SELECTOR);
+  async readConfirmationMessageText(): Promise<string> {
+    return await this.pageClient.readTextContent(OrderHistoryPage.CONFIRMATION_MESSAGE_SELECTOR);
+  }
+
+  async getOrderNumber(): Promise<string> {
+    return await this.pageClient.readInputValue(OrderHistoryPage.ORDER_NUMBER_OUTPUT_SELECTOR);
+  }
+
+  async getProductId(): Promise<string> {
+    return await this.pageClient.readInputValue(OrderHistoryPage.PRODUCT_ID_OUTPUT_SELECTOR);
+  }
+
+  async getCountry(): Promise<string> {
+    return await this.pageClient.readInputValue(OrderHistoryPage.COUNTRY_OUTPUT_SELECTOR);
   }
 
   async getQuantity(): Promise<string> {
@@ -102,47 +97,18 @@ export class OrderHistoryPage {
     return await this.pageClient.readInputValue(OrderHistoryPage.STATUS_OUTPUT_SELECTOR);
   }
 
-  async getCountry(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.COUNTRY_OUTPUT_SELECTOR);
+  async clickCancelOrder(): Promise<void> {
+    this.pageClient.getPage().on('dialog', dialog => {
+      console.log('Dialog appeared:', dialog.message());
+      dialog.accept();
+    });
+
+    await this.pageClient.click(OrderHistoryPage.CANCEL_ORDER_OUTPUT_SELECTOR);
+    await this.pageClient.waitForHidden(OrderHistoryPage.CANCEL_ORDER_OUTPUT_SELECTOR);
   }
 
-  async assertOrderNumber(expectedOrderNumber: string): Promise<void> {
-    await expect(this.pageClient.getPage().locator(OrderHistoryPage.ORDER_NUMBER_DISPLAY_SELECTOR)).toContainText(expectedOrderNumber);
-  }
-
-  async assertOrderDetails(details: Partial<{
-    sku?: string;
-    quantity?: string;
-    country?: string;
-    unitPrice?: string;
-    originalPrice?: string;
-    status?: string;
-  }>): Promise<void> {
-    if (details.sku) {
-      await expect(this.pageClient.getPage().locator(OrderHistoryPage.SKU_DISPLAY_SELECTOR)).toContainText(details.sku);
-    }
-    if (details.quantity) {
-      await expect(this.pageClient.getPage().locator(OrderHistoryPage.QUANTITY_DISPLAY_SELECTOR)).toContainText(details.quantity);
-    }
-    if (details.country) {
-      await expect(this.pageClient.getPage().locator(OrderHistoryPage.COUNTRY_DISPLAY_SELECTOR)).toContainText(details.country);
-    }
-    if (details.unitPrice) {
-      await expect(this.pageClient.getPage().locator(OrderHistoryPage.UNIT_PRICE_DISPLAY_SELECTOR)).toContainText(details.unitPrice);
-    }
-    if (details.originalPrice) {
-      await expect(this.pageClient.getPage().locator(OrderHistoryPage.ORIGINAL_PRICE_DISPLAY_SELECTOR)).toContainText(details.originalPrice);
-    }
-    if (details.status) {
-      await expect(this.pageClient.getPage().locator(OrderHistoryPage.STATUS_DISPLAY_SELECTOR)).toContainText(details.status);
-    }
-  }
-
-  async assertCancellationSuccess(): Promise<void> {
-    await expect(this.pageClient.getPage().locator(OrderHistoryPage.SUCCESS_MESSAGE_SELECTOR)).toContainText('Order cancelled successfully');
-  }
-
-  async assertOrderNotFound(): Promise<void> {
-    await expect(this.pageClient.getPage().locator(OrderHistoryPage.ERROR_MESSAGE_SELECTOR)).toContainText('Order not found');
+  async assertCancelButtonNotVisible(): Promise<void> {
+    const isHidden = await this.pageClient.isHidden(OrderHistoryPage.CANCEL_ORDER_OUTPUT_SELECTOR);
+    expect(isHidden).toBe(true);
   }
 }
