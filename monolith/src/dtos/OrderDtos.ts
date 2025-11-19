@@ -34,8 +34,8 @@ export class PlaceOrderRequest {
     // Return other types as-is
     return value;
   })
-  @IsInt({ message: 'Quantity must be an integer' })
   @IsPositive({ message: 'Quantity must be positive' })
+  @IsInt({ message: 'Quantity must be an integer' })
   quantity!: Integer;
 
   @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)

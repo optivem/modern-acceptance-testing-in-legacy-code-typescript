@@ -107,6 +107,30 @@ test.describe('API E2E Tests', () => {
     });
   }
 
+  // Parameterized tests for non-integer quantity values
+  const nonIntegerQuantityValues = [
+    { value: '3.5', description: 'decimal value' },
+    { value: 'lala', description: 'string value' }
+  ];
+
+  for (const testCase of nonIntegerQuantityValues) {
+    test(`should reject order with non-integer quantity (${testCase.description})`, async () => {
+      // Arrange - Set up product in ERP first
+      const baseSku = 'AUTO-NIQ-600';
+      const unitPrice = 175.00;
+      
+      const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+      
+      // Act
+      const response = await shopApiClient.orders().placeOrder(sku, testCase.value, 'US');
+      
+      // Assert
+      await shopApiClient.orders().assertOrderPlacementFailed(response);
+      const errorBody = response.data;
+      expect(errorBody.quantity).toContain('Quantity must be an integer');
+    });
+  }
+
   // Parameterized tests for empty country values
   const emptyCountryValues = [
     { value: null as any, description: 'null' },
