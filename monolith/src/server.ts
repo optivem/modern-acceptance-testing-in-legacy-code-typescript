@@ -5,10 +5,11 @@ import { orderRouter } from './controllers/OrderController';
 import { echoRouter } from './controllers/EchoController';
 import { globalErrorHandler } from './middleware/GlobalErrorHandler';
 import { Order } from './entities/Order';
+import { AppConfig } from './config/AppConfig';
 import path from 'path';
 
 const app = express();
-const PORT = process.env.PORT || 8082;
+const PORT = AppConfig.PORT;
 
 // Middleware
 app.use(express.json());
@@ -23,14 +24,14 @@ const initializeDatabase = async () => {
     try {
       await createConnection({
         type: 'postgres',
-        host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT || '5434'),
-        username: process.env.DB_USER || 'eshop_user',
-        password: process.env.DB_PASSWORD || 'eshop_password',
-        database: process.env.DB_NAME || 'eshop',
+        host: AppConfig.DB_HOST,
+        port: AppConfig.DB_PORT,
+        username: AppConfig.DB_USER,
+        password: AppConfig.DB_PASSWORD,
+        database: AppConfig.DB_NAME,
         entities: [Order],
         synchronize: true, // Auto-create schema in development
-        dropSchema: process.env.DB_DROP_SCHEMA === 'true',
+        dropSchema: AppConfig.DB_DROP_SCHEMA,
         logging: false,
       });
       console.log('Database connected');

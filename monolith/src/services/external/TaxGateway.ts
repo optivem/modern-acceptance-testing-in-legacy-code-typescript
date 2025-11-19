@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AppConfig } from '../../config/AppConfig';
 
 export interface TaxDetails {
   taxRate: number;
@@ -8,7 +9,7 @@ export class TaxGateway {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.TAX_API_URL || 'http://localhost:3201';
+    this.baseUrl = AppConfig.TAX_API_URL;
   }
 
   async getTaxDetails(country: string): Promise<TaxDetails | null> {

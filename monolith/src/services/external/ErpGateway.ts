@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AppConfig } from '../../config/AppConfig';
 
 export interface ProductDetails {
   price: number;
@@ -8,7 +9,7 @@ export class ErpGateway {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.ERP_API_URL || 'http://localhost:3200';
+    this.baseUrl = AppConfig.ERP_API_URL;
   }
 
   async getProductDetails(sku: string): Promise<ProductDetails | null> {
