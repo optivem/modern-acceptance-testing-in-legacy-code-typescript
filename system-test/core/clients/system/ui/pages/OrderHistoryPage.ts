@@ -5,19 +5,19 @@ export class OrderHistoryPage {
   private static readonly ORDER_NUMBER_INPUT_SELECTOR = '[aria-label="Order Number"]';
   private static readonly SEARCH_BUTTON_SELECTOR = '[aria-label="Search"]';
   private static readonly CONFIRMATION_MESSAGE_SELECTOR = '[role="alert"]';
-  private static readonly ORDER_NUMBER_OUTPUT_SELECTOR = '[aria-label="Display Order Number"]';
-  private static readonly PRODUCT_ID_OUTPUT_SELECTOR = '[aria-label="Display Product ID"]';
-  private static readonly COUNTRY_OUTPUT_SELECTOR = '[aria-label="Display Country"]';
-  private static readonly QUANTITY_OUTPUT_SELECTOR = '[aria-label="Display Quantity"]';
-  private static readonly UNIT_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Unit Price"]';
-  private static readonly ORIGINAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Original Price"]';
+  private static readonly ORDER_NUMBER_OUTPUT_SELECTOR = '#detailOrderNumber';
+  private static readonly PRODUCT_ID_OUTPUT_SELECTOR = '#detailSku';
+  private static readonly COUNTRY_OUTPUT_SELECTOR = '#detailCountry';
+  private static readonly QUANTITY_OUTPUT_SELECTOR = '#detailQuantity';
+  private static readonly UNIT_PRICE_OUTPUT_SELECTOR = '#detailUnitPrice';
+  private static readonly ORIGINAL_PRICE_OUTPUT_SELECTOR = '#detailOriginalPrice';
   private static readonly DISCOUNT_RATE_OUTPUT_SELECTOR = '[aria-label="Display Discount Rate"]';
   private static readonly DISCOUNT_AMOUNT_OUTPUT_SELECTOR = '[aria-label="Display Discount Amount"]';
   private static readonly SUBTOTAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Subtotal Price"]';
   private static readonly TAX_RATE_OUTPUT_SELECTOR = '[aria-label="Display Tax Rate"]';
   private static readonly TAX_AMOUNT_OUTPUT_SELECTOR = '[aria-label="Display Tax Amount"]';
   private static readonly TOTAL_PRICE_OUTPUT_SELECTOR = '[aria-label="Display Total Price"]';
-  private static readonly STATUS_OUTPUT_SELECTOR = '[aria-label="Display Status"]';
+  private static readonly STATUS_OUTPUT_SELECTOR = '#detailStatus .status';
   private static readonly CANCEL_ORDER_OUTPUT_SELECTOR = '[aria-label="Cancel Order"]';
 
   private static readonly ORDER_DETAILS_HEADING_TEXT = 'Order Details';
@@ -46,27 +46,27 @@ export class OrderHistoryPage {
   }
 
   async getOrderNumber(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.ORDER_NUMBER_OUTPUT_SELECTOR);
+    return await this.pageClient.readTextContent(OrderHistoryPage.ORDER_NUMBER_OUTPUT_SELECTOR);
   }
 
   async getProductId(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.PRODUCT_ID_OUTPUT_SELECTOR);
+    return await this.pageClient.readTextContent(OrderHistoryPage.PRODUCT_ID_OUTPUT_SELECTOR);
   }
 
   async getCountry(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.COUNTRY_OUTPUT_SELECTOR);
+    return await this.pageClient.readTextContent(OrderHistoryPage.COUNTRY_OUTPUT_SELECTOR);
   }
 
   async getQuantity(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.QUANTITY_OUTPUT_SELECTOR);
+    return await this.pageClient.readTextContent(OrderHistoryPage.QUANTITY_OUTPUT_SELECTOR);
   }
 
   async getUnitPrice(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.UNIT_PRICE_OUTPUT_SELECTOR);
+    return await this.pageClient.readTextContent(OrderHistoryPage.UNIT_PRICE_OUTPUT_SELECTOR);
   }
 
   async getOriginalPrice(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.ORIGINAL_PRICE_OUTPUT_SELECTOR);
+    return await this.pageClient.readTextContent(OrderHistoryPage.ORIGINAL_PRICE_OUTPUT_SELECTOR);
   }
 
   async getDiscountRate(): Promise<string> {
@@ -94,7 +94,7 @@ export class OrderHistoryPage {
   }
 
   async getStatus(): Promise<string> {
-    return await this.pageClient.readInputValue(OrderHistoryPage.STATUS_OUTPUT_SELECTOR);
+    return await this.pageClient.readTextContent(OrderHistoryPage.STATUS_OUTPUT_SELECTOR);
   }
 
   async clickCancelOrder(): Promise<void> {
