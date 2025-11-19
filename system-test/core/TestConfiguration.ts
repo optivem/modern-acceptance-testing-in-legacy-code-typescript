@@ -13,6 +13,11 @@ interface TestConfig {
         baseUrl: string;
       };
     };
+    tax: {
+      api: {
+        baseUrl: string;
+      };
+    };
   };
 }
 
@@ -37,6 +42,11 @@ export class TestConfiguration {
               baseUrl: 'http://localhost:3200',
             },
           },
+          tax: {
+            api: {
+              baseUrl: 'http://localhost:3201',
+            },
+          },
         },
       };
     }
@@ -53,5 +63,9 @@ export class TestConfiguration {
 
   static getErpApiBaseUrl(): string {
     return this.loadConfig().test.erp.api.baseUrl;
+  }
+
+  static getTaxApiBaseUrl(): string {
+    return this.loadConfig().test.tax.api.baseUrl;
   }
 }

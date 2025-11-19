@@ -1,6 +1,7 @@
 import { TestHttpClient } from '../../../commons/TestHttpClient';
 import { CreateProductRequest } from '../dtos/CreateProductRequest';
 import * as crypto from 'crypto';
+import { AxiosResponse } from 'axios';
 
 export class ProductController {
   private static readonly ENDPOINT = '/products';

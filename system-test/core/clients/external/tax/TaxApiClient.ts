@@ -1,36 +1,27 @@
 import { TestHttpClient } from '../../commons/TestHttpClient';
 import { HomeController } from './controllers/HomeController';
-import { ProductController } from './controllers/ProductController';
 
-export class ErpApiClient {
+export class TaxApiClient {
   private readonly testHttpClient: TestHttpClient;
   private readonly homeController: HomeController;
-  private readonly productController: ProductController;
 
   private constructor(
     testHttpClient: TestHttpClient,
-    homeController: HomeController,
-    productController: ProductController
+    homeController: HomeController
   ) {
     this.testHttpClient = testHttpClient;
     this.homeController = homeController;
-    this.productController = productController;
   }
 
-  static async create(baseUrl: string): Promise<ErpApiClient> {
+  static async create(baseUrl: string): Promise<TaxApiClient> {
     const testHttpClient = new TestHttpClient(baseUrl);
     const homeController = new HomeController(testHttpClient);
-    const productController = new ProductController(testHttpClient);
     
-    return new ErpApiClient(testHttpClient, homeController, productController);
+    return new TaxApiClient(testHttpClient, homeController);
   }
 
   home(): HomeController {
     return this.homeController;
-  }
-
-  products(): ProductController {
-    return this.productController;
   }
 
   async close(): Promise<void> {
