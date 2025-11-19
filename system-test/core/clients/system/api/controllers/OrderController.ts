@@ -12,10 +12,10 @@ export class OrderController {
     this.httpClient = httpClient;
   }
 
-  async placeOrder(sku: string, quantity: number | string, country: string): Promise<AxiosResponse> {
-    const request: PlaceOrderRequest = {
+  async placeOrder(sku: string, quantity: number | string | null, country: string | null): Promise<AxiosResponse> {
+    const request: any = {
       sku,
-      quantity: quantity === '' ? '' as any : Number(quantity),
+      quantity,
       country,
     };
     return await this.httpClient.post(OrderController.ENDPOINT, request);

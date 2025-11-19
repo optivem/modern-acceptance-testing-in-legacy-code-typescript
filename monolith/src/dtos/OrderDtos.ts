@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsPositive, IsInt } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 /**
  * Represents an integer value (whole number)
@@ -11,14 +12,33 @@ export type Integer = number;
 export type Decimal = number;
 
 export class PlaceOrderRequest {
+  @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
   @IsNotEmpty({ message: 'SKU must not be empty' })
   sku!: string;
 
-  @IsPositive({ message: 'Quantity must be positive' })
+  @Transform(({ value }) => {
+    // Handle null/undefined
+    if (value === null || value === undefined) {
+      return value;
+    }
+    // Handle string values
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      // Keep empty string as empty string (already handled in controller)
+      if (trimmed === '') {
+        return '';
+      }
+      // Convert non-empty string to number
+      return Number(trimmed);
+    }
+    // Return other types as-is
+    return value;
+  })
   @IsInt({ message: 'Quantity must be an integer' })
-  @IsNotEmpty({ message: 'Quantity must not be empty' })
+  @IsPositive({ message: 'Quantity must be positive' })
   quantity!: Integer;
 
+  @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
   @IsNotEmpty({ message: 'Country must not be empty' })
   country!: string;
 }

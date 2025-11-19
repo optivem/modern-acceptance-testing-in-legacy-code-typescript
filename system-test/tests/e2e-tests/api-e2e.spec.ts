@@ -42,21 +42,95 @@ test.describe('API E2E Tests', () => {
     expect(errorBody.country).toContain('Country must not be empty');
   });
 
-  test('should return validation error for non-positive quantity', async () => {
-    const response = await shopApiClient.orders().placeOrder('ABC-123', '-1', 'US');
+  test('should return validation error for negative quantity', async () => {
+    // Arrange - Set up product in ERP first
+    const baseSku = 'AUTO-NQ-400';
+    const unitPrice = 99.99;
     
+    const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+    
+    // Act
+    const response = await shopApiClient.orders().placeOrder(sku, '-5', 'US');
+    
+    // Assert
     await shopApiClient.orders().assertOrderPlacementFailed(response);
     const errorBody = response.data;
     expect(errorBody.quantity).toContain('Quantity must be positive');
   });
 
-  test('should return validation error for zero quantity', async () => {
-    const response = await shopApiClient.orders().placeOrder('ABC-123', '0', 'US');
-    
-    await shopApiClient.orders().assertOrderPlacementFailed(response);
-    const errorBody = response.data;
-    expect(errorBody.quantity).toContain('Quantity must be positive');
-  });
+  // Parameterized tests for empty SKU values
+  const emptySkuValues = [
+    { value: null as any, description: 'null', expectedStatus: 422 },
+    { value: '', description: 'empty string', expectedStatus: 422 }
+  ];
+
+  for (const testCase of emptySkuValues) {
+    test(`should reject order with empty SKU (${testCase.description})`, async () => {
+      // Arrange - Set up product in ERP first
+      const baseSku = 'AUTO-ES-600';
+      const unitPrice = 125.00;
+      
+      await erpApiClient.products().createProduct(baseSku, unitPrice);
+      
+      // Act
+      const response = await shopApiClient.orders().placeOrder(testCase.value, '5', 'US');
+      
+      // Assert
+      await shopApiClient.orders().assertOrderPlacementFailed(response);
+      const errorBody = response.data;
+      expect(errorBody.sku).toContain('SKU must not be empty');
+    });
+  }
+
+  // Parameterized tests for empty quantity values
+  const emptyQuantityValues = [
+    { value: null as any, description: 'null' },
+    { value: '', description: 'empty string' },
+    { value: '   ', description: 'whitespace string' }
+  ];
+
+  for (const testCase of emptyQuantityValues) {
+    test(`should reject order with empty quantity (${testCase.description})`, async () => {
+      // Arrange - Set up product in ERP first
+      const baseSku = 'AUTO-EQ-500';
+      const unitPrice = 150.00;
+      
+      const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+      
+      // Act
+      const response = await shopApiClient.orders().placeOrder(sku, testCase.value, 'US');
+      
+      // Assert
+      await shopApiClient.orders().assertOrderPlacementFailed(response);
+      const errorBody = response.data;
+      expect(errorBody.quantity).toContain('Quantity must not be empty');
+    });
+  }
+
+  // Parameterized tests for empty country values
+  const emptyCountryValues = [
+    { value: null as any, description: 'null' },
+    { value: '', description: 'empty string' },
+    { value: '   ', description: 'whitespace string' }
+  ];
+
+  for (const testCase of emptyCountryValues) {
+    test(`should reject order with empty country (${testCase.description})`, async () => {
+      // Arrange - Set up product in ERP first
+      const baseSku = 'AUTO-EC-700';
+      const unitPrice = 225.00;
+      
+      const sku = await erpApiClient.products().createProduct(baseSku, unitPrice);
+      
+      // Act
+      const response = await shopApiClient.orders().placeOrder(sku, '5', testCase.value);
+      
+      // Assert
+      await shopApiClient.orders().assertOrderPlacementFailed(response);
+      const errorBody = response.data;
+      expect(errorBody.country).toContain('Country must not be empty');
+    });
+  }
 
   test('should return validation error for non-existent product', async () => {
     const response = await shopApiClient.orders().placeOrder('NON-EXISTENT', '1', 'US');
