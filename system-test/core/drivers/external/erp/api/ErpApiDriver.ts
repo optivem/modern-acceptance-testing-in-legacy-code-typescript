@@ -1,11 +1,22 @@
 import { TestHttpClient } from '../../../commons/clients/TestHttpClient.js';
 import { Result } from '../../../commons/Result.js';
+import { TestHttpUtils } from '../../../commons/clients/TestHttpUtils.js';
 
 export class ErpApiDriver {
     private readonly httpClient: TestHttpClient;
 
     constructor(baseUrl: string) {
         this.httpClient = new TestHttpClient(baseUrl);
+    }
+
+    async checkHome(): Promise<Result<void>> {
+        const response = await this.httpClient.get('/health');
+        return TestHttpUtils.getOkResultOrFailure(response);
+    }
+
+    async getProducts(): Promise<Result<void>> {
+        const response = await this.httpClient.get('/api/products');
+        return TestHttpUtils.getOkResultOrFailure(response);
     }
 
     async createProduct(sku: string, price: string): Promise<Result<string>> {

@@ -3,8 +3,12 @@
 
 $Config = @{
     # Test Configuration
-    SmokeTestCommand = "& npm test -- tests/smoke-tests"
-    E2ETestCommand = "& npm test -- tests/e2e-tests"
+    TestInstallCommands = @(
+        "npm install",
+        "npx playwright install chromium"
+    )
+    SmokeTestCommand = "npm test -- tests/smoke-tests"
+    E2ETestCommand = "npm test -- tests/e2e-tests"
     TestReportPath = "playwright-report/index.html"
 }
 
