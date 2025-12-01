@@ -1,0 +1,23 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] ΓÇ║ tests\e2e-tests\api-e2e.spec.ts:26:7 ΓÇ║ API E2E Tests ΓÇ║ placeOrder should return order number
+[1A[2K  1) [chromium] ΓÇ║ tests\e2e-tests\api-e2e.spec.ts:26:7 ΓÇ║ API E2E Tests ΓÇ║ placeOrder should return order number 
+
+    Error: Expected result to be success but was failure with errors: Not Found
+
+       at ..\core\drivers\commons\ResultAssert.ts:8
+
+       6 |         if (!result.isSuccess()) {
+       7 |             const errors = result.getErrorMessages().join(', ');
+    >  8 |             throw new Error(`Expected result to be success but was failure with errors: ${errors}`);
+         |                   ^
+       9 |         }
+      10 |     }
+      11 |
+        at Function.assertSuccess (C:\Users\valen\Documents\GitHub\optivem\modern-acceptance-testing-in-legacy-code-typescript\system-test\core\drivers\commons\ResultAssert.ts:8:19)
+        at C:\Users\valen\Documents\GitHub\optivem\modern-acceptance-testing-in-legacy-code-typescript\system-test\tests\e2e-tests\api-e2e.spec.ts:30:18
+
+
+[1A[2K  1 failed
+    [chromium] ΓÇ║ tests\e2e-tests\api-e2e.spec.ts:26:7 ΓÇ║ API E2E Tests ΓÇ║ placeOrder should return order number 

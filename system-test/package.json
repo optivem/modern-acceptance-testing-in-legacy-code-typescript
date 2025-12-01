@@ -12,10 +12,12 @@
   "devDependencies": {
     "@playwright/test": "^1.41.0",
     "@types/node": "^20.11.5",
-    "axios": "^1.13.2",
+    "@types/uuid": "^9.0.7",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "http-status-codes": "^2.3.0"
+    "axios": "^1.13.2",
+    "http-status-codes": "^2.3.0",
+    "uuid": "^9.0.1"
   }
 }

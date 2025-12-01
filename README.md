@@ -130,7 +130,7 @@ system-test/
     │   │       │   └── CreateProductResponse.ts
     │   │       └── ErpApiClient.ts
     │   ├── ClientFactory.ts       # Creates client instances
-    │   └── ClientCloser.ts        # Manages resource cleanup
+    │   └── Closer.ts        # Manages resource cleanup
     └── TestConfiguration.ts        # Test environment configuration
 ```
 
@@ -159,7 +159,7 @@ system-test/
 ```typescript
 import { test } from '@playwright/test';
 import { ClientFactory } from '../../core/clients/ClientFactory';
-import { ClientCloser } from '../../core/clients/ClientCloser';
+import { Closer } from '../../core/clients/Closer';
 
 test('should place an order via API', async () => {
   // Arrange
@@ -180,8 +180,8 @@ test('should place an order via API', async () => {
     expect(orderResponse.orderNumber).toMatch(/ORD-/);
   } finally {
     // Cleanup
-    await ClientCloser.close(shopApiClient);
-    await ClientCloser.close(erpApiClient);
+    await Closer.close(shopApiClient);
+    await Closer.close(erpApiClient);
   }
 });
 ```
@@ -193,7 +193,7 @@ test('should place an order via API', async () => {
 3. **Maintainability**: Changes to API/UI only require updating the client layer
 4. **Type Safety**: TypeScript ensures compile-time type checking
 5. **Readability**: Tests read like business scenarios
-6. **Resource Management**: Consistent cleanup with `ClientCloser`
+6. **Resource Management**: Consistent cleanup with `Closer`
 
 ### Reference
 

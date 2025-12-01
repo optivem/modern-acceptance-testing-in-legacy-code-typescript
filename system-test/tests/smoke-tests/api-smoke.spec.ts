@@ -1,23 +1,39 @@
-import { test } from '@playwright/test';
-import { ClientFactory } from '../../core/clients/ClientFactory';
-import { ClientCloser } from '../../core/clients/ClientCloser';
-import { ShopApiClient } from '../../core/clients/system/api/ShopApiClient';
+import { test, expect } from '@playwright/test';
+import { DriverFactory } from '../../core/drivers/DriverFactory.js';
+import { ShopDriver } from '../../core/drivers/system/ShopDriver.js';
 
-let shopApiClient: ShopApiClient;
+class ShopApiSmokeTest {
+  public shopDriver!: ShopDriver;
 
-test.beforeEach(async () => {
-  shopApiClient = await ClientFactory.createShopApiClient();
+  createDriver(): ShopDriver {
+    return DriverFactory.createShopApiDriver();
+  }
+
+  async setUp() {
+    this.shopDriver = this.createDriver();
+  }
+
+  async tearDown() {
+    if (this.shopDriver) {
+      this.shopDriver.close();
+    }
+  }
+}
+
+test.describe('API Smoke Tests', () => {
+  let testInstance: ShopApiSmokeTest;
+
+  test.beforeEach(async () => {
+    testInstance = new ShopApiSmokeTest();
+    await testInstance.setUp();
+  });
+
+  test.afterEach(async () => {
+    await testInstance.tearDown();
+  });
+
+  test('should be able to go to shop', async () => {
+    const result = await testInstance.shopDriver.goToShop();
+    expect(result.isSuccess()).toBe(true);
+  });
 });
-
-test.afterEach(async () => {
-  await ClientCloser.close(shopApiClient);
-});
-
-test('echo should return 200 OK', async () => {
-  // Act
-  const response = await shopApiClient.echo().echo();
-
-  // Assert
-  await shopApiClient.echo().assertEchoSuccessful(response);
-});
-

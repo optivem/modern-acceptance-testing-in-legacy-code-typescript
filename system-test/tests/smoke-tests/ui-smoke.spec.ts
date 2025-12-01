@@ -1,23 +1,39 @@
-import { test } from '@playwright/test';
-import { ClientFactory } from '../../core/clients/ClientFactory';
-import { ClientCloser } from '../../core/clients/ClientCloser';
-import { ShopUiClient } from '../../core/clients/system/ui/ShopUiClient';
+import { test, expect } from '@playwright/test';
+import { DriverFactory } from '../../core/drivers/DriverFactory.js';
+import { ShopDriver } from '../../core/drivers/system/ShopDriver.js';
 
-let shopUiClient: ShopUiClient;
+class ShopUiSmokeTest {
+  public shopDriver!: ShopDriver;
 
-test.beforeEach(async () => {
-  shopUiClient = await ClientFactory.createShopUiClient();
+  createDriver(): ShopDriver {
+    return DriverFactory.createShopUiDriver();
+  }
+
+  async setUp() {
+    this.shopDriver = this.createDriver();
+  }
+
+  async tearDown() {
+    if (this.shopDriver) {
+      this.shopDriver.close();
+    }
+  }
+}
+
+test.describe('UI Smoke Tests', () => {
+  let testInstance: ShopUiSmokeTest;
+
+  test.beforeEach(async () => {
+    testInstance = new ShopUiSmokeTest();
+    await testInstance.setUp();
+  });
+
+  test.afterEach(async () => {
+    await testInstance.tearDown();
+  });
+
+  test('should be able to go to shop', async () => {
+    const result = await testInstance.shopDriver.goToShop();
+    expect(result.isSuccess()).toBe(true);
+  });
 });
-
-test.afterEach(async () => {
-  await ClientCloser.close(shopUiClient);
-});
-
-test('home should return HTML content', async () => {
-  // Act
-  await shopUiClient.openHomePage();
-
-  // Assert
-  shopUiClient.assertHomePageLoaded();
-});
-

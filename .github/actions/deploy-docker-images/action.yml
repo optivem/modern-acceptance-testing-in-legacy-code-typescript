@@ -14,6 +14,13 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Clone Base Repository
+      run: |
+        echo "📥 Cloning base repository..."
+        git clone https://github.com/optivem/modern-acceptance-testing-in-legacy-code.git modern-acceptance-testing-in-legacy-code
+        echo "✅ Base repository cloned successfully"
+      shell: bash
+
     - name: Deploy System
       run: |
         echo "🚀 Deploying system version ${{ inputs.version }} to ${{ inputs.environment }} environment..."
@@ -41,13 +48,34 @@ runs:
         echo "   - Other cloud providers (DigitalOcean, Linode, etc.)"
         echo ""
         echo "🐳 Starting Docker Compose for simulated deployment..."
-        docker compose -f docker-compose.pipeline.yml up -d
+        docker compose -f modern-acceptance-testing-in-legacy-code/docker-compose.pipeline.yml up -d
       shell: bash
 
-    - name: Wait for Application to be Ready
+    - name: Wait for System - Frontend
       uses: optivem/wait-for-docker-compose-action@v1
       with:
-        url: 'http://localhost:8082/'
+        url: 'http://localhost:3001/'
+        max-attempts: '30'
+        wait-seconds: '10'
+
+    - name: Wait for System - Backend
+      uses: optivem/wait-for-docker-compose-action@v1
+      with:
+        url: 'http://localhost:8081/health'
+        max-attempts: '30'
+        wait-seconds: '10'
+
+    - name: Wait for System - ERP
+      uses: optivem/wait-for-docker-compose-action@v1
+      with:
+        url: 'http://localhost:9001/erp/health'
+        max-attempts: '30'
+        wait-seconds: '10'
+
+    - name: Wait for System - Tax
+      uses: optivem/wait-for-docker-compose-action@v1
+      with:
+        url: 'http://localhost:9001/tax/health'
         max-attempts: '30'
         wait-seconds: '10'
       
