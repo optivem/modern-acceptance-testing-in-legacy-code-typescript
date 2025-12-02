@@ -106,7 +106,19 @@ export class ShopUiDriver implements ShopDriver {
     }
 
     async cancelOrder(orderNumber: string): Promise<Result<void>> {
-        await this.viewOrder(orderNumber);
+        const viewResult = await this.viewOrder(orderNumber);
+        
+        // If order doesn't exist, return the failure from viewOrder
+        if (!viewResult.isSuccess()) {
+            return Result.failure(viewResult.getErrorMessages());
+        }
+
+        // Check if cancel button exists
+        const hasCancelButton = !(await this.orderHistoryPage!.isCancelButtonHidden());
+        if (!hasCancelButton) {
+            return Result.failure(['Order has already been cancelled']);
+        }
+
         await this.orderHistoryPage!.clickCancelOrder();
 
         const cancellationMessage = await this.orderHistoryPage!.readSuccessNotification();

@@ -22,10 +22,10 @@ export class TestPageClient {
         return this.page;
     }
 
-    async fill(selector: string, text: string): Promise<void> {
+    async fill(selector: string, text: string | null): Promise<void> {
         const input = this.page.locator(selector);
         await this.wait(input);
-        await input.fill(text);
+        await input.fill(text ?? '');
     }
 
     async click(selector: string): Promise<void> {

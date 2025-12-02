@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { ShopDriver } from '../core/drivers/system/ShopDriver.js';
 
 export abstract class BaseShopSmokeTest {
@@ -14,5 +14,10 @@ export abstract class BaseShopSmokeTest {
         if (this.shopDriver) {
             this.shopDriver.close();
         }
+    }
+
+    async shouldBeAbleToGoToShop() {
+        const result = await this.shopDriver.goToShop();
+        expect(result.isSuccess()).toBe(true);
     }
 }

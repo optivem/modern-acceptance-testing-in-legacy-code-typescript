@@ -1,22 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { BaseShopSmokeTest } from '../BaseShopSmokeTest.js';
 import { DriverFactory } from '../../core/drivers/DriverFactory.js';
 import { ShopDriver } from '../../core/drivers/system/ShopDriver.js';
 
-class ShopApiSmokeTest {
-  public shopDriver!: ShopDriver;
-
+class ShopApiSmokeTest extends BaseShopSmokeTest {
   createDriver(): ShopDriver {
     return DriverFactory.createShopApiDriver();
-  }
-
-  async setUp() {
-    this.shopDriver = this.createDriver();
-  }
-
-  async tearDown() {
-    if (this.shopDriver) {
-      this.shopDriver.close();
-    }
   }
 }
 
@@ -33,7 +22,6 @@ test.describe('API Smoke Tests', () => {
   });
 
   test('should be able to go to shop', async () => {
-    const result = await testInstance.shopDriver.goToShop();
-    expect(result.isSuccess()).toBe(true);
+    await testInstance.shouldBeAbleToGoToShop();
   });
 });

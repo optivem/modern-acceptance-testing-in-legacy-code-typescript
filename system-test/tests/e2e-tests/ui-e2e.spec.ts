@@ -21,6 +21,31 @@ test.describe('UI E2E Tests', () => {
     await testInstance.tearDown();
   });
 
-  // UI E2E tests inherit all test methods from BaseE2eTest
-  // The only difference from API E2E tests is the driver implementation (UI vs API)
+  test('should place order and calculate original price', async () => {
+    await testInstance.shouldPlaceOrderAndCalculateOriginalPrice();
+  });
+
+  test('should cancel order', async () => {
+    await testInstance.shouldCancelOrder();
+  });
+
+  test('should reject order with null quantity', async () => {
+    await testInstance.shouldRejectOrderWithNullQuantity();
+  });
+
+  test('should reject order with null SKU', async () => {
+    await testInstance.shouldRejectOrderWithNullSku();
+  });
+
+  test('should reject order with null country', async () => {
+    await testInstance.shouldRejectOrderWithNullCountry();
+  });
+
+  test('should not cancel non-existent order', async () => {
+    await testInstance.shouldNotCancelNonExistentOrder();
+  });
+
+  test('should not cancel already cancelled order', async () => {
+    await testInstance.shouldNotCancelAlreadyCancelledOrder();
+  });
 });
