@@ -1,23 +1,21 @@
-import { test, expect } from '@playwright/test';
+import { test as base } from '../../fixtures.js';
+import { expect } from '@playwright/test';
 import { Closer } from '../../../core/drivers/commons/clients/Closer.js';
 import { DriverFactory } from '../../../core/drivers/DriverFactory.js';
-import { ErpApiDriver } from '../../../core/drivers/external/erp/api/ErpApiDriver.js';
 import { setupResultMatchers } from '../../../core/matchers/resultMatchers.js';
 
 setupResultMatchers();
 
+const test = base.extend({
+  erpApiDriver: async ({}, use: any) => {
+    const driver = DriverFactory.createErpApiDriver();
+    await use(driver);
+    await Closer.close(driver);
+  },
+});
+
 test.describe('ERP API Smoke Tests', () => {
-  let erpApiDriver: ErpApiDriver;
-
-  test.beforeEach(() => {
-    erpApiDriver = DriverFactory.createErpApiDriver();
-  });
-
-  test.afterEach(async () => {
-    await Closer.close(erpApiDriver);
-  });
-
-  test('should get home page successfully', async () => {
+  test('should get home page successfully', async ({ erpApiDriver }) => {
     const result = await erpApiDriver.goToErp();
     expect(result).toBeSuccess();
   });
