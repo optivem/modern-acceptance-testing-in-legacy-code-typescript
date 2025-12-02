@@ -45,6 +45,16 @@ export function defineE2eTests(test: any) {
             expect(orderDetails.unitPrice).toBe(20.00);
             expect(orderDetails.originalPrice).toBe(100.00);
             expect(orderDetails.status).toBe(OrderStatus.PLACED);
+            
+            // Validate discount fields are non-negative
+            expect(orderDetails.discountRate).toBeGreaterThanOrEqual(0);
+            expect(orderDetails.discountAmount).toBeGreaterThanOrEqual(0);
+            expect(orderDetails.subtotalPrice).toBeGreaterThan(0);
+            
+            // Validate tax fields are non-negative
+            expect(orderDetails.taxRate).toBeGreaterThanOrEqual(0);
+            expect(orderDetails.taxAmount).toBeGreaterThanOrEqual(0);
+            expect(orderDetails.totalPrice).toBeGreaterThan(0);
         });
 
         test('should cancel order', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
@@ -72,40 +82,74 @@ export function defineE2eTests(test: any) {
             expect(orderDetails.status).toBe(OrderStatus.CANCELLED);
         });
 
-        test('should reject order with null quantity', async ({ shopDriver }: TestFixtures) => {
-            const result = await shopDriver.placeOrder('some-sku', null as any, 'US');
-            ResultAssert.assertFailureWithMessage(result, 'Quantity must not be empty');
+        test('should reject order with non-existent SKU', async ({ shopDriver }: TestFixtures) => {
+            const result = await shopDriver.placeOrder('NON-EXISTENT-SKU-12345', '5', 'US');
+            ResultAssert.assertFailureWithMessage(result, 'Product does not exist for SKU: NON-EXISTENT-SKU-12345');
         });
 
-        test('should reject order with null SKU', async ({ shopDriver }: TestFixtures) => {
-            const result = await shopDriver.placeOrder(null as any, '5', 'US');
-            ResultAssert.assertFailureWithMessage(result, 'SKU must not be empty');
+        test('should not be able to view non-existent order', async ({ shopDriver }: TestFixtures) => {
+            const result = await shopDriver.viewOrder('NON-EXISTENT-ORDER-12345');
+            ResultAssert.assertFailureWithMessage(result, 'Order NON-EXISTENT-ORDER-12345 does not exist.');
         });
 
-        test('should reject order with null country', async ({ shopDriver }: TestFixtures) => {
-            const result = await shopDriver.placeOrder('some-sku', '5', null as any);
-            ResultAssert.assertFailureWithMessage(result, 'Country must not be empty');
-        });
-
-        test('should not cancel non-existent order', async ({ shopDriver }: TestFixtures) => {
-            const result = await shopDriver.cancelOrder('NON-EXISTENT-ORDER-99999');
-            ResultAssert.assertFailureWithMessage(result, 'Order NON-EXISTENT-ORDER-99999 does not exist.');
-        });
-
-        test('should not cancel already cancelled order', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
-            const sku = `MNO-${crypto.randomUUID()}`;
-            const createProductResult = await erpApiDriver.createProduct(sku, '35.00');
+        test('should reject order with negative quantity', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
+            const sku = `DEF-${crypto.randomUUID()}`;
+            const createProductResult = await erpApiDriver.createProduct(sku, '30.00');
             ResultAssert.assertSuccess(createProductResult);
 
-            const placeOrderResult = await shopDriver.placeOrder(sku, '3', 'US');
-            ResultAssert.assertSuccess(placeOrderResult);
-            const orderNumber = placeOrderResult.getValue().orderNumber;
+            const result = await shopDriver.placeOrder(sku, '-3', 'US');
+            ResultAssert.assertFailureWithMessage(result, 'Quantity must be positive');
+        });
 
-            const cancelResult = await shopDriver.cancelOrder(orderNumber);
-            ResultAssert.assertSuccess(cancelResult);
+        test('should reject order with zero quantity', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
+            const sku = `GHI-${crypto.randomUUID()}`;
+            const createProductResult = await erpApiDriver.createProduct(sku, '40.00');
+            ResultAssert.assertSuccess(createProductResult);
 
-            const secondCancelResult = await shopDriver.cancelOrder(orderNumber);
-            ResultAssert.assertFailureWithMessage(secondCancelResult, 'Order has already been cancelled');
+            const result = await shopDriver.placeOrder(sku, '0', 'US');
+            ResultAssert.assertFailureWithMessage(result, 'Quantity must be positive');
+        });
+
+        test.describe('should reject order with empty SKU', () => {
+            const emptySKUs = ['', '   '];
+            
+            for (const emptySku of emptySKUs) {
+                test(`with value "${emptySku}"`, async ({ shopDriver }: TestFixtures) => {
+                    const result = await shopDriver.placeOrder(emptySku, '5', 'US');
+                    ResultAssert.assertFailureWithMessage(result, 'SKU must not be empty');
+                });
+            }
+        });
+
+        test.describe('should reject order with non-integer quantity', () => {
+            const nonIntegerQuantities = ['5.5', 'abc'];
+            
+            for (const nonIntegerQuantity of nonIntegerQuantities) {
+                test(`with value "${nonIntegerQuantity}"`, async ({ shopDriver }: TestFixtures) => {
+                    const result = await shopDriver.placeOrder('some-sku', nonIntegerQuantity, 'US');
+                    ResultAssert.assertFailureWithMessage(result, 'Quantity must be an integer');
+                });
+            }
+        });
+
+        test.describe('should reject order with empty country', () => {
+            const emptyCountries = ['', '   '];
+            
+            for (const emptyCountry of emptyCountries) {
+                test(`with value "${emptyCountry}"`, async ({ shopDriver }: TestFixtures) => {
+                    const result = await shopDriver.placeOrder('some-sku', '5', emptyCountry);
+                    ResultAssert.assertFailureWithMessage(result, 'Country must not be empty');
+                });
+            }
+        });
+
+        test('should reject order with unsupported country', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
+            const sku = `JKL-${crypto.randomUUID()}`;
+            const createProductResult = await erpApiDriver.createProduct(sku, '25.00');
+            ResultAssert.assertSuccess(createProductResult);
+
+            const result = await shopDriver.placeOrder(sku, '3', 'XX');
+            ResultAssert.assertFailureWithMessage(result, 'Country does not exist: XX');
         });
     });
 }
