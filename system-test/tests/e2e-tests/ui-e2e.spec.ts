@@ -1,6 +1,6 @@
-import { test as base } from '../e2e-tests.js';
+import { test as base } from './e2e-tests.js';
 import { DriverFactory } from '../../core/drivers/DriverFactory.js';
-import { defineE2eTests } from '../e2e-tests.js';
+import { defineE2eTests } from './e2e-tests.js';
 
 const test = base.extend({
     shopDriver: async ({ page }: any, use: any) => {

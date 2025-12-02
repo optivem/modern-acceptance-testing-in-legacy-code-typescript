@@ -1,4 +1,4 @@
-import { TestFixtures } from './fixtures.js';
+import { TestFixtures } from '../fixtures.js';
 import { expect } from '@playwright/test';
 
 export function defineShopSmokeTests(test: any) {

@@ -1,9 +1,9 @@
-import { test as base } from './fixtures.js';
-import { DriverFactory } from '../core/drivers/DriverFactory.js';
-import { TestFixtures } from './fixtures.js';
+import { test as base } from '../fixtures.js';
+import { DriverFactory } from '../../core/drivers/DriverFactory.js';
+import { TestFixtures } from '../fixtures.js';
 import { expect } from '@playwright/test';
-import { OrderStatus } from '../core/drivers/system/commons/enums/OrderStatus.js';
-import { ResultAssert } from '../core/drivers/commons/ResultAssert.js';
+import { OrderStatus } from '../../core/drivers/system/commons/enums/OrderStatus.js';
+import { ResultAssert } from '../../core/drivers/commons/ResultAssert.js';
 
 export const test = base.extend({
     erpApiDriver: async ({}, use: any) => {
