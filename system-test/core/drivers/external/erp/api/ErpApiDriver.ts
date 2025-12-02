@@ -22,6 +22,6 @@ export class ErpApiDriver {
     }
 
     close(): void {
-        Closer.close(this.apiClient);
+        Closer.close(this.httpClient);
     }
 }

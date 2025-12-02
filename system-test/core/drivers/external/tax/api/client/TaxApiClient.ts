@@ -1,4 +1,3 @@
-import { Closer } from '../../../../commons/clients/Closer.js';
 import { AxiosInstance } from 'axios';
 import { TestHttpClient } from '../../../../commons/clients/TestHttpClient.js';
 import { HealthController } from './controllers/HealthController.js';
@@ -16,9 +15,5 @@ export class TaxApiClient {
 
     health(): HealthController {
         return this.healthController;
-    }
-
-    close(): void {
-        Closer.close(this.httpClient);
     }
 }

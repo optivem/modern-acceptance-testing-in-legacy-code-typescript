@@ -1,5 +1,5 @@
 export interface PlaceOrderRequest {
-    sku: string;
-    quantity: string;
-    country: string;
+    sku: string | null;
+    quantity: string | null;
+    country: string | null;
 }

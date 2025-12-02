@@ -1,4 +1,5 @@
 import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
+import { StatusCodes } from 'http-status-codes';
 import { Closer } from '../../../../commons/clients/Closer.js';
 import { TestPageClient } from '../../../../commons/clients/TestPageClient.js';
 import { HomePage } from './pages/HomePage.js';
@@ -35,11 +36,11 @@ export class ShopUiClient {
     }
 
     isStatusOk(): boolean {
-        return this.response?.status() === 200;
+        return this.response?.status() === StatusCodes.OK;
     }
 
     async isPageLoaded(): Promise<boolean> {
-        if (!this.response || this.response.status() !== 200 || !this.page) {
+        if (!this.response || this.response.status() !== StatusCodes.OK || !this.page) {
             return false;
         }
 

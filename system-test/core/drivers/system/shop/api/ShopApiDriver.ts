@@ -6,6 +6,7 @@ import { PlaceOrderRequest } from '../../commons/dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../../commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../commons/dtos/GetOrderResponse.js';
 import { HttpClientFactory } from '../../../commons/clients/HttpClientFactory.js';
+import { Closer } from '../../../commons/clients/Closer.js';
 
 export class ShopApiDriver implements ShopDriver {
     private readonly httpClient: AxiosInstance;
@@ -38,6 +39,6 @@ export class ShopApiDriver implements ShopDriver {
     }
 
     async close(): Promise<void> {
-        // No cleanup needed for HTTP client
+        Closer.close(this.httpClient);
     }
 }

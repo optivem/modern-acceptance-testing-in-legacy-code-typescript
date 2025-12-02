@@ -2,7 +2,6 @@ import { AxiosInstance } from 'axios';
 import { TestHttpClient } from '../../../../commons/clients/TestHttpClient.js';
 import { HealthController } from './controllers/HealthController.js';
 import { ProductController } from './controllers/ProductController.js';
-import { Closer } from '../../../../commons/clients/Closer.js';
 
 export class ErpApiClient {
     private readonly httpClient: AxiosInstance;
@@ -23,9 +22,5 @@ export class ErpApiClient {
 
     products(): ProductController {
         return this.productController;
-    }
-
-    close(): void {
-        Closer.close(this.httpClient)
     }
 }
