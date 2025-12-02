@@ -1,15 +1,19 @@
+import { AxiosInstance } from 'axios';
 import { ShopDriver } from '../../ShopDriver.js';
 import { ShopApiClient } from './client/ShopApiClient.js';
 import { Result } from '../../../commons/Result.js';
 import { PlaceOrderRequest } from '../../commons/dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../../commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../commons/dtos/GetOrderResponse.js';
+import { HttpClientFactory } from '../../../commons/clients/HttpClientFactory.js';
 
 export class ShopApiDriver implements ShopDriver {
+    private readonly httpClient: AxiosInstance;
     private readonly client: ShopApiClient;
 
     constructor(baseUrl: string) {
-        this.client = new ShopApiClient(baseUrl);
+        this.httpClient = HttpClientFactory.create(baseUrl);
+        this.client = new ShopApiClient(this.httpClient, baseUrl);
     }
 
     async goToShop(): Promise<Result<void>> {

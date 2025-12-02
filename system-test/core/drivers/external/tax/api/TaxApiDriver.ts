@@ -1,11 +1,15 @@
+import { AxiosInstance } from 'axios';
 import { Result } from '../../../commons/Result.js';
 import { TaxApiClient } from './client/TaxApiClient.js';
+import { HttpClientFactory } from '../../../commons/clients/HttpClientFactory.js';
 
 export class TaxApiDriver {
+    private readonly httpClient: AxiosInstance;
     private readonly apiClient: TaxApiClient;
 
     constructor(baseUrl: string) {
-        this.apiClient = new TaxApiClient(baseUrl);
+        this.httpClient = HttpClientFactory.create(baseUrl);
+        this.apiClient = new TaxApiClient(this.httpClient, baseUrl);
     }
 
     async checkHome(): Promise<Result<void>> {

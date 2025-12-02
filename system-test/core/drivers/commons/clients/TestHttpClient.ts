@@ -1,16 +1,12 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 
 export class TestHttpClient {
     private readonly client: AxiosInstance;
+    private readonly baseUrl: string;
 
-    constructor(baseUrl: string) {
-        this.client = axios.create({
-            baseURL: baseUrl,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            validateStatus: () => true, // Don't throw on any status
-        });
+    constructor(client: AxiosInstance, baseUrl: string) {
+        this.client = client;
+        this.baseUrl = baseUrl;
     }
 
     async get<T>(path: string): Promise<AxiosResponse<T>> {

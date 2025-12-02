@@ -1,3 +1,5 @@
+import { Closer } from '../../../../commons/clients/Closer.js';
+import { AxiosInstance } from 'axios';
 import { TestHttpClient } from '../../../../commons/clients/TestHttpClient.js';
 import { HealthController } from './controllers/HealthController.js';
 
@@ -5,8 +7,8 @@ export class TaxApiClient {
     private readonly testHttpClient: TestHttpClient;
     private readonly healthController: HealthController;
 
-    constructor(baseUrl: string) {
-        this.testHttpClient = new TestHttpClient(baseUrl);
+    constructor(httpClient: AxiosInstance, baseUrl: string) {
+        this.testHttpClient = new TestHttpClient(httpClient, baseUrl);
         this.healthController = new HealthController(this.testHttpClient);
     }
 
@@ -15,6 +17,6 @@ export class TaxApiClient {
     }
 
     close(): void {
-        // Cleanup if needed
+        Closer.close(this.testHttpClient);
     }
 }

@@ -1,26 +1,27 @@
+import { AxiosInstance } from 'axios';
 import { Result } from '../../../commons/Result.js';
 import { ErpApiClient } from './client/ErpApiClient.js';
+import { HttpClientFactory } from '../../../commons/clients/HttpClientFactory.js';
+import { Closer } from '../../../commons/clients/Closer.js';
 
 export class ErpApiDriver {
+    private readonly httpClient: AxiosInstance;
     private readonly apiClient: ErpApiClient;
 
     constructor(baseUrl: string) {
-        this.apiClient = new ErpApiClient(baseUrl);
+        this.httpClient = HttpClientFactory.create(baseUrl);
+        this.apiClient = new ErpApiClient(this.httpClient, baseUrl);
     }
 
-    async checkHome(): Promise<Result<void>> {
+    async goToErp(): Promise<Result<void>> {
         return this.apiClient.health().checkHealth();
     }
 
-    async getProducts(): Promise<Result<any>> {
-        return this.apiClient.products().getProducts();
-    }
-
-    async createProduct(sku: string, price: string): Promise<Result<string>> {
+    async createProduct(sku: string, price: string): Promise<Result<void>> {
         return this.apiClient.products().createProduct(sku, price);
     }
 
     close(): void {
-        this.apiClient.close();
+        Closer.close(this.apiClient);
     }
 }

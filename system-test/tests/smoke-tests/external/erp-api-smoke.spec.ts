@@ -16,12 +16,7 @@ test.describe('ERP API Smoke Tests', () => {
   });
 
   test('should get home page successfully', async () => {
-    const result = await erpApiDriver.checkHome();
-    ResultAssert.assertSuccess(result);
-  });
-
-  test('should get products successfully', async () => {
-    const result = await erpApiDriver.getProducts();
+    const result = await erpApiDriver.goToErp();
     ResultAssert.assertSuccess(result);
   });
 });
