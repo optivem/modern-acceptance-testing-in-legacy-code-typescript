@@ -1,24 +1,33 @@
-import { test as base } from '../base-e2e-tests.js';
-import { DriverFactory } from '../../core/drivers/DriverFactory.js';
-import { OrderStatus } from '../../core/drivers/system/commons/enums/OrderStatus.js';
-import { ResultAssert } from '../../core/drivers/commons/ResultAssert.js';
-import { expect } from '@playwright/test';
+import { test as base, expect } from './fixtures.js';
+import { DriverFactory } from '../core/drivers/DriverFactory.js';
+import { OrderStatus } from '../core/drivers/system/commons/enums/OrderStatus.js';
+import { ResultAssert } from '../core/drivers/commons/ResultAssert.js';
 
-const test = base.extend({
-    shopDriver: async ({}, use) => {
-        const driver = DriverFactory.createShopApiDriver();
+export const test = base.extend({
+    erpApiDriver: async ({}, use) => {
+        const driver = DriverFactory.createErpApiDriver();
+        await use(driver);
+        await driver.close();
+    },
+
+    taxApiDriver: async ({}, use) => {
+        const driver = DriverFactory.createTaxApiDriver();
         await use(driver);
         await driver.close();
     },
 });
 
-test.describe('API E2E Tests', () => {
+export function createE2eTests() {
     test('should place order and calculate original price', async ({ shopDriver, erpApiDriver }) => {
+        // Arrange
         const sku = `ABC-${crypto.randomUUID()}`;
         const createProductResult = await erpApiDriver.createProduct(sku, '20.00');
         ResultAssert.assertSuccess(createProductResult);
 
+        // Act
         const placeOrderResult = await shopDriver.placeOrder(sku, '5', 'US');
+
+        // Assert
         ResultAssert.assertSuccess(placeOrderResult);
         const orderNumber = placeOrderResult.getValue().orderNumber;
         expect(orderNumber).toBeTruthy();
@@ -38,6 +47,7 @@ test.describe('API E2E Tests', () => {
     });
 
     test('should cancel order', async ({ shopDriver, erpApiDriver }) => {
+        // Arrange
         const sku = `XYZ-${crypto.randomUUID()}`;
         const createProductResult = await erpApiDriver.createProduct(sku, '50.00');
         ResultAssert.assertSuccess(createProductResult);
@@ -46,9 +56,13 @@ test.describe('API E2E Tests', () => {
         ResultAssert.assertSuccess(placeOrderResult);
         const orderNumber = placeOrderResult.getValue().orderNumber;
 
+        // Act
         const cancelOrderResult = await shopDriver.cancelOrder(orderNumber);
+
+        // Assert
         ResultAssert.assertSuccess(cancelOrderResult);
 
+        // Verify order status is CANCELLED
         const viewOrderResult = await shopDriver.viewOrder(orderNumber);
         ResultAssert.assertSuccess(viewOrderResult);
         const orderDetails = viewOrderResult.getValue();
@@ -83,6 +97,7 @@ test.describe('API E2E Tests', () => {
     });
 
     test('should not cancel already cancelled order', async ({ shopDriver, erpApiDriver }) => {
+        // Arrange
         const sku = `MNO-${crypto.randomUUID()}`;
         const createProductResult = await erpApiDriver.createProduct(sku, '35.00');
         ResultAssert.assertSuccess(createProductResult);
@@ -91,10 +106,14 @@ test.describe('API E2E Tests', () => {
         ResultAssert.assertSuccess(placeOrderResult);
         const orderNumber = placeOrderResult.getValue().orderNumber;
 
+        // Cancel the order first time - should succeed
         const cancelResult = await shopDriver.cancelOrder(orderNumber);
         ResultAssert.assertSuccess(cancelResult);
 
+        // Try to cancel the same order again - should fail
         const secondCancelResult = await shopDriver.cancelOrder(orderNumber);
         ResultAssert.assertFailureWithMessage(secondCancelResult, 'Order has already been cancelled');
     });
-});
+}
+
+export { expect };
