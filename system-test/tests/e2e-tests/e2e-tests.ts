@@ -4,18 +4,19 @@ import { TestFixtures } from '../fixtures.js';
 import { expect } from '@playwright/test';
 import { OrderStatus } from '../../core/drivers/system/commons/enums/OrderStatus.js';
 import { ResultAssert } from '../../core/drivers/commons/ResultAssert.js';
+import { Closer } from '../../core/drivers/commons/clients/Closer.js';
 
 export const test = base.extend({
     erpApiDriver: async ({}, use: any) => {
         const driver = DriverFactory.createErpApiDriver();
         await use(driver);
-        await driver.close();
+        await Closer.close(driver);
     },
 
     taxApiDriver: async ({}, use: any) => {
         const driver = DriverFactory.createTaxApiDriver();
         await use(driver);
-        await driver.close();
+        await Closer.close(driver);
     },
 });
 

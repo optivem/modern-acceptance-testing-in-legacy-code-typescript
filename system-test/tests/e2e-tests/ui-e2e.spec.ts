@@ -1,12 +1,13 @@
 import { test as base } from './e2e-tests.js';
 import { DriverFactory } from '../../core/drivers/DriverFactory.js';
 import { defineE2eTests } from './e2e-tests.js';
+import { Closer } from '../../core/drivers/commons/clients/Closer.js';
 
 const test = base.extend({
     shopDriver: async ({}, use: any) => {
         const driver = DriverFactory.createShopUiDriver();
         await use(driver);
-        await driver.close();
+        await Closer.close(driver);
     },
 });
 
