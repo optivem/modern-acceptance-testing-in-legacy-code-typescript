@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect } from '@jest/globals';
 import { Result } from './Result.js';
 
 export class ResultAssert {
