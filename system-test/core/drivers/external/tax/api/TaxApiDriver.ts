@@ -12,7 +12,7 @@ export class TaxApiDriver {
         this.apiClient = new TaxApiClient(this.httpClient, baseUrl);
     }
 
-    async checkHome(): Promise<Result<void>> {
+    async goToTax(): Promise<Result<void>> {
         return this.apiClient.health().checkHealth();
     }
 
