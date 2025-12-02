@@ -30,6 +30,10 @@ export class Result<T> {
     }
 
     getErrorMessages(): string[] {
+        if(this.success) {
+            throw new Error("Cannot get error messages from a successful result");
+        }
+
         return this.errorMessages;
     }
 }

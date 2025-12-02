@@ -10,8 +10,8 @@ export class TaxApiDriver {
     }
 
     async checkHome(): Promise<Result<void>> {
-        const response = await this.httpClient.get('/health');
-        return TestHttpUtils.getOkResultOrFailure(response);
+        const response = await this.httpClient.get<void>('/health');
+        return TestHttpUtils.getOkResultOrFailure<void>(response);
     }
 
     close(): void {

@@ -1,24 +1,28 @@
 import { AxiosResponse } from 'axios';
 import { Result } from '../Result.js';
 import { ProblemDetailResponse } from '../../commons/dtos/ProblemDetailResponse.js';
+import { StatusCodes } from 'http-status-codes';
+import { get } from 'http';
 
 export class TestHttpUtils {
     static getOkResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
-        if (response.status === 200) {
-            return Result.success(response.data);
-        }
-        return this.extractErrorMessages(response);
+        return TestHttpUtils.getResultOrFailure(response, StatusCodes.OK, true);
     }
 
     static getCreatedResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
-        if (response.status === 201) {
-            return Result.success(response.data);
-        }
-        return this.extractErrorMessages(response);
+        return TestHttpUtils.getResultOrFailure(response, StatusCodes.CREATED, true);
     }
 
     static getNoContentResultOrFailure(response: AxiosResponse<void>): Result<void> {
-        if (response.status === 204) {
+        return TestHttpUtils.getResultOrFailure(response, StatusCodes.NO_CONTENT, false);
+    }
+
+    private static getResultOrFailure<T>(response: AxiosResponse<T>, statusCode: StatusCodes, hasData: boolean): Result<T> {
+        if (response.status === statusCode) {
+            if (hasData) {
+                return Result.success(response.data);
+            }
+
             return Result.success();
         }
         return this.extractErrorMessages(response);
@@ -55,4 +59,6 @@ export class TestHttpUtils {
     private static isProblemDetails(data: any): boolean {
         return data && (data.type || data.title || data.detail || data.errors);
     }
+
+    // TODO: VJ: Get uri
 }

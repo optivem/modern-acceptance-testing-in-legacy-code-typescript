@@ -10,13 +10,13 @@ export class ErpApiDriver {
     }
 
     async checkHome(): Promise<Result<void>> {
-        const response = await this.httpClient.get('/health');
-        return TestHttpUtils.getOkResultOrFailure(response);
+        const response = await this.httpClient.get<void>('/health');
+        return TestHttpUtils.getOkResultOrFailure<void>(response);
     }
 
     async getProducts(): Promise<Result<void>> {
-        const response = await this.httpClient.get('/api/products');
-        return TestHttpUtils.getOkResultOrFailure(response);
+        const response = await this.httpClient.get<void>('/api/products');
+        return TestHttpUtils.getOkResultOrFailure<void>(response);
     }
 
     async createProduct(sku: string, price: string): Promise<Result<string>> {
