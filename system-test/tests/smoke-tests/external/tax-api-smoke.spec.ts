@@ -19,6 +19,6 @@ test.describe('Tax API Smoke Tests', () => {
 
   test('should get home page successfully', async () => {
     const result = await taxApiDriver.goToTax();
-    await expect(result).toBeSuccess();
+    expect(result).toBeSuccess();
   });
 });

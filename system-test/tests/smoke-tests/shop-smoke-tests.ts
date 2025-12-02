@@ -5,7 +5,7 @@ export function defineShopSmokeTests(test: any) {
     test.describe('Shop Smoke Tests', () => {
         test('should be able to go to shop', async ({ shopDriver }: TestFixtures) => {
             const result = await shopDriver.goToShop();
-            await expect(result).toBeSuccess();
+            expect(result).toBeSuccess();
         });
     });
 }
