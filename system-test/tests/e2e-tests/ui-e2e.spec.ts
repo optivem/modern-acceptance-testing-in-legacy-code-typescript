@@ -3,7 +3,7 @@ import { DriverFactory } from '../../core/drivers/DriverFactory.js';
 import { defineE2eTests } from '../e2e-tests.js';
 
 const test = base.extend({
-    shopDriver: async ({ page }, use) => {
+    shopDriver: async ({ page }: any, use: any) => {
         const driver = DriverFactory.createShopUiDriver();
         await use(driver);
         await driver.close();
