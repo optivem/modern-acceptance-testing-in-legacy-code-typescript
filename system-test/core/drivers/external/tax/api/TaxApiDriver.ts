@@ -1,20 +1,18 @@
-import { TestHttpClient } from '../../../commons/clients/TestHttpClient.js';
 import { Result } from '../../../commons/Result.js';
-import { TestHttpUtils } from '../../../commons/clients/TestHttpUtils.js';
+import { TaxApiClient } from './client/TaxApiClient.js';
 
 export class TaxApiDriver {
-    private readonly httpClient: TestHttpClient;
+    private readonly apiClient: TaxApiClient;
 
     constructor(baseUrl: string) {
-        this.httpClient = new TestHttpClient(baseUrl);
+        this.apiClient = new TaxApiClient(baseUrl);
     }
 
     async checkHome(): Promise<Result<void>> {
-        const response = await this.httpClient.get<void>('/health');
-        return TestHttpUtils.getOkResultOrFailure<void>(response);
+        return this.apiClient.health().checkHealth();
     }
 
     close(): void {
-        // Cleanup if needed
+        this.apiClient.close();
     }
 }
