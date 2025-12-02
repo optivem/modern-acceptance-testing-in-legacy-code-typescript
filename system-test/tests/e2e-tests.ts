@@ -1,7 +1,25 @@
+import { test as base } from './fixtures.js';
+import { DriverFactory } from '../core/drivers/DriverFactory.js';
 import { TestFixtures } from './fixtures.js';
 import { expect } from '@playwright/test';
 import { OrderStatus } from '../core/drivers/system/commons/enums/OrderStatus.js';
 import { ResultAssert } from '../core/drivers/commons/ResultAssert.js';
+
+export const test = base.extend({
+    erpApiDriver: async ({}, use: any) => {
+        const driver = DriverFactory.createErpApiDriver();
+        await use(driver);
+        await driver.close();
+    },
+
+    taxApiDriver: async ({}, use: any) => {
+        const driver = DriverFactory.createTaxApiDriver();
+        await use(driver);
+        await driver.close();
+    },
+});
+
+export { expect } from '@playwright/test';
 
 export function defineE2eTests(test: any) {
     test.describe('E2E Tests', () => {
