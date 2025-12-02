@@ -1,17 +1,17 @@
-import { describe, test, beforeEach, afterEach } from '@jest/globals';
+import { test } from '@playwright/test';
 import { Closer } from '../../../core/drivers/commons/clients/Closer.js';
 import { DriverFactory } from '../../../core/drivers/DriverFactory.js';
 import { TaxApiDriver } from '../../../core/drivers/external/tax/api/TaxApiDriver.js';
 import { ResultAssert } from '../../../core/drivers/commons/ResultAssert.js';
 
-describe('Tax API Smoke Tests', () => {
+test.describe('Tax API Smoke Tests', () => {
   let taxApiDriver: TaxApiDriver;
 
-  beforeEach(() => {
+  test.beforeEach(() => {
     taxApiDriver = DriverFactory.createTaxApiDriver();
   });
 
-  afterEach(async () => {
+  test.afterEach(async () => {
     await Closer.close(taxApiDriver);
   });
 

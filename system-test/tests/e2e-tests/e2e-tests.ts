@@ -1,20 +1,30 @@
-import { describe, test, expect } from '@jest/globals';
-import { ShopDriver } from '../../core/drivers/system/ShopDriver.js';
-import { ErpApiDriver } from '../../core/drivers/external/erp/api/ErpApiDriver.js';
-import { TaxApiDriver } from '../../core/drivers/external/tax/api/TaxApiDriver.js';
+import { test as base } from '../fixtures.js';
+import { DriverFactory } from '../../core/drivers/DriverFactory.js';
+import { TestFixtures } from '../fixtures.js';
+import { expect } from '@playwright/test';
 import { OrderStatus } from '../../core/drivers/system/commons/enums/OrderStatus.js';
 import { ResultAssert } from '../../core/drivers/commons/ResultAssert.js';
+import { Closer } from '../../core/drivers/commons/clients/Closer.js';
 
-export function defineE2eTests(
-    getShopDriver: () => ShopDriver,
-    getErpApiDriver: () => ErpApiDriver,
-    getTaxApiDriver: () => TaxApiDriver
-) {
-    describe('E2E Tests', () => {
-        test('should place order and calculate original price', async () => {
-            const shopDriver = getShopDriver();
-            const erpApiDriver = getErpApiDriver();
-            
+export const test = base.extend({
+    erpApiDriver: async ({}, use: any) => {
+        const driver = DriverFactory.createErpApiDriver();
+        await use(driver);
+        await Closer.close(driver);
+    },
+
+    taxApiDriver: async ({}, use: any) => {
+        const driver = DriverFactory.createTaxApiDriver();
+        await use(driver);
+        await Closer.close(driver);
+    },
+});
+
+export { expect } from '@playwright/test';
+
+export function defineE2eTests(test: any) {
+    test.describe('E2E Tests', () => {
+        test('should place order and calculate original price', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
             const sku = `ABC-${crypto.randomUUID()}`;
             const createProductResult = await erpApiDriver.createProduct(sku, '20.00');
             ResultAssert.assertSuccess(createProductResult);
@@ -48,11 +58,7 @@ export function defineE2eTests(
             expect(orderDetails.totalPrice).toBeGreaterThan(0);
         });
 
-
-        test('should cancel order', async () => {
-            const shopDriver = getShopDriver();
-            const erpApiDriver = getErpApiDriver();
-            
+        test('should cancel order', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
             const sku = `XYZ-${crypto.randomUUID()}`;
             const createProductResult = await erpApiDriver.createProduct(sku, '50.00');
             ResultAssert.assertSuccess(createProductResult);
@@ -77,22 +83,17 @@ export function defineE2eTests(
             expect(orderDetails.status).toBe(OrderStatus.CANCELLED);
         });
 
-        test('should reject order with non-existent SKU', async () => {
-            const shopDriver = getShopDriver();
+        test('should reject order with non-existent SKU', async ({ shopDriver }: TestFixtures) => {
             const result = await shopDriver.placeOrder('NON-EXISTENT-SKU-12345', '5', 'US');
             ResultAssert.assertFailureWithMessage(result, 'Product does not exist for SKU: NON-EXISTENT-SKU-12345');
         });
 
-        test('should not be able to view non-existent order', async () => {
-            const shopDriver = getShopDriver();
+        test('should not be able to view non-existent order', async ({ shopDriver }: TestFixtures) => {
             const result = await shopDriver.viewOrder('NON-EXISTENT-ORDER-12345');
             ResultAssert.assertFailureWithMessage(result, 'Order NON-EXISTENT-ORDER-12345 does not exist.');
         });
 
-        test('should reject order with negative quantity', async () => {
-            const shopDriver = getShopDriver();
-            const erpApiDriver = getErpApiDriver();
-            
+        test('should reject order with negative quantity', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
             const sku = `DEF-${crypto.randomUUID()}`;
             const createProductResult = await erpApiDriver.createProduct(sku, '30.00');
             ResultAssert.assertSuccess(createProductResult);
@@ -101,10 +102,7 @@ export function defineE2eTests(
             ResultAssert.assertFailureWithMessage(result, 'Quantity must be positive');
         });
 
-        test('should reject order with zero quantity', async () => {
-            const shopDriver = getShopDriver();
-            const erpApiDriver = getErpApiDriver();
-            
+        test('should reject order with zero quantity', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
             const sku = `GHI-${crypto.randomUUID()}`;
             const createProductResult = await erpApiDriver.createProduct(sku, '40.00');
             ResultAssert.assertSuccess(createProductResult);
@@ -113,46 +111,40 @@ export function defineE2eTests(
             ResultAssert.assertFailureWithMessage(result, 'Quantity must be positive');
         });
 
-        describe('should reject order with empty SKU', () => {
+        test.describe('should reject order with empty SKU', () => {
             const emptySKUs = ['', '   '];
             
             for (const emptySku of emptySKUs) {
-                test(`with value "${emptySku}"`, async () => {
-                    const shopDriver = getShopDriver();
+                test(`with value "${emptySku}"`, async ({ shopDriver }: TestFixtures) => {
                     const result = await shopDriver.placeOrder(emptySku, '5', 'US');
                     ResultAssert.assertFailureWithMessage(result, 'SKU must not be empty');
                 });
             }
         });
 
-        describe('should reject order with non-integer quantity', () => {
+        test.describe('should reject order with non-integer quantity', () => {
             const nonIntegerQuantities = ['5.5', 'abc'];
             
             for (const nonIntegerQuantity of nonIntegerQuantities) {
-                test(`with value "${nonIntegerQuantity}"`, async () => {
-                    const shopDriver = getShopDriver();
+                test(`with value "${nonIntegerQuantity}"`, async ({ shopDriver }: TestFixtures) => {
                     const result = await shopDriver.placeOrder('some-sku', nonIntegerQuantity, 'US');
                     ResultAssert.assertFailureWithMessage(result, 'Quantity must be an integer');
                 });
             }
         });
 
-        describe('should reject order with empty country', () => {
+        test.describe('should reject order with empty country', () => {
             const emptyCountries = ['', '   '];
             
             for (const emptyCountry of emptyCountries) {
-                test(`with value "${emptyCountry}"`, async () => {
-                    const shopDriver = getShopDriver();
+                test(`with value "${emptyCountry}"`, async ({ shopDriver }: TestFixtures) => {
                     const result = await shopDriver.placeOrder('some-sku', '5', emptyCountry);
                     ResultAssert.assertFailureWithMessage(result, 'Country must not be empty');
                 });
             }
         });
 
-        test('should reject order with unsupported country', async () => {
-            const shopDriver = getShopDriver();
-            const erpApiDriver = getErpApiDriver();
-            
+        test('should reject order with unsupported country', async ({ shopDriver, erpApiDriver }: TestFixtures) => {
             const sku = `JKL-${crypto.randomUUID()}`;
             const createProductResult = await erpApiDriver.createProduct(sku, '25.00');
             ResultAssert.assertSuccess(createProductResult);

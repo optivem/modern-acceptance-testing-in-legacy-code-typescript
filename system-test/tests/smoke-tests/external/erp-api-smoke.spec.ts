@@ -1,17 +1,17 @@
-import { describe, test, beforeEach, afterEach } from '@jest/globals';
+import { test } from '@playwright/test';
 import { Closer } from '../../../core/drivers/commons/clients/Closer.js';
 import { DriverFactory } from '../../../core/drivers/DriverFactory.js';
 import { ErpApiDriver } from '../../../core/drivers/external/erp/api/ErpApiDriver.js';
 import { ResultAssert } from '../../../core/drivers/commons/ResultAssert.js';
 
-describe('ERP API Smoke Tests', () => {
+test.describe('ERP API Smoke Tests', () => {
   let erpApiDriver: ErpApiDriver;
 
-  beforeEach(() => {
+  test.beforeEach(() => {
     erpApiDriver = DriverFactory.createErpApiDriver();
   });
 
-  afterEach(async () => {
+  test.afterEach(async () => {
     await Closer.close(erpApiDriver);
   });
 
