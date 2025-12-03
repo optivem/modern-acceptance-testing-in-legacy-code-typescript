@@ -100,7 +100,7 @@ channelTest(
         { sku: '', expectedMessage: 'SKU must not be empty' },
         { sku: '   ', expectedMessage: 'SKU must not be empty' }
     ],
-    (data) => `should reject order with empty SKU: "${data.sku}"`,
+    'should reject order with empty SKU',
     async ({ shopDriver }, data) => {
         const result = await shopDriver.placeOrder(data.sku, '5', 'US');
         expect(result).toBeFailureWith(data.expectedMessage);
@@ -113,7 +113,7 @@ channelTest(
         { quantity: '5.5', expectedMessage: 'Quantity must be an integer' },
         { quantity: 'abc', expectedMessage: 'Quantity must be an integer' }
     ],
-    (data) => `should reject order with non-integer quantity: "${data.quantity}"`,
+    'should reject order with non-integer quantity',
     async ({ shopDriver }, data) => {
         const result = await shopDriver.placeOrder('SKU-123', data.quantity, 'US');
         expect(result).toBeFailureWith(data.expectedMessage);
@@ -126,7 +126,7 @@ channelTest(
         { country: '', expectedMessage: 'Country must not be empty' },
         { country: '   ', expectedMessage: 'Country must not be empty' }
     ],
-    (data) => `should reject order with empty country: "${data.country}"`,
+    'should reject order with empty country',
     async ({ shopDriver }, data) => {
         const result = await shopDriver.placeOrder('SKU-123', '5', data.country);
         expect(result).toBeFailureWith(data.expectedMessage);
@@ -163,7 +163,7 @@ channelTest(
         { orderNumber: 'NON-EXISTENT-ORDER-99999', expectedMessage: 'Order NON-EXISTENT-ORDER-99999 does not exist.' },
         { orderNumber: 'INVALID-ORDER-123', expectedMessage: 'Order INVALID-ORDER-123 does not exist.' }
     ],
-    (data) => `should not cancel non-existent order: ${data.orderNumber}`,
+    'should not cancel non-existent order',
     async ({ shopDriver }, data) => {
         const result = await shopDriver.cancelOrder(data.orderNumber);
         expect(result).toBeFailureWith(data.expectedMessage);

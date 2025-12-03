@@ -40,6 +40,17 @@ function shopDriverFactory(channelType: string): any {
  * );
  * ```
  */
+/**
+ * Formats test data as a readable string for test names
+ * Example: { country: 'US', quantity: '5' } => "[country: US, quantity: 5]"
+ */
+function formatTestData(data: any): string {
+    const entries = Object.entries(data)
+        .filter(([key]) => !key.startsWith('expected'))
+        .map(([key, value]) => `${key}: ${JSON.stringify(value)}`);
+    return `[${entries.join(', ')}]`;
+}
+
 export function shopChannelTest<T = never>(
     channelTypes: string[],
     testNameOrData: string | T[],
@@ -60,11 +71,15 @@ export function shopChannelTest<T = never>(
     // Case 2: Parameterized test with data array
     else {
         const testDataArray = testNameOrData as T[];
-        const testNameFn = testNameFnOrTestFn as (data: T) => string;
+        const baseTestName = testNameFnOrTestFn as string | ((data: T) => string);
         const fn = testFn as (fixtures: any, data: T) => Promise<void>;
         
         testDataArray.forEach((testData) => {
-            const testName = testNameFn(testData);
+            // If baseTestName is a function, use it; otherwise append formatted data
+            const testName = typeof baseTestName === 'function' 
+                ? baseTestName(testData)
+                : `${baseTestName} ${formatTestData(testData)}`;
+                
             channelTest(channelTypes, shopDriverFactory, 'shopDriver', additionalFixtures, testName, async ({ shopDriver, erpApiDriver, taxApiDriver }) => {
                 return await fn({ shopDriver, erpApiDriver, taxApiDriver }, testData);
             });
