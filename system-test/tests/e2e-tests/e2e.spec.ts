@@ -1,11 +1,11 @@
 import { expect } from '@playwright/test';
 import { setupResultMatchers } from '../../core/matchers/resultMatchers.js';
-import { ChannelType, channelE2eTest } from '../../core/channels/index.js';
+import { ChannelType, channelTest } from '../../core/channels/index.js';
 import { OrderStatus } from '../../core/drivers/system/commons/enums/OrderStatus.js';
 
 setupResultMatchers();
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should place order and calculate original price', async ({ shopDriver, erpApiDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should place order and calculate original price', async ({ shopDriver, erpApiDriver }) => {
     const sku = `ABC-${crypto.randomUUID()}`;
     const createProductResult = await erpApiDriver.createProduct(sku, '20.00');
     expect(createProductResult).toBeSuccess();
@@ -39,7 +39,7 @@ channelE2eTest([ChannelType.UI, ChannelType.API], 'should place order and calcul
     expect(orderDetails.totalPrice).toBeGreaterThan(0);
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should cancel order', async ({ shopDriver, erpApiDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should cancel order', async ({ shopDriver, erpApiDriver }) => {
     const sku = `XYZ-${crypto.randomUUID()}`;
     const createProductResult = await erpApiDriver.createProduct(sku, '50.00');
     expect(createProductResult).toBeSuccess();
@@ -64,17 +64,17 @@ channelE2eTest([ChannelType.UI, ChannelType.API], 'should cancel order', async (
     expect(orderDetails.status).toBe(OrderStatus.CANCELLED);
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with non-existent SKU', async ({ shopDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should reject order with non-existent SKU', async ({ shopDriver }) => {
     const result = await shopDriver.placeOrder('NON-EXISTENT-SKU-12345', '5', 'US');
     expect(result).toBeFailureWith('Product does not exist for SKU: NON-EXISTENT-SKU-12345');
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should not be able to view non-existent order', async ({ shopDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should not be able to view non-existent order', async ({ shopDriver }) => {
     const result = await shopDriver.viewOrder('NON-EXISTENT-ORDER-12345');
     expect(result).toBeFailureWith('Order NON-EXISTENT-ORDER-12345 does not exist.');
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with negative quantity', async ({ shopDriver, erpApiDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should reject order with negative quantity', async ({ shopDriver, erpApiDriver }) => {
     const sku = `DEF-${crypto.randomUUID()}`;
     const createProductResult = await erpApiDriver.createProduct(sku, '30.00');
     expect(createProductResult).toBeSuccess();
@@ -83,7 +83,7 @@ channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with nega
     expect(result).toBeFailureWith('Quantity must be positive');
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with zero quantity', async ({ shopDriver, erpApiDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should reject order with zero quantity', async ({ shopDriver, erpApiDriver }) => {
     const sku = `GHI-${crypto.randomUUID()}`;
     const createProductResult = await erpApiDriver.createProduct(sku, '40.00');
     expect(createProductResult).toBeSuccess();
@@ -94,7 +94,7 @@ channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with zero
 
 
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with empty SKU', async ({ shopDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should reject order with empty SKU', async ({ shopDriver }) => {
     const emptySKUs = ['', '   '];
     
     for (const emptySku of emptySKUs) {
@@ -103,7 +103,7 @@ channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with empt
     }
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with non-integer quantity', async ({ shopDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should reject order with non-integer quantity', async ({ shopDriver }) => {
     const nonIntegerQuantities = ['5.5', 'abc'];
     
     for (const nonIntegerQuantity of nonIntegerQuantities) {
@@ -112,7 +112,7 @@ channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with non-
     }
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with empty country', async ({ shopDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should reject order with empty country', async ({ shopDriver }) => {
     const emptyCountries = ['', '   '];
     
     for (const emptyCountry of emptyCountries) {
@@ -121,7 +121,7 @@ channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with empt
     }
 });
 
-channelE2eTest([ChannelType.UI, ChannelType.API], 'should reject order with unsupported country', async ({ shopDriver, erpApiDriver }) => {
+channelTest([ChannelType.UI, ChannelType.API], 'should reject order with unsupported country', async ({ shopDriver, erpApiDriver }) => {
     const sku = `JKL-${crypto.randomUUID()}`;
     const createProductResult = await erpApiDriver.createProduct(sku, '25.00');
     expect(createProductResult).toBeSuccess();
