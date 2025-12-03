@@ -3,6 +3,15 @@ import { ChannelType } from './ChannelType.js';
 import { channelTest } from './library/channelTest.js';
 
 /**
+ * Type definition for shop test fixtures
+ */
+export interface ShopFixtures {
+    shopDriver: any;
+    erpApiDriver: any;
+    taxApiDriver: any;
+}
+
+/**
  * Factory function that creates the appropriate shop driver based on channel type
  */
 function shopDriverFactory(channelType: string): any {
@@ -51,11 +60,35 @@ function formatTestData(data: any): string {
     return `[${entries.join(', ')}]`;
 }
 
+// Overload 1: Simple test without parameterization
+export function shopChannelTest(
+    channelTypes: string[],
+    testName: string,
+    testFn: (fixtures: ShopFixtures) => Promise<void>
+): void;
+
+// Overload 2: Parameterized test with test name function
+export function shopChannelTest<T>(
+    channelTypes: string[],
+    testData: T[],
+    testNameFn: (data: T) => string,
+    testFn: (fixtures: ShopFixtures, data: T) => Promise<void>
+): void;
+
+// Overload 3: Parameterized test with static test name
+export function shopChannelTest<T>(
+    channelTypes: string[],
+    testData: T[],
+    testName: string,
+    testFn: (fixtures: ShopFixtures, data: T) => Promise<void>
+): void;
+
+// Implementation
 export function shopChannelTest<T = never>(
     channelTypes: string[],
     testNameOrData: string | T[],
-    testNameFnOrTestFn: string | ((data: T) => string) | ((fixtures: any) => Promise<void>),
-    testFn?: (fixtures: any, data: T) => Promise<void>
+    testNameFnOrTestFn: string | ((data: T) => string) | ((fixtures: ShopFixtures) => Promise<void>),
+    testFn?: (fixtures: ShopFixtures, data: T) => Promise<void>
 ) {
     const additionalFixtures = {
         erpApiDriver: () => DriverFactory.createErpApiDriver(),
@@ -116,12 +149,12 @@ export function shopChannelTestEach<T>(
     channelTypes: string[],
     testName: string,
     testData: T[],
-    testFn: (fixtures: any, data: T) => Promise<void>
+    testFn: (fixtures: ShopFixtures, data: T) => Promise<void>
 ) {
     for (const data of testData) {
         const formattedName = testName.replace('%s', JSON.stringify(data));
         
-        shopChannelTest(channelTypes, formattedName, async (fixtures: any) => {
+        shopChannelTest(channelTypes, formattedName, async (fixtures: ShopFixtures) => {
             await testFn(fixtures, data);
         });
     }
