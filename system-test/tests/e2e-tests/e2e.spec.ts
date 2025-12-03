@@ -129,3 +129,39 @@ channelTest([ChannelType.UI, ChannelType.API], 'should reject order with unsuppo
     const result = await shopDriver.placeOrder(sku, '3', 'XX');
     expect(result).toBeFailureWith('Country does not exist: XX');
 });
+
+channelTest([ChannelType.API], 'should reject order with null quantity', async ({ shopDriver }) => {
+    const result = await shopDriver.placeOrder('some-sku', null as any, 'US');
+    expect(result).toBeFailureWith('Quantity must not be empty');
+});
+
+channelTest([ChannelType.API], 'should reject order with null SKU', async ({ shopDriver }) => {
+    const result = await shopDriver.placeOrder(null as any, '5', 'US');
+    expect(result).toBeFailureWith('SKU must not be empty');
+});
+
+channelTest([ChannelType.API], 'should reject order with null country', async ({ shopDriver }) => {
+    const result = await shopDriver.placeOrder('some-sku', '5', null as any);
+    expect(result).toBeFailureWith('Country must not be empty');
+});
+
+channelTest([ChannelType.API], 'should not cancel non-existent order', async ({ shopDriver }) => {
+    const result = await shopDriver.cancelOrder('NON-EXISTENT-ORDER-99999');
+    expect(result).toBeFailureWith('Order NON-EXISTENT-ORDER-99999 does not exist.');
+});
+
+channelTest([ChannelType.API], 'should not cancel already cancelled order', async ({ shopDriver, erpApiDriver }) => {
+    const sku = `MNO-${crypto.randomUUID()}`;
+    const createProductResult = await erpApiDriver.createProduct(sku, '35.00');
+    expect(createProductResult).toBeSuccess();
+
+    const placeOrderResult = await shopDriver.placeOrder(sku, '3', 'US');
+    expect(placeOrderResult).toBeSuccess();
+    const orderNumber = placeOrderResult.getValue().orderNumber;
+
+    const cancelResult = await shopDriver.cancelOrder(orderNumber);
+    expect(cancelResult).toBeSuccess();
+
+    const secondCancelResult = await shopDriver.cancelOrder(orderNumber);
+    expect(secondCancelResult).toBeFailureWith('Order has already been cancelled');
+});
