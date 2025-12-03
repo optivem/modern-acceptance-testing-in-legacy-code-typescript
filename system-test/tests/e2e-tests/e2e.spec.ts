@@ -140,8 +140,15 @@ channelTest([ChannelType.API], 'should reject order with null country', async ({
 });
 
 channelTest([ChannelType.API], 'should not cancel non-existent order', async ({ shopDriver }) => {
-    const result = await shopDriver.cancelOrder('NON-EXISTENT-ORDER-99999');
-    expect(result).toBeFailureWith('Order NON-EXISTENT-ORDER-99999 does not exist.');
+    const testCases = [
+        { orderNumber: 'NON-EXISTENT-ORDER-99999', expectedMessage: 'Order NON-EXISTENT-ORDER-99999 does not exist.' },
+        { orderNumber: 'INVALID-ORDER-123', expectedMessage: 'Order INVALID-ORDER-123 does not exist.' }
+    ];
+    
+    for (const { orderNumber, expectedMessage } of testCases) {
+        const result = await shopDriver.cancelOrder(orderNumber);
+        expect(result).toBeFailureWith(expectedMessage);
+    }
 });
 
 channelTest([ChannelType.API], 'should not cancel already cancelled order', async ({ shopDriver, erpApiDriver }) => {
