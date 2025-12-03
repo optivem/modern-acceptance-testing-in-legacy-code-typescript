@@ -46,3 +46,54 @@ export function channelTest(
         });
     }
 }
+
+/**
+ * Helper function for E2E tests with multiple fixtures (shopDriver, erpApiDriver, taxApiDriver)
+ * 
+ * Example usage:
+ * ```typescript
+ * channelE2eTest([ChannelType.UI, ChannelType.API], 'should place order', async ({ shopDriver, erpApiDriver }) => {
+ *     await erpApiDriver.createProduct('SKU-123', '20.00');
+ *     const result = await shopDriver.placeOrder('SKU-123', '5', 'US');
+ *     expect(result).toBeSuccess();
+ * });
+ * ```
+ */
+export function channelE2eTest(
+    channelTypes: string[],
+    testName: string,
+    testFn: (fixtures: any) => Promise<void>
+) {
+    const channelFactories = {
+        [ChannelType.API]: () => DriverFactory.createShopApiDriver(),
+        [ChannelType.UI]: () => DriverFactory.createShopUiDriver()
+    };
+
+    // Base test with ERP and Tax drivers
+    const e2eBase = base.extend<any>({
+        erpApiDriver: async ({}, use: any) => {
+            const driver = DriverFactory.createErpApiDriver();
+            await use(driver);
+            await Closer.close(driver);
+        },
+        taxApiDriver: async ({}, use: any) => {
+            const driver = DriverFactory.createTaxApiDriver();
+            await use(driver);
+            await Closer.close(driver);
+        },
+    });
+
+    for (const channelType of channelTypes) {
+        const testWithChannel = e2eBase.extend<any>({
+            shopDriver: async ({}, use: any) => {
+                const driver = channelFactories[channelType as keyof typeof channelFactories]();
+                await use(driver);
+                await Closer.close(driver);
+            },
+        });
+
+        testWithChannel.describe(`[${channelType} Channel]`, () => {
+            testWithChannel(testName, testFn);
+        });
+    }
+}
