@@ -45,3 +45,43 @@ export function shopChannelTest(
     
     channelTest(channelTypes, shopDriverFactory, 'shopDriver', additionalFixtures, testName, testFn);
 }
+
+/**
+ * Parameterized version of shopChannelTest - runs the same test with different input values
+ * 
+ * Example usage:
+ * ```typescript
+ * shopChannelTestEach(
+ *     [ChannelType.UI, ChannelType.API],
+ *     'should reject order with empty SKU: %s',
+ *     ['', '   '],
+ *     async ({ shopDriver }, emptySku) => {
+ *         const result = await shopDriver.placeOrder(emptySku, '5', 'US');
+ *         expect(result).toBeFailureWith('SKU must not be empty');
+ *     }
+ * );
+ * ```
+ * 
+ * This is equivalent to .NET's:
+ * ```csharp
+ * [Theory]
+ * [ChannelData(ChannelType.UI, ChannelType.API)]
+ * [InlineData("")]
+ * [InlineData("   ")]
+ * public void ShouldRejectOrderWithEmptySKU(Channel channel, string emptySku)
+ * ```
+ */
+export function shopChannelTestEach<T>(
+    channelTypes: string[],
+    testName: string,
+    testData: T[],
+    testFn: (fixtures: any, data: T) => Promise<void>
+) {
+    for (const data of testData) {
+        const formattedName = testName.replace('%s', JSON.stringify(data));
+        
+        shopChannelTest(channelTypes, formattedName, async (fixtures: any) => {
+            await testFn(fixtures, data);
+        });
+    }
+}
