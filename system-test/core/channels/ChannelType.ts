@@ -1,4 +1,3 @@
-// Channel types - similar to .NET's ChannelType enum
 export const ChannelType = {
     API: 'API',
     UI: 'UI'
