@@ -94,25 +94,40 @@ channelTest([ChannelType.UI, ChannelType.API], 'should reject order with zero qu
 
 
 
-channelTest([ChannelType.UI, ChannelType.API], 'should reject order with empty SKU', async ({ shopDriver }) => {
-    for (const emptySku of ['', '   ']) {
-        const result = await shopDriver.placeOrder(emptySku, '5', 'US');
-        expect(result).toBeFailureWith('SKU must not be empty');
-    }
+const emptySKUTestCases = [
+    { sku: '', expectedMessage: 'SKU must not be empty' },
+    { sku: '   ', expectedMessage: 'SKU must not be empty' }
+];
+
+emptySKUTestCases.forEach(({ sku, expectedMessage }) => {
+    channelTest([ChannelType.UI, ChannelType.API], `should reject order with empty SKU: "${sku}"`, async ({ shopDriver }) => {
+        const result = await shopDriver.placeOrder(sku, '5', 'US');
+        expect(result).toBeFailureWith(expectedMessage);
+    });
 });
 
-channelTest([ChannelType.UI, ChannelType.API], 'should reject order with non-integer quantity', async ({ shopDriver }) => {
-    for (const nonIntegerQuantity of ['5.5', 'abc']) {
-        const result = await shopDriver.placeOrder('some-sku', nonIntegerQuantity, 'US');
-        expect(result).toBeFailureWith('Quantity must be an integer');
-    }
+const nonIntegerQuantityTestCases = [
+    { quantity: '5.5', expectedMessage: 'Quantity must be an integer' },
+    { quantity: 'abc', expectedMessage: 'Quantity must be an integer' }
+];
+
+nonIntegerQuantityTestCases.forEach(({ quantity, expectedMessage }) => {
+    channelTest([ChannelType.UI, ChannelType.API], `should reject order with non-integer quantity: "${quantity}"`, async ({ shopDriver }) => {
+        const result = await shopDriver.placeOrder('some-sku', quantity, 'US');
+        expect(result).toBeFailureWith(expectedMessage);
+    });
 });
 
-channelTest([ChannelType.UI, ChannelType.API], 'should reject order with empty country', async ({ shopDriver }) => {
-    for (const emptyCountry of ['', '   ']) {
-        const result = await shopDriver.placeOrder('some-sku', '5', emptyCountry);
-        expect(result).toBeFailureWith('Country must not be empty');
-    }
+const emptyCountryTestCases = [
+    { country: '', expectedMessage: 'Country must not be empty' },
+    { country: '   ', expectedMessage: 'Country must not be empty' }
+];
+
+emptyCountryTestCases.forEach(({ country, expectedMessage }) => {
+    channelTest([ChannelType.UI, ChannelType.API], `should reject order with empty country: "${country}"`, async ({ shopDriver }) => {
+        const result = await shopDriver.placeOrder('some-sku', '5', country);
+        expect(result).toBeFailureWith(expectedMessage);
+    });
 });
 
 channelTest([ChannelType.UI, ChannelType.API], 'should reject order with unsupported country', async ({ shopDriver, erpApiDriver }) => {
@@ -139,16 +154,16 @@ channelTest([ChannelType.API], 'should reject order with null country', async ({
     expect(result).toBeFailureWith('Country must not be empty');
 });
 
-channelTest([ChannelType.API], 'should not cancel non-existent order', async ({ shopDriver }) => {
-    const testCases = [
-        { orderNumber: 'NON-EXISTENT-ORDER-99999', expectedMessage: 'Order NON-EXISTENT-ORDER-99999 does not exist.' },
-        { orderNumber: 'INVALID-ORDER-123', expectedMessage: 'Order INVALID-ORDER-123 does not exist.' }
-    ];
-    
-    for (const { orderNumber, expectedMessage } of testCases) {
+const nonExistentOrderTestCases = [
+    { orderNumber: 'NON-EXISTENT-ORDER-99999', expectedMessage: 'Order NON-EXISTENT-ORDER-99999 does not exist.' },
+    { orderNumber: 'INVALID-ORDER-123', expectedMessage: 'Order INVALID-ORDER-123 does not exist.' }
+];
+
+nonExistentOrderTestCases.forEach(({ orderNumber, expectedMessage }) => {
+    channelTest([ChannelType.API], `should not cancel non-existent order: ${orderNumber}`, async ({ shopDriver }) => {
         const result = await shopDriver.cancelOrder(orderNumber);
         expect(result).toBeFailureWith(expectedMessage);
-    }
+    });
 });
 
 channelTest([ChannelType.API], 'should not cancel already cancelled order', async ({ shopDriver, erpApiDriver }) => {
