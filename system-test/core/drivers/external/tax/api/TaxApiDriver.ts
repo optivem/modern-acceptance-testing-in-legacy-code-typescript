@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { Result } from '../../../../../results/Result.js';
 import { TaxApiClient } from './client/TaxApiClient.js';
 import { HttpClientFactory } from '../../../../../http/HttpClientFactory.js';
-import { Closer } from '../../../commons/clients/Closer.js';
+import { Closer } from '../../../../../lang/Closer.js';
 
 export class TaxApiDriver {
     private readonly httpClient: AxiosInstance;

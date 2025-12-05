@@ -1,6 +1,6 @@
 import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
-import { Closer } from '../../../../commons/clients/Closer.js';
+import { Closer } from '../../../../../../lang/Closer.js';
 import { PageGateway } from '../../../../../../playwright/PageGateway.js';
 import { HomePage } from './pages/HomePage.js';
 

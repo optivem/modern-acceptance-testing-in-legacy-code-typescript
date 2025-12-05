@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { Result } from '../../../../../results/Result.js';
 import { ErpApiClient } from './client/ErpApiClient.js';
 import { HttpClientFactory } from '../../../../../http/HttpClientFactory.js';
-import { Closer } from '../../../commons/clients/Closer.js';
+import { Closer } from '../../../../../lang/Closer.js';
 
 export class ErpApiDriver {
     private readonly httpClient: AxiosInstance;
