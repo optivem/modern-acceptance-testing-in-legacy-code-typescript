@@ -1,13 +1,13 @@
-import { TestHttpClient } from '../../../../../commons/clients/TestHttpClient.js';
-import { TestHttpUtils } from '../../../../../commons/clients/TestHttpUtils.js';
+import { HttpGateway } from '../../../../../commons/clients/HttpGateway.js';
+import { HttpUtils } from '../../../../../commons/clients/HttpUtils.js';
 import { Result } from '../../../../../commons/Result.js';
 import { CreateProductRequest } from '../dtos/CreateProductRequest.js';
 
 export class ProductController {
     private static readonly ENDPOINT = '/api/products';
-    private readonly httpClient: TestHttpClient;
+    private readonly httpClient: HttpGateway;
 
-    constructor(httpClient: TestHttpClient) {
+    constructor(httpClient: HttpGateway) {
         this.httpClient = httpClient;
     }
 
@@ -17,7 +17,7 @@ export class ProductController {
             ProductController.ENDPOINT,
             request
         );
-        const result = TestHttpUtils.getCreatedResultOrFailure<void>(httpResponse);
+        const result = HttpUtils.getCreatedResultOrFailure<void>(httpResponse);
         if (result.isFailure()) {
             return Result.failure(result.getErrorMessages());
         }

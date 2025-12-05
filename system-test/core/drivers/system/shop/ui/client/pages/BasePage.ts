@@ -1,13 +1,13 @@
-import { TestPageClient } from '../../../../../commons/clients/TestPageClient.js';
+import { PageGateway } from '../../../../../commons/clients/PageGateway.js';
 
 export abstract class BasePage {
     private static readonly NOTIFICATION_SELECTOR = '#notifications .notification';
     private static readonly SUCCESS_NOTIFICATION_SELECTOR = '[role="alert"].success';
     private static readonly ERROR_NOTIFICATION_SELECTOR = '[role="alert"].error';
 
-    protected readonly pageClient: TestPageClient;
+    protected readonly pageClient: PageGateway;
 
-    constructor(pageClient: TestPageClient) {
+    constructor(pageClient: PageGateway) {
         this.pageClient = pageClient;
     }
 

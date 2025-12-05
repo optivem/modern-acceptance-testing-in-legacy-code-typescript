@@ -1,17 +1,17 @@
-import { TestHttpClient } from '../../../../../commons/clients/TestHttpClient.js';
-import { TestHttpUtils } from '../../../../../commons/clients/TestHttpUtils.js';
+import { HttpGateway } from '../../../../../commons/clients/HttpGateway.js';
+import { HttpUtils } from '../../../../../commons/clients/HttpUtils.js';
 import { Result } from '../../../../../commons/Result.js';
 
 export class HealthController {
     private static readonly ENDPOINT = '/health';
-    private readonly httpClient: TestHttpClient;
+    private readonly httpClient: HttpGateway;
 
-    constructor(httpClient: TestHttpClient) {
+    constructor(httpClient: HttpGateway) {
         this.httpClient = httpClient;
     }
 
     async checkHealth(): Promise<Result<void>> {
         const httpResponse = await this.httpClient.get<void>(HealthController.ENDPOINT);
-        return TestHttpUtils.getOkResultOrFailure<void>(httpResponse);
+        return HttpUtils.getOkResultOrFailure<void>(httpResponse);
     }
 }

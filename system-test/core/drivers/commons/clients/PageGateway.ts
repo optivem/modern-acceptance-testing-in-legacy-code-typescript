@@ -1,14 +1,14 @@
 import { Page, Locator } from '@playwright/test';
 
-export class TestPageClient {
+export class PageGateway {
     private readonly page: Page;
     private readonly baseUrl: string;
     private readonly timeoutMilliseconds: number;
 
     private static readonly DEFAULT_TIMEOUT_SECONDS = 10;
-    private static readonly DEFAULT_TIMEOUT_MILLISECONDS = TestPageClient.DEFAULT_TIMEOUT_SECONDS * 1000;
+    private static readonly DEFAULT_TIMEOUT_MILLISECONDS = PageGateway.DEFAULT_TIMEOUT_SECONDS * 1000;
 
-    constructor(page: Page, baseUrl: string, timeoutMilliseconds: number = TestPageClient.DEFAULT_TIMEOUT_MILLISECONDS) {
+    constructor(page: Page, baseUrl: string, timeoutMilliseconds: number = PageGateway.DEFAULT_TIMEOUT_MILLISECONDS) {
         this.page = page;
         this.baseUrl = baseUrl;
         this.timeoutMilliseconds = timeoutMilliseconds;

@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 
-export class TestHttpClient {
+export class HttpGateway {
     private readonly client: AxiosInstance;
     private readonly baseUrl: string;
 

@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { TestPageClient } from '../../../../../commons/clients/TestPageClient.js';
+import { PageGateway } from '../../../../../commons/clients/PageGateway.js';
 
 export class NewOrderPage extends BasePage {
     private static readonly SKU_INPUT_SELECTOR = '[aria-label="SKU"]';
@@ -9,7 +9,7 @@ export class NewOrderPage extends BasePage {
     private static readonly ORDER_NUMBER_REGEX = /Success! Order has been created with Order Number ([\w-]+)/;
     private static readonly ORDER_NUMBER_MATCHER_GROUP = 1;
 
-    constructor(pageClient: TestPageClient) {
+    constructor(pageClient: PageGateway) {
         super(pageClient);
     }
 

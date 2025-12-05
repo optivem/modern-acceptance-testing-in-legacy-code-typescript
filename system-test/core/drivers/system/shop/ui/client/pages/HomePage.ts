@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { TestPageClient } from '../../../../../commons/clients/TestPageClient.js';
+import { PageGateway } from '../../../../../commons/clients/PageGateway.js';
 import { NewOrderPage } from './NewOrderPage.js';
 import { OrderHistoryPage } from './OrderHistoryPage.js';
 
@@ -7,7 +7,7 @@ export class HomePage extends BasePage {
     private static readonly SHOP_BUTTON_SELECTOR = 'a[href="/shop.html"]';
     private static readonly ORDER_HISTORY_BUTTON_SELECTOR = 'a[href="/order-history.html"]';
 
-    constructor(pageClient: TestPageClient) {
+    constructor(pageClient: PageGateway) {
         super(pageClient);
     }
 

@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { TestPageClient } from '../../../../../commons/clients/TestPageClient.js';
+import { PageGateway } from '../../../../../commons/clients/PageGateway.js';
 import { OrderStatus } from '../../../../commons/enums/OrderStatus.js';
 import { expect } from '@playwright/test';
 
@@ -25,7 +25,7 @@ export class OrderHistoryPage extends BasePage {
 
     private static readonly ORDER_DETAILS_HEADING_TEXT = 'Order Details';
 
-    constructor(pageClient: TestPageClient) {
+    constructor(pageClient: PageGateway) {
         super(pageClient);
     }
 

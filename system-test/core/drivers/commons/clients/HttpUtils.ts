@@ -1,20 +1,20 @@
 import { AxiosResponse } from 'axios';
 import { Result } from '../Result.js';
-import { ProblemDetailResponse } from '../../commons/dtos/ProblemDetailResponse.js';
+import { ProblemDetailResponse } from '../dtos/ProblemDetailResponse.js';
 import { StatusCodes } from 'http-status-codes';
 import { get } from 'http';
 
-export class TestHttpUtils {
+export class HttpUtils {
     static getOkResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
-        return TestHttpUtils.getResultOrFailure(response, StatusCodes.OK, true);
+        return HttpUtils.getResultOrFailure(response, StatusCodes.OK, true);
     }
 
     static getCreatedResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
-        return TestHttpUtils.getResultOrFailure(response, StatusCodes.CREATED, true);
+        return HttpUtils.getResultOrFailure(response, StatusCodes.CREATED, true);
     }
 
     static getNoContentResultOrFailure(response: AxiosResponse<void>): Result<void> {
-        return TestHttpUtils.getResultOrFailure(response, StatusCodes.NO_CONTENT, false);
+        return HttpUtils.getResultOrFailure(response, StatusCodes.NO_CONTENT, false);
     }
 
     private static getResultOrFailure<T>(response: AxiosResponse<T>, statusCode: StatusCodes, hasData: boolean): Result<T> {
