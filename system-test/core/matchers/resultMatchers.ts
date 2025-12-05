@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import type { Result } from '../drivers/commons/Result.js';
+import type { Result } from '../../results/Result.js';
 
 export function setupResultMatchers() {
   expect.extend({

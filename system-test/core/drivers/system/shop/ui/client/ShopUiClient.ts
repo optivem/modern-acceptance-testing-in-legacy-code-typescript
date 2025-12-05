@@ -1,7 +1,7 @@
 import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
 import { Closer } from '../../../../commons/clients/Closer.js';
-import { PageGateway } from '../../../../commons/clients/PageGateway.js';
+import { PageGateway } from '../../../../../../playwright/PageGateway.js';
 import { HomePage } from './pages/HomePage.js';
 
 export class ShopUiClient {

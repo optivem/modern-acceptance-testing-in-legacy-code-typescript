@@ -1,4 +1,4 @@
-import { PageGateway } from '../../../../../commons/clients/PageGateway.js';
+import { PageGateway } from '../../../../../../../playwright/PageGateway.js';
 
 export abstract class BasePage {
     private static readonly NOTIFICATION_SELECTOR = '#notifications .notification';

@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { HttpGateway } from '../../../../commons/clients/HttpGateway.js';
+import { HttpGateway } from '../../../../../../http/HttpGateway.js';
 import { HealthController } from './controllers/HealthController.js';
 
 export class TaxApiClient {

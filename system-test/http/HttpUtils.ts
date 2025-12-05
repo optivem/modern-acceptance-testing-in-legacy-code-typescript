@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
-import { Result } from '../Result.js';
-import { ProblemDetailResponse } from '../dtos/ProblemDetailResponse.js';
+import { Result } from '../results/Result.js';
+import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 import { StatusCodes } from 'http-status-codes';
 import { get } from 'http';
 

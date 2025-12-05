@@ -1,6 +1,6 @@
-import { HttpGateway } from '../../../../../commons/clients/HttpGateway.js';
-import { HttpUtils } from '../../../../../commons/clients/HttpUtils.js';
-import { Result } from '../../../../../commons/Result.js';
+import { HttpGateway } from '../../../../../../../http/HttpGateway.js';
+import { HttpUtils } from '../../../../../../../http/HttpUtils.js';
+import { Result } from '../../../../../../../results/Result.js';
 import { CreateProductRequest } from '../dtos/CreateProductRequest.js';
 
 export class ProductController {

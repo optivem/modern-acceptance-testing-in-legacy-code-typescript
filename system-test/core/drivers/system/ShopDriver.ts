@@ -1,4 +1,4 @@
-import { Result } from '../commons/Result.js';
+import { Result } from '../../../results/Result.js';
 import { PlaceOrderResponse } from './commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from './commons/dtos/GetOrderResponse.js';
 

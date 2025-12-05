@@ -1,6 +1,6 @@
-import { HttpGateway } from '../../../../../commons/clients/HttpGateway.js';
-import { HttpUtils } from '../../../../../commons/clients/HttpUtils.js';
-import { Result } from '../../../../../commons/Result.js';
+import { HttpGateway } from '../../../../../../../http/HttpGateway.js';
+import { HttpUtils } from '../../../../../../../http/HttpUtils.js';
+import { Result } from '../../../../../../../results/Result.js';
 import { PlaceOrderRequest } from '../../../../commons/dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../../../../commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../../../commons/dtos/GetOrderResponse.js';

@@ -1,11 +1,11 @@
 import { AxiosInstance } from 'axios';
 import { ShopDriver } from '../../ShopDriver.js';
 import { ShopApiClient } from './client/ShopApiClient.js';
-import { Result } from '../../../commons/Result.js';
+import { Result } from '../../../../../results/Result.js';
 import { PlaceOrderRequest } from '../../commons/dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../../commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../commons/dtos/GetOrderResponse.js';
-import { HttpClientFactory } from '../../../commons/clients/HttpClientFactory.js';
+import { HttpClientFactory } from '../../../../../http/HttpClientFactory.js';
 import { Closer } from '../../../commons/clients/Closer.js';
 
 export class ShopApiDriver implements ShopDriver {
