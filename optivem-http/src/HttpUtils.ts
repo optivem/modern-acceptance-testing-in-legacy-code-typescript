@@ -1,8 +1,7 @@
 import { AxiosResponse } from 'axios';
-import { Result } from '../results/Result.js';
+import { Result } from '@optivem/results';
 import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 import { StatusCodes } from 'http-status-codes';
-import { get } from 'http';
 
 export class HttpUtils {
     static getOkResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
@@ -22,7 +21,6 @@ export class HttpUtils {
             if (hasData) {
                 return Result.success(response.data);
             }
-
             return Result.success();
         }
         return this.extractErrorMessages(response);

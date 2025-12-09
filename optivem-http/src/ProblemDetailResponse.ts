@@ -1,9 +1,4 @@
-export interface ProblemDetailsFieldErrorResponse {
-    field: string;
-    message: string;
-    code: string;
-    rejectedValue: any;
-}
+import { ProblemDetailsFieldErrorResponse } from './ProblemDetailsFieldErrorResponse.js';
 
 export interface ProblemDetailResponse {
     type?: string;

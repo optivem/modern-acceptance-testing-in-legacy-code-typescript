@@ -1,6 +1,5 @@
-import { HttpGateway } from '../../../../../../../http/HttpGateway.js';
-import { HttpUtils } from '../../../../../../../http/HttpUtils.js';
-import { Result } from '../../../../../../../results/Result.js';
+import { HttpGateway, HttpUtils } from '@optivem/http';
+import { Result } from '@optivem/results';
 
 export class HealthController {
     private static readonly ENDPOINT = '/health';

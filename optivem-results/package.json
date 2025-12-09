@@ -1,0 +1,24 @@
+{
+  "name": "@optivem/results",
+  "version": "0.1.0",
+  "description": "Result type for functional error handling",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "result",
+    "either",
+    "functional",
+    "error-handling"
+  ],
+  "author": "Optivem",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "rimraf": "^6.0.1"
+  }
+}

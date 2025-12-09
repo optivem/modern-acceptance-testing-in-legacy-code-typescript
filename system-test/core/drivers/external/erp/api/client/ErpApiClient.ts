@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { HttpGateway } from '../../../../../../http/HttpGateway.js';
+import { HttpGateway } from '@optivem/http';
 import { HealthController } from './controllers/HealthController.js';
 import { ProductController } from './controllers/ProductController.js';
 

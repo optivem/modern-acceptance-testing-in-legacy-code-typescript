@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
-import { Result } from '../../../../../results/Result.js';
+import { Result } from '@optivem/results';
 import { ErpApiClient } from './client/ErpApiClient.js';
-import { HttpClientFactory } from '../../../../../http/HttpClientFactory.js';
+import { HttpClientFactory } from '@optivem/http';
 import { Closer } from '../../../../../lang/Closer.js';
 
 export class ErpApiDriver {
