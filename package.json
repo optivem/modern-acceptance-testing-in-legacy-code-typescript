@@ -8,6 +8,7 @@
     "optivem-lang",
     "optivem-playwright",
     "optivem-testing-channels",
+    "optivem-testing-assertions",
     "system-test"
   ]
 }
