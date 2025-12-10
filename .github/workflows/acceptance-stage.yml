@@ -87,23 +87,17 @@ jobs:
     - name: Install Test Dependencies
       run: npm ci
 
-    - name: Build optivem-results
-      run: npm run build -w optivem-results
-
-    - name: Build optivem-lang
-      run: npm run build -w optivem-lang
-
-    - name: Build optivem-http
-      run: npm run build -w optivem-http
-
-    - name: Build optivem-playwright
-      run: npm run build -w optivem-playwright
-
-    - name: Build optivem-testing-channels
-      run: npm run build -w optivem-testing-channels
-
-    - name: Build optivem-testing-assertions
-      run: npm run build -w optivem-testing-assertions
+    - name: Build All Packages
+      run: |
+        cd optivem-results && npm run build && cd ..
+        cd optivem-lang && npm run build && cd ..
+        cd optivem-http && npm run build && cd ..
+        cd optivem-playwright && npm run build && cd ..
+        cd optivem-testing-channels && npm run build && cd ..
+        cd optivem-testing-assertions && npm run build && cd ..
+        echo "All packages built"
+        ls -la optivem-testing-channels/dist/
+        ls -la node_modules/@optivem/testing-channels/dist/
 
     - name: Install Playwright Browsers
       working-directory: system-test
