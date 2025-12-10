@@ -87,34 +87,23 @@ jobs:
     - name: Install Test Dependencies
       run: npm ci
 
-    - name: Build Workspace Packages
-      run: |
-        echo "Building optivem-results..."
-        npm run build -w optivem-results
-        ls -la optivem-results/dist/ || echo "No dist folder for optivem-results"
-        
-        echo "Building optivem-lang..."
-        npm run build -w optivem-lang
-        ls -la optivem-lang/dist/ || echo "No dist folder for optivem-lang"
-        
-        echo "Building optivem-http..."
-        npm run build -w optivem-http
-        ls -la optivem-http/dist/ || echo "No dist folder for optivem-http"
-        
-        echo "Building optivem-playwright..."
-        npm run build -w optivem-playwright
-        ls -la optivem-playwright/dist/ || echo "No dist folder for optivem-playwright"
-        
-        echo "Building optivem-testing-channels..."
-        npm run build -w optivem-testing-channels
-        ls -la optivem-testing-channels/dist/ || echo "No dist folder for optivem-testing-channels"
-        
-        echo "Building optivem-testing-assertions..."
-        npm run build -w optivem-testing-assertions
-        ls -la optivem-testing-assertions/dist/ || echo "No dist folder for optivem-testing-assertions"
-        
-        echo "Checking node_modules symlinks..."
-        ls -la node_modules/@optivem/testing-channels/dist/ || echo "No dist in node_modules symlink"
+    - name: Build optivem-results
+      run: npm run build -w optivem-results
+
+    - name: Build optivem-lang
+      run: npm run build -w optivem-lang
+
+    - name: Build optivem-http
+      run: npm run build -w optivem-http
+
+    - name: Build optivem-playwright
+      run: npm run build -w optivem-playwright
+
+    - name: Build optivem-testing-channels
+      run: npm run build -w optivem-testing-channels
+
+    - name: Build optivem-testing-assertions
+      run: npm run build -w optivem-testing-assertions
 
     - name: Install Playwright Browsers
       working-directory: system-test
