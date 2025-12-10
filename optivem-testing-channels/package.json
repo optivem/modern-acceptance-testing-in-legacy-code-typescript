@@ -1,0 +1,32 @@
+{
+  "name": "@optivem/testing-channels",
+  "version": "0.1.0",
+  "description": "Multi-channel testing utilities for Playwright",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "testing",
+    "playwright",
+    "multi-channel",
+    "e2e",
+    "api-testing"
+  ],
+  "author": "Optivem",
+  "license": "MIT",
+  "dependencies": {
+    "@optivem/lang": "file:../optivem-lang"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.41.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  }
+}

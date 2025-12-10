@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { Result } from '@optivem/results';
 import { TaxApiClient } from './client/TaxApiClient.js';
 import { HttpClientFactory } from '@optivem/http';
-import { Closer } from '../../../../../lang/Closer.js';
+import { Closer } from '@optivem/lang';
 
 export class TaxApiDriver {
     private readonly httpClient: AxiosInstance;

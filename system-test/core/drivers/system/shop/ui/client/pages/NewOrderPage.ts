@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { PageGateway } from '../../../../../../../playwright/PageGateway.js';
+import { PageGateway } from '@optivem/playwright';
 
 export class NewOrderPage extends BasePage {
     private static readonly SKU_INPUT_SELECTOR = '[aria-label="SKU"]';

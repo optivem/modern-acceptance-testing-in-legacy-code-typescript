@@ -1,0 +1,13 @@
+{
+  "name": "modern-acceptance-testing-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "optivem-http",
+    "optivem-results",
+    "optivem-lang",
+    "optivem-playwright",
+    "optivem-testing-channels",
+    "system-test"
+  ]
+}

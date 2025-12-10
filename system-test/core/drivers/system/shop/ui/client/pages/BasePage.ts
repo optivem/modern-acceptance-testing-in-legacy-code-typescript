@@ -1,4 +1,4 @@
-import { PageGateway } from '../../../../../../../playwright/PageGateway.js';
+import { PageGateway } from '@optivem/playwright';
 
 export abstract class BasePage {
     private static readonly NOTIFICATION_SELECTOR = '#notifications .notification';

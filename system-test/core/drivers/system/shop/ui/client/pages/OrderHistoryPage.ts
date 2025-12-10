@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { PageGateway } from '../../../../../../../playwright/PageGateway.js';
+import { PageGateway } from '@optivem/playwright';
 import { OrderStatus } from '../../../../commons/enums/OrderStatus.js';
 import { expect } from '@playwright/test';
 

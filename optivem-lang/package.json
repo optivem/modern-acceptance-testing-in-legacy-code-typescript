@@ -1,0 +1,23 @@
+{
+  "name": "@optivem/lang",
+  "version": "0.1.0",
+  "description": "Language utilities for resource management",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "utilities",
+    "resource-management",
+    "disposable"
+  ],
+  "author": "Optivem",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "rimraf": "^6.0.1"
+  }
+}

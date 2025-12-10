@@ -1,6 +1,6 @@
 import { DriverFactory } from '../drivers/DriverFactory.js';
-import { ChannelType } from './ChannelType.js';
-import { channelTest } from '../../testing/channels/channelTest.js';
+import { ChannelType } from '@optivem/testing-channels';
+import { channelTest } from '@optivem/testing-channels';
 
 /**
  * Type definition for shop test fixtures

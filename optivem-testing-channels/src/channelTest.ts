@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { Closer } from '../../lang/Closer.js';
+import { Closer } from '@optivem/lang';
 
 /**
  * Helper function that mimics @Channel annotation from .NET/Java

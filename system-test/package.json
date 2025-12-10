@@ -20,7 +20,10 @@
   },
   "dependencies": {
     "@optivem/http": "file:../optivem-http",
+    "@optivem/lang": "file:../optivem-lang",
+    "@optivem/playwright": "file:../optivem-playwright",
     "@optivem/results": "file:../optivem-results",
+    "@optivem/testing-channels": "file:../optivem-testing-channels",
     "axios": "^1.13.2",
     "http-status-codes": "^2.3.0",
     "uuid": "^9.0.1"
