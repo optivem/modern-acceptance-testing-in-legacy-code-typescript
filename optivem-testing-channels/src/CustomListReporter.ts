@@ -1,23 +1,21 @@
-class CustomListReporter {
-    constructor() {
-        this.passedTests = 0;
-        this.failedTests = 0;
-        this.totalTests = 0;
-        this.startTime = 0;
-    }
+export class CustomListReporter {
+    private passedTests = 0;
+    private failedTests = 0;
+    private totalTests = 0;
+    private startTime = 0;
 
-    onBegin(config, suite) {
+    onBegin(config: any, suite: any): void {
         this.totalTests = suite.allTests().length;
         this.startTime = Date.now();
         console.log(`Running ${this.totalTests} tests using ${config.workers} workers\n`);
     }
 
-    onTestEnd(test, result) {
+    onTestEnd(test: any, result: any): void {
         const status = result.status;
         const duration = result.duration;
         
         // Extract channel type and test title
-        const channelMatch = test.titlePath().find(t => t.includes('Channel'));
+        const channelMatch = test.titlePath().find((t: string) => t.includes('Channel'));
         const testTitle = test.title;
         
         // Extract channel name (UI or API) from "[UI Channel]" or "[API Channel]"
@@ -49,7 +47,7 @@ class CustomListReporter {
         }
     }
 
-    onEnd() {
+    onEnd(): void {
         const totalTime = ((Date.now() - this.startTime) / 1000).toFixed(1);
         
         console.log(`\nTotal tests: ${this.totalTests}`);
@@ -60,9 +58,7 @@ class CustomListReporter {
         console.log(`Total time: ${totalTime}s`);
     }
 
-    padNumber(num) {
+    private padNumber(num: number): string {
         return String(num).padStart(3, ' ');
     }
 }
-
-module.exports = CustomListReporter;
