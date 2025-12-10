@@ -1,5 +1,5 @@
 import { DriverFactory } from '../drivers/DriverFactory.js';
-import { ChannelType } from '@optivem/testing-channels';
+import { ChannelType } from './ChannelType.js';
 import { channelTest } from '@optivem/testing-channels';
 
 /**
