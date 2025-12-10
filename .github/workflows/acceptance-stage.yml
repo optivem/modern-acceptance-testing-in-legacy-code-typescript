@@ -87,6 +87,15 @@ jobs:
     - name: Install Test Dependencies
       run: npm ci
 
+    - name: Build Workspace Packages
+      run: |
+        npm run build --workspace=optivem-results
+        npm run build --workspace=optivem-lang
+        npm run build --workspace=optivem-http
+        npm run build --workspace=optivem-playwright
+        npm run build --workspace=optivem-testing-channels
+        npm run build --workspace=optivem-testing-assertions
+
     - name: Install Playwright Browsers
       working-directory: system-test
       run: npx playwright install
