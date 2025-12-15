@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import type { Result } from '@optivem/results';
+import type { Result } from '@optivem/lang';
 
 export function setupResultMatchers() {
   expect.extend({
@@ -31,7 +31,7 @@ export function setupResultMatchers() {
       }
       
       const errorMessages = received.getErrorMessages();
-      const hasMessage = errorMessages.includes(expectedMessage);
+      const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
       
       if (hasMessage) {
         return {
@@ -44,6 +44,58 @@ export function setupResultMatchers() {
           message: () => `Expected result to be failure with message "${expectedMessage}" but got: ${errorMessages.join(', ')}`
         };
       }
+    },
+
+    toHaveErrorMessage<T>(received: Result<T>, expectedMessage: string) {
+      const isFailure = received.isFailure();
+      
+      if (!isFailure) {
+        return {
+          pass: false,
+          message: () => `Expected result to be failure but was success`
+        };
+      }
+      
+      const errorMessages = received.getErrorMessages();
+      const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
+      
+      if (hasMessage) {
+        return {
+          pass: true,
+          message: () => `Expected result not to have error message "${expectedMessage}"`
+        };
+      } else {
+        return {
+          pass: false,
+          message: () => `Expected result to have error message "${expectedMessage}" but got: ${errorMessages.join(', ')}`
+        };
+      }
+    },
+
+    toHaveFieldError<T>(received: Result<T>, expectedMessage: string) {
+      const isFailure = received.isFailure();
+      
+      if (!isFailure) {
+        return {
+          pass: false,
+          message: () => `Expected result to be failure but was success`
+        };
+      }
+      
+      const errorMessages = received.getErrorMessages();
+      const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
+      
+      if (hasMessage) {
+        return {
+          pass: true,
+          message: () => `Expected result not to have field error "${expectedMessage}"`
+        };
+      } else {
+        return {
+          pass: false,
+          message: () => `Expected result to have field error "${expectedMessage}" but got: ${errorMessages.join(', ')}`
+        };
+      }
     }
   });
 }
@@ -53,6 +105,8 @@ declare global {
     interface Matchers<R> {
       toBeSuccess(): R;
       toBeFailureWith(expectedMessage: string): R;
+      toHaveErrorMessage(expectedMessage: string): R;
+      toHaveFieldError(expectedMessage: string): R;
     }
   }
 }

@@ -1,7 +1,8 @@
 import { expect } from '@playwright/test';
 import { setupResultMatchers } from '@optivem/testing-assertions';
-import { ChannelType, channelTest } from '../../core/channels/index.js';
-import { OrderStatus } from '../../core/drivers/system/commons/enums/OrderStatus.js';
+import { ChannelType } from '../../core/shop/ChannelType.js';
+import { shopChannelTest as channelTest } from '../../core/shopChannelTest.js';
+import { OrderStatus } from '../../core/shop/driver/dtos/enums/OrderStatus.js';
 
 setupResultMatchers();
 
@@ -66,7 +67,8 @@ channelTest([ChannelType.UI, ChannelType.API], 'should cancel order', async ({ s
 
 channelTest([ChannelType.UI, ChannelType.API], 'should reject order with non-existent SKU', async ({ shopDriver }) => {
     const result = await shopDriver.placeOrder('NON-EXISTENT-SKU-12345', '5', 'US');
-    expect(result).toBeFailureWith('Product does not exist for SKU: NON-EXISTENT-SKU-12345');
+    expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+    expect(result).toHaveFieldError('Product does not exist for SKU: NON-EXISTENT-SKU-12345');
 });
 
 channelTest([ChannelType.UI, ChannelType.API], 'should not be able to view non-existent order', async ({ shopDriver }) => {
@@ -80,7 +82,8 @@ channelTest([ChannelType.UI, ChannelType.API], 'should reject order with negativ
     expect(createProductResult).toBeSuccess();
 
     const result = await shopDriver.placeOrder(sku, '-3', 'US');
-    expect(result).toBeFailureWith('Quantity must be positive');
+    expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+    expect(result).toHaveFieldError('Quantity must be positive');
 });
 
 channelTest([ChannelType.UI, ChannelType.API], 'should reject order with zero quantity', async ({ shopDriver, erpApiDriver }) => {
@@ -89,7 +92,8 @@ channelTest([ChannelType.UI, ChannelType.API], 'should reject order with zero qu
     expect(createProductResult).toBeSuccess();
 
     const result = await shopDriver.placeOrder(sku, '0', 'US');
-    expect(result).toBeFailureWith('Quantity must be positive');
+    expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+    expect(result).toHaveFieldError('Quantity must be positive');
 });
 
 
@@ -103,7 +107,8 @@ channelTest(
     'should reject order with empty SKU',
     async ({ shopDriver }, data) => {
         const result = await shopDriver.placeOrder(data.sku, '5', 'US');
-        expect(result).toBeFailureWith(data.expectedMessage);
+        expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+        expect(result).toHaveFieldError(data.expectedMessage);
     }
 );
 
@@ -116,7 +121,8 @@ channelTest(
     'should reject order with non-integer quantity',
     async ({ shopDriver }, data) => {
         const result = await shopDriver.placeOrder('SKU-123', data.quantity, 'US');
-        expect(result).toBeFailureWith(data.expectedMessage);
+        expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+        expect(result).toHaveFieldError(data.expectedMessage);
     }
 );
 
@@ -129,7 +135,8 @@ channelTest(
     'should reject order with empty country',
     async ({ shopDriver }, data) => {
         const result = await shopDriver.placeOrder('SKU-123', '5', data.country);
-        expect(result).toBeFailureWith(data.expectedMessage);
+        expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+        expect(result).toHaveFieldError(data.expectedMessage);
     }
 );
 
@@ -139,22 +146,26 @@ channelTest([ChannelType.UI, ChannelType.API], 'should reject order with unsuppo
     expect(createProductResult).toBeSuccess();
 
     const result = await shopDriver.placeOrder(sku, '3', 'XX');
-    expect(result).toBeFailureWith('Country does not exist: XX');
+    expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+    expect(result).toHaveFieldError('Country does not exist: XX');
 });
 
 channelTest([ChannelType.API], 'should reject order with null quantity', async ({ shopDriver }) => {
     const result = await shopDriver.placeOrder('some-sku', null as any, 'US');
-    expect(result).toBeFailureWith('Quantity must not be empty');
+    expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+    expect(result).toHaveFieldError('Quantity must not be empty');
 });
 
 channelTest([ChannelType.API], 'should reject order with null SKU', async ({ shopDriver }) => {
     const result = await shopDriver.placeOrder(null as any, '5', 'US');
-    expect(result).toBeFailureWith('SKU must not be empty');
+    expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+    expect(result).toHaveFieldError('SKU must not be empty');
 });
 
 channelTest([ChannelType.API], 'should reject order with null country', async ({ shopDriver }) => {
     const result = await shopDriver.placeOrder('some-sku', '5', null as any);
-    expect(result).toBeFailureWith('Country must not be empty');
+    expect(result).toHaveErrorMessage('The request contains one or more validation errors');
+    expect(result).toHaveFieldError('Country must not be empty');
 });
 
 channelTest(

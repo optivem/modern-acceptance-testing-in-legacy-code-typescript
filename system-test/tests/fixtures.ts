@@ -1,7 +1,7 @@
 import { test as base } from '@playwright/test';
-import { ShopDriver } from '../core/drivers/system/ShopDriver.js';
-import { ErpApiDriver } from '../core/drivers/external/erp/api/ErpApiDriver.js';
-import { TaxApiDriver } from '../core/drivers/external/tax/api/TaxApiDriver.js';
+import { ShopDriver } from '../core/shop/driver/ShopDriver.js';
+import { ErpApiDriver } from '../core/erp/driver/ErpApiDriver.js';
+import { TaxApiDriver } from '../core/tax/driver/TaxApiDriver.js';
 
 export type TestFixtures = {
     shopDriver: ShopDriver;

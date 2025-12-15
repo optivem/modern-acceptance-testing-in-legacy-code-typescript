@@ -17,7 +17,7 @@
   "author": "Optivem",
   "license": "MIT",
   "dependencies": {
-    "@optivem/results": "file:../optivem-results",
+    "@optivem/lang": "file:../optivem-lang",
     "axios": "^1.7.9",
     "http-status-codes": "^2.3.0"
   },

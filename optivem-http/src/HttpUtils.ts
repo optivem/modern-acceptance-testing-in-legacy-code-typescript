@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { Result } from '@optivem/results';
+import { Result } from '@optivem/lang';
 import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 import { StatusCodes } from 'http-status-codes';
 

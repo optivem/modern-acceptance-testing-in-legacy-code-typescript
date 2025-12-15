@@ -25,6 +25,7 @@
     "@optivem/results": "file:../optivem-results",
     "@optivem/testing-assertions": "file:../optivem-testing-assertions",
     "@optivem/testing-channels": "file:../optivem-testing-channels",
+    "@optivem/testing-dsl": "file:../optivem-testing-dsl",
     "axios": "^1.13.2",
     "http-status-codes": "^2.3.0",
     "uuid": "^9.0.1"

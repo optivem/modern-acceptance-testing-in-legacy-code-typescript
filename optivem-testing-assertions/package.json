@@ -9,7 +9,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@optivem/results": "file:../optivem-results",
+    "@optivem/lang": "file:../optivem-lang",
     "@playwright/test": "^1.41.0"
   },
   "devDependencies": {

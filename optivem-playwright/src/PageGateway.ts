@@ -40,6 +40,12 @@ export class PageGateway {
         return (await locator.textContent()) || '';
     }
 
+    async readAllTextContents(selector: string): Promise<string[]> {
+        const locator = this.page.locator(selector);
+        await this.wait(locator);
+        return await locator.allTextContents();
+    }
+
     async exists(selector: string): Promise<boolean> {
         const locator = this.page.locator(selector);
         try {
