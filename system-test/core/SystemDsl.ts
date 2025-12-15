@@ -1,5 +1,5 @@
 import { Context } from '@optivem/testing-dsl';
-import { SystemConfiguration } from '../SystemConfigurationLoader.js';
+import { SystemConfiguration } from './SystemConfiguration.js';
 import { ShopDsl } from './shop/dsl/ShopDsl.js';
 import { ErpDsl } from './erp/dsl/ErpDsl.js';
 import { TaxDsl } from './tax/dsl/TaxDsl.js';

@@ -1,4 +1,4 @@
-import { SystemConfiguration } from '../../../SystemConfigurationLoader.js';
+import { SystemConfiguration } from '../../SystemConfiguration.js';
 import { Context } from '@optivem/testing-dsl';
 import { ShopDriver } from '../driver/ShopDriver.js';
 import { ShopApiDriver } from '../driver/api/ShopApiDriver.js';

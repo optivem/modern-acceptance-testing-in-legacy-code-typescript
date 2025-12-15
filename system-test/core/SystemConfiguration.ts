@@ -1,34 +1,24 @@
 export class SystemConfiguration {
-    private readonly shopUiBaseUrl: string;
-    private readonly shopApiBaseUrl: string;
-    private readonly erpBaseUrl: string;
-    private readonly taxBaseUrl: string;
-    
-    constructor(
-        shopUiBaseUrl: string,
-        shopApiBaseUrl: string,
-        erpBaseUrl: string,
-        taxBaseUrl: string
-    ) {
-        this.shopUiBaseUrl = shopUiBaseUrl;
-        this.shopApiBaseUrl = shopApiBaseUrl;
-        this.erpBaseUrl = erpBaseUrl;
-        this.taxBaseUrl = taxBaseUrl;
-    }
+  constructor(
+    private readonly shopUiBaseUrl: string,
+    private readonly shopApiBaseUrl: string,
+    private readonly erpBaseUrl: string,
+    private readonly taxBaseUrl: string
+  ) {}
 
-    getShopUiBaseUrl(): string {
-        return this.shopUiBaseUrl;
-    }
+  getShopUiBaseUrl(): string {
+    return this.shopUiBaseUrl;
+  }
 
-    getShopApiBaseUrl(): string {
-        return this.shopApiBaseUrl;
-    }
+  getShopApiBaseUrl(): string {
+    return this.shopApiBaseUrl;
+  }
 
-    getErpBaseUrl(): string {
-        return this.erpBaseUrl;
-    }
+  getErpBaseUrl(): string {
+    return this.erpBaseUrl;
+  }
 
-    getTaxBaseUrl(): string {
-        return this.taxBaseUrl;
-    }
+  getTaxBaseUrl(): string {
+    return this.taxBaseUrl;
+  }
 }
