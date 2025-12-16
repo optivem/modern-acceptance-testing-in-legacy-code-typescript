@@ -1,9 +1,49 @@
 import { expect } from '@playwright/test';
 import type { Result } from '@optivem/lang';
 
+function formatError(error: unknown): string {
+  if (error === null || error === undefined) {
+    return 'unknown error';
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  if (Array.isArray(error)) {
+    return error.join(', ');
+  }
+  if (typeof error === 'object' && 'message' in error) {
+    return String((error as { message: unknown }).message);
+  }
+  return JSON.stringify(error);
+}
+
+function getErrorMessages(error: unknown): string[] {
+  if (error === null || error === undefined) {
+    return [];
+  }
+  if (typeof error === 'string') {
+    return [error];
+  }
+  if (Array.isArray(error)) {
+    return error.map(e => typeof e === 'string' ? e : JSON.stringify(e));
+  }
+  if (typeof error === 'object' && 'message' in error) {
+    const messages = [String((error as { message: unknown }).message)];
+    // Also include field error messages if present
+    if ('fields' in error && Array.isArray((error as { fields: unknown[] }).fields)) {
+      const fields = (error as { fields: { field: string; message: string }[] }).fields;
+      for (const field of fields) {
+        messages.push(`${field.field}: ${field.message}`);
+      }
+    }
+    return messages;
+  }
+  return [JSON.stringify(error)];
+}
+
 export function setupResultMatchers() {
   expect.extend({
-    toBeSuccess<T>(received: Result<T>) {
+    toBeSuccess<T, E>(received: Result<T, E>) {
       const pass = received.isSuccess();
       
       if (pass) {
@@ -12,15 +52,15 @@ export function setupResultMatchers() {
           message: () => 'Expected result to be failure but was success'
         };
       } else {
-        const errors = received.getErrorMessages().join(', ');
+        const error = received.getError();
         return {
           pass: false,
-          message: () => `Expected result to be success but was failure with errors: ${errors}`
+          message: () => `Expected result to be success but was failure with error: ${formatError(error)}`
         };
       }
     },
 
-    toBeFailureWith<T>(received: Result<T>, expectedMessage: string) {
+    toBeFailureWith<T, E>(received: Result<T, E>, expectedMessage: string) {
       const isFailure = received.isFailure();
       
       if (!isFailure) {
@@ -30,7 +70,7 @@ export function setupResultMatchers() {
         };
       }
       
-      const errorMessages = received.getErrorMessages();
+      const errorMessages = getErrorMessages(received.getError());
       const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
       
       if (hasMessage) {
@@ -46,7 +86,7 @@ export function setupResultMatchers() {
       }
     },
 
-    toHaveErrorMessage<T>(received: Result<T>, expectedMessage: string) {
+    toHaveErrorMessage<T, E>(received: Result<T, E>, expectedMessage: string) {
       const isFailure = received.isFailure();
       
       if (!isFailure) {
@@ -56,7 +96,7 @@ export function setupResultMatchers() {
         };
       }
       
-      const errorMessages = received.getErrorMessages();
+      const errorMessages = getErrorMessages(received.getError());
       const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
       
       if (hasMessage) {
@@ -72,7 +112,7 @@ export function setupResultMatchers() {
       }
     },
 
-    toHaveFieldError<T>(received: Result<T>, expectedMessage: string) {
+    toHaveFieldError<T, E>(received: Result<T, E>, expectedMessage: string) {
       const isFailure = received.isFailure();
       
       if (!isFailure) {
@@ -82,7 +122,7 @@ export function setupResultMatchers() {
         };
       }
       
-      const errorMessages = received.getErrorMessages();
+      const errorMessages = getErrorMessages(received.getError());
       const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
       
       if (hasMessage) {

@@ -1,40 +1,13 @@
-import { Result } from '@optivem/lang';
-import { Context } from './Context';
+import { UseCaseContext } from './Context.js';
+import { ResponseVerification } from './BaseSuccessVerification.js';
 
-export class FailureVerification {
-  private readonly result: Result<any>;
-  private readonly context: Context;
-
-  constructor(result: Result<any>, context: Context) {
-    this.result = result;
-    this.context = context;
+export class FailureVerification<TError = unknown, TContext = UseCaseContext> extends ResponseVerification<TError, TContext> {
+  constructor(error: TError, context: TContext) {
+    super(error, context);
   }
 
-  errorMessage(expectedMessage: string): FailureVerification {
-    const expandedExpectedMessage = this.context.expandAliases(expectedMessage);
-    const errorMessages = this.result.getErrorMessages();
-    const actualMessage = errorMessages.join(', ');
-    
-    if (actualMessage !== expandedExpectedMessage) {
-      throw new Error(`Expected error message: '${expandedExpectedMessage}', but got: '${actualMessage}'`);
-    }
-    
-    return this;
-  }
-
-  fieldErrorMessage(expectedField: string, expectedMessage: string): FailureVerification {
-    const expandedExpectedField = this.context.expandAliases(expectedField);
-    const expandedExpectedMessage = this.context.expandAliases(expectedMessage);
-    const errorMessages = this.result.getErrorMessages();
-    
-    // For now, simple implementation - can be enhanced to parse field errors
-    const fullExpectedMessage = `${expandedExpectedField}: ${expandedExpectedMessage}`;
-    const actualMessage = errorMessages.join(', ');
-    
-    if (!actualMessage.includes(expandedExpectedMessage)) {
-      throw new Error(`Expected field error message for field '${expandedExpectedField}': '${expandedExpectedMessage}', but got: '${actualMessage}'`);
-    }
-    
-    return this;
+  // Helper method to get the error (alias for getResponse for clarity)
+  getError(): TError {
+    return this.response;
   }
 }

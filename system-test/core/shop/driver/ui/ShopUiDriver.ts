@@ -7,6 +7,7 @@ import { Result } from '@optivem/lang';
 import { PlaceOrderResponse } from '../dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../dtos/GetOrderResponse.js';
 import { OrderStatus } from '../dtos/enums/OrderStatus.js';
+import { Error, createError } from '../../../common/error/index.js';
 
 enum Pages {
     NONE = 'NONE',
@@ -28,18 +29,18 @@ export class ShopUiDriver implements ShopDriver {
         this.client = new ShopUiClient(baseUrl);
     }
 
-    async goToShop(): Promise<Result<void>> {
+    async goToShop(): Promise<Result<void, Error>> {
         this.homePage = await this.client.openHomePage();
 
         if (!this.client.isStatusOk() || !(await this.client.isPageLoaded())) {
-            return Result.failure();
+            return Result.failure(createError('Failed to load shop page'));
         }
 
         this.currentPage = Pages.HOME;
         return Result.success();
     }
 
-    async placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse>> {
+    async placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse, Error>> {
         await this.ensureOnNewOrderPage();
         
         await this.newOrderPage!.inputSku(sku);
@@ -50,8 +51,8 @@ export class ShopUiDriver implements ShopDriver {
         const isSuccess = await this.newOrderPage!.hasSuccessNotification();
 
         if (!isSuccess) {
-            const errorMessage = await this.newOrderPage!.readErrorNotification();
-            return Result.failure(errorMessage);
+            const errorMessages = await this.newOrderPage!.readErrorNotification();
+            return Result.failure(createError(errorMessages.join(', ')));
         }
 
         const orderNumberValue = await this.newOrderPage!.getOrderNumber();
@@ -59,7 +60,7 @@ export class ShopUiDriver implements ShopDriver {
         return Result.success(response);
     }
 
-    async viewOrder(orderNumber: string): Promise<Result<GetOrderResponse>> {
+    async viewOrder(orderNumber: string): Promise<Result<GetOrderResponse, Error>> {
         await this.ensureOnOrderHistoryPage();
         
         await this.orderHistoryPage!.inputOrderNumber(orderNumber);
@@ -68,8 +69,8 @@ export class ShopUiDriver implements ShopDriver {
         const isSuccess = await this.orderHistoryPage!.hasOrderDetails();
 
         if (!isSuccess) {
-            const errorMessage = await this.orderHistoryPage!.readErrorNotification();
-            return Result.failure(errorMessage);
+            const errorMessages = await this.orderHistoryPage!.readErrorNotification();
+            return Result.failure(createError(errorMessages.join(', ')));
         }
 
         const displayOrderNumber = await this.orderHistoryPage!.getOrderNumber();
@@ -105,34 +106,34 @@ export class ShopUiDriver implements ShopDriver {
         return Result.success(response);
     }
 
-    async cancelOrder(orderNumber: string): Promise<Result<void>> {
+    async cancelOrder(orderNumber: string): Promise<Result<void, Error>> {
         const viewResult = await this.viewOrder(orderNumber);
         
         // If order doesn't exist, return the failure from viewOrder
         if (!viewResult.isSuccess()) {
-            return Result.failure(viewResult.getErrorMessages());
+            return Result.failure(viewResult.getError());
         }
 
         // Check if cancel button exists
         const hasCancelButton = !(await this.orderHistoryPage!.isCancelButtonHidden());
         if (!hasCancelButton) {
-            return Result.failure(['Order has already been cancelled']);
+            return Result.failure(createError('Order has already been cancelled'));
         }
 
         await this.orderHistoryPage!.clickCancelOrder();
 
         const cancellationMessage = await this.orderHistoryPage!.readSuccessNotification();
         if (cancellationMessage !== 'Order cancelled successfully!') {
-            return Result.failure();
+            return Result.failure(createError('Cancellation was not confirmed'));
         }
 
         const displayStatusAfterCancel = await this.orderHistoryPage!.getStatus();
         if (displayStatusAfterCancel !== OrderStatus.CANCELLED) {
-            return Result.failure();
+            return Result.failure(createError('Order status was not updated to cancelled'));
         }
 
         if (!(await this.orderHistoryPage!.isCancelButtonHidden())) {
-            return Result.failure();
+            return Result.failure(createError('Cancel button should be hidden after cancellation'));
         }
 
         return Result.success();

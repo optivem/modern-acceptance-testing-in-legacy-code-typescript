@@ -1,4 +1,4 @@
-export class Context {
+export class UseCaseContext {
     private readonly paramMap: Map<string, string>;
     private readonly resultMap: Map<string, string>;
 
@@ -66,3 +66,6 @@ export class Context {
         });
     }
 }
+
+// Backward compatibility alias
+export { UseCaseContext as Context };

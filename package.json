@@ -9,6 +9,7 @@
     "optivem-playwright",
     "optivem-testing-channels",
     "optivem-testing-assertions",
+    "optivem-testing-dsl",
     "system-test"
   ]
 }

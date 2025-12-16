@@ -3,6 +3,7 @@ import { Result } from '@optivem/lang';
 import { ErpApiClient } from './client/ErpApiClient.js';
 import { HttpClientFactory } from '@optivem/http';
 import { Closer } from '@optivem/lang';
+import { Error, toError } from '../../common/error/index.js';
 
 export class ErpApiDriver {
     private readonly httpClient: AxiosInstance;
@@ -13,12 +14,14 @@ export class ErpApiDriver {
         this.apiClient = new ErpApiClient(this.httpClient, baseUrl);
     }
 
-    async goToErp(): Promise<Result<void>> {
-        return this.apiClient.health().checkHealth();
+    async goToErp(): Promise<Result<void, Error>> {
+        const result = await this.apiClient.health().checkHealth();
+        return result.mapFailure(toError);
     }
 
-    async createProduct(sku: string, price: string): Promise<Result<void>> {
-        return this.apiClient.products().createProduct(sku, price);
+    async createProduct(sku: string, price: string): Promise<Result<void, Error>> {
+        const result = await this.apiClient.products().createProduct(sku, price);
+        return result.mapFailure(toError);
     }
 
     close(): void {

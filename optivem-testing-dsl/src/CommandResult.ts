@@ -1,34 +1,60 @@
 import { Result } from '@optivem/lang';
-import { Context } from './Context';
-import { FailureVerification } from './FailureVerification';
+import { UseCaseContext } from './Context.js';
 
-export class CommandResult<TResponse, TVerification> {
-  private readonly result: Result<TResponse>;
-  private readonly context: Context;
-  private readonly verificationFactory: (response: TResponse, context: Context) => TVerification;
+export class UseCaseResult<
+  TSuccessResponse, 
+  TFailureResponse = unknown, 
+  TContext = UseCaseContext, 
+  TSuccessVerification = unknown, 
+  TFailureVerification = unknown
+> {
+  private readonly result: Result<TSuccessResponse, TFailureResponse>;
+  private readonly context: TContext;
+  private readonly verificationFactory: (response: TSuccessResponse, context: TContext) => TSuccessVerification;
+  private readonly failureVerificationFactory?: (error: TFailureResponse, context: TContext) => TFailureVerification;
 
   constructor(
-    result: Result<TResponse>,
-    context: Context,
-    verificationFactory: (response: TResponse, context: Context) => TVerification
+    result: Result<TSuccessResponse, TFailureResponse>,
+    context: TContext,
+    verificationFactory: (response: TSuccessResponse, context: TContext) => TSuccessVerification,
+    failureVerificationFactory?: (error: TFailureResponse, context: TContext) => TFailureVerification
   ) {
     this.result = result;
     this.context = context;
     this.verificationFactory = verificationFactory;
+    this.failureVerificationFactory = failureVerificationFactory;
   }
 
-  shouldSucceed(): TVerification {
+  shouldSucceed(): TSuccessVerification {
     if (!this.result.isSuccess()) {
-      const errorMessages = this.result.getErrorMessages();
-      throw new Error(`Expected result to be success but was failure with error: ${errorMessages.join(', ')}`);
+      const error = this.result.getError();
+      throw new Error(`Expected result to be success but was failure with error: ${JSON.stringify(error)}`);
     }
     return this.verificationFactory(this.result.getValue()!, this.context);
   }
 
-  shouldFail(): FailureVerification {
+  shouldFail(): TFailureVerification {
     if (!this.result.isFailure()) {
       throw new Error('Expected result to be failure but was success');
     }
-    return new FailureVerification(this.result, this.context);
+    if (!this.failureVerificationFactory) {
+      throw new Error('Failure verification not configured for this use case');
+    }
+    return this.failureVerificationFactory(this.result.getError()!, this.context);
+  }
+}
+
+// Backward compatibility alias with old param order: CommandResult<TResponse, TVerification>
+// Maps to UseCaseResult<TResponse, unknown, UseCaseContext, TVerification, unknown>
+export class CommandResult<
+  TResponse,
+  TVerification
+> extends UseCaseResult<TResponse, unknown, UseCaseContext, TVerification, unknown> {
+  constructor(
+    result: Result<TResponse, unknown>,
+    context: UseCaseContext,
+    verificationFactory: (response: TResponse, context: UseCaseContext) => TVerification
+  ) {
+    super(result, context, verificationFactory);
   }
 }

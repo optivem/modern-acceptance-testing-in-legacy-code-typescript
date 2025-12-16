@@ -3,6 +3,7 @@ import { Result } from '@optivem/lang';
 import { TaxApiClient } from './client/TaxApiClient.js';
 import { HttpClientFactory } from '@optivem/http';
 import { Closer } from '@optivem/lang';
+import { Error, toError } from '../../common/error/index.js';
 
 export class TaxApiDriver {
     private readonly httpClient: AxiosInstance;
@@ -13,8 +14,9 @@ export class TaxApiDriver {
         this.apiClient = new TaxApiClient(this.httpClient, baseUrl);
     }
 
-    async goToTax(): Promise<Result<void>> {
-        return this.apiClient.health().checkHealth();
+    async goToTax(): Promise<Result<void, Error>> {
+        const result = await this.apiClient.health().checkHealth();
+        return result.mapFailure(toError);
     }
 
     close(): void {

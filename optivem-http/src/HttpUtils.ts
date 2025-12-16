@@ -4,59 +4,44 @@ import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 import { StatusCodes } from 'http-status-codes';
 
 export class HttpUtils {
-    static getOkResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
+    static getOkResultOrFailure<T>(response: AxiosResponse<T>): Result<T, ProblemDetailResponse> {
         return HttpUtils.getResultOrFailure(response, StatusCodes.OK, true);
     }
 
-    static getCreatedResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
+    static getCreatedResultOrFailure<T>(response: AxiosResponse<T>): Result<T, ProblemDetailResponse> {
         return HttpUtils.getResultOrFailure(response, StatusCodes.CREATED, true);
     }
 
-    static getNoContentResultOrFailure(response: AxiosResponse<void>): Result<void> {
+    static getNoContentResultOrFailure(response: AxiosResponse<void>): Result<void, ProblemDetailResponse> {
         return HttpUtils.getResultOrFailure(response, StatusCodes.NO_CONTENT, false);
     }
 
-    private static getResultOrFailure<T>(response: AxiosResponse<T>, statusCode: StatusCodes, hasData: boolean): Result<T> {
+    private static getResultOrFailure<T>(response: AxiosResponse<T>, statusCode: StatusCodes, hasData: boolean): Result<T, ProblemDetailResponse> {
         if (response.status === statusCode) {
             if (hasData) {
                 return Result.success(response.data);
             }
             return Result.success();
         }
-        return this.extractErrorMessages(response);
+        return this.extractError(response);
     }
 
-    private static extractErrorMessages<T>(response: AxiosResponse<any>): Result<T> {
+    private static extractError<T>(response: AxiosResponse<any>): Result<T, ProblemDetailResponse> {
         if (this.isProblemDetails(response.data)) {
             const problemDetails = response.data as ProblemDetailResponse;
-            
-            const errorMessages: string[] = [];
-            
-            if (problemDetails.detail) {
-                errorMessages.push(problemDetails.detail);
-            }
-            
-            if (problemDetails.title && problemDetails.title !== problemDetails.detail) {
-                errorMessages.push(`Title: ${problemDetails.title}`);
-            }
-            
-            if (problemDetails.errors && problemDetails.errors.length > 0) {
-                for (const error of problemDetails.errors) {
-                    errorMessages.push(error.message);
-                }
-            }
-            
-            if (errorMessages.length > 0) {
-                return Result.failure(errorMessages);
-            }
+            return Result.failure(problemDetails);
         }
         
-        return Result.failure([`HTTP ${response.status}: ${JSON.stringify(response.data)}`]);
+        // Create a problem detail from the raw response
+        const problemDetail: ProblemDetailResponse = {
+            status: response.status,
+            detail: JSON.stringify(response.data),
+            title: `HTTP ${response.status}`
+        };
+        return Result.failure(problemDetail);
     }
 
     private static isProblemDetails(data: any): boolean {
         return data && (data.type || data.title || data.detail || data.errors);
     }
-
-    // TODO: VJ: Get uri
 }

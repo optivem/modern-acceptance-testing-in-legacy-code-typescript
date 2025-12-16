@@ -7,6 +7,7 @@ import { PlaceOrderResponse } from '../dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../dtos/GetOrderResponse.js';
 import { HttpClientFactory } from '@optivem/http';
 import { Closer } from '@optivem/lang';
+import { Error, toError } from '../../../common/error/index.js';
 
 export class ShopApiDriver implements ShopDriver {
     private readonly httpClient: AxiosInstance;
@@ -17,25 +18,29 @@ export class ShopApiDriver implements ShopDriver {
         this.client = new ShopApiClient(this.httpClient, baseUrl);
     }
 
-    async goToShop(): Promise<Result<void>> {
-        return await this.client.health.checkHealth();
+    async goToShop(): Promise<Result<void, Error>> {
+        const result = await this.client.health.checkHealth();
+        return result.mapFailure(toError);
     }
 
-    async placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse>> {
+    async placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse, Error>> {
         const request: PlaceOrderRequest = {
             sku,
             quantity,
             country,
         };
-        return await this.client.order.placeOrder(request);
+        const result = await this.client.order.placeOrder(request);
+        return result.mapFailure(toError);
     }
 
-    async viewOrder(orderNumber: string): Promise<Result<GetOrderResponse>> {
-        return await this.client.order.getOrder(orderNumber);
+    async viewOrder(orderNumber: string): Promise<Result<GetOrderResponse, Error>> {
+        const result = await this.client.order.getOrder(orderNumber);
+        return result.mapFailure(toError);
     }
 
-    async cancelOrder(orderNumber: string): Promise<Result<void>> {
-        return await this.client.order.cancelOrder(orderNumber);
+    async cancelOrder(orderNumber: string): Promise<Result<void, Error>> {
+        const result = await this.client.order.cancelOrder(orderNumber);
+        return result.mapFailure(toError);
     }
 
     async close(): Promise<void> {

@@ -1,4 +1,4 @@
-import { HttpGateway, HttpUtils } from '@optivem/http';
+import { HttpGateway, HttpUtils, ProblemDetailResponse } from '@optivem/http';
 import { Result } from '@optivem/lang';
 import { CreateProductRequest } from '../dtos/CreateProductRequest.js';
 
@@ -10,16 +10,12 @@ export class ProductController {
         this.httpClient = httpClient;
     }
 
-    async createProduct(sku: string, price: string): Promise<Result<void>> {
+    async createProduct(sku: string, price: string): Promise<Result<void, ProblemDetailResponse>> {
         const request: CreateProductRequest = { id: sku, sku, price };
         const httpResponse = await this.httpClient.post<void>(
             ProductController.ENDPOINT,
             request
         );
-        const result = HttpUtils.getCreatedResultOrFailure<void>(httpResponse);
-        if (result.isFailure()) {
-            return Result.failure(result.getErrorMessages());
-        }
-        return Result.success();
+        return HttpUtils.getCreatedResultOrFailure<void>(httpResponse);
     }
 }

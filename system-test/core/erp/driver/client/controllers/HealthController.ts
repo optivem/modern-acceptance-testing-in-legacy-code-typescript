@@ -1,4 +1,4 @@
-import { HttpGateway, HttpUtils } from '@optivem/http';
+import { HttpGateway, HttpUtils, ProblemDetailResponse } from '@optivem/http';
 import { Result } from '@optivem/lang';
 
 export class HealthController {
@@ -9,7 +9,7 @@ export class HealthController {
         this.httpClient = httpClient;
     }
 
-    async checkHealth(): Promise<Result<void>> {
+    async checkHealth(): Promise<Result<void, ProblemDetailResponse>> {
         const httpResponse = await this.httpClient.get<void>(HealthController.ENDPOINT);
         return HttpUtils.getOkResultOrFailure<void>(httpResponse);
     }
