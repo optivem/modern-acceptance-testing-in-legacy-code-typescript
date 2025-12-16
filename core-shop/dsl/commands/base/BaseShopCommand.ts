@@ -1,7 +1,7 @@
 import { ShopDriver } from '../../../driver/ShopDriver.js';
 import { BaseUseCase, UseCaseContext } from '@optivem/testing-dsl';
-import { Error } from '../../../../core-commons/error/index.js';
-import { ErrorFailureVerification } from '../../../../core-commons/dsl/index.js';
+import { Error } from '../../../core-commons/error/index.js';
+import { ErrorFailureVerification } from '../../../core-commons/dsl/index.js';
 
 export abstract class BaseShopCommand<TResponse, TVerification> extends BaseUseCase<
     ShopDriver,

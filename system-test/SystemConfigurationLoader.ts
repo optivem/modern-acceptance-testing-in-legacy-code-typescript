@@ -1,4 +1,4 @@
-import { SystemConfiguration } from './core/SystemConfiguration.js';
+import { SystemConfiguration } from '../core/SystemConfiguration.js';
 import { testConfig } from './test.config.js';
 
 export class SystemConfigurationLoader {

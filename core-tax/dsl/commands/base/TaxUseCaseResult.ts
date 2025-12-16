@@ -1,9 +1,9 @@
 import { Result } from '@optivem/lang';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/testing-dsl';
-import { Error } from '../../../../core-commons/error/index.js';
-import { ErrorFailureVerification } from '../../../../core-commons/dsl/index.js';
+import { Error } from '../../../core-commons/error/index.js';
+import { ErrorFailureVerification } from '../../../core-commons/dsl/index.js';
 
-export class ErpUseCaseResult<
+export class TaxUseCaseResult<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse, UseCaseContext>
 > extends UseCaseResult<TSuccessResponse, Error, UseCaseContext, TSuccessVerification, ErrorFailureVerification> {

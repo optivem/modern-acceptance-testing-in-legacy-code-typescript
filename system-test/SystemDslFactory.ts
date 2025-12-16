@@ -1,4 +1,4 @@
-import { SystemDsl } from './core/SystemDsl.js';
+import { SystemDsl } from '../core/SystemDsl.js';
 import { SystemConfigurationLoader } from './SystemConfigurationLoader.js';
 
 export class SystemDslFactory {

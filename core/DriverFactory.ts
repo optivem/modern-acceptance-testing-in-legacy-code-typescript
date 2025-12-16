@@ -1,4 +1,4 @@
-import { SystemConfigurationLoader } from '../SystemConfigurationLoader.js';
+import { SystemConfigurationLoader } from '../system-test/SystemConfigurationLoader.js';
 import { ShopUiDriver } from '../core-shop/driver/ui/ShopUiDriver.js';
 import { ShopApiDriver } from '../core-shop/driver/api/ShopApiDriver.js';
 import { ErpApiDriver } from '../core-erp/driver/ErpApiDriver.js';
