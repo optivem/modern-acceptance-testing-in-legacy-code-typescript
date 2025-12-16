@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 import { setupResultMatchers } from '@optivem/testing-assertions';
-import { ChannelType } from '../../core/shop/ChannelType.js';
+import { ChannelType } from '../../core-shop/ChannelType.js';
 import { shopChannelTest as channelTest } from '../../core/shopChannelTest.js';
-import { OrderStatus } from '../../core/shop/driver/dtos/enums/OrderStatus.js';
+import { OrderStatus } from '../../core-shop/driver/dtos/enums/OrderStatus.js';
 
 setupResultMatchers();
 

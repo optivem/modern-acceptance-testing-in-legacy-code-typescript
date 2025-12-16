@@ -1,4 +1,4 @@
-import { SystemConfiguration } from '../../SystemConfiguration.js';
+import { SystemConfiguration } from '../../core/SystemConfiguration.js';
 import { Context } from '@optivem/testing-dsl';
 import { ErpApiDriver } from '../driver/ErpApiDriver.js';
 import { Closer } from '@optivem/lang';

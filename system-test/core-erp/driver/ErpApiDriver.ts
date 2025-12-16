@@ -3,7 +3,7 @@ import { Result } from '@optivem/lang';
 import { ErpApiClient } from './client/ErpApiClient.js';
 import { HttpClientFactory } from '@optivem/http';
 import { Closer } from '@optivem/lang';
-import { Error, toError } from '../../commons/error/index.js';
+import { Error, toError } from '../../core-commons/error/index.js';
 
 export class ErpApiDriver {
     private readonly httpClient: AxiosInstance;

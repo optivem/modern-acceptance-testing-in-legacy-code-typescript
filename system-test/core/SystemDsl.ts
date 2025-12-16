@@ -1,8 +1,8 @@
 import { Context } from '@optivem/testing-dsl';
 import { SystemConfiguration } from './SystemConfiguration.js';
-import { ShopDsl } from './shop/dsl/ShopDsl.js';
-import { ErpDsl } from './erp/dsl/ErpDsl.js';
-import { TaxDsl } from './tax/dsl/TaxDsl.js';
+import { ShopDsl } from '../core-shop/dsl/ShopDsl.js';
+import { ErpDsl } from '../core-erp/dsl/ErpDsl.js';
+import { TaxDsl } from '../core-tax/dsl/TaxDsl.js';
 import { Closer } from '@optivem/lang';
 
 export class SystemDsl {
