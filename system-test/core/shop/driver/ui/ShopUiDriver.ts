@@ -7,7 +7,7 @@ import { Result } from '@optivem/lang';
 import { PlaceOrderResponse } from '../dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../dtos/GetOrderResponse.js';
 import { OrderStatus } from '../dtos/enums/OrderStatus.js';
-import { Error, createError } from '../../../common/error/index.js';
+import { Error, createError } from '../../../commons/error/index.js';
 
 enum Pages {
     NONE = 'NONE',

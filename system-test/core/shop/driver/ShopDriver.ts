@@ -1,7 +1,7 @@
 import { Result } from '@optivem/lang';
 import { PlaceOrderResponse } from './dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from './dtos/GetOrderResponse.js';
-import { Error } from '../../common/error/index.js';
+import { Error } from '../../commons/error/index.js';
 
 export interface ShopDriver {
     goToShop(): Promise<Result<void, Error>>;

@@ -1,7 +1,7 @@
 import { ErpApiDriver } from '../../../driver/ErpApiDriver.js';
 import { BaseUseCase, UseCaseContext } from '@optivem/testing-dsl';
-import { Error } from '../../../../common/error/index.js';
-import { ErrorFailureVerification } from '../../../../common/dsl/index.js';
+import { Error } from '../../../../commons/error/index.js';
+import { ErrorFailureVerification } from '../../../../commons/dsl/index.js';
 
 export abstract class BaseErpCommand<TResponse, TVerification> extends BaseUseCase<
     ErpApiDriver,
