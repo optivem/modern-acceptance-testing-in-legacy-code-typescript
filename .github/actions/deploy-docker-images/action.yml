@@ -91,12 +91,12 @@ runs:
     
     - name: Build Workspace Packages
       run: |
-        cd optivem-results && npm run build && cd ..
-        cd optivem-lang && npm run build && cd ..
-        cd optivem-http && npm run build && cd ..
-        cd optivem-playwright && npm run build && cd ..
-        cd optivem-testing-channels && npm run build && cd ..
-        cd optivem-testing-assertions && npm run build && cd ..
+        cd libs/optivem-results && npm run build && cd ../..
+        cd libs/optivem-lang && npm run build && cd ../..
+        cd libs/optivem-http && npm run build && cd ../..
+        cd libs/optivem-playwright && npm run build && cd ../..
+        cd libs/optivem-testing-channels && npm run build && cd ../..
+        cd libs/optivem-testing-assertions && npm run build && cd ../..
       shell: bash
     
     - name: Install Playwright Browsers
