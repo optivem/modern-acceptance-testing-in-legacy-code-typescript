@@ -22,3 +22,4 @@ export class SystemConfiguration {
     return this.taxBaseUrl;
   }
 }
+

@@ -1,7 +1,7 @@
 import { test as base } from '@playwright/test';
-import { ShopDriver } from '../../core-shop/driver/ShopDriver.js';
-import { ErpApiDriver } from '../../core-erp/driver/ErpApiDriver.js';
-import { TaxApiDriver } from '../../core-tax/driver/TaxApiDriver.js';
+import { ShopDriver } from '../../core/shop/driver/ShopDriver.js';
+import { ErpApiDriver } from '../../core/erp/driver/ErpApiDriver.js';
+import { TaxApiDriver } from '../../core/tax/driver/TaxApiDriver.js';
 
 export type TestFixtures = {
     shopDriver: ShopDriver;
@@ -36,3 +36,5 @@ export const test = base.extend<TestFixtures>({
 });
 
 export { expect } from '@playwright/test';
+
+
