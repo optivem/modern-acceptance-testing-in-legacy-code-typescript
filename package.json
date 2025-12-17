@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "optivem-http",
-    "optivem-results",
-    "optivem-lang",
-    "optivem-playwright",
-    "optivem-testing-channels",
-    "optivem-testing-assertions",
-    "optivem-testing-dsl",
+    "libs/optivem-http",
+    "libs/optivem-results",
+    "libs/optivem-lang",
+    "libs/optivem-playwright",
+    "libs/optivem-testing-channels",
+    "libs/optivem-testing-assertions",
+    "libs/optivem-testing-dsl",
     "system-test"
   ]
 }
