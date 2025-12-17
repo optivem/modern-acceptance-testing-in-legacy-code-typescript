@@ -4,19 +4,24 @@ import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 import { StatusCodes } from 'http-status-codes';
 
 export class HttpUtils {
-    static getOkResultOrFailure<T>(response: AxiosResponse<T>): Result<T, ProblemDetailResponse> {
-        return HttpUtils.getResultOrFailure(response, StatusCodes.OK, true);
+    static getOkResultOrFailure<T>(responseResult: Result<AxiosResponse<T>, ProblemDetailResponse>): Result<T, ProblemDetailResponse> {
+        return HttpUtils.getResultOrFailure(responseResult, StatusCodes.OK, true);
     }
 
-    static getCreatedResultOrFailure<T>(response: AxiosResponse<T>): Result<T, ProblemDetailResponse> {
-        return HttpUtils.getResultOrFailure(response, StatusCodes.CREATED, true);
+    static getCreatedResultOrFailure<T>(responseResult: Result<AxiosResponse<T>, ProblemDetailResponse>): Result<T, ProblemDetailResponse> {
+        return HttpUtils.getResultOrFailure(responseResult, StatusCodes.CREATED, true);
     }
 
-    static getNoContentResultOrFailure(response: AxiosResponse<void>): Result<void, ProblemDetailResponse> {
-        return HttpUtils.getResultOrFailure(response, StatusCodes.NO_CONTENT, false);
+    static getNoContentResultOrFailure(responseResult: Result<AxiosResponse<void>, ProblemDetailResponse>): Result<void, ProblemDetailResponse> {
+        return HttpUtils.getResultOrFailure(responseResult, StatusCodes.NO_CONTENT, false);
     }
 
-    private static getResultOrFailure<T>(response: AxiosResponse<T>, statusCode: StatusCodes, hasData: boolean): Result<T, ProblemDetailResponse> {
+    private static getResultOrFailure<T>(responseResult: Result<AxiosResponse<T>, ProblemDetailResponse>, statusCode: StatusCodes, hasData: boolean): Result<T, ProblemDetailResponse> {
+        if (responseResult.isFailure()) {
+            return Result.failure(responseResult.getError());
+        }
+
+        const response = responseResult.getValue();
         if (response.status === statusCode) {
             if (hasData) {
                 return Result.success(response.data);

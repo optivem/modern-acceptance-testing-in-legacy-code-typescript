@@ -1,4 +1,6 @@
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import { Result } from '@optivem/lang';
+import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 
 export class HttpGateway {
     private readonly client: AxiosInstance;
@@ -9,19 +11,63 @@ export class HttpGateway {
         this.baseUrl = baseUrl;
     }
 
-    async get<T>(path: string): Promise<AxiosResponse<T>> {
-        return await this.client.get<T>(path);
+    async get<T>(path: string): Promise<Result<AxiosResponse<T>, ProblemDetailResponse>> {
+        return this.executeRequest(() => this.client.get<T>(path));
     }
 
-    async post<T>(path: string, body: any): Promise<AxiosResponse<T>> {
-        return await this.client.post<T>(path, body);
+    async post<T>(path: string, body: any): Promise<Result<AxiosResponse<T>, ProblemDetailResponse>> {
+        return this.executeRequest(() => this.client.post<T>(path, body));
     }
 
-    async put<T>(path: string, body: any): Promise<AxiosResponse<T>> {
-        return await this.client.put<T>(path, body);
+    async put<T>(path: string, body: any): Promise<Result<AxiosResponse<T>, ProblemDetailResponse>> {
+        return this.executeRequest(() => this.client.put<T>(path, body));
     }
 
-    async delete<T>(path: string): Promise<AxiosResponse<T>> {
-        return await this.client.delete<T>(path);
+    async delete<T>(path: string): Promise<Result<AxiosResponse<T>, ProblemDetailResponse>> {
+        return this.executeRequest(() => this.client.delete<T>(path));
+    }
+
+    private async executeRequest<T>(request: () => Promise<AxiosResponse<T>>): Promise<Result<AxiosResponse<T>, ProblemDetailResponse>> {
+        try {
+            const response = await request();
+            if (this.isSuccessStatusCode(response.status)) {
+                return Result.success(response);
+            }
+            return Result.failure(this.createProblemDetailFromResponse(response));
+        } catch (error) {
+            const problemDetail = this.createProblemDetailFromError(error);
+            return Result.failure(problemDetail);
+        }
+    }
+
+    private isSuccessStatusCode(status: number): boolean {
+        return status >= 200 && status < 300;
+    }
+
+    private createProblemDetailFromResponse<T>(response: AxiosResponse<T>): ProblemDetailResponse {
+        const data = response.data as any;
+        if (data && (data.type || data.title || data.detail || data.errors)) {
+            return data as ProblemDetailResponse;
+        }
+        return {
+            status: response.status,
+            title: `HTTP ${response.status}`,
+            detail: JSON.stringify(response.data),
+        };
+    }
+
+    private createProblemDetailFromError(error: unknown): ProblemDetailResponse {
+        if (error instanceof AxiosError) {
+            return {
+                status: error.response?.status ?? 0,
+                title: error.code ?? 'Network Error',
+                detail: error.message,
+            };
+        }
+        return {
+            status: 0,
+            title: 'Unknown Error',
+            detail: error instanceof Error ? error.message : String(error),
+        };
     }
 }
