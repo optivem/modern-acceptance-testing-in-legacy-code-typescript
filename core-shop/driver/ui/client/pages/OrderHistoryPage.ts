@@ -113,5 +113,3 @@ export class OrderHistoryPage extends BasePage {
         return await this.pageClient.isHidden(OrderHistoryPage.CANCEL_ORDER_BUTTON_SELECTOR);
     }
 }
-
-

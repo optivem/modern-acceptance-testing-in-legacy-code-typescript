@@ -2,6 +2,19 @@
 # This file contains configuration values for Run-SystemTests.ps1
 
 $Config = @{
+
+    BuildCommands = @(
+        @{  Name = "Clean Install";
+            Command = "npm ci"
+        },
+        @{  Name = "Build Base Packages";
+            Command = "npm run build -w libs/optivem-lang -w libs/optivem-results --if-present"
+        },
+        @{  Name = "Build All Packages";
+            Command = "npm run build --workspaces --if-present"
+        }
+    )
+
     Tests = @(
         @{  Id = "smoke";
             Name = "Smoke Tests";

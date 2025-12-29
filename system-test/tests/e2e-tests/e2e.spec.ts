@@ -26,13 +26,13 @@ channelTest([ChannelType.UI, ChannelType.API], 'should place order and calculate
     expect(orderDetails.quantity).toBe(5);
     expect(orderDetails.country).toBe('US');
     expect(orderDetails.unitPrice).toBe(20.00);
-    expect(orderDetails.originalPrice).toBe(100.00);
+    expect(orderDetails.subtotalPrice).toBe(100.00);
     expect(orderDetails.status).toBe(OrderStatus.PLACED);
     
     // Validate discount fields are non-negative
     expect(orderDetails.discountRate).toBeGreaterThanOrEqual(0);
     expect(orderDetails.discountAmount).toBeGreaterThanOrEqual(0);
-    expect(orderDetails.subtotalPrice).toBeGreaterThan(0);
+    expect(orderDetails.preTaxTotal).toBeGreaterThan(0);
     
     // Validate tax fields are non-negative
     expect(orderDetails.taxRate).toBeGreaterThanOrEqual(0);
@@ -61,7 +61,7 @@ channelTest([ChannelType.UI, ChannelType.API], 'should cancel order', async ({ s
     expect(orderDetails.quantity).toBe(2);
     expect(orderDetails.country).toBe('US');
     expect(orderDetails.unitPrice).toBe(50.00);
-    expect(orderDetails.originalPrice).toBe(100.00);
+    expect(orderDetails.subtotalPrice).toBe(100.00);
     expect(orderDetails.status).toBe(OrderStatus.CANCELLED);
 });
 

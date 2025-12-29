@@ -105,5 +105,3 @@ export class ViewOrderVerification extends BaseSuccessVerification<GetOrderRespo
         return this;
     }
 }
-
-

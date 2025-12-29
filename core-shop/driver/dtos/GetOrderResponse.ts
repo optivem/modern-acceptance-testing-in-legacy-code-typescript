@@ -15,5 +15,3 @@ export interface GetOrderResponse {
     country: string;
     status: OrderStatus;
 }
-
-
