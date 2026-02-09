@@ -1,7 +1,7 @@
 {
-  "name": "@optivem/commons-testing-assertions",
+  "name": "@optivem/playwright",
   "version": "0.0.1",
-  "description": "Testing assertions and matchers for Optivem",
+  "description": "Playwright page client for Optivem testing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -9,9 +9,6 @@
   },
   "peerDependencies": {
     "@playwright/test": "^1.41.0"
-  },
-  "dependencies": {
-    "@optivem/commons-testing-dsl": "0.0.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.41.0",

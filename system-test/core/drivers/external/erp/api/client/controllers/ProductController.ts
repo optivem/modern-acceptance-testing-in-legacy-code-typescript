@@ -1,5 +1,5 @@
-import { TestHttpClient, TestHttpUtils } from '@optivem/commons-http';
-import { Result } from '@optivem/commons-testing-dsl';
+import { TestHttpClient, TestHttpUtils } from '@optivem/http';
+import { Result } from '@optivem/testing-dsl';
 import { CreateProductRequest } from '../dtos/CreateProductRequest.js';
 
 export class ProductController {

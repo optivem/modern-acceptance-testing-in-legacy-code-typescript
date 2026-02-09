@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import type { Result } from '@optivem/commons-testing-dsl';
+import type { Result } from '@optivem/testing-dsl';
 
 export function setupResultMatchers() {
   expect.extend({

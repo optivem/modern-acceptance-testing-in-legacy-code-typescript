@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { TestHttpClient } from '@optivem/commons-http';
+import { TestHttpClient } from '@optivem/http';
 import { HealthController } from './controllers/HealthController.js';
 import { OrderController } from './controllers/OrderController.js';
 

@@ -3,7 +3,7 @@ import { ShopUiClient } from './client/ShopUiClient.js';
 import { HomePage } from './client/pages/HomePage.js';
 import { NewOrderPage } from './client/pages/NewOrderPage.js';
 import { OrderHistoryPage } from './client/pages/OrderHistoryPage.js';
-import { Result } from '@optivem/commons-testing-dsl';
+import { Result } from '@optivem/testing-dsl';
 import { PlaceOrderResponse } from '../../commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../commons/dtos/GetOrderResponse.js';
 import { OrderStatus } from '../../commons/enums/OrderStatus.js';

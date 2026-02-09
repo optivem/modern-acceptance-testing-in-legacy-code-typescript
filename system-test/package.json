@@ -10,11 +10,11 @@
     "test:e2e": "playwright test ui.spec.ts"
   },
   "dependencies": {
-    "@optivem/commons-http": "0.0.1",
-    "@optivem/commons-playwright": "0.0.1",
-    "@optivem/commons-testing-assertions": "0.0.1",
-    "@optivem/commons-testing-dsl": "0.0.1",
-    "@optivem/commons-util": "0.0.1",
+    "@optivem/http": "0.0.1",
+    "@optivem/playwright": "0.0.1",
+    "@optivem/testing-assertions": "0.0.1",
+    "@optivem/testing-dsl": "0.0.1",
+    "@optivem/util": "0.0.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

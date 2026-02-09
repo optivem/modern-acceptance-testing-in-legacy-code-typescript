@@ -1,7 +1,7 @@
 {
-  "name": "@optivem/commons-testing-dsl",
+  "name": "@optivem/util",
   "version": "0.0.1",
-  "description": "Result type and DSL base for Optivem testing",
+  "description": "Common utilities for Optivem testing (Closer, etc.)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

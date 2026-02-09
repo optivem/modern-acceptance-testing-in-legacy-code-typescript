@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { Result } from '@optivem/commons-testing-dsl';
+import { Result } from '@optivem/testing-dsl';
 import { ProblemDetailResponse } from './dtos/ProblemDetailResponse';
 import { StatusCodes } from 'http-status-codes';
 

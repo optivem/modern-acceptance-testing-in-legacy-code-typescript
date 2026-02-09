@@ -3,8 +3,8 @@ import { DriverFactory } from '../../core/drivers/DriverFactory.js';
 import { TestFixtures } from '../fixtures.js';
 import { expect } from '@playwright/test';
 import { OrderStatus } from '../../core/drivers/system/commons/enums/OrderStatus.js';
-import { Closer } from '@optivem/commons-util';
-import { setupResultMatchers } from '@optivem/commons-testing-assertions';
+import { Closer } from '@optivem/util';
+import { setupResultMatchers } from '@optivem/testing-assertions';
 
 setupResultMatchers();
 

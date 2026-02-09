@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons-testing-dsl';
+import { Result } from '@optivem/testing-dsl';
 import { PlaceOrderResponse } from './commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from './commons/dtos/GetOrderResponse.js';
 

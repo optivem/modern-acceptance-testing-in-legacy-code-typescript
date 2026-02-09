@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { Result } from '@optivem/commons-testing-dsl';
+import { Result } from '@optivem/testing-dsl';
 import { ErpApiClient } from './client/ErpApiClient.js';
-import { HttpClientFactory } from '@optivem/commons-http';
-import { Closer } from '@optivem/commons-util';
+import { HttpClientFactory } from '@optivem/http';
+import { Closer } from '@optivem/util';
 
 export class ErpApiDriver {
     private readonly httpClient: AxiosInstance;
