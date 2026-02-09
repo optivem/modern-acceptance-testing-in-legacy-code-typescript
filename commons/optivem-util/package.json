@@ -1,0 +1,13 @@
+{
+  "name": "@optivem/commons-util",
+  "version": "0.0.1",
+  "description": "Common utilities for Optivem testing (Closer, etc.)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

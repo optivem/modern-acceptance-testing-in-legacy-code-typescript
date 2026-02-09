@@ -1,6 +1,5 @@
-import { TestHttpClient } from '../../../../../commons/clients/TestHttpClient.js';
-import { TestHttpUtils } from '../../../../../commons/clients/TestHttpUtils.js';
-import { Result } from '../../../../../commons/Result.js';
+import { TestHttpClient, TestHttpUtils } from '@optivem/commons-http';
+import { Result } from '@optivem/commons-testing-dsl';
 import { PlaceOrderRequest } from '../../../../commons/dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../../../../commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../../../commons/dtos/GetOrderResponse.js';

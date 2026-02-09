@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { Result } from '../../../commons/Result.js';
+import { Result } from '@optivem/commons-testing-dsl';
 import { TaxApiClient } from './client/TaxApiClient.js';
-import { HttpClientFactory } from '../../../commons/clients/HttpClientFactory.js';
-import { Closer } from '../../../commons/clients/Closer.js';
+import { HttpClientFactory } from '@optivem/commons-http';
+import { Closer } from '@optivem/commons-util';
 
 export class TaxApiDriver {
     private readonly httpClient: AxiosInstance;

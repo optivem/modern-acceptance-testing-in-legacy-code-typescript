@@ -1,0 +1,16 @@
+{
+  "name": "@optivem/commons-land",
+  "version": "0.0.1",
+  "description": "Language/convenience utilities for Optivem (re-exports from optivem-util)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@optivem/commons-util": "0.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

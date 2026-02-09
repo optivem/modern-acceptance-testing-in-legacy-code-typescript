@@ -1,0 +1,13 @@
+{
+  "name": "modern-acceptance-testing-in-legacy-code-typescript",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "commons/*",
+    "system-test"
+  ],
+  "scripts": {
+    "build": "npm run build -w @optivem/commons-util && npm run build -w @optivem/commons-testing-dsl && npm run build -w @optivem/commons-land && npm run build -w @optivem/commons-http && npm run build -w @optivem/commons-playwright && npm run build -w @optivem/commons-testing-assertions",
+    "test": "npm run build && npm run test -w system-test"
+  }
+}

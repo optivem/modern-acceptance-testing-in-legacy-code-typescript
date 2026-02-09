@@ -9,6 +9,14 @@
     "test:api": "playwright test api.spec.ts",
     "test:e2e": "playwright test ui.spec.ts"
   },
+  "dependencies": {
+    "@optivem/commons-http": "0.0.1",
+    "@optivem/commons-playwright": "0.0.1",
+    "@optivem/commons-testing-assertions": "0.0.1",
+    "@optivem/commons-testing-dsl": "0.0.1",
+    "@optivem/commons-util": "0.0.1",
+    "uuid": "^9.0.1"
+  },
   "devDependencies": {
     "@jest/globals": "^30.2.0",
     "@playwright/test": "^1.41.0",
@@ -17,10 +25,5 @@
     "@types/uuid": "^9.0.7",
     "jest": "^30.2.0",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "axios": "^1.13.2",
-    "http-status-codes": "^2.3.0",
-    "uuid": "^9.0.1"
   }
 }

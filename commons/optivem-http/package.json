@@ -1,0 +1,18 @@
+{
+  "name": "@optivem/commons-http",
+  "version": "0.0.1",
+  "description": "HTTP client and utilities for Optivem testing",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@optivem/commons-testing-dsl": "0.0.1",
+    "axios": "^1.13.2",
+    "http-status-codes": "^2.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

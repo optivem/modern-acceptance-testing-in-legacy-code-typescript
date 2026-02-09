@@ -1,8 +1,7 @@
 import { AxiosResponse } from 'axios';
-import { Result } from '../Result.js';
-import { ProblemDetailResponse } from '../../commons/dtos/ProblemDetailResponse.js';
+import { Result } from '@optivem/commons-testing-dsl';
+import { ProblemDetailResponse } from './dtos/ProblemDetailResponse';
 import { StatusCodes } from 'http-status-codes';
-import { get } from 'http';
 
 export class TestHttpUtils {
     static getOkResultOrFailure<T>(response: AxiosResponse<T>): Result<T> {
@@ -59,6 +58,4 @@ export class TestHttpUtils {
     private static isProblemDetails(data: any): boolean {
         return data && (data.type || data.title || data.detail || data.errors);
     }
-
-    // TODO: VJ: Get uri
 }

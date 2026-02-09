@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { TestHttpClient } from '../../../../commons/clients/TestHttpClient.js';
+import { TestHttpClient } from '@optivem/commons-http';
 import { HealthController } from './controllers/HealthController.js';
 
 export class TaxApiClient {

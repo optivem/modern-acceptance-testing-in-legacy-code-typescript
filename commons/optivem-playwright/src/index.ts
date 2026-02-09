@@ -1,0 +1,1 @@
+export { TestPageClient } from './TestPageClient';

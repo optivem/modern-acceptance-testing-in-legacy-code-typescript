@@ -1,0 +1,17 @@
+{
+  "name": "@optivem/commons-playwright",
+  "version": "0.0.1",
+  "description": "Playwright page client for Optivem testing",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.41.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.0",
+    "typescript": "^5.3.3"
+  }
+}

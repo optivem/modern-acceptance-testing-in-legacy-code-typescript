@@ -1,4 +1,4 @@
-import { TestPageClient } from '../../../../../commons/clients/TestPageClient.js';
+import { TestPageClient } from '@optivem/commons-playwright';
 
 export abstract class BasePage {
     private static readonly NOTIFICATION_SELECTOR = '#notifications .notification';

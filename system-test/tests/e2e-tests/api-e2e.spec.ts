@@ -2,8 +2,8 @@ import { test as base } from './e2e-tests.js';
 import { DriverFactory } from '../../core/drivers/DriverFactory.js';
 import { defineE2eTests } from './e2e-tests.js';
 import { defineApiE2eTests } from './api-e2e-tests.js';
-import { Closer } from '../../core/drivers/commons/clients/Closer.js';
-import { setupResultMatchers } from '../../core/matchers/resultMatchers.js';
+import { Closer } from '@optivem/commons-util';
+import { setupResultMatchers } from '@optivem/commons-testing-assertions';
 
 setupResultMatchers();
 

@@ -1,12 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { ShopDriver } from '../../ShopDriver.js';
 import { ShopApiClient } from './client/ShopApiClient.js';
-import { Result } from '../../../commons/Result.js';
+import { Result } from '@optivem/commons-testing-dsl';
 import { PlaceOrderRequest } from '../../commons/dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../../commons/dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../commons/dtos/GetOrderResponse.js';
-import { HttpClientFactory } from '../../../commons/clients/HttpClientFactory.js';
-import { Closer } from '../../../commons/clients/Closer.js';
+import { HttpClientFactory } from '@optivem/commons-http';
+import { Closer } from '@optivem/commons-util';
 
 export class ShopApiDriver implements ShopDriver {
     private readonly httpClient: AxiosInstance;

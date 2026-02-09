@@ -1,6 +1,5 @@
-import { TestHttpClient } from '../../../../../commons/clients/TestHttpClient.js';
-import { TestHttpUtils } from '../../../../../commons/clients/TestHttpUtils.js';
-import { Result } from '../../../../../commons/Result.js';
+import { TestHttpClient, TestHttpUtils } from '@optivem/commons-http';
+import { Result } from '@optivem/commons-testing-dsl';
 
 export class HealthController {
     private static readonly ENDPOINT = '/health';

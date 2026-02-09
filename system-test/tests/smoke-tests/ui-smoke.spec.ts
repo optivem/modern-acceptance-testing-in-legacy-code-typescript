@@ -1,8 +1,8 @@
 import { test as base } from '../fixtures.js';
 import { DriverFactory } from '../../core/drivers/DriverFactory.js';
 import { defineShopSmokeTests } from './shop-smoke-tests.js';
-import { Closer } from '../../core/drivers/commons/clients/Closer.js';
-import { setupResultMatchers } from '../../core/matchers/resultMatchers.js';
+import { Closer } from '@optivem/commons-util';
+import { setupResultMatchers } from '@optivem/commons-testing-assertions';
 
 setupResultMatchers();
 
