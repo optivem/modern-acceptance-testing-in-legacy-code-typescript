@@ -5,7 +5,6 @@ const APPLICATION_JSON = 'application/json';
 
 /**
  * WireMock admin API client. Registers stubs via POST to __admin/mappings.
- * Aligns with Java (commons.wiremock.JsonWireMockClient) and .NET (Commons.WireMock.JsonWireMockClient).
  */
 export class JsonWireMockClient {
     private readonly adminBaseUrl: string;

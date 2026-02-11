@@ -6,7 +6,6 @@ import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 
 /**
  * High-level HTTP client that returns Result<T, E> directly.
- * Aligns with Java (commons.http.JsonHttpClient) and .NET (Commons.Http.JsonHttpClient).
  */
 export class JsonHttpClient<E = ProblemDetailResponse> {
     private readonly gateway: HttpGateway;

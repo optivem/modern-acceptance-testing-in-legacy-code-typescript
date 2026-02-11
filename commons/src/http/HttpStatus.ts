@@ -1,5 +1,5 @@
 /**
- * HTTP status code constants. Aligns with Java (commons.http.HttpStatus) and .NET (Commons.Http.HttpStatus).
+ * HTTP status code constants.
  */
 export const HttpStatus = {
     OK: 200,

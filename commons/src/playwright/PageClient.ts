@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 
 /**
- * High-level wrapper for Playwright Page. Aligns with Java (commons.playwright.PageClient) and .NET (Commons.Playwright.PageClient).
+ * High-level wrapper for Playwright Page.
  */
 export class PageClient {
     private readonly page: Page;
@@ -49,14 +49,19 @@ export class PageClient {
         return await locator.allTextContents();
     }
 
-    async exists(selector: string): Promise<boolean> {
+    async isVisible(selector: string): Promise<boolean> {
         const locator = this.page.locator(selector);
         try {
             await this.wait(locator);
             return (await locator.count()) > 0;
-        } catch (error) {
+        } catch {
             return false;
         }
+    }
+
+    /** Same as isVisible; kept for backward compatibility. */
+    async exists(selector: string): Promise<boolean> {
+        return this.isVisible(selector);
     }
 
     async readInputValue(selector: string): Promise<string> {

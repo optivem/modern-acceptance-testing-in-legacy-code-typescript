@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ExternalSystemMode } from './ExternalSystemMode.js';
 
 export class UseCaseContext {
@@ -5,8 +6,8 @@ export class UseCaseContext {
     private readonly paramMap: Map<string, string>;
     private readonly resultMap: Map<string, string>;
 
-    constructor(externalSystemMode?: ExternalSystemMode) {
-        this.externalSystemMode = externalSystemMode ?? ExternalSystemMode.REAL;
+    constructor(externalSystemMode: ExternalSystemMode) {
+        this.externalSystemMode = externalSystemMode;
         this.paramMap = new Map<string, string>();
         this.resultMap = new Map<string, string>();
     }
@@ -92,7 +93,7 @@ export class UseCaseContext {
 
     private generateParamValue(alias: string): string {
         this.ensureAliasNotNullBlank(alias);
-        const suffix = this.generateUUID().substring(0, 8);
+        const suffix = uuidv4().substring(0, 8);
         return `${alias}-${suffix}`;
     }
 
@@ -104,13 +105,5 @@ export class UseCaseContext {
 
     private isNullOrBlank(alias: string): boolean {
         return alias === undefined || alias === null || alias.trim().length === 0;
-    }
-
-    private generateUUID(): string {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
     }
 }

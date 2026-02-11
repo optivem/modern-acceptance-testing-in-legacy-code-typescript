@@ -1,5 +1,5 @@
 /**
- * Type/string conversion helpers. Aligns with Java (commons.util.Converter) and .NET (Commons.Util.Converter).
+ * Type/string conversion helpers (decimal, integer, double, instant, parseInstant).
  */
 export class Converter {
     private constructor() {}

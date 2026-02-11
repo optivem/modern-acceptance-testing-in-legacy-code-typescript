@@ -41,8 +41,7 @@ function getErrorMessages(error: unknown): string[] {
 }
 
 /**
- * Registers custom Result matchers on expect() (idiomatic TS/Jest/Playwright name).
- * File and Java alignment: ResultAssert; API name exception for "matchers" idiom.
+ * Registers custom Result matchers on expect() (e.g. toBeSuccess, toBeFailureWith, toHaveErrorMessage, toHaveFieldError).
  */
 export function setupResultMatchers() {
   expect.extend({
