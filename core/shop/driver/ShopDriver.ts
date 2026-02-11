@@ -1,4 +1,4 @@
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 import { PlaceOrderResponse } from './dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from './dtos/GetOrderResponse.js';
 import { Error } from '../../commons/error/index.js';

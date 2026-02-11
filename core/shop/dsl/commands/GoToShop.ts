@@ -1,5 +1,5 @@
 import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/testing-dsl';
+import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/dsl';
 
 export class GoToShop extends BaseCommand<ShopDriver, void, VoidVerification> {
     constructor(driver: ShopDriver, context: Context) {

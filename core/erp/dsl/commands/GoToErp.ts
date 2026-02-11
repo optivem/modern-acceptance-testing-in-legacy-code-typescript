@@ -1,5 +1,5 @@
 import { ErpApiDriver } from '../../driver/ErpApiDriver.js';
-import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/testing-dsl';
+import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/dsl';
 
 export class GoToErp extends BaseCommand<ErpApiDriver, void, VoidVerification> {
     constructor(driver: ErpApiDriver, context: Context) {

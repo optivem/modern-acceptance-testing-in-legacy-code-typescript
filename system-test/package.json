@@ -20,11 +20,10 @@
   },
   "dependencies": {
     "@optivem/http": "file:../commons/http",
-    "@optivem/lang": "file:../commons/lang",
     "@optivem/playwright": "file:../commons/playwright",
-    "@optivem/testing-assertions": "file:../commons/testing-assertions",
+    "@optivem/util": "file:../commons/util",
     "@optivem/testing-channels": "file:../testing-channels",
-    "@optivem/testing-dsl": "file:../commons/testing-dsl",
+    "@optivem/dsl": "file:../commons/dsl",
     "axios": "^1.13.2",
     "http-status-codes": "^2.3.0",
     "uuid": "^9.0.1"

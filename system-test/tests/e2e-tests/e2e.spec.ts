@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { setupResultMatchers } from '@optivem/testing-assertions';
+import { setupResultMatchers } from '@optivem/util';
 import { ChannelType } from '../../../core/shop/ChannelType.js';
 import { shopChannelTest as channelTest } from '../../../core/shopChannelTest.js';
 import { OrderStatus } from '../../../core/shop/driver/dtos/enums/OrderStatus.js';

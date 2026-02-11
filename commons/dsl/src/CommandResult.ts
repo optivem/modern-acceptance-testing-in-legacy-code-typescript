@@ -1,4 +1,4 @@
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 import { UseCaseContext } from './Context.js';
 
 export class UseCaseResult<

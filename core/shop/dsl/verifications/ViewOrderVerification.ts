@@ -1,4 +1,4 @@
-import { BaseSuccessVerification, Context } from '@optivem/testing-dsl';
+import { BaseSuccessVerification, Context } from '@optivem/dsl';
 import { GetOrderResponse } from '../../driver/dtos/GetOrderResponse.js';
 import { OrderStatus } from '../../driver/dtos/enums/OrderStatus.js';
 import { expect } from '@playwright/test';

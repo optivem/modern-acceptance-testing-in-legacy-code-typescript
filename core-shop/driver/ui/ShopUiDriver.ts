@@ -3,7 +3,7 @@ import { ShopUiClient } from './client/ShopUiClient.js';
 import { HomePage } from './client/pages/HomePage.js';
 import { NewOrderPage } from './client/pages/NewOrderPage.js';
 import { OrderHistoryPage } from './client/pages/OrderHistoryPage.js';
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 import { PlaceOrderResponse } from '../dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../dtos/GetOrderResponse.js';
 import { OrderStatus } from '../dtos/enums/OrderStatus.js';

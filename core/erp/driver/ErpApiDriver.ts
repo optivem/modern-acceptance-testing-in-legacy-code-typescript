@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 import { ErpApiClient } from './client/ErpApiClient.js';
 import { HttpClientFactory } from '@optivem/http';
-import { Closer } from '@optivem/lang';
+import { Closer } from '@optivem/util';
 import { Error, toError } from '../../commons/error/index.js';
 
 export class ErpApiDriver {

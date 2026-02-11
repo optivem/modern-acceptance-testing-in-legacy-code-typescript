@@ -1,5 +1,5 @@
 import { HttpGateway, HttpUtils, ProblemDetailResponse } from '@optivem/http';
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 import { CreateProductRequest } from '../dtos/CreateProductRequest.js';
 
 export class ProductController {

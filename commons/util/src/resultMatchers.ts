@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import type { Result } from '@optivem/lang';
+import type { Result } from './Result.js';
 
 function formatError(error: unknown): string {
   if (error === null || error === undefined) {

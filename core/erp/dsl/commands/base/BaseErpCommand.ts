@@ -1,5 +1,5 @@
 import { ErpApiDriver } from '../../../driver/ErpApiDriver.js';
-import { BaseUseCase, UseCaseContext } from '@optivem/testing-dsl';
+import { BaseUseCase, UseCaseContext } from '@optivem/dsl';
 import { Error } from '../../../commons/error/index.js';
 import { ErrorFailureVerification } from '../../../commons/dsl/index.js';
 

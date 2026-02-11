@@ -1,6 +1,6 @@
 import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
-import { Closer } from '@optivem/lang';
+import { Closer } from '@optivem/util';
 import { PageGateway } from '@optivem/playwright';
 import { HomePage } from './pages/HomePage.js';
 

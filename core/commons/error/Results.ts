@@ -1,4 +1,4 @@
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 import { Error, createError, FieldError, createFieldError } from './Error.js';
 
 export const success = <T>(value?: T): Result<T, Error> => {

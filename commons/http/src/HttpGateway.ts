@@ -1,5 +1,5 @@
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 
 export class HttpGateway {

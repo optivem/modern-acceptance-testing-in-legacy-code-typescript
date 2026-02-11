@@ -1,5 +1,5 @@
 import { HttpGateway, HttpUtils, ProblemDetailResponse } from '@optivem/http';
-import { Result } from '@optivem/lang';
+import { Result } from '@optivem/util';
 
 export class HealthController {
     private static readonly HEALTH_PATH = '/health';
