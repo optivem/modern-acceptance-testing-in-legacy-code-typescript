@@ -4,5 +4,4 @@ export { UseCase } from './UseCase.js';
 export { BaseUseCase } from './BaseUseCase.js';
 export { UseCaseResult } from './UseCaseResult.js';
 export { ResponseVerification } from './ResponseVerification.js';
-export { FailureVerification } from './FailureVerification.js';
 export { VoidVerification } from './VoidVerification.js';
