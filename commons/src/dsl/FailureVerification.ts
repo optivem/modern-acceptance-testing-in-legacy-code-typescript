@@ -1,5 +1,5 @@
-import { UseCaseContext } from './Context.js';
-import { ResponseVerification } from './BaseSuccessVerification.js';
+import { UseCaseContext } from './UseCaseContext.js';
+import { ResponseVerification } from './ResponseVerification.js';
 
 export class FailureVerification<TError = unknown, TContext = UseCaseContext> extends ResponseVerification<TError, TContext> {
   constructor(error: TError, context: TContext) {

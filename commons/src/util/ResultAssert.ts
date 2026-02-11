@@ -29,7 +29,6 @@ function getErrorMessages(error: unknown): string[] {
   }
   if (typeof error === 'object' && 'message' in error) {
     const messages = [String((error as { message: unknown }).message)];
-    // Also include field error messages if present
     if ('fields' in error && Array.isArray((error as { fields: unknown[] }).fields)) {
       const fields = (error as { fields: { field: string; message: string }[] }).fields;
       for (const field of fields) {
@@ -41,11 +40,15 @@ function getErrorMessages(error: unknown): string[] {
   return [JSON.stringify(error)];
 }
 
+/**
+ * Registers custom Result matchers on expect() (idiomatic TS/Jest/Playwright name).
+ * File and Java alignment: ResultAssert; API name exception for "matchers" idiom.
+ */
 export function setupResultMatchers() {
   expect.extend({
     toBeSuccess<T, E>(received: Result<T, E>) {
       const pass = received.isSuccess();
-      
+
       if (pass) {
         return {
           pass: true,
@@ -62,17 +65,17 @@ export function setupResultMatchers() {
 
     toBeFailureWith<T, E>(received: Result<T, E>, expectedMessage: string) {
       const isFailure = received.isFailure();
-      
+
       if (!isFailure) {
         return {
           pass: false,
           message: () => `Expected result to be failure but was success`
         };
       }
-      
+
       const errorMessages = getErrorMessages(received.getError());
       const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
-      
+
       if (hasMessage) {
         return {
           pass: true,
@@ -88,17 +91,17 @@ export function setupResultMatchers() {
 
     toHaveErrorMessage<T, E>(received: Result<T, E>, expectedMessage: string) {
       const isFailure = received.isFailure();
-      
+
       if (!isFailure) {
         return {
           pass: false,
           message: () => `Expected result to be failure but was success`
         };
       }
-      
+
       const errorMessages = getErrorMessages(received.getError());
       const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
-      
+
       if (hasMessage) {
         return {
           pass: true,
@@ -114,17 +117,17 @@ export function setupResultMatchers() {
 
     toHaveFieldError<T, E>(received: Result<T, E>, expectedMessage: string) {
       const isFailure = received.isFailure();
-      
+
       if (!isFailure) {
         return {
           pass: false,
           message: () => `Expected result to be failure but was success`
         };
       }
-      
+
       const errorMessages = getErrorMessages(received.getError());
       const hasMessage = errorMessages.some(msg => msg.includes(expectedMessage));
-      
+
       if (hasMessage) {
         return {
           pass: true,

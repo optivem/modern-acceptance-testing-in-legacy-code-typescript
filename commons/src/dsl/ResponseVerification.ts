@@ -1,4 +1,4 @@
-import { UseCaseContext } from './Context.js';
+import { UseCaseContext } from './UseCaseContext.js';
 
 export class ResponseVerification<TResponse, TContext = UseCaseContext> {
   protected readonly response: TResponse;
@@ -17,6 +17,3 @@ export class ResponseVerification<TResponse, TContext = UseCaseContext> {
     return this.context;
   }
 }
-
-// Backward compatibility alias
-export { ResponseVerification as BaseSuccessVerification };

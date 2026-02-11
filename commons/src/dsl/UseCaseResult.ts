@@ -1,11 +1,11 @@
 import { Result } from '../util/index.js';
-import { UseCaseContext } from './Context.js';
+import { UseCaseContext } from './UseCaseContext.js';
 
 export class UseCaseResult<
-  TSuccessResponse, 
-  TFailureResponse = unknown, 
-  TContext = UseCaseContext, 
-  TSuccessVerification = unknown, 
+  TSuccessResponse,
+  TFailureResponse = unknown,
+  TContext = UseCaseContext,
+  TSuccessVerification = unknown,
   TFailureVerification = unknown
 > {
   private readonly result: Result<TSuccessResponse, TFailureResponse>;
@@ -41,20 +41,5 @@ export class UseCaseResult<
       throw new Error('Failure verification not configured for this use case');
     }
     return this.failureVerificationFactory(this.result.getError()!, this.context);
-  }
-}
-
-// Backward compatibility alias with old param order: CommandResult<TResponse, TVerification>
-// Maps to UseCaseResult<TResponse, unknown, UseCaseContext, TVerification, unknown>
-export class CommandResult<
-  TResponse,
-  TVerification
-> extends UseCaseResult<TResponse, unknown, UseCaseContext, TVerification, unknown> {
-  constructor(
-    result: Result<TResponse, unknown>,
-    context: UseCaseContext,
-    verificationFactory: (response: TResponse, context: UseCaseContext) => TVerification
-  ) {
-    super(result, context, verificationFactory);
   }
 }

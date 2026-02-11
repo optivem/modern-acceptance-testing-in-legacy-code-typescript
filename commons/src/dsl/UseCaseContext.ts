@@ -5,11 +5,6 @@ export class UseCaseContext {
     private readonly paramMap: Map<string, string>;
     private readonly resultMap: Map<string, string>;
 
-    /**
-     * @param externalSystemMode - STUB = parameterized/generated values, REAL = literal values.
-     * TODO (backward compatibility): Optional default to REAL so existing `new Context()` / `new UseCaseContext()` keep working.
-     * Prefer passing explicit ExternalSystemMode from config (e.g. SystemConfiguration) to align with Java/.NET.
-     */
     constructor(externalSystemMode?: ExternalSystemMode) {
         this.externalSystemMode = externalSystemMode ?? ExternalSystemMode.REAL;
         this.paramMap = new Map<string, string>();
@@ -35,10 +30,6 @@ export class UseCaseContext {
         return value;
     }
 
-    /**
-     * STUB: return getParamValue(alias). REAL: return alias as literal.
-     * Aligns with Java getParamValueOrLiteral / .NET GetParamValueOrLiteral.
-     */
     getParamValueOrLiteral(alias: string): string {
         if (this.isNullOrBlank(alias)) {
             return alias;
@@ -63,7 +54,6 @@ export class UseCaseContext {
         this.resultMap.set(alias, value);
     }
 
-    /** Aligns with Java setResultEntryFailed / .NET SetResultEntryFailed. */
     setResultEntryFailed(alias: string, errorMessage: string): void {
         this.ensureAliasNotNullBlank(alias);
         this.setResultEntry(alias, `FAILED: ${errorMessage}`);
@@ -76,7 +66,7 @@ export class UseCaseContext {
 
         const value = this.resultMap.get(alias);
         if (value === undefined) {
-            return alias; // Return literal value if not found as alias
+            return alias;
         }
 
         if (value.includes('FAILED')) {
@@ -124,6 +114,3 @@ export class UseCaseContext {
         });
     }
 }
-
-// TODO (backward compatibility): alias so existing imports of Context still work. Prefer UseCaseContext.
-export { UseCaseContext as Context };
