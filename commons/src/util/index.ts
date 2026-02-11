@@ -1,6 +1,7 @@
 export { Closer } from './Closer.js';
 export { Converter } from './Converter.js';
 export { Closeable } from './Closeable.js';
+export { AsyncCloseable } from './AsyncCloseable.js';
 export { Decimal } from './Decimal.js';
 export { Result } from './Result.js';
 export {

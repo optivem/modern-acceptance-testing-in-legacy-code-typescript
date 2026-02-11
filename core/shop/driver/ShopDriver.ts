@@ -1,9 +1,9 @@
-import { Result, Closeable } from '@optivem/commons/util';
+import { Result, AsyncCloseable } from '@optivem/commons/util';
 import { PlaceOrderResponse } from './dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from './dtos/GetOrderResponse.js';
 import { Error } from '../../commons/error/index.js';
 
-export interface ShopDriver extends Closeable {
+export interface ShopDriver extends AsyncCloseable {
     goToShop(): Promise<Result<void, Error>>;
     placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse, Error>>;
     viewOrder(orderNumber: string): Promise<Result<GetOrderResponse, Error>>;

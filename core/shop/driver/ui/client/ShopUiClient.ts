@@ -1,10 +1,10 @@
 import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
-import { Closer } from '@optivem/commons/util';
+import { Closer, AsyncCloseable } from '@optivem/commons/util';
 import { PageClient } from '@optivem/commons/playwright';
 import { HomePage } from './pages/HomePage.js';
 
-export class ShopUiClient {
+export class ShopUiClient implements AsyncCloseable {
     private static readonly CONTENT_TYPE = 'content-type';
     private static readonly TEXT_HTML = 'text/html';
     private static readonly HTML_OPENING_TAG = '<html';
