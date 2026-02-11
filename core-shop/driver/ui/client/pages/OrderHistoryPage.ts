@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { PageClient } from '@optivem/playwright';
+import { PageClient } from '@optivem/commons/playwright';
 import { OrderStatus } from '../../../dtos/enums/OrderStatus.js';
 import { expect } from '@playwright/test';
 

@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { setupResultMatchers } from '@optivem/util';
+import { setupResultMatchers } from '@optivem/commons/util';
 import { shopChannelTest as channelTest, ShopFixtures } from '../../../core/shopChannelTest.js';
 import { ChannelType } from '../../../core/shop/ChannelType.js';
 

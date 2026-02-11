@@ -1,5 +1,5 @@
 import { TaxApiDriver } from '../../../driver/TaxApiDriver.js';
-import { BaseUseCase, UseCaseContext } from '@optivem/dsl';
+import { BaseUseCase, UseCaseContext } from '@optivem/commons/dsl';
 import { Error } from '../../../commons/error/index.js';
 import { ErrorFailureVerification } from '../../../commons/dsl/index.js';
 

@@ -1,4 +1,4 @@
-import { PageClient } from '@optivem/playwright';
+import { PageClient } from '@optivem/commons/playwright';
 
 export abstract class BasePage {
     private static readonly NOTIFICATION_SELECTOR = '#notifications .notification';

@@ -1,5 +1,5 @@
 import { ErpApiDriver } from '../../driver/ErpApiDriver.js';
-import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/dsl';
+import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/commons/dsl';
 
 export class CreateProduct extends BaseCommand<ErpApiDriver, void, VoidVerification> {
     private skuParamAlias: string = 'DEFAULT-SKU';

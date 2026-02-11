@@ -1,4 +1,4 @@
-import { ResponseVerification, UseCaseContext } from '@optivem/dsl';
+import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
 import { Error } from '../error/index.js';
 import { expect } from '@playwright/test';
 

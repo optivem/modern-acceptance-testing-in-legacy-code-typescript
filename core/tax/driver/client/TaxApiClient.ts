@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { HttpGateway } from '@optivem/http';
+import { HttpGateway } from '@optivem/commons/http';
 import { HealthController } from './controllers/HealthController.js';
 
 export class TaxApiClient {

@@ -1,4 +1,4 @@
-import { Result } from '@optivem/util';
+import { Result } from '../util/index.js';
 
 const CONTENT_TYPE = 'Content-Type';
 const APPLICATION_JSON = 'application/json';

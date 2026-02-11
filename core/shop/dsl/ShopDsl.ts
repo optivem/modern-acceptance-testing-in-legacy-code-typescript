@@ -1,11 +1,11 @@
 import { SystemConfiguration } from '../../SystemConfiguration.js';
-import { Context } from '@optivem/dsl';
+import { Context } from '@optivem/commons/dsl';
 import { ShopDriver } from '../driver/ShopDriver.js';
 import { ShopApiDriver } from '../driver/api/ShopApiDriver.js';
 import { ShopUiDriver } from '../driver/ui/ShopUiDriver.js';
 import { ChannelType } from '../ChannelType.js';
 import { ChannelContext } from '@optivem/optivem-testing';
-import { Closer } from '@optivem/util';
+import { Closer } from '@optivem/commons/util';
 import { GoToShop } from './commands/GoToShop.js';
 import { PlaceOrder } from './commands/PlaceOrder.js';
 import { CancelOrder } from './commands/CancelOrder.js';

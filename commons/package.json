@@ -1,0 +1,52 @@
+{
+  "name": "@optivem/commons",
+  "version": "0.0.1",
+  "description": "Shared utilities for Optivem acceptance testing (dsl, http, playwright, util, wiremock)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./dsl": {
+      "types": "./dist/dsl/index.d.ts",
+      "default": "./dist/dsl/index.js"
+    },
+    "./http": {
+      "types": "./dist/http/index.d.ts",
+      "default": "./dist/http/index.js"
+    },
+    "./playwright": {
+      "types": "./dist/playwright/index.d.ts",
+      "default": "./dist/playwright/index.js"
+    },
+    "./util": {
+      "types": "./dist/util/index.d.ts",
+      "default": "./dist/util/index.js"
+    },
+    "./wiremock": {
+      "types": "./dist/wiremock/index.d.ts",
+      "default": "./dist/wiremock/index.js"
+    }
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "http-status-codes": "^2.3.0",
+    "uuid": "^9.0.1"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.41.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/uuid": "^9.0.7",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  }
+}

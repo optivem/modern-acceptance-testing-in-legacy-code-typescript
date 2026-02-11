@@ -1,9 +1,9 @@
-import { Context, UseCaseContext } from '@optivem/dsl';
+import { Context, UseCaseContext } from '@optivem/commons/dsl';
 import { SystemConfiguration } from './SystemConfiguration.js';
 import { ShopDsl } from './shop/dsl/ShopDsl.js';
 import { ErpDsl } from './erp/dsl/ErpDsl.js';
 import { TaxDsl } from './tax/dsl/TaxDsl.js';
-import { Closer } from '@optivem/util';
+import { Closer } from '@optivem/commons/util';
 
 export class SystemDsl {
     private readonly context: Context;

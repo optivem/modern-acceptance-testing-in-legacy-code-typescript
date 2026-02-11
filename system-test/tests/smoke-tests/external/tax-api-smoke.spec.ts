@@ -1,8 +1,8 @@
 import { test as base } from '../../fixtures.js';
 import { expect } from '@playwright/test';
-import { Closer } from '@optivem/util';
+import { Closer } from '@optivem/commons/util';
 import { DriverFactory } from '../../../../core/DriverFactory.js';
-import { setupResultMatchers } from '@optivem/util';
+import { setupResultMatchers } from '@optivem/commons/util';
 
 setupResultMatchers();
 

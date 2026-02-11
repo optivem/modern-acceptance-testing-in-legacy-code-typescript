@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { PageClient } from '@optivem/playwright';
+import { PageClient } from '@optivem/commons/playwright';
 
 export class NewOrderPage extends BasePage {
     private static readonly SKU_INPUT_SELECTOR = '[aria-label="SKU"]';

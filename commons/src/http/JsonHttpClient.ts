@@ -1,4 +1,4 @@
-import { Result } from '@optivem/util';
+import { Result } from '../util/index.js';
 import { HttpClientFactory } from './HttpClientFactory.js';
 import { HttpGateway } from './HttpGateway.js';
 import { HttpUtils } from './HttpUtils.js';

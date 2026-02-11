@@ -1,17 +1,1 @@
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "commonjs",
-    "lib": ["ES2022"],
-    "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "types": ["node", "@playwright/test"]
-  },
-  "include": ["**/*"],
-  "exclude": ["node_modules", "dist", "playwright-report", "test-results"]
-}
+{"compilerOptions":{"target":"ES2022","module":"ES2022","lib":["ES2022"],"outDir":"./dist","strict":true,"esModuleInterop":true,"skipLibCheck":true,"forceConsistentCasingInFileNames":true,"resolveJsonModule":true,"moduleResolution":"bundler","types":["node","@playwright/test"]},"include":["**/*"],"exclude":["node_modules","dist","playwright-report","test-results"]}

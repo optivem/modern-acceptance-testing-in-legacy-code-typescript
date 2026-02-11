@@ -1,4 +1,4 @@
-import { ExternalSystemMode } from '@optivem/dsl';
+import { ExternalSystemMode } from '@optivem/commons/dsl';
 
 export interface TestConfig {
   urls: {

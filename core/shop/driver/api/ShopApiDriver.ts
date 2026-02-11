@@ -1,12 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { ShopDriver } from '../ShopDriver.js';
 import { ShopApiClient } from './client/ShopApiClient.js';
-import { Result } from '@optivem/util';
+import { Result } from '@optivem/commons/util';
 import { PlaceOrderRequest } from '../dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../dtos/GetOrderResponse.js';
-import { HttpClientFactory } from '@optivem/http';
-import { Closer } from '@optivem/util';
+import { HttpClientFactory } from '@optivem/commons/http';
+import { Closer } from '@optivem/commons/util';
 import { Error, toError } from '../../../commons/error/index.js';
 
 export class ShopApiDriver implements ShopDriver {

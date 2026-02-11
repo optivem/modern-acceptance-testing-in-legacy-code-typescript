@@ -1,5 +1,5 @@
-import { Result } from '@optivem/util';
-import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/dsl';
+import { Result } from '@optivem/commons/util';
+import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/commons/dsl';
 import { Error } from '../../../commons/error/index.js';
 import { ErrorFailureVerification } from '../../../commons/dsl/index.js';
 

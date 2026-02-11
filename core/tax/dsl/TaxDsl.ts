@@ -1,7 +1,7 @@
 import { SystemConfiguration } from '../../SystemConfiguration.js';
-import { Context } from '@optivem/dsl';
+import { Context } from '@optivem/commons/dsl';
 import { TaxApiDriver } from '../driver/TaxApiDriver.js';
-import { Closer } from '@optivem/util';
+import { Closer } from '@optivem/commons/util';
 import { GoToTax } from './commands/GoToTax.js';
 
 export class TaxDsl {

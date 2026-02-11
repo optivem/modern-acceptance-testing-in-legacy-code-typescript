@@ -1,4 +1,4 @@
-import { ProblemDetailResponse } from '@optivem/http';
+import { ProblemDetailResponse } from '@optivem/commons/http';
 import { Error, createError, createFieldError } from './Error.js';
 
 export const toError = (problemDetail: ProblemDetailResponse): Error => {

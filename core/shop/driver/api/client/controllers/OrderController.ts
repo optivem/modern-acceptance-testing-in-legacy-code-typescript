@@ -1,5 +1,5 @@
-import { HttpGateway, HttpUtils, ProblemDetailResponse } from '@optivem/http';
-import { Result } from '@optivem/util';
+import { HttpGateway, HttpUtils, ProblemDetailResponse } from '@optivem/commons/http';
+import { Result } from '@optivem/commons/util';
 import { PlaceOrderRequest } from '../../../dtos/PlaceOrderRequest.js';
 import { PlaceOrderResponse } from '../../../dtos/PlaceOrderResponse.js';
 import { GetOrderResponse } from '../../../dtos/GetOrderResponse.js';

@@ -1,5 +1,5 @@
 import { TaxApiDriver } from '../../driver/TaxApiDriver.js';
-import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/dsl';
+import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/commons/dsl';
 
 export class GoToTax extends BaseCommand<TaxApiDriver, void, VoidVerification> {
     constructor(driver: TaxApiDriver, context: Context) {

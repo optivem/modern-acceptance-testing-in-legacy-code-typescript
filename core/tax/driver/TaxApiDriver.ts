@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { Result } from '@optivem/util';
+import { Result } from '@optivem/commons/util';
 import { TaxApiClient } from './client/TaxApiClient.js';
-import { HttpClientFactory } from '@optivem/http';
-import { Closer } from '@optivem/util';
+import { HttpClientFactory } from '@optivem/commons/http';
+import { Closer } from '@optivem/commons/util';
 import { Error, toError } from '../../commons/error/index.js';
 
 export class TaxApiDriver {

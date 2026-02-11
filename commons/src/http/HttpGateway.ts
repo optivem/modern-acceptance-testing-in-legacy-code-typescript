@@ -1,5 +1,5 @@
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import { Result } from '@optivem/util';
+import { Result } from '../util/index.js';
 import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 
 /**

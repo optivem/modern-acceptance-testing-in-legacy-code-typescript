@@ -1,7 +1,7 @@
 import { SystemConfiguration } from '../../SystemConfiguration.js';
-import { Context } from '@optivem/dsl';
+import { Context } from '@optivem/commons/dsl';
 import { ErpApiDriver } from '../driver/ErpApiDriver.js';
-import { Closer } from '@optivem/util';
+import { Closer } from '@optivem/commons/util';
 import { GoToErp } from './commands/GoToErp.js';
 import { CreateProduct } from './commands/CreateProduct.js';
 

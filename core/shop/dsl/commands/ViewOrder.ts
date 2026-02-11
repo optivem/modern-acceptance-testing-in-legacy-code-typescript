@@ -1,5 +1,5 @@
 import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseCommand, CommandResult, Context } from '@optivem/dsl';
+import { BaseCommand, CommandResult, Context } from '@optivem/commons/dsl';
 import { GetOrderResponse } from '../../driver/dtos/GetOrderResponse.js';
 import { ViewOrderVerification } from '../verifications/ViewOrderVerification.js';
 

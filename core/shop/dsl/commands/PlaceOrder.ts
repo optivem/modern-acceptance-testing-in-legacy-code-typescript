@@ -1,5 +1,5 @@
 import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseCommand, CommandResult, Context } from '@optivem/dsl';
+import { BaseCommand, CommandResult, Context } from '@optivem/commons/dsl';
 import { PlaceOrderResponse } from '../../driver/dtos/PlaceOrderResponse.js';
 import { PlaceOrderVerification } from '../verifications/PlaceOrderVerification.js';
 

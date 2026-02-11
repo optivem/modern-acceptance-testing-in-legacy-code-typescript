@@ -1,7 +1,7 @@
 import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
-import { Closer } from '@optivem/util';
-import { PageClient } from '@optivem/playwright';
+import { Closer } from '@optivem/commons/util';
+import { PageClient } from '@optivem/commons/playwright';
 import { HomePage } from './pages/HomePage.js';
 
 export class ShopUiClient {

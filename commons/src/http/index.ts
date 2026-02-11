@@ -5,4 +5,4 @@ export { HttpUtils } from './HttpUtils.js';
 export { JsonHttpClient } from './JsonHttpClient.js';
 export { ProblemDetailResponse } from './ProblemDetailResponse.js';
 export { ProblemDetailsFieldErrorResponse } from './ProblemDetailsFieldErrorResponse.js';
-export { Result } from '@optivem/util';
+export { Result } from '../util/index.js';
