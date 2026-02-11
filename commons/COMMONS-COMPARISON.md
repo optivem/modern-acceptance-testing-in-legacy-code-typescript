@@ -56,26 +56,53 @@ Enum: STUB, REAL in all three. Same.
 
 ---
 
-## 2. HTTP
+## 2. HTTP folder
 
-### 2.1 HttpStatus
+### 2.1 File list
 
-Java: Spring `HttpStatus`; .NET: static class with constants; TS: object with constants (e.g. OK, CREATED). Same conceptual usage.
+| Java (commons/http) | .NET (Commons/Http) | TypeScript (commons/src/http) |
+|---------------------|---------------------|--------------------------------|
+| HttpStatus.java     | HttpStatus.cs       | HttpStatus.ts                  |
+| JsonHttpClient.java | JsonHttpClient.cs   | JsonHttpClient.ts              |
+| —                   | —                   | index.ts                       |
 
-### 2.2 JsonHttpClient
+All three have only **HttpStatus** and **JsonHttpClient** (plus index.ts barrel in TS).
+
+### 2.2 HttpStatus
+
+| Constant              | Java | .NET | TypeScript |
+|-----------------------|------|------|------------|
+| OK                    | 200  | Ok = 200 | OK: 200 |
+| CREATED               | 201  | Created = 201 | CREATED: 201 |
+| ACCEPTED              | 202  | Accepted = 202 | ACCEPTED: 202 |
+| NO_CONTENT            | 204  | NoContent = 204 | NO_CONTENT: 204 |
+| BAD_REQUEST … 503     | same | same | same (BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, CONFLICT, INTERNAL_SERVER_ERROR, BAD_GATEWAY, SERVICE_UNAVAILABLE) |
+
+Java uses `static final int`; .NET uses `public const int`; TypeScript uses `as const` object. Same numeric values and names (casing: Java/TS UPPER_SNAKE, .NET PascalCase).
+
+### 2.3 JsonHttpClient
 
 | Aspect | Java | .NET | TypeScript |
 |--------|------|------|------------|
-| **Constructor** | (HttpClient, baseUrl, errorType, ObjectMapper) or (baseUrl, errorType) | (baseUrl) | (baseUrl) |
-| **Methods** | get(path, responseType), get(path), post(path, request, responseType), post(path, request), post(path, responseType), post(path), put(…), delete(…) | Get&lt;T&gt;(path), Get(path), Post&lt;T&gt;(path, request), Post(path, request), Post(path), Put&lt;T&gt;(path, request), Put(path, request), Delete&lt;T&gt;(path), Delete(path) | get&lt;T&gt;(path), getVoid(path), post&lt;T&gt;(path, request), postVoid(path, request?), put&lt;T&gt;(path, request), putVoid(path, request), delete&lt;T&gt;(path), deleteVoid(path) |
+| **Constructor** | `(HttpClient, baseUrl, Class<E> errorType, ObjectMapper)` or `(baseUrl, Class<E> errorType)` | `(baseUrl)` only; E is generic on class | `(baseUrl)` only; E is generic on class (required) |
+| **Close/Dispose** | `close()` (AutoCloseable), closes HttpClient | `Dispose()` (IDisposable) | No close; gateway holds Axios instance |
+| **GET** | `get(path, Class<T>)` → Result&lt;T,E&gt;; `get(path)` → Result&lt;Void,E&gt; | `Get<T>(path)`; `Get(path)` → Result&lt;VoidValue,E&gt; | `get<T>(path)`; `get<void>(path)` → Result&lt;void,E&gt; |
+| **POST** | `post(path, request, Class<T>)`; `post(path, request)`; etc. | `Post<T>(path, request)`; `Post(path, request)` | `post<T>(path, request)`; `post<void>(path, request?)` |
+| **PUT** | `put(path, request, Class<T>)`; `put(path, request)` | `Put<T>(path, request)`; `Put(path, request)` | `put<T>(path, request)`; `put<void>(path, request)` |
+| **DELETE** | `delete(path, Class<T>)`; `delete(path)` | `Delete<T>(path)`; `Delete(path)` | `delete<T>(path)`; `delete<void>(path)` |
 
-**Method content:**
+**Method content (behavior):**
 
-- All: build request, send, map status to Result success/failure, deserialize body or error.
-- Java: uses virtual thread executor for sync-over-async; .NET/TS async.
-- TS: delegates to HttpGateway then HttpUtils.getOkResultOrFailure / getCreatedResultOrFailure / getNoContentResultOrFailure; Java/.NET do status checks inline. Same outcome.
+- All three: build request (GET/POST/PUT/DELETE), send, read status. If success (2xx) → deserialize body to T (or void) and return Result.success; if failure → deserialize body to E and return Result.failure.
+- Java: sync API; uses virtual thread executor to run HTTP call. Requires `Class<E>` for error deserialization. Uses Spring `HttpStatus.valueOf(statusCode).is2xxSuccessful()`.
+- .NET: async (Task). Uses `HttpResponseMessage.IsSuccessStatusCode`. Void responses use `VoidValue`.
+- TypeScript: async (Promise). Uses Axios directly inside JsonHttpClient; maps status to Result success/failure inline. Error type E is generic; error body is parsed as E (or a minimal object with status/title/detail).
 
-**Naming:** Java/.NET overload get(path) vs get(path, type); TS uses get/getVoid, post/postVoid, etc. Same capabilities.
+**Differences:**
+
+- Java constructor requires **error type** (Class&lt;E&gt;) and optionally HttpClient + ObjectMapper; .NET/TS only need baseUrl (and E from type parameter).
+- TS has no built-in close/dispose; Axios instance is not closed by JsonHttpClient (could be added if needed).
+- Naming: Java/.NET use overloads (same method name, different args); TS uses same method with generic `get<void>(path)` for no response body.
 
 ---
 
@@ -169,7 +196,7 @@ Different API shape (fluent assert vs expect matchers); same intent. TS uses Pla
 | PageClient | isVisible | IsVisibleAsync | isVisible, exists (alias) | Synced. |
 | Converter | toBigDecimal, fromBigDecimal | ToDecimal, FromDecimal | toDecimal, fromDecimal | No BigDecimal in TS. |
 | Closer | close (rethrow) | — | close (rethrow with cause) | Synced. |
-| JsonHttpClient | get(path, type), get(path) | Get&lt;T&gt;, Get | get, getVoid, post, postVoid, … | Same capabilities. |
+| JsonHttpClient | get(path, type), get(path) | Get&lt;T&gt;, Get | get&lt;T&gt;, get&lt;void&gt;, post, put, delete | Same capabilities. |
 | JsonWireMockClient | stubGet(path, code, body), stubGet(path, code) | StubGetAsync&lt;T&gt;, StubGetAsync | stubGet, stubGetNoBody | Same. |
 
 ---
