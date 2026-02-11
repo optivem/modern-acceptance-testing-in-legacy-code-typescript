@@ -86,10 +86,10 @@ Java uses `static final int`; .NET uses `public const int`; TypeScript uses `as 
 |--------|------|------|------------|
 | **Constructor** | `(HttpClient, baseUrl, Class<E> errorType, ObjectMapper)` or `(baseUrl, Class<E> errorType)` | `(baseUrl)` only; E is generic on class | `(baseUrl)` only; E is generic on class (required) |
 | **Close/Dispose** | `close()` (AutoCloseable), closes HttpClient | `Dispose()` (IDisposable) | No close; gateway holds Axios instance |
-| **GET** | `get(path, Class<T>)` → Result&lt;T,E&gt;; `get(path)` → Result&lt;Void,E&gt; | `Get<T>(path)`; `Get(path)` → Result&lt;VoidValue,E&gt; | `get<T>(path)`; `get<void>(path)` → Result&lt;void,E&gt; |
-| **POST** | `post(path, request, Class<T>)`; `post(path, request)`; etc. | `Post<T>(path, request)`; `Post(path, request)` | `post<T>(path, request)`; `post<void>(path, request?)` |
-| **PUT** | `put(path, request, Class<T>)`; `put(path, request)` | `Put<T>(path, request)`; `Put(path, request)` | `put<T>(path, request)`; `put<void>(path, request)` |
-| **DELETE** | `delete(path, Class<T>)`; `delete(path)` | `Delete<T>(path)`; `Delete(path)` | `delete<T>(path)`; `delete<void>(path)` |
+| **GET** | `get(path, Class<T>)` → Result&lt;T,E&gt;; `get(path)` → Result&lt;Void,E&gt; | `GetAsync<T>(path)`; `GetAsync(path)` → Result&lt;VoidValue,E&gt; | `getAsync<T>(path)`; `getAsync<void>(path)` → Result&lt;void,E&gt; |
+| **POST** | `post(path, request, Class<T>)`; etc. | `PostAsync<T>(path, request)`; `PostAsync(path, request)` | `postAsync<T>(path, request)`; `postAsync<void>(path, request)` |
+| **PUT** | `put(path, request, Class<T>)`; `put(path, request)` | `PutAsync<T>(path, request)`; `PutAsync(path, request)` | `putAsync<T>(path, request)`; `putAsync<void>(path, request)` |
+| **DELETE** | `delete(path, Class<T>)`; `delete(path)` | `DeleteAsync<T>(path)`; `DeleteAsync(path)` | `deleteAsync<T>(path)`; `deleteAsync<void>(path)` |
 
 **Method content (behavior):**
 
@@ -102,7 +102,7 @@ Java uses `static final int`; .NET uses `public const int`; TypeScript uses `as 
 
 - Java constructor requires **error type** (Class&lt;E&gt;) and optionally HttpClient + ObjectMapper; .NET/TS only need baseUrl (and E from type parameter).
 - TS has no built-in close/dispose; Axios instance is not closed by JsonHttpClient (could be added if needed).
-- Naming: Java/.NET use overloads (same method name, different args); TS uses same method with generic `get<void>(path)` for no response body.
+- Naming: Java/.NET use overloads; .NET/TS use Async suffix for async methods (GetAsync, getAsync). TS uses same method with generic `getAsync<void>(path)` for no response body.
 
 ---
 
@@ -112,18 +112,34 @@ Java uses `static final int`; .NET uses `public const int`; TypeScript uses `as 
 
 | Method (Java) | .NET | TypeScript | Content note |
 |---------------|------|------------|---------------|
-| fill(selector, value) | FillAsync(selector, text) | fill(selector, text) | Get locator, wait, fill. TS: null → ''. Same. |
-| click(selector) | ClickAsync(selector) | click(selector) | Get locator, wait, click. Same. |
-| readTextContent(selector) | ReadTextContentAsync(selector) | readTextContent(selector) | Wait, textContent. Same. |
-| readAllTextContents(selector) | ReadAllTextContentsAsync(selector) | readAllTextContents(selector) | Locator, wait first element, allTextContents. Same. |
-| isVisible(selector) | IsVisibleAsync(selector) | isVisible(selector), exists(selector) | TS exposes both; isVisible aligns with Java/.NET; exists delegates to isVisible. |
-| isHidden(selector) | IsHiddenAsync(selector) | isHidden(selector) | count === 0. Same. |
+| fill(selector, value) | FillAsync(selector, text) | fillAsync(selector, text) | GetLocatorAsync / getLocatorAsync, then fill. null → ''. Same. |
+| click(selector) | ClickAsync(selector) | clickAsync(selector) | GetLocatorAsync / getLocatorAsync, then click. Same. |
+| readTextContent(selector) | ReadTextContentAsync(selector) | readTextContentAsync(selector) | Wait for locator, textContent. Same. |
+| (none) | ReadTextContentImmediatelyAsync(selector) | readTextContentImmediatelyAsync(selector) | No wait; locator then textContent. .NET + TS. |
+| readAllTextContents(selector) | ReadAllTextContentsAsync(selector) | readAllTextContentsAsync(selector) | Locator, first().waitFor(visible), then allTextContents. Same. |
+| isVisible(selector) | IsVisibleAsync(selector) | isVisibleAsync(selector), existsAsync(selector) | getLocatorAsync, count &gt; 0; catch → false. existsAsync delegates to isVisibleAsync. |
+| isHidden(selector) | IsHiddenAsync(selector) | isHiddenAsync(selector) | Locator (no wait), count === 0. Same. |
 
-**Constructor:** Java (Page, timeoutMs); .NET (IPage, baseUrl) with default timeout; TS (Page, baseUrl, timeoutMs). TS also has getBaseUrl(), getPage(); Java has private getLocator(selector, waitOptions).
+**Constructor:** Java (Page) or (Page, timeoutMs); .NET (IPage, baseUrl) with default timeout 30s; TS (Page, baseUrl, timeoutMs) default 30s. All use 30s default timeout. TS has getBaseUrl(), getPage().
 
-**TS-only methods (no Java/.NET):** readInputValue, readInputIntegerValue, readInputCurrencyDecimalValue, readInputPercentageDecimalValue, waitForHidden, waitForVisible. Extra helpers; no conflict.
+**Locators:** Java: private getLocator(selector) / getLocator(selector, waitOptions), wait with state VISIBLE, throw if count 0. .NET: public GetLocator(selector) no wait; private GetLocatorAsync(selector) with state Visible, throw if count 0. TS: public getLocator(selector) no wait; private getLocatorAsync(selector) via getDefaultWaitForOptions() state visible, throw if count 0.
 
-**Method content:** Wait-for-then-act pattern aligned; Java uses Locator.WaitForOptions with VISIBLE and timeout; TS uses locator.waitFor({ timeout }); .NET similar. Same semantics.
+**TS-only methods (no Java/.NET):** readInputValueAsync, readInputIntegerValueAsync, readInputCurrencyDecimalValueAsync, readInputPercentageDecimalValueAsync, waitForHiddenAsync, waitForVisibleAsync. All async methods use Async suffix to match .NET.
+
+**Method name equivalence (.NET ↔ TypeScript):** Same names, different casing (PascalCase → camelCase). Every .NET public method has an equivalent TS method:
+
+| .NET | TypeScript | Equivalent? |
+|------|------------|-------------|
+| GetLocator(selector) | getLocator(selector) | Yes (sync; no wait) |
+| FillAsync(selector, text) | fillAsync(selector, text) | Yes |
+| ClickAsync(selector) | clickAsync(selector) | Yes |
+| ReadTextContentAsync(selector) | readTextContentAsync(selector) | Yes |
+| ReadTextContentImmediatelyAsync(selector) | readTextContentImmediatelyAsync(selector) | Yes |
+| ReadAllTextContentsAsync(selector) | readAllTextContentsAsync(selector) | Yes |
+| IsVisibleAsync(selector) | isVisibleAsync(selector) | Yes |
+| IsHiddenAsync(selector) | isHiddenAsync(selector) | Yes |
+
+TypeScript adds: getBaseUrl(), getPage(), existsAsync (alias for isVisibleAsync), readInputValueAsync, readInputIntegerValueAsync, readInputCurrencyDecimalValueAsync, readInputPercentageDecimalValueAsync, waitForHiddenAsync, waitForVisibleAsync. .NET has no equivalent for these; they are TS-only helpers.
 
 ---
 
@@ -146,7 +162,7 @@ Java uses `static final int`; .NET uses `public const int`; TypeScript uses `as 
 | toInteger(String, nullValues…), fromInteger | ToInteger(…), FromInteger | toInteger(…), fromInteger | Null/blank and nullValues → null; else parse. Same. |
 | toDouble | (use ToDecimal) | toDouble | Parse double. Same. |
 | toInstant, fromInstant | ToInstant, FromInstant | toInstant, fromInstant | ISO/date handling. Java Instant; .NET DateTime; TS Date. Same intent. |
-| parseInstant(text, nullValues…) | ParseDateTime(…, nullValues) | parseInstant(…, nullValues) | Null/blank/nullValues → null; try ISO then locale formats. Same. |
+| parseInstant(text, nullValues…) | ParseDateTime(…, nullValues) | toDate(…, nullValues) | Null/blank/nullValues → null; try ISO then locale formats. Same. |
 
 Java also has toBigDecimal(double), fromDouble(double). TS uses toDecimal/fromDecimal for numeric string ↔ number. Method content (null handling, nullValues, parse) aligned.
 
@@ -196,7 +212,7 @@ Different API shape (fluent assert vs expect matchers); same intent. TS uses Pla
 | PageClient | isVisible | IsVisibleAsync | isVisible, exists (alias) | Synced. |
 | Converter | toBigDecimal, fromBigDecimal | ToDecimal, FromDecimal | toDecimal, fromDecimal | No BigDecimal in TS. |
 | Closer | close (rethrow) | — | close (rethrow with cause) | Synced. |
-| JsonHttpClient | get(path, type), get(path) | Get&lt;T&gt;, Get | get&lt;T&gt;, get&lt;void&gt;, post, put, delete | Same capabilities. |
+| JsonHttpClient | get(path, type), get(path) | GetAsync&lt;T&gt;, GetAsync | getAsync&lt;T&gt;, getAsync&lt;void&gt;, postAsync, putAsync, deleteAsync | Same capabilities. |
 | JsonWireMockClient | stubGet(path, code, body), stubGet(path, code) | StubGetAsync&lt;T&gt;, StubGetAsync | stubGet, stubGetNoBody | Same. |
 
 ---

@@ -30,15 +30,15 @@ export class OrderHistoryPage extends BasePage {
     }
 
     async inputOrderNumber(orderNumber: string): Promise<void> {
-        await this.pageClient.fill(OrderHistoryPage.ORDER_NUMBER_INPUT_SELECTOR, orderNumber);
+        await this.pageClient.fillAsync(OrderHistoryPage.ORDER_NUMBER_INPUT_SELECTOR, orderNumber);
     }
 
     async clickSearch(): Promise<void> {
-        await this.pageClient.click(OrderHistoryPage.SEARCH_BUTTON_SELECTOR);
+        await this.pageClient.clickAsync(OrderHistoryPage.SEARCH_BUTTON_SELECTOR);
     }
 
     async waitForOrderDetails(): Promise<void> {
-        const orderDetailsText = await this.pageClient.readTextContent(OrderHistoryPage.ORDER_DETAILS_CONTAINER_SELECTOR);
+        const orderDetailsText = await this.pageClient.readTextContentAsync(OrderHistoryPage.ORDER_DETAILS_CONTAINER_SELECTOR);
         expect(orderDetailsText).toContain(OrderHistoryPage.ORDER_DETAILS_HEADING_TEXT);
     }
 
@@ -52,65 +52,65 @@ export class OrderHistoryPage extends BasePage {
     }
 
     async getOrderNumber(): Promise<string> {
-        return await this.pageClient.readInputValue(OrderHistoryPage.ORDER_NUMBER_OUTPUT_SELECTOR);
+        return await this.pageClient.readInputValueAsync(OrderHistoryPage.ORDER_NUMBER_OUTPUT_SELECTOR);
     }
 
     async getSku(): Promise<string> {
-        return await this.pageClient.readInputValue(OrderHistoryPage.SKU_OUTPUT_SELECTOR);
+        return await this.pageClient.readInputValueAsync(OrderHistoryPage.SKU_OUTPUT_SELECTOR);
     }
 
     async getCountry(): Promise<string> {
-        return await this.pageClient.readInputValue(OrderHistoryPage.COUNTRY_OUTPUT_SELECTOR);
+        return await this.pageClient.readInputValueAsync(OrderHistoryPage.COUNTRY_OUTPUT_SELECTOR);
     }
 
     async getQuantity(): Promise<number> {
-        return await this.pageClient.readInputIntegerValue(OrderHistoryPage.QUANTITY_OUTPUT_SELECTOR);
+        return await this.pageClient.readInputIntegerValueAsync(OrderHistoryPage.QUANTITY_OUTPUT_SELECTOR);
     }
 
     async getUnitPrice(): Promise<number> {
-        return await this.pageClient.readInputCurrencyDecimalValue(OrderHistoryPage.UNIT_PRICE_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputCurrencyDecimalValueAsync(OrderHistoryPage.UNIT_PRICE_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getSubtotalPrice(): Promise<number> {
-        return await this.pageClient.readInputCurrencyDecimalValue(OrderHistoryPage.SUBTOTAL_PRICE_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputCurrencyDecimalValueAsync(OrderHistoryPage.SUBTOTAL_PRICE_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getDiscountRate(): Promise<number> {
-        return await this.pageClient.readInputPercentageDecimalValue(OrderHistoryPage.DISCOUNT_RATE_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputPercentageDecimalValueAsync(OrderHistoryPage.DISCOUNT_RATE_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getDiscountAmount(): Promise<number> {
-        return await this.pageClient.readInputCurrencyDecimalValue(OrderHistoryPage.DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputCurrencyDecimalValueAsync(OrderHistoryPage.DISCOUNT_AMOUNT_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getPreTaxTotal(): Promise<number> {
-        return await this.pageClient.readInputCurrencyDecimalValue(OrderHistoryPage.PRE_TAX_TOTAL_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputCurrencyDecimalValueAsync(OrderHistoryPage.PRE_TAX_TOTAL_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getTaxRate(): Promise<number> {
-        return await this.pageClient.readInputPercentageDecimalValue(OrderHistoryPage.TAX_RATE_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputPercentageDecimalValueAsync(OrderHistoryPage.TAX_RATE_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getTaxAmount(): Promise<number> {
-        return await this.pageClient.readInputCurrencyDecimalValue(OrderHistoryPage.TAX_AMOUNT_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputCurrencyDecimalValueAsync(OrderHistoryPage.TAX_AMOUNT_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getTotalPrice(): Promise<number> {
-        return await this.pageClient.readInputCurrencyDecimalValue(OrderHistoryPage.TOTAL_PRICE_OUTPUT_SELECTOR);
+        return (await this.pageClient.readInputCurrencyDecimalValueAsync(OrderHistoryPage.TOTAL_PRICE_OUTPUT_SELECTOR)).toNumber();
     }
 
     async getStatus(): Promise<OrderStatus> {
-        const status = await this.pageClient.readInputValue(OrderHistoryPage.STATUS_OUTPUT_SELECTOR);
+        const status = await this.pageClient.readInputValueAsync(OrderHistoryPage.STATUS_OUTPUT_SELECTOR);
         return status as OrderStatus;
     }
 
     async clickCancelOrder(): Promise<void> {
-        await this.pageClient.click(OrderHistoryPage.CANCEL_ORDER_BUTTON_SELECTOR);
-        await this.pageClient.waitForHidden(OrderHistoryPage.CANCEL_ORDER_BUTTON_SELECTOR);
+        await this.pageClient.clickAsync(OrderHistoryPage.CANCEL_ORDER_BUTTON_SELECTOR);
+        await this.pageClient.waitForHiddenAsync(OrderHistoryPage.CANCEL_ORDER_BUTTON_SELECTOR);
     }
 
     async isCancelButtonHidden(): Promise<boolean> {
-        return await this.pageClient.isHidden(OrderHistoryPage.CANCEL_ORDER_BUTTON_SELECTOR);
+        return await this.pageClient.isHiddenAsync(OrderHistoryPage.CANCEL_ORDER_BUTTON_SELECTOR);
     }
 }
 

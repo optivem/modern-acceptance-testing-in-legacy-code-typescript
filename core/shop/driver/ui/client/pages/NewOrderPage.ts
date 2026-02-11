@@ -14,19 +14,19 @@ export class NewOrderPage extends BasePage {
     }
 
     async inputSku(sku: string): Promise<void> {
-        await this.pageClient.fill(NewOrderPage.SKU_INPUT_SELECTOR, sku);
+        await this.pageClient.fillAsync(NewOrderPage.SKU_INPUT_SELECTOR, sku);
     }
 
     async inputQuantity(quantity: string): Promise<void> {
-        await this.pageClient.fill(NewOrderPage.QUANTITY_INPUT_SELECTOR, quantity);
+        await this.pageClient.fillAsync(NewOrderPage.QUANTITY_INPUT_SELECTOR, quantity);
     }
 
     async inputCountry(country: string): Promise<void> {
-        await this.pageClient.fill(NewOrderPage.COUNTRY_INPUT_SELECTOR, country);
+        await this.pageClient.fillAsync(NewOrderPage.COUNTRY_INPUT_SELECTOR, country);
     }
 
     async clickPlaceOrder(): Promise<void> {
-        await this.pageClient.click(NewOrderPage.PLACE_ORDER_BUTTON_SELECTOR);
+        await this.pageClient.clickAsync(NewOrderPage.PLACE_ORDER_BUTTON_SELECTOR);
     }
 
     async getOrderNumber(): Promise<string> {

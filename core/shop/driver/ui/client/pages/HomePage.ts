@@ -12,12 +12,12 @@ export class HomePage extends BasePage {
     }
 
     async clickNewOrder(): Promise<NewOrderPage> {
-        await this.pageClient.click(HomePage.SHOP_BUTTON_SELECTOR);
+        await this.pageClient.clickAsync(HomePage.SHOP_BUTTON_SELECTOR);
         return new NewOrderPage(this.pageClient);
     }
 
     async clickOrderHistory(): Promise<OrderHistoryPage> {
-        await this.pageClient.click(HomePage.ORDER_HISTORY_BUTTON_SELECTOR);
+        await this.pageClient.clickAsync(HomePage.ORDER_HISTORY_BUTTON_SELECTOR);
         return new OrderHistoryPage(this.pageClient);
     }
 }

@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { Decimal } from '../util/Decimal.js';
 
 /**
  * High-level wrapper for Playwright Page.
@@ -8,7 +9,7 @@ export class PageClient {
     private readonly baseUrl: string;
     private readonly timeoutMilliseconds: number;
 
-    private static readonly DEFAULT_TIMEOUT_SECONDS = 10;
+    private static readonly DEFAULT_TIMEOUT_SECONDS = 30;
     private static readonly DEFAULT_TIMEOUT_MILLISECONDS = PageClient.DEFAULT_TIMEOUT_SECONDS * 1000;
 
     constructor(page: Page, baseUrl: string, timeoutMilliseconds: number = PageClient.DEFAULT_TIMEOUT_MILLISECONDS) {
@@ -25,84 +26,100 @@ export class PageClient {
         return this.page;
     }
 
-    async fill(selector: string, text: string | null): Promise<void> {
-        const input = this.page.locator(selector);
-        await this.wait(input);
+    /** Returns locator without waiting (aligns with .NET GetLocator). */
+    getLocator(selector: string): Locator {
+        return this.page.locator(selector);
+    }
+
+    async fillAsync(selector: string, text: string | null): Promise<void> {
+        const input = await this.getLocatorAsync(selector);
         await input.fill(text ?? '');
     }
 
-    async click(selector: string): Promise<void> {
-        const button = this.page.locator(selector);
-        await this.wait(button);
+    async clickAsync(selector: string): Promise<void> {
+        const button = await this.getLocatorAsync(selector);
         await button.click();
     }
 
-    async readTextContent(selector: string): Promise<string> {
-        const locator = this.page.locator(selector);
-        await this.wait(locator);
+    async readTextContentAsync(selector: string): Promise<string> {
+        const locator = await this.getLocatorAsync(selector);
         return (await locator.textContent()) || '';
     }
 
-    async readAllTextContents(selector: string): Promise<string[]> {
+    /** Returns text without waiting for visibility (aligns with .NET ReadTextContentImmediatelyAsync). */
+    async readTextContentImmediatelyAsync(selector: string): Promise<string> {
         const locator = this.page.locator(selector);
-        await this.wait(locator);
+        return (await locator.textContent()) || '';
+    }
+
+    async readAllTextContentsAsync(selector: string): Promise<string[]> {
+        const locator = this.page.locator(selector);
+        await locator.first().waitFor({ state: 'visible', timeout: this.timeoutMilliseconds });
         return await locator.allTextContents();
     }
 
-    async isVisible(selector: string): Promise<boolean> {
-        const locator = this.page.locator(selector);
+    async isVisibleAsync(selector: string): Promise<boolean> {
         try {
-            await this.wait(locator);
+            const locator = await this.getLocatorAsync(selector);
             return (await locator.count()) > 0;
         } catch {
             return false;
         }
     }
 
-    /** Same as isVisible; kept for backward compatibility. */
-    async exists(selector: string): Promise<boolean> {
-        return this.isVisible(selector);
-    }
-
-    async readInputValue(selector: string): Promise<string> {
-        const locator = this.page.locator(selector);
-        await this.wait(locator);
-        return await locator.inputValue();
-    }
-
-    async readInputIntegerValue(selector: string): Promise<number> {
-        const inputValue = await this.readInputValue(selector);
-        return parseInt(inputValue);
-    }
-
-    async readInputCurrencyDecimalValue(selector: string): Promise<number> {
-        let inputValue = await this.readInputValue(selector);
-        inputValue = inputValue.replace('$', '');
-        return parseFloat(inputValue);
-    }
-
-    async readInputPercentageDecimalValue(selector: string): Promise<number> {
-        let inputValue = await this.readInputValue(selector);
-        inputValue = inputValue.replace('%', '');
-        return parseFloat(inputValue);
-    }
-
-    async isHidden(selector: string): Promise<boolean> {
+    async isHiddenAsync(selector: string): Promise<boolean> {
         const locator = this.page.locator(selector);
         return (await locator.count()) === 0;
     }
 
-    async waitForHidden(selector: string): Promise<void> {
+    /** Same as isVisibleAsync; kept for backward compatibility. */
+    async existsAsync(selector: string): Promise<boolean> {
+        return this.isVisibleAsync(selector);
+    }
+
+    async readInputValueAsync(selector: string): Promise<string> {
+        const locator = await this.getLocatorAsync(selector);
+        return await locator.inputValue();
+    }
+
+    async readInputIntegerValueAsync(selector: string): Promise<number> {
+        const inputValue = await this.readInputValueAsync(selector);
+        return parseInt(inputValue);
+    }
+
+    async readInputCurrencyDecimalValueAsync(selector: string): Promise<Decimal> {
+        let inputValue = await this.readInputValueAsync(selector);
+        inputValue = inputValue.replace('$', '');
+        return Decimal.fromString(inputValue);
+    }
+
+    async readInputPercentageDecimalValueAsync(selector: string): Promise<Decimal> {
+        let inputValue = await this.readInputValueAsync(selector);
+        inputValue = inputValue.replace('%', '');
+        return Decimal.fromString(inputValue);
+    }
+
+    async waitForHiddenAsync(selector: string): Promise<void> {
         const locator = this.page.locator(selector);
         await locator.waitFor({ state: 'hidden', timeout: this.timeoutMilliseconds });
     }
 
-    async waitForVisible(selector: string): Promise<void> {
+    async waitForVisibleAsync(selector: string): Promise<void> {
         const locator = this.page.locator(selector);
         await locator.waitFor({ state: 'visible', timeout: this.timeoutMilliseconds });
     }
 
-    private async wait(locator: Locator): Promise<void> {
-        await locator.waitFor({ timeout: this.timeoutMilliseconds });
+    private async getLocatorAsync(selector: string): Promise<Locator> {
+        const locator = this.page.locator(selector);
+        await locator.waitFor(this.getDefaultWaitForOptions());
+        const count = await locator.count();
+        if (count === 0) {
+            throw new Error(`No elements found for selector: ${selector}`);
+        }
+        return locator;
+    }
+
+    private getDefaultWaitForOptions(): { state: 'visible'; timeout: number } {
+        return { state: 'visible', timeout: this.timeoutMilliseconds };
     }
 }

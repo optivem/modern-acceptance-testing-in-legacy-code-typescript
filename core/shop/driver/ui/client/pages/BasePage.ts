@@ -14,13 +14,13 @@ export abstract class BasePage {
     }
 
     async hasSuccessNotification(): Promise<boolean> {
-        await this.pageClient.waitForVisible(BasePage.NOTIFICATION_SELECTOR);
+        await this.pageClient.waitForVisibleAsync(BasePage.NOTIFICATION_SELECTOR);
 
-        if (await this.pageClient.exists(BasePage.SUCCESS_NOTIFICATION_SELECTOR)) {
+        if (await this.pageClient.existsAsync(BasePage.SUCCESS_NOTIFICATION_SELECTOR)) {
             return true;
         }
 
-        if (await this.pageClient.exists(BasePage.ERROR_NOTIFICATION_SELECTOR)) {
+        if (await this.pageClient.existsAsync(BasePage.ERROR_NOTIFICATION_SELECTOR)) {
             return false;
         }
 
@@ -28,23 +28,23 @@ export abstract class BasePage {
     }
 
     async readSuccessNotification(): Promise<string> {
-        return await this.pageClient.readTextContent(BasePage.SUCCESS_NOTIFICATION_SELECTOR);
+        return await this.pageClient.readTextContentAsync(BasePage.SUCCESS_NOTIFICATION_SELECTOR);
     }
 
     async readErrorNotification(): Promise<string[]> {
-        const text = await this.pageClient.readTextContent(BasePage.ERROR_NOTIFICATION_SELECTOR);
+        const text = await this.pageClient.readTextContentAsync(BasePage.ERROR_NOTIFICATION_SELECTOR);
         return text.split('\n').filter((line: string) => line.trim() !== '');
     }
 
     async readGeneralErrorMessage(): Promise<string> {
-        return await this.pageClient.readTextContent(BasePage.ERROR_MESSAGE_SELECTOR);
+        return await this.pageClient.readTextContentAsync(BasePage.ERROR_MESSAGE_SELECTOR);
     }
 
     async readFieldErrors(): Promise<string[]> {
-        if (!await this.pageClient.exists(BasePage.FIELD_ERROR_SELECTOR)) {
+        if (!await this.pageClient.existsAsync(BasePage.FIELD_ERROR_SELECTOR)) {
             return [];
         }
-        return await this.pageClient.readAllTextContents(BasePage.FIELD_ERROR_SELECTOR);
+        return await this.pageClient.readAllTextContentsAsync(BasePage.FIELD_ERROR_SELECTOR);
     }
 }
 

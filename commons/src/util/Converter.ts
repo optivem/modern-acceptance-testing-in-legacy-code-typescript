@@ -1,15 +1,17 @@
+import { Decimal } from './Decimal.js';
+
 /**
- * Type/string conversion helpers (decimal, integer, double, instant, parseInstant).
+ * Type/string conversion helpers (decimal, integer, toDate, fromInstant).
  */
 export class Converter {
     private constructor() {}
 
-    static toDecimal(value: string | null | undefined): number | null {
-        return this.to(value, (s) => parseFloat(s));
+    static toDecimal(value: string | null | undefined): Decimal | null {
+        return this.to(value, (s) => Decimal.fromString(s));
     }
 
-    static fromDecimal(value: number | null | undefined): string | null {
-        return value == null ? null : String(value);
+    static fromDecimal(value: Decimal | null | undefined): string | null {
+        return value == null ? null : value.toString();
     }
 
     static toInteger(value: string | null | undefined, ...nullValues: string[]): number | null {
@@ -24,19 +26,11 @@ export class Converter {
         return value == null ? null : String(value);
     }
 
-    static toDouble(value: string | null | undefined): number | null {
-        return this.to(value, (s) => parseFloat(s));
-    }
+    static toDate(text: string | null | undefined, ...nullValues: string[]): Date | null {
+        const simple = this.to(text, (s) => new Date(s));
+        if (simple !== null && !Number.isNaN(simple.getTime())) return simple;
+        if (simple === null) return null;
 
-    static toInstant(value: string | null | undefined): Date | null {
-        return this.to(value, (s) => new Date(s));
-    }
-
-    static fromInstant(value: Date | null | undefined): string | null {
-        return value == null ? null : value.toISOString();
-    }
-
-    static parseInstant(text: string | null | undefined, ...nullValues: string[]): Date | null {
         if (text == null || text.trim() === '') return null;
         for (const nv of nullValues) {
             if (text.localeCompare(nv, undefined, { sensitivity: 'accent' }) === 0) return null;
@@ -53,6 +47,10 @@ export class Converter {
             if (!Number.isNaN(d.getTime())) return d;
         }
         throw new Error(`Invalid date format: ${text} - Expected ISO format or locale-specific format.`);
+    }
+
+    static fromDate(value: Date | null | undefined): string | null {
+        return value == null ? null : value.toISOString();
     }
 
     private static to<T>(value: string | null | undefined, converter: (s: string) => T): T | null {

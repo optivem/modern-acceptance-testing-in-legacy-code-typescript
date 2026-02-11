@@ -17,33 +17,33 @@ export class JsonHttpClient<E> {
     }
 
     /**
-     * GET. For no response body use get&lt;void&gt;(path) → Result&lt;void, E&gt;.
+     * GET. For no response body use getAsync&lt;void&gt;(path) → Result&lt;void, E&gt;.
      */
-    async get<T>(path: string): Promise<Result<T, E>> {
+    async getAsync<T>(path: string): Promise<Result<T, E>> {
         const httpResponse = await this.doRequest(() => this.doGet(path));
         return this.getResultOrFailure<T>(httpResponse);
     }
 
     /**
-     * POST. For no response body use post&lt;void&gt;(path, request) → Result&lt;void, E&gt;.
+     * POST. For no response body use postAsync&lt;void&gt;(path, request) → Result&lt;void, E&gt;.
      */
-    async post<T>(path: string, request: object): Promise<Result<T, E>> {
+    async postAsync<T>(path: string, request: object): Promise<Result<T, E>> {
         const httpResponse = await this.doRequest(() => this.doPost(path, request));
         return this.getResultOrFailure<T>(httpResponse);
     }
 
     /**
-     * PUT. For no response body use put&lt;void&gt;(path, request) → Result&lt;void, E&gt;.
+     * PUT. For no response body use putAsync&lt;void&gt;(path, request) → Result&lt;void, E&gt;.
      */
-    async put<T>(path: string, request: object): Promise<Result<T, E>> {
+    async putAsync<T>(path: string, request: object): Promise<Result<T, E>> {
         const httpResponse = await this.doRequest(() => this.doPut(path, request));
         return this.getResultOrFailure<T>(httpResponse);
     }
 
     /**
-     * DELETE. For no response body use delete&lt;void&gt;(path) → Result&lt;void, E&gt;.
+     * DELETE. For no response body use deleteAsync&lt;void&gt;(path) → Result&lt;void, E&gt;.
      */
-    async delete<T>(path: string): Promise<Result<T, E>> {
+    async deleteAsync<T>(path: string): Promise<Result<T, E>> {
         const httpResponse = await this.doRequest(() => this.doDelete(path));
         return this.getResultOrFailure<T>(httpResponse);
     }
