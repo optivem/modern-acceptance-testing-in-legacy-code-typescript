@@ -4,7 +4,7 @@ export interface GetTimeResponse {
     time: Date;
 }
 
-export function fromExtGetTimeResponse(response: ExtGetTimeResponse): GetTimeResponse {
+export function from(response: ExtGetTimeResponse): GetTimeResponse {
     return {
         time: new Date(response.time),
     };

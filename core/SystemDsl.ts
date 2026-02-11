@@ -3,6 +3,7 @@ import { SystemConfiguration } from './SystemConfiguration.js';
 import { ShopDsl } from './shop/dsl/ShopDsl.js';
 import { ErpDsl } from './erp/dsl/ErpDsl.js';
 import { TaxDsl } from './tax/dsl/TaxDsl.js';
+import { ClockDsl } from './clock/dsl/ClockDsl.js';
 import { Closer } from '@optivem/commons/util';
 
 export class SystemDsl {
@@ -12,6 +13,7 @@ export class SystemDsl {
     private _shop?: ShopDsl;
     private _erp?: ErpDsl;
     private _tax?: TaxDsl;
+    private _clock?: ClockDsl;
 
     constructor(context: Context, configuration: SystemConfiguration);
     constructor(configuration: SystemConfiguration);
@@ -30,6 +32,7 @@ export class SystemDsl {
         await Closer.close(this._shop);
         await Closer.close(this._erp);
         await Closer.close(this._tax);
+        await Closer.close(this._clock);
     }
 
     shop(): ShopDsl {
@@ -53,6 +56,13 @@ export class SystemDsl {
         );
     }
 
+    clock(): ClockDsl {
+        return this.getOrCreate(
+            this._clock,
+            () => (this._clock = new ClockDsl(this.context, this.configuration))
+        );
+    }
+
     getShop(): ShopDsl {
         return this.shop();
     }
@@ -63,6 +73,10 @@ export class SystemDsl {
 
     getTax(): TaxDsl {
         return this.tax();
+    }
+
+    getClock(): ClockDsl {
+        return this.clock();
     }
 
     private getOrCreate<T>(instance: T | undefined, supplier: () => T): T {

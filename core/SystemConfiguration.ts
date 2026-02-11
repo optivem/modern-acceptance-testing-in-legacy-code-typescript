@@ -6,7 +6,8 @@ export class SystemConfiguration {
     private readonly shopApiBaseUrl: string,
     private readonly erpBaseUrl: string,
     private readonly taxBaseUrl: string,
-    private readonly externalSystemMode: ExternalSystemMode = ExternalSystemMode.REAL
+    private readonly externalSystemMode: ExternalSystemMode = ExternalSystemMode.REAL,
+    private readonly clockBaseUrl: string = ''
   ) {}
 
   getExternalSystemMode(): ExternalSystemMode {
@@ -27,6 +28,10 @@ export class SystemConfiguration {
 
   getTaxBaseUrl(): string {
     return this.taxBaseUrl;
+  }
+
+  getClockBaseUrl(): string {
+    return this.clockBaseUrl;
   }
 }
 

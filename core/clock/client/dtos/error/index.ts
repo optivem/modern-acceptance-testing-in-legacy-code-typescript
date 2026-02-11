@@ -1,1 +1,1 @@
-export { ExtClockErrorResponse } from './ExtClockErrorResponse.js';
+export { ExtClockErrorResponse, from } from './ExtClockErrorResponse.js';

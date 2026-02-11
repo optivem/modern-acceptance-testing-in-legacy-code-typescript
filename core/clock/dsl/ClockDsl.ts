@@ -1,0 +1,47 @@
+import { SystemConfiguration } from '../../SystemConfiguration.js';
+import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
+import { ClockDriver } from '../driver/ClockDriver.js';
+import { ClockStubDriver } from '../driver/ClockStubDriver.js';
+import { ClockRealDriver } from '../driver/ClockRealDriver.js';
+import { Closer } from '@optivem/commons/util';
+import { GoToClock } from './commands/GoToClock.js';
+import { ReturnsTime } from './commands/ReturnsTime.js';
+import { GetTime } from './commands/GetTime.js';
+
+export class ClockDsl {
+    private readonly driver: ClockDriver;
+    private readonly context: UseCaseContext;
+
+    constructor(context: UseCaseContext, configuration: SystemConfiguration) {
+        this.context = context;
+        this.driver = this.createDriver(context, configuration);
+    }
+
+    private createDriver(context: UseCaseContext, configuration: SystemConfiguration): ClockDriver {
+        const mode = context.getExternalSystemMode();
+        switch (mode) {
+            case ExternalSystemMode.REAL:
+                return new ClockRealDriver();
+            case ExternalSystemMode.STUB:
+                return new ClockStubDriver(configuration.getClockBaseUrl());
+            default:
+                throw new Error(`External system mode '${mode}' is not supported for ClockDsl.`);
+        }
+    }
+
+    async close(): Promise<void> {
+        await Closer.close(this.driver);
+    }
+
+    goToClock(): GoToClock {
+        return new GoToClock(this.driver, this.context);
+    }
+
+    returnsTime(): ReturnsTime {
+        return new ReturnsTime(this.driver, this.context);
+    }
+
+    getTime(): GetTime {
+        return new GetTime(this.driver, this.context);
+    }
+}
