@@ -11,21 +11,21 @@ npm install @optivem/playwright
 ## Usage
 
 ```typescript
-import { PageGateway } from '@optivem/playwright';
+import { PageClient } from '@optivem/playwright';
 import { test } from '@playwright/test';
 
 test('should fill form', async ({ page }) => {
-  const gateway = new PageGateway(page, 'http://localhost:3000');
+  const pageClient = new PageClient(page, 'http://localhost:3000');
   
-  await gateway.fill('#username', 'john');
-  await gateway.click('#submit');
-  const message = await gateway.readTextContent('#success');
+  await pageClient.fill('#username', 'john');
+  await pageClient.click('#submit');
+  const message = await pageClient.readTextContent('#success');
 });
 ```
 
 ## Features
 
-- **PageGateway**: High-level wrapper for Playwright Page
+- **PageClient**: High-level wrapper for Playwright Page (alias `PageGateway` for backward compatibility)
   - Simplified form filling, clicking, reading values
   - Built-in waiting and timeout handling
   - Currency and percentage parsing utilities

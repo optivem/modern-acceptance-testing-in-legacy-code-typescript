@@ -1,4 +1,4 @@
-import { Context } from '@optivem/dsl';
+import { Context, UseCaseContext } from '@optivem/dsl';
 import { SystemConfiguration } from './SystemConfiguration.js';
 import { ShopDsl } from './shop/dsl/ShopDsl.js';
 import { ErpDsl } from './erp/dsl/ErpDsl.js';
@@ -20,8 +20,9 @@ export class SystemDsl {
             this.context = contextOrConfiguration;
             this.configuration = configuration!;
         } else {
-            this.context = new Context();
+            // TODO (backward compatibility): two-arg constructor (configuration only) creates context with mode from config.
             this.configuration = contextOrConfiguration;
+            this.context = new UseCaseContext(this.configuration.getExternalSystemMode());
         }
     }
 

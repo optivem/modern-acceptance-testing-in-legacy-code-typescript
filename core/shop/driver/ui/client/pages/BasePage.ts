@@ -1,4 +1,4 @@
-import { PageGateway } from '@optivem/playwright';
+import { PageClient } from '@optivem/playwright';
 
 export abstract class BasePage {
     private static readonly NOTIFICATION_SELECTOR = '#notifications .notification';
@@ -7,9 +7,9 @@ export abstract class BasePage {
     private static readonly ERROR_MESSAGE_SELECTOR = '[role="alert"].error .error-message';
     private static readonly FIELD_ERROR_SELECTOR = '[role="alert"].error .field-error';
 
-    protected readonly pageClient: PageGateway;
+    protected readonly pageClient: PageClient;
 
-    constructor(pageClient: PageGateway) {
+    constructor(pageClient: PageClient) {
         this.pageClient = pageClient;
     }
 

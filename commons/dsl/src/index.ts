@@ -1,3 +1,4 @@
+export { ExternalSystemMode } from './ExternalSystemMode.js';
 export { UseCaseContext, Context } from './Context.js';
 export { UseCase, Command } from './Command.js';
 export { BaseUseCase, BaseCommand } from './BaseCommand.js';

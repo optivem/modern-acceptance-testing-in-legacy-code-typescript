@@ -1,6 +1,6 @@
 import { DriverFactory } from './DriverFactory.js';
 import { ChannelType } from './shop/ChannelType.js';
-import { channelTest } from '@optivem/testing-channels';
+import { channelTest } from '@optivem/optivem-testing';
 
 // Re-export for convenience
 export { channelTest };

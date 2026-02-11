@@ -7,7 +7,8 @@ export class SystemConfigurationLoader {
       testConfig.urls.shopUi,
       testConfig.urls.shopApi,
       testConfig.urls.erpApi,
-      testConfig.urls.taxApi
+      testConfig.urls.taxApi,
+      testConfig.externalSystemMode
     );
   }
 }

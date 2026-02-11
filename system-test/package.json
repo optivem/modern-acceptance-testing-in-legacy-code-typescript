@@ -22,7 +22,7 @@
     "@optivem/http": "file:../commons/http",
     "@optivem/playwright": "file:../commons/playwright",
     "@optivem/util": "file:../commons/util",
-    "@optivem/testing-channels": "file:../testing-channels",
+    "@optivem/optivem-testing": "file:../optivem-testing",
     "@optivem/dsl": "file:../commons/dsl",
     "axios": "^1.13.2",
     "http-status-codes": "^2.3.0",

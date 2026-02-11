@@ -4,7 +4,7 @@ import { ShopDriver } from '../driver/ShopDriver.js';
 import { ShopApiDriver } from '../driver/api/ShopApiDriver.js';
 import { ShopUiDriver } from '../driver/ui/ShopUiDriver.js';
 import { ChannelType } from '../ChannelType.js';
-import { ChannelContext } from '@optivem/testing-channels';
+import { ChannelContext } from '@optivem/optivem-testing';
 import { Closer } from '@optivem/util';
 import { GoToShop } from './commands/GoToShop.js';
 import { PlaceOrder } from './commands/PlaceOrder.js';

@@ -1,7 +1,7 @@
 import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
 import { Closer } from '@optivem/util';
-import { PageGateway } from '@optivem/playwright';
+import { PageClient } from '@optivem/playwright';
 import { HomePage } from './pages/HomePage.js';
 
 export class ShopUiClient {
@@ -27,7 +27,7 @@ export class ShopUiClient {
         this.context = await this.browser.newContext();
         this.page = await this.context.newPage();
         
-        const pageClient = new PageGateway(this.page, this.baseUrl);
+        const pageClient = new PageClient(this.page, this.baseUrl);
         const homePage = new HomePage(pageClient);
         
         this.response = await this.page.goto(this.baseUrl);

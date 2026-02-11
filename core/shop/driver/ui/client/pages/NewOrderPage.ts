@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { PageGateway } from '@optivem/playwright';
+import { PageClient } from '@optivem/playwright';
 
 export class NewOrderPage extends BasePage {
     private static readonly SKU_INPUT_SELECTOR = '[aria-label="SKU"]';
@@ -9,7 +9,7 @@ export class NewOrderPage extends BasePage {
     private static readonly ORDER_NUMBER_REGEX = /Success! Order has been created with Order Number ([\w-]+)/;
     private static readonly ORDER_NUMBER_MATCHER_GROUP = 1;
 
-    constructor(pageClient: PageGateway) {
+    constructor(pageClient: PageClient) {
         super(pageClient);
     }
 

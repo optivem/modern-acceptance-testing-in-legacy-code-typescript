@@ -1,17 +1,17 @@
-# @optivem/testing-channels
+# @optivem/optivem-testing
 
 Multi-channel testing utilities for Playwright - run the same test against UI and API channels.
 
 ## Installation
 
 ```bash
-npm install @optivem/testing-channels
+npm install @optivem/optivem-testing
 ```
 
 ## Usage
 
 ```typescript
-import { ChannelType, channelTest } from '@optivem/testing-channels';
+import { ChannelType, channelTest } from '@optivem/optivem-testing';
 import { expect } from '@playwright/test';
 
 const shopDriverFactory = (channelType: string) => {

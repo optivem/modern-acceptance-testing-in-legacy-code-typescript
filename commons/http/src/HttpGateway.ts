@@ -2,6 +2,10 @@ import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { Result } from '@optivem/util';
 import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 
+/**
+ * @deprecated Use {@link JsonHttpClient} instead. HttpGateway returns raw Axios responses;
+ * JsonHttpClient returns Result<T, E> directly and will replace this API.
+ */
 export class HttpGateway {
     private readonly client: AxiosInstance;
     private readonly baseUrl: string;

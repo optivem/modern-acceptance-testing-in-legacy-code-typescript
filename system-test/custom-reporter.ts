@@ -1,4 +1,4 @@
-import { CustomListReporter } from '@optivem/testing-channels';
+import { CustomListReporter } from '@optivem/optivem-testing';
 
 export default CustomListReporter;
 

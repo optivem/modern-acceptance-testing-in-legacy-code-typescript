@@ -35,10 +35,26 @@ export class Result<T, E = unknown> {
         return this._error!;
     }
 
+    /** Aligns with Java Result.map / .NET Result.Map. */
+    map<T2>(mapper: (value: T) => T2): Result<T2, E> {
+        if (this._success) {
+            return Result.success<T2, E>(mapper(this._value!));
+        }
+        return Result.failure<T2, E>(this._error!);
+    }
+
     mapFailure<E2>(mapper: (error: E) => E2): Result<T, E2> {
         if (this._success) {
             return Result.success<T, E2>(this._value);
         }
         return Result.failure<T, E2>(mapper(this._error!));
+    }
+
+    /** Aligns with Java Result.mapVoid / .NET Result.MapVoid. */
+    mapVoid(): Result<void, E> {
+        if (this._success) {
+            return Result.success<void, E>(undefined);
+        }
+        return Result.failure<void, E>(this._error!);
     }
 }

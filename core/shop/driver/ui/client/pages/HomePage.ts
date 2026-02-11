@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import { PageGateway } from '@optivem/playwright';
+import { PageClient } from '@optivem/playwright';
 import { NewOrderPage } from './NewOrderPage.js';
 import { OrderHistoryPage } from './OrderHistoryPage.js';
 
@@ -7,7 +7,7 @@ export class HomePage extends BasePage {
     private static readonly SHOP_BUTTON_SELECTOR = 'a[href="/shop.html"]';
     private static readonly ORDER_HISTORY_BUTTON_SELECTOR = 'a[href="/order-history.html"]';
 
-    constructor(pageClient: PageGateway) {
+    constructor(pageClient: PageClient) {
         super(pageClient);
     }
 
