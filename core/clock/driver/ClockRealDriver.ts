@@ -17,13 +17,11 @@ export class ClockRealDriver implements ClockDriver {
     }
 
     async goToClock(): Promise<Result<void, ClockErrorResponse>> {
-        const result = await this.client.checkHealth();
-        return result.mapError(fromClockErrorResponse);
+        return this.client.checkHealth().then((r) => r.mapError(fromClockErrorResponse));
     }
 
     async getTime(): Promise<Result<GetTimeResponse, ClockErrorResponse>> {
-        const result = await this.client.getTime();
-        return result.map(from).mapError(fromClockErrorResponse);
+        return this.client.getTime().then((r) => r.map(from).mapError(fromClockErrorResponse));
     }
 
     async returnsTime(_request: ReturnsTimeRequest): Promise<Result<void, ClockErrorResponse>> {

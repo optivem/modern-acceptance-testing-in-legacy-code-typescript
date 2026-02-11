@@ -12,11 +12,6 @@ export class ClockUseCaseResult<
         context: UseCaseContext,
         verificationFactory: (response: TSuccessResponse, context: UseCaseContext) => TSuccessVerification
     ) {
-        super(
-            result,
-            context,
-            verificationFactory,
-            (error: ClockErrorResponse, ctx: UseCaseContext) => new ClockErrorVerification(error, ctx)
-        );
+        super(result, context, verificationFactory, (error, ctx) => new ClockErrorVerification(error, ctx));
     }
 }
