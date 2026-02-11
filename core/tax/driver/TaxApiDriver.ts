@@ -16,7 +16,7 @@ export class TaxApiDriver {
 
     async goToTax(): Promise<Result<void, Error>> {
         const result = await this.apiClient.health().checkHealth();
-        return result.mapFailure(toError);
+        return result.mapError(toError);
     }
 
     close(): void {

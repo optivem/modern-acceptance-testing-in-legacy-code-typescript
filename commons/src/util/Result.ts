@@ -49,11 +49,6 @@ export class Result<T, E> {
         return Result.failure<T, E2>(mapper(this._error!));
     }
 
-    /** @deprecated Use mapError. */
-    mapFailure<E2>(mapper: (error: E) => E2): Result<T, E2> {
-        return this.mapError(mapper);
-    }
-
     mapVoid(): Result<void, E> {
         if (this._success) {
             return Result.success<void, E>(undefined);

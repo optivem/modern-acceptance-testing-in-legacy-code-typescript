@@ -20,7 +20,7 @@ export class ShopApiDriver implements ShopDriver {
 
     async goToShop(): Promise<Result<void, Error>> {
         const result = await this.client.health.checkHealth();
-        return result.mapFailure(toError);
+        return result.mapError(toError);
     }
 
     async placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse, Error>> {
@@ -30,17 +30,17 @@ export class ShopApiDriver implements ShopDriver {
             country,
         };
         const result = await this.client.order.placeOrder(request);
-        return result.mapFailure(toError);
+        return result.mapError(toError);
     }
 
     async viewOrder(orderNumber: string): Promise<Result<GetOrderResponse, Error>> {
         const result = await this.client.order.getOrder(orderNumber);
-        return result.mapFailure(toError);
+        return result.mapError(toError);
     }
 
     async cancelOrder(orderNumber: string): Promise<Result<void, Error>> {
         const result = await this.client.order.cancelOrder(orderNumber);
-        return result.mapFailure(toError);
+        return result.mapError(toError);
     }
 
     async close(): Promise<void> {

@@ -16,12 +16,12 @@ export class ErpApiDriver {
 
     async goToErp(): Promise<Result<void, Error>> {
         const result = await this.apiClient.health().checkHealth();
-        return result.mapFailure(toError);
+        return result.mapError(toError);
     }
 
     async createProduct(sku: string, price: string): Promise<Result<void, Error>> {
         const result = await this.apiClient.products().createProduct(sku, price);
-        return result.mapFailure(toError);
+        return result.mapError(toError);
     }
 
     close(): void {
