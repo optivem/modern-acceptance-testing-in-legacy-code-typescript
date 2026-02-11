@@ -1,15 +1,15 @@
-export class Result<T, E = unknown> {
+export class Result<T, E> {
     private constructor(
         private readonly _success: boolean,
         private readonly _value?: T,
         private readonly _error?: E
     ) {}
 
-    static success<T, E = unknown>(value?: T): Result<T, E> {
+    static success<T, E>(value?: T): Result<T, E> {
         return new Result<T, E>(true, value, undefined);
     }
 
-    static failure<T, E = unknown>(error: E): Result<T, E> {
+    static failure<T, E>(error: E): Result<T, E> {
         return new Result<T, E>(false, undefined, error);
     }
 

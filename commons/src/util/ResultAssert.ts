@@ -1,6 +1,51 @@
 import { expect } from '@playwright/test';
 import type { Result } from './Result.js';
 
+/**
+ * Recommended way to assert on a Result. Fluent API: throws if assertion fails.
+ * Use in tests or any code that needs to assert success/failure.
+ * @example assertThatResult(result).isSuccess()
+ * @example assertThatResult(result).isFailure()
+ * @example assertThatResult(result).isFailureWith('expected error message')
+ */
+export function assertThatResult<T, E>(actual: Result<T, E>): ResultAssertFluent<T, E> {
+  return new ResultAssertFluent(actual);
+}
+
+class ResultAssertFluent<T, E> {
+  constructor(private readonly actual: Result<T, E>) {}
+
+  isSuccess(): this {
+    if (this.actual == null) {
+      throw new Error('Expected result not to be null');
+    }
+    if (!this.actual.isSuccess()) {
+      throw new Error(`Expected result to be success but was failure with error: ${formatError(this.actual.getError())}`);
+    }
+    return this;
+  }
+
+  isFailure(): this {
+    if (this.actual == null) {
+      throw new Error('Expected result not to be null');
+    }
+    if (!this.actual.isFailure()) {
+      throw new Error('Expected result to be failure but was success');
+    }
+    return this;
+  }
+
+  isFailureWith(expectedMessage: string): this {
+    this.isFailure();
+    const errorMessages = getErrorMessages(this.actual.getError());
+    const hasMessage = errorMessages.some((msg) => msg.includes(expectedMessage));
+    if (!hasMessage) {
+      throw new Error(`Expected result to be failure with message "${expectedMessage}" but got: ${errorMessages.join(', ')}`);
+    }
+    return this;
+  }
+}
+
 function formatError(error: unknown): string {
   if (error === null || error === undefined) {
     return 'unknown error';
@@ -41,7 +86,8 @@ function getErrorMessages(error: unknown): string[] {
 }
 
 /**
- * Registers custom Result matchers on expect() (e.g. toBeSuccess, toBeFailureWith, toHaveErrorMessage, toHaveFieldError).
+ * Registers custom Result matchers on expect() (toBeSuccess, toBeFailureWith, etc.).
+ * Use when you prefer expect(result).toBeSuccess() in a test runner. Otherwise prefer assertThatResult(result).isSuccess().
  */
 export function setupResultMatchers() {
   expect.extend({

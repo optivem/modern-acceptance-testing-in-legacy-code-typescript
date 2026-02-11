@@ -1,23 +1,22 @@
-import { Result } from '../util/index.js';
+import { assertThatResult, Result } from '../util/index.js';
 import { UseCaseContext } from './UseCaseContext.js';
 
 export class UseCaseResult<
   TSuccessResponse,
-  TFailureResponse = unknown,
-  TContext = UseCaseContext,
-  TSuccessVerification = unknown,
-  TFailureVerification = unknown
+  TFailureResponse,
+  TSuccessVerification,
+  TFailureVerification
 > {
   private readonly result: Result<TSuccessResponse, TFailureResponse>;
-  private readonly context: TContext;
-  private readonly verificationFactory: (response: TSuccessResponse, context: TContext) => TSuccessVerification;
-  private readonly failureVerificationFactory?: (error: TFailureResponse, context: TContext) => TFailureVerification;
+  private readonly context: UseCaseContext;
+  private readonly verificationFactory: (response: TSuccessResponse, context: UseCaseContext) => TSuccessVerification;
+  private readonly failureVerificationFactory: (error: TFailureResponse, context: UseCaseContext) => TFailureVerification;
 
   constructor(
     result: Result<TSuccessResponse, TFailureResponse>,
-    context: TContext,
-    verificationFactory: (response: TSuccessResponse, context: TContext) => TSuccessVerification,
-    failureVerificationFactory?: (error: TFailureResponse, context: TContext) => TFailureVerification
+    context: UseCaseContext,
+    verificationFactory: (response: TSuccessResponse, context: UseCaseContext) => TSuccessVerification,
+    failureVerificationFactory: (error: TFailureResponse, context: UseCaseContext) => TFailureVerification
   ) {
     this.result = result;
     this.context = context;
@@ -26,20 +25,14 @@ export class UseCaseResult<
   }
 
   shouldSucceed(): TSuccessVerification {
-    if (!this.result.isSuccess()) {
-      const error = this.result.getError();
-      throw new Error(`Expected result to be success but was failure with error: ${JSON.stringify(error)}`);
-    }
-    return this.verificationFactory(this.result.getValue()!, this.context);
+    assertThatResult(this.result).isSuccess();
+    const value = this.result.getValue();
+    return this.verificationFactory(value, this.context);
   }
 
   shouldFail(): TFailureVerification {
-    if (!this.result.isFailure()) {
-      throw new Error('Expected result to be failure but was success');
-    }
-    if (!this.failureVerificationFactory) {
-      throw new Error('Failure verification not configured for this use case');
-    }
-    return this.failureVerificationFactory(this.result.getError()!, this.context);
+    assertThatResult(this.result).isFailure();
+    const error = this.result.getError();
+    return this.failureVerificationFactory(error, this.context);
   }
 }

@@ -7,7 +7,7 @@ import { ProblemDetailResponse } from './ProblemDetailResponse.js';
 /**
  * High-level HTTP client that returns Result<T, E> directly.
  */
-export class JsonHttpClient<E = ProblemDetailResponse> {
+export class JsonHttpClient<E> {
     private readonly gateway: HttpGateway;
 
     constructor(baseUrl: string) {

@@ -1,10 +1,10 @@
 import { UseCaseContext } from './UseCaseContext.js';
 
-export class ResponseVerification<TResponse, TContext = UseCaseContext> {
+export class ResponseVerification<TResponse> {
   protected readonly response: TResponse;
-  protected readonly context: TContext;
+  protected readonly context: UseCaseContext;
 
-  constructor(response: TResponse, context: TContext) {
+  constructor(response: TResponse, context: UseCaseContext) {
     this.response = response;
     this.context = context;
   }
@@ -13,7 +13,7 @@ export class ResponseVerification<TResponse, TContext = UseCaseContext> {
     return this.response;
   }
 
-  getContext(): TContext {
+  getContext(): UseCaseContext {
     return this.context;
   }
 }

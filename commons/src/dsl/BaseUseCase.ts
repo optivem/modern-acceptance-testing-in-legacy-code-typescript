@@ -4,19 +4,18 @@ import { UseCaseResult } from './UseCaseResult.js';
 
 export abstract class BaseUseCase<
   TDriver,
-  TContext = UseCaseContext,
-  TSuccessResponse = unknown,
-  TFailureResponse = unknown,
-  TSuccessVerification = unknown,
-  TFailureVerification = unknown
-> implements UseCase<UseCaseResult<TSuccessResponse, TFailureResponse, TContext, TSuccessVerification, TFailureVerification>> {
+  TSuccessResponse,
+  TFailureResponse,
+  TSuccessVerification,
+  TFailureVerification
+> implements UseCase<UseCaseResult<TSuccessResponse, TFailureResponse, TSuccessVerification, TFailureVerification>> {
   protected readonly driver: TDriver;
-  protected readonly context: TContext;
+  protected readonly context: UseCaseContext;
 
-  protected constructor(driver: TDriver, context: TContext) {
+  protected constructor(driver: TDriver, context: UseCaseContext) {
     this.driver = driver;
     this.context = context;
   }
 
-  abstract execute(): Promise<UseCaseResult<TSuccessResponse, TFailureResponse, TContext, TSuccessVerification, TFailureVerification>>;
+  abstract execute(): Promise<UseCaseResult<TSuccessResponse, TFailureResponse, TSuccessVerification, TFailureVerification>>;
 }
