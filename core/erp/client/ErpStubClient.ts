@@ -1,0 +1,21 @@
+import { Result } from '@optivem/commons/util';
+import { HttpStatus } from '@optivem/commons/http';
+import { JsonWireMockClient } from '@optivem/commons/wiremock';
+import { BaseErpClient } from './BaseErpClient.js';
+import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse.js';
+import { from as toExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
+import type { ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
+
+export class ErpStubClient extends BaseErpClient {
+    private readonly wireMockClient: JsonWireMockClient;
+
+    constructor(baseUrl: string) {
+        super(baseUrl);
+        this.wireMockClient = new JsonWireMockClient(baseUrl);
+    }
+
+    configureGetProduct(response: ExtProductDetailsResponse): Promise<Result<void, ExtErpErrorResponse>> {
+        const path = `${BaseErpClient.PRODUCTS_ENDPOINT}/${response.id}`;
+        return this.wireMockClient.stubGet(path, HttpStatus.OK, response).then((r) => r.mapError(toExtErpErrorResponse));
+    }
+}

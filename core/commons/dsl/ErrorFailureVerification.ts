@@ -2,7 +2,7 @@ import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
 import { Error } from '../error/index.js';
 import { expect } from '@playwright/test';
 
-export class ErrorFailureVerification extends ResponseVerification<Error, UseCaseContext> {
+export class ErrorFailureVerification extends ResponseVerification<Error> {
     constructor(error: Error, context: UseCaseContext) {
         super(error, context);
     }

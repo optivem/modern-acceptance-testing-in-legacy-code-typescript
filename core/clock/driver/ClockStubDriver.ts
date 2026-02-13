@@ -26,7 +26,7 @@ export class ClockStubDriver implements ClockDriver {
     }
 
     async returnsTime(request: ReturnsTimeRequest): Promise<Result<void, ClockErrorResponse>> {
-        const extResponse: ExtGetTimeResponse = { time: request.time };
+        const extResponse: ExtGetTimeResponse = { time: request.time ?? '' };
         return this.client.configureGetTime(extResponse).then((r) => r.mapError(fromClockErrorResponse));
     }
 }

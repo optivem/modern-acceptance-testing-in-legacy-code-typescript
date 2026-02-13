@@ -1,33 +1,38 @@
 import { SystemConfiguration } from '../../SystemConfiguration.js';
-import { Context } from '@optivem/commons/dsl';
-import { ErpApiDriver } from '../driver/ErpApiDriver.js';
-import { Closer } from '@optivem/commons/util';
+import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
+import type { ErpDriver } from '../driver/ErpDriver.js';
+import { ErpRealDriver } from '../driver/ErpRealDriver.js';
+import { ErpStubDriver } from '../driver/ErpStubDriver.js';
 import { GoToErp } from './commands/GoToErp.js';
-import { CreateProduct } from './commands/CreateProduct.js';
+import { ReturnsProduct } from './commands/ReturnsProduct.js';
 
 export class ErpDsl {
-    private readonly driver: ErpApiDriver;
-    private readonly context: Context;
+    private readonly driver: ErpDriver;
+    private readonly context: UseCaseContext;
 
-    constructor(context: Context, configuration: SystemConfiguration) {
-        this.driver = this.createDriver(configuration);
+    constructor(context: UseCaseContext, configuration: SystemConfiguration) {
         this.context = context;
+        this.driver = this.createDriver(context, configuration);
     }
 
-    private createDriver(configuration: SystemConfiguration): ErpApiDriver {
-        return new ErpApiDriver(configuration.getErpBaseUrl());
-    }
-
-    async close(): Promise<void> {
-        await Closer.close(this.driver);
+    private createDriver(context: UseCaseContext, configuration: SystemConfiguration): ErpDriver {
+        const mode = context.getExternalSystemMode();
+        switch (mode) {
+            case ExternalSystemMode.REAL:
+                return new ErpRealDriver(configuration.getErpBaseUrl());
+            case ExternalSystemMode.STUB:
+                return new ErpStubDriver(configuration.getErpBaseUrl());
+            default:
+                throw new Error(`External system mode '${mode}' is not supported for ErpDsl.`);
+        }
     }
 
     goToErp(): GoToErp {
         return new GoToErp(this.driver, this.context);
     }
 
-    createProduct(): CreateProduct {
-        return new CreateProduct(this.driver, this.context);
+    returnsProduct(): ReturnsProduct {
+        return new ReturnsProduct(this.driver, this.context);
     }
 }
 

@@ -3,6 +3,11 @@ export { Converter } from './Converter.js';
 export { Closeable } from './Closeable.js';
 export { AsyncCloseable } from './AsyncCloseable.js';
 export { Decimal } from './Decimal.js';
+export {
+    DEFAULT_DECIMAL_KEYS,
+    mapObjectDecimals,
+    parseJsonWithDecimals,
+} from './JsonDecimal.js';
 export { Result } from './Result.js';
 export {
     mapErrorAsync,

@@ -6,19 +6,19 @@ import { VoidVerification } from '@optivem/commons/dsl';
 import { UseCaseContext } from '@optivem/commons/dsl';
 
 export class ReturnsTime extends BaseClockCommand<void, VoidVerification> {
-    private timeValue: string | undefined;
+    private _time: string | undefined;
 
     constructor(driver: ClockDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
     time(time: string | undefined): ReturnsTime {
-        this.timeValue = time;
+        this._time = time;
         return this;
     }
 
     async execute(): Promise<ClockUseCaseResult<void, VoidVerification>> {
-        const request: ReturnsTimeRequest = { time: this.timeValue ?? '' };
+        const request: ReturnsTimeRequest = { time: this._time };
         const result = await this.driver.returnsTime(request);
         return new ClockUseCaseResult<void, VoidVerification>(
             result,

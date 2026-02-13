@@ -1,0 +1,17 @@
+---
+description: Method and function signatures in core should match reference projects (Java/.NET), while staying idiomatic for TypeScript
+globs: core/**/*
+alwaysApply: true
+---
+
+# Method signatures match reference (idiomatic TypeScript)
+
+- When implementing or changing **core** (client, driver, dsl, dtos), **method and function signatures** should **match the reference** projects so behavior and types stay aligned.
+  - **Parameter types and counts:** Same parameters as Java/.NET; map types idiomatically (e.g. .NET `string?` → TS `string | undefined` or `string`, C# `decimal` → TS `string` or `Decimal` from commons).
+  - **Return types:** Same success/error shape. .NET `Task<Result<T, E>>` → TS `Promise<Result<T, E>>`; keep the same **error type** at each layer (e.g. client returns client error DTO, driver converts to driver error DTO with a `from(ext)`-style function).
+  - **Converter signatures:** e.g. driver `ErpErrorResponse.from(ext: ExtErpErrorResponse)` must take the **client** error type (ExtErpErrorResponse), not a generic type like ProblemDetail, to match the reference.
+- **Idiomatic TypeScript** where the reference is only convention:
+  - **Method names:** camelCase; drop .NET `Async` suffix (e.g. `CheckHealthAsync` → `checkHealth`, `GetProductAsync` → `getProduct`).
+  - **Property names:** camelCase (e.g. .NET `Message` → TS `message`).
+  - **Files:** One main export per file; filename matches primary type/class.
+- **Rule of thumb:** Same operation as in Java/.NET → same parameters and return structure; names and syntax follow TypeScript conventions.

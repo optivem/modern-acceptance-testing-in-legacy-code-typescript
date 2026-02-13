@@ -1,19 +1,30 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { Result } from '../util/index.js';
-import { HttpStatus } from './HttpStatus.js';
+import { mapObjectDecimals, DEFAULT_DECIMAL_KEYS } from '../util/JsonDecimal.js';
+
+export type JsonHttpClientOptions = {
+    /**
+     * Keys to revive as Decimal in response bodies (any nesting level).
+     * Use DEFAULT_DECIMAL_KEYS or a custom Set. When set, all get/post/put/delete success bodies are passed through mapObjectDecimals.
+     */
+    decimalKeys?: Set<string>;
+};
 
 /**
  * High-level HTTP client that returns Result<T, E> directly.
+ * Optionally set decimalKeys so that response bodies get numeric/string fields (e.g. price, amount) revived to Decimal globally.
  */
 export class JsonHttpClient<E> {
     private readonly client: AxiosInstance;
+    private readonly decimalKeys: Set<string> | undefined;
 
-    constructor(baseUrl: string) {
+    constructor(baseUrl: string, options?: JsonHttpClientOptions) {
         this.client = axios.create({
             baseURL: baseUrl,
             headers: { 'Content-Type': 'application/json' },
             validateStatus: () => true,
         });
+        this.decimalKeys = options?.decimalKeys ?? undefined;
     }
 
     /**
@@ -81,7 +92,11 @@ export class JsonHttpClient<E> {
         if (httpResponse.isFailure()) return Result.failure(httpResponse.getError());
         const response = httpResponse.getValue();
         if (response.status >= 200 && response.status < 300) {
-            return Result.success(response.data as T);
+            let data = response.data as T;
+            if (this.decimalKeys != null && data != null && typeof data === 'object') {
+                data = mapObjectDecimals(data, this.decimalKeys) as T;
+            }
+            return Result.success(data);
         }
         return Result.failure(this.toError(response) as E);
     }

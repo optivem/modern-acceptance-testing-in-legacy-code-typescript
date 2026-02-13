@@ -19,12 +19,30 @@ export class Decimal {
         return new Decimal(new Big(n));
     }
 
+    /**
+     * Deserialize from JSON: accepts number or string (e.g. from JSON.parse).
+     * Use when mapping API responses to types that have Decimal fields.
+     */
+    static fromJson(value: unknown): Decimal {
+        if (typeof value === 'number') return Decimal.fromNumber(value);
+        if (typeof value === 'string') return Decimal.fromString(value);
+        throw new TypeError(`Decimal.fromJson expects number or string, got ${typeof value}`);
+    }
+
     toNumber(): number {
         return this.value.toNumber();
     }
 
     toString(): string {
         return this.value.toString();
+    }
+
+    /**
+     * For JSON.stringify: serializes as number so API payloads work without custom replacers.
+     * Use Decimal.fromJson when deserializing.
+     */
+    toJSON(): number {
+        return this.value.toNumber();
     }
 
     eq(other: Decimal): boolean {

@@ -10,7 +10,7 @@ export { channelTest };
  */
 export interface ShopFixtures {
     shopDriver: any;
-    erpApiDriver: any;
+    erpDriver: any;
     taxApiDriver: any;
 }
 
@@ -94,7 +94,7 @@ export function shopChannelTest<T = never>(
     testFn?: (fixtures: ShopFixtures, data: T) => Promise<void>
 ) {
     const additionalFixtures = {
-        erpApiDriver: () => DriverFactory.createErpApiDriver(),
+        erpDriver: () => DriverFactory.createErpDriver(),
         taxApiDriver: () => DriverFactory.createTaxApiDriver()
     };
     
@@ -116,8 +116,8 @@ export function shopChannelTest<T = never>(
                 ? baseTestName(testData)
                 : `${baseTestName} ${formatTestData(testData)}`;
                 
-            channelTest(channelTypes, shopDriverFactory, 'shopDriver', additionalFixtures, testName, async ({ shopDriver, erpApiDriver, taxApiDriver }) => {
-                return await fn({ shopDriver, erpApiDriver, taxApiDriver }, testData);
+            channelTest(channelTypes, shopDriverFactory, 'shopDriver', additionalFixtures, testName, async ({ shopDriver, erpDriver, taxApiDriver }) => {
+                return await fn({ shopDriver, erpDriver, taxApiDriver }, testData);
             });
         });
     }

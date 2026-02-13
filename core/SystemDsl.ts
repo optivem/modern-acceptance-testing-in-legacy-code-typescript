@@ -1,4 +1,4 @@
-import { Context, UseCaseContext } from '@optivem/commons/dsl';
+import { UseCaseContext } from '@optivem/commons/dsl';
 import { SystemConfiguration } from './SystemConfiguration.js';
 import { ShopDsl } from './shop/dsl/ShopDsl.js';
 import { ErpDsl } from './erp/dsl/ErpDsl.js';
@@ -7,7 +7,7 @@ import { ClockDsl } from './clock/dsl/ClockDsl.js';
 import { Closer } from '@optivem/commons/util';
 
 export class SystemDsl {
-    private readonly context: Context;
+    private readonly context: UseCaseContext;
     private readonly configuration: SystemConfiguration;
 
     private _shop?: ShopDsl;
@@ -15,24 +15,23 @@ export class SystemDsl {
     private _tax?: TaxDsl;
     private _clock?: ClockDsl;
 
-    constructor(context: Context, configuration: SystemConfiguration);
+    constructor(context: UseCaseContext, configuration: SystemConfiguration);
     constructor(configuration: SystemConfiguration);
-    constructor(contextOrConfiguration: Context | SystemConfiguration, configuration?: SystemConfiguration) {
-        if (contextOrConfiguration instanceof Context) {
-            this.context = contextOrConfiguration;
-            this.configuration = configuration!;
+    constructor(contextOrConfiguration: UseCaseContext | SystemConfiguration, configuration?: SystemConfiguration) {
+        if (configuration !== undefined) {
+            this.context = contextOrConfiguration as UseCaseContext;
+            this.configuration = configuration;
         } else {
-            // TODO (backward compatibility): two-arg constructor (configuration only) creates context with mode from config.
-            this.configuration = contextOrConfiguration;
+            this.configuration = contextOrConfiguration as SystemConfiguration;
             this.context = new UseCaseContext(this.configuration.getExternalSystemMode());
         }
     }
 
     async close(): Promise<void> {
-        await Closer.close(this._shop);
-        await Closer.close(this._erp);
-        await Closer.close(this._tax);
-        await Closer.close(this._clock);
+        await Closer.close(this._shop as Parameters<typeof Closer.close>[0]);
+        await Closer.close(this._erp as Parameters<typeof Closer.close>[0]);
+        await Closer.close(this._tax as Parameters<typeof Closer.close>[0]);
+        await Closer.close(this._clock as Parameters<typeof Closer.close>[0]);
     }
 
     shop(): ShopDsl {

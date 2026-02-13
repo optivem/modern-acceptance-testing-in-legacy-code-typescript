@@ -1,0 +1,15 @@
+---
+description: Folder structure must match Java and .NET reference projects when migrating or adding modules
+globs: core/**/*
+alwaysApply: true
+---
+
+# Folder structure matches reference
+
+- When **migrating** a module (e.g. erp, tax, shop, clock) or **adding** new core code, the **folder structure must match** the reference projects.
+- **Reference layout** (Java: `core/<module>/`; .NET: `Core.Core.<Module>/`):
+  - **client/** — API clients, external DTOs (e.g. `ErpApiClient`, `ClockStubClient`); **sibling of driver**, not under driver.
+  - **driver/** — driver interface, implementations, driver-level DTOs (e.g. `ErpDriver`, `ErpApiDriver`, `ClockStubDriver`).
+  - **dsl/** — DSL entry, commands, commands/base, verifications.
+- **Wrong:** `core/erp/driver/client/` (client nested under driver). **Correct:** `core/erp/client/` and `core/erp/driver/` as siblings.
+- Check Java `core/<module>/client/` and `core/<module>/driver/`, and .NET `Core.Core.<Module>/Client/` and `Core.Core.<Module>/Driver/`, before creating or moving folders.
