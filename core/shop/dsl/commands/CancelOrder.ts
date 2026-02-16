@@ -1,10 +1,13 @@
 import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/commons/dsl';
+import { BaseShopCommand } from './base/BaseShopCommand.js';
+import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
+import { UseCaseContext } from '@optivem/commons/dsl';
+import { VoidVerification } from '@optivem/commons/dsl';
 
-export class CancelOrder extends BaseCommand<ShopDriver, void, VoidVerification> {
+export class CancelOrder extends BaseShopCommand<void, VoidVerification> {
     private orderNumberResultAlias?: string;
 
-    constructor(driver: ShopDriver, context: Context) {
+    constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
@@ -13,11 +16,9 @@ export class CancelOrder extends BaseCommand<ShopDriver, void, VoidVerification>
         return this;
     }
 
-    async execute(): Promise<CommandResult<void, VoidVerification>> {
+    async execute(): Promise<ShopUseCaseResult<void, VoidVerification>> {
         const orderNumber = this.context.getResultValue(this.orderNumberResultAlias!);
-        const result = await this.driver.cancelOrder(orderNumber);
-        return new CommandResult(result, this.context, (response, context) => new VoidVerification(response, context));
+        const result = await this.driver.orders().cancelOrder(orderNumber);
+        return new ShopUseCaseResult(result, this.context, (_response, ctx) => new VoidVerification(undefined, ctx));
     }
 }
-
-

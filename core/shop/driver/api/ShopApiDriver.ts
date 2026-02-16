@@ -1,51 +1,35 @@
-import { AxiosInstance } from 'axios';
-import { ShopDriver } from '../ShopDriver.js';
-import { ShopApiClient } from './client/ShopApiClient.js';
-import { Result } from '@optivem/commons/util';
-import { PlaceOrderRequest } from '../dtos/PlaceOrderRequest.js';
-import { PlaceOrderResponse } from '../dtos/PlaceOrderResponse.js';
-import { GetOrderResponse } from '../dtos/GetOrderResponse.js';
-import { HttpClientFactory } from '@optivem/commons/http';
-import { Closer } from '@optivem/commons/util';
-import { Error, toError } from '../../../commons/error/index.js';
+import type { Result } from '@optivem/commons/util';
+import type { ShopDriver } from '../ShopDriver.js';
+import type { SystemError } from '../../commons/dtos/errors/SystemError.js';
+import { ShopApiClient } from '../../client/api/ShopApiClient.js';
+import { ShopApiOrderDriver } from './internal/ShopApiOrderDriver.js';
+import { ShopApiCouponDriver } from './internal/ShopApiCouponDriver.js';
+import { systemErrorFrom } from '../../commons/dtos/errors/SystemError.js';
 
 export class ShopApiDriver implements ShopDriver {
-    private readonly httpClient: AxiosInstance;
-    private readonly client: ShopApiClient;
+    private readonly apiClient: ShopApiClient;
+    private readonly orderDriver: ShopApiOrderDriver;
+    private readonly couponDriver: ShopApiCouponDriver;
 
     constructor(baseUrl: string) {
-        this.httpClient = HttpClientFactory.create(baseUrl);
-        this.client = new ShopApiClient(this.httpClient, baseUrl);
+        this.apiClient = new ShopApiClient(baseUrl);
+        this.orderDriver = new ShopApiOrderDriver(this.apiClient);
+        this.couponDriver = new ShopApiCouponDriver(this.apiClient);
     }
-
-    async goToShop(): Promise<Result<void, Error>> {
-        const result = await this.client.health.checkHealth();
-        return result.mapError(toError);
-    }
-
-    async placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse, Error>> {
-        const request: PlaceOrderRequest = {
-            sku,
-            quantity,
-            country,
-        };
-        const result = await this.client.order.placeOrder(request);
-        return result.mapError(toError);
-    }
-
-    async viewOrder(orderNumber: string): Promise<Result<GetOrderResponse, Error>> {
-        const result = await this.client.order.getOrder(orderNumber);
-        return result.mapError(toError);
-    }
-
-    async cancelOrder(orderNumber: string): Promise<Result<void, Error>> {
-        const result = await this.client.order.cancelOrder(orderNumber);
-        return result.mapError(toError);
-    }
-
+    
     async close(): Promise<void> {
-        Closer.close(this.httpClient);
+        this.apiClient.close();
+    }
+
+    goToShop(): Promise<Result<void, SystemError>> {
+        return this.apiClient.health().checkHealth().then((r) => r.mapError((e) => systemErrorFrom(e)));
+    }
+
+    orders(): ShopApiOrderDriver {
+        return this.orderDriver;
+    }
+
+    coupons(): ShopApiCouponDriver {
+        return this.couponDriver;
     }
 }
-
-

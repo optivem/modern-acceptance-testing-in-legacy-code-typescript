@@ -1,25 +1,25 @@
 import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseCommand, CommandResult, Context } from '@optivem/commons/dsl';
-import { GetOrderResponse } from '../../driver/dtos/GetOrderResponse.js';
+import { BaseShopCommand } from './base/BaseShopCommand.js';
+import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
+import { UseCaseContext } from '@optivem/commons/dsl';
+import type { ViewOrderResponse } from '../../commons/dtos/orders/index.js';
 import { ViewOrderVerification } from '../verifications/ViewOrderVerification.js';
 
-export class ViewOrder extends BaseCommand<ShopDriver, GetOrderResponse, ViewOrderVerification> {
+export class ViewOrder extends BaseShopCommand<ViewOrderResponse, ViewOrderVerification> {
     private orderNumberResultAlias?: string;
 
-    constructor(driver: ShopDriver, context: Context) {
+    constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    orderNumber(alias: string): ViewOrder {
-        this.orderNumberResultAlias = alias;
+    orderNumber(orderNumberResultAlias: string): ViewOrder {
+        this.orderNumberResultAlias = orderNumberResultAlias;
         return this;
     }
 
-    async execute(): Promise<CommandResult<GetOrderResponse, ViewOrderVerification>> {
+    async execute(): Promise<ShopUseCaseResult<ViewOrderResponse, ViewOrderVerification>> {
         const orderNumber = this.context.getResultValue(this.orderNumberResultAlias!);
-        const result = await this.driver.viewOrder(orderNumber);
-        return new CommandResult(result, this.context, (response, context) => new ViewOrderVerification(response, context));
+        const result = await this.driver.orders().viewOrder(orderNumber);
+        return new ShopUseCaseResult(result, this.context, (response, ctx) => new ViewOrderVerification(response, ctx));
     }
 }
-
-

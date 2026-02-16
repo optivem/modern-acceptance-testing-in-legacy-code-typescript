@@ -1,11 +1,13 @@
 import { BasePage } from './BasePage.js';
-import { PageClient } from '@optivem/commons/playwright';
+import type { PageClient } from '@optivem/commons/playwright';
 import { NewOrderPage } from './NewOrderPage.js';
 import { OrderHistoryPage } from './OrderHistoryPage.js';
+import { CouponManagementPage } from './CouponManagementPage.js';
 
 export class HomePage extends BasePage {
     private static readonly SHOP_BUTTON_SELECTOR = 'a[href="/shop.html"]';
     private static readonly ORDER_HISTORY_BUTTON_SELECTOR = 'a[href="/order-history.html"]';
+    private static readonly COUPON_MANAGEMENT_BUTTON_SELECTOR = 'a[href="/coupon-management.html"]';
 
     constructor(pageClient: PageClient) {
         super(pageClient);
@@ -20,6 +22,9 @@ export class HomePage extends BasePage {
         await this.pageClient.clickAsync(HomePage.ORDER_HISTORY_BUTTON_SELECTOR);
         return new OrderHistoryPage(this.pageClient);
     }
+
+    async clickCouponManagement(): Promise<CouponManagementPage> {
+        await this.pageClient.clickAsync(HomePage.COUPON_MANAGEMENT_BUTTON_SELECTOR);
+        return new CouponManagementPage(this.pageClient);
+    }
 }
-
-

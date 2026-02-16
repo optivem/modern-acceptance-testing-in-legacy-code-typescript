@@ -1,13 +1,11 @@
-import { Result, AsyncCloseable } from '@optivem/commons/util';
-import { PlaceOrderResponse } from './dtos/PlaceOrderResponse.js';
-import { GetOrderResponse } from './dtos/GetOrderResponse.js';
-import { Error } from '../../commons/error/index.js';
+import type { Result } from '@optivem/commons/util';
+import type { AsyncCloseable } from '@optivem/commons/util';
+import type { SystemError } from '../commons/dtos/errors/SystemError.js';
+import type { OrderDriver } from './internal/OrderDriver.js';
+import type { CouponDriver } from './internal/CouponDriver.js';
 
 export interface ShopDriver extends AsyncCloseable {
-    goToShop(): Promise<Result<void, Error>>;
-    placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse, Error>>;
-    viewOrder(orderNumber: string): Promise<Result<GetOrderResponse, Error>>;
-    cancelOrder(orderNumber: string): Promise<Result<void, Error>>;
+    goToShop(): Promise<Result<void, SystemError>>;
+    orders(): OrderDriver;
+    coupons(): CouponDriver;
 }
-
-

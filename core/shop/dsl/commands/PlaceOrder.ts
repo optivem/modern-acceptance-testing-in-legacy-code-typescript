@@ -1,49 +1,61 @@
 import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseCommand, CommandResult, Context } from '@optivem/commons/dsl';
-import { PlaceOrderResponse } from '../../driver/dtos/PlaceOrderResponse.js';
+import { BaseShopCommand } from './base/BaseShopCommand.js';
+import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
+import { UseCaseContext } from '@optivem/commons/dsl';
+import type { PlaceOrderRequest, PlaceOrderResponse } from '../../commons/dtos/orders/index.js';
 import { PlaceOrderVerification } from '../verifications/PlaceOrderVerification.js';
 
-export class PlaceOrder extends BaseCommand<ShopDriver, PlaceOrderResponse, PlaceOrderVerification> {
+export class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVerification> {
     private orderNumberResultAlias?: string;
-    private skuParamAlias: string = 'DEFAULT-SKU';
-    private quantityValue: string = '1';
-    private countryValue: string = 'US';
+    private skuParamAlias = 'DEFAULT-SKU';
+    private quantityValue = '1';
+    private countryAlias = 'US';
+    private couponCodeAlias?: string;
 
-    constructor(driver: ShopDriver, context: Context) {
+    constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    orderNumber(alias: string): PlaceOrder {
-        this.orderNumberResultAlias = alias;
+    orderNumber(orderNumberResultAlias: string): PlaceOrder {
+        this.orderNumberResultAlias = orderNumberResultAlias;
         return this;
     }
 
-    sku(alias: string): PlaceOrder {
-        this.skuParamAlias = alias;
+    sku(skuParamAlias: string): PlaceOrder {
+        this.skuParamAlias = skuParamAlias;
         return this;
     }
 
-    quantity(value: number | string): PlaceOrder {
-        this.quantityValue = typeof value === 'number' ? value.toString() : value;
+    quantity(value: string): PlaceOrder;
+    quantity(value: number): PlaceOrder;
+    quantity(value: string | number): PlaceOrder {
+        this.quantityValue = typeof value === 'number' ? String(value) : value;
         return this;
     }
 
-    country(value: string): PlaceOrder {
-        this.countryValue = value;
+    country(countryAlias: string): PlaceOrder {
+        this.countryAlias = countryAlias;
         return this;
     }
 
-    async execute(): Promise<CommandResult<PlaceOrderResponse, PlaceOrderVerification>> {
+    couponCode(couponCodeAlias: string): PlaceOrder {
+        this.couponCodeAlias = couponCodeAlias;
+        return this;
+    }
+
+    async execute(): Promise<ShopUseCaseResult<PlaceOrderResponse, PlaceOrderVerification>> {
         const sku = this.context.getParamValue(this.skuParamAlias);
-        const result = await this.driver.placeOrder(sku, this.quantityValue, this.countryValue);
-
-        if (result.isSuccess() && this.orderNumberResultAlias) {
-            const orderNumber = result.getValue().orderNumber;
-            this.context.setResultEntry(this.orderNumberResultAlias, orderNumber);
+        const country = this.context.getParamValueOrLiteral(this.countryAlias);
+        const couponCode = this.couponCodeAlias != null ? this.context.getParamValue(this.couponCodeAlias) : undefined;
+        const request: PlaceOrderRequest = { sku, quantity: this.quantityValue, country, couponCode };
+        const result = await this.driver.orders().placeOrder(request);
+        if (this.orderNumberResultAlias != null) {
+            if (result.isSuccess()) {
+                this.context.setResultEntry(this.orderNumberResultAlias, result.getValue().orderNumber);
+            } else {
+                this.context.setResultEntryFailed(this.orderNumberResultAlias, result.getError().message);
+            }
         }
-
-        return new CommandResult(result, this.context, (response, context) => new PlaceOrderVerification(response, context));
+        return new ShopUseCaseResult(result, this.context, (response, ctx) => new PlaceOrderVerification(response, ctx));
     }
 }
-
-

@@ -3,11 +3,13 @@ export { Converter } from './Converter.js';
 export { Closeable } from './Closeable.js';
 export { AsyncCloseable } from './AsyncCloseable.js';
 export { Decimal } from './Decimal.js';
+export { Integer } from './Integer.js';
 export {
     DEFAULT_DECIMAL_KEYS,
     mapObjectDecimals,
     parseJsonWithDecimals,
 } from './JsonDecimal.js';
+export { DEFAULT_INTEGER_KEYS, mapObjectIntegers } from './JsonInteger.js';
 export { Result } from './Result.js';
 export {
     mapErrorAsync,

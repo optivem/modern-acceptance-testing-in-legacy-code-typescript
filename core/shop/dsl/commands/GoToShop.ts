@@ -1,15 +1,16 @@
 import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseCommand, CommandResult, VoidVerification, Context } from '@optivem/commons/dsl';
+import { BaseShopCommand } from './base/BaseShopCommand.js';
+import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
+import { UseCaseContext } from '@optivem/commons/dsl';
+import { VoidVerification } from '@optivem/commons/dsl';
 
-export class GoToShop extends BaseCommand<ShopDriver, void, VoidVerification> {
-    constructor(driver: ShopDriver, context: Context) {
+export class GoToShop extends BaseShopCommand<void, VoidVerification> {
+    constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    async execute(): Promise<CommandResult<void, VoidVerification>> {
+    async execute(): Promise<ShopUseCaseResult<void, VoidVerification>> {
         const result = await this.driver.goToShop();
-        return new CommandResult(result, this.context, (response, context) => new VoidVerification(response, context));
+        return new ShopUseCaseResult(result, this.context, (_r, ctx) => new VoidVerification(undefined, ctx));
     }
 }
-
-

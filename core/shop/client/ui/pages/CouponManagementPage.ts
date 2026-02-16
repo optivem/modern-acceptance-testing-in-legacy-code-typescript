@@ -1,0 +1,106 @@
+import { BasePage } from './BasePage.js';
+import type { PageClient } from '@optivem/commons/playwright';
+import { Integer } from '@optivem/commons/util';
+import type { CouponDto } from '../../../commons/dtos/coupons/BrowseCouponsResponse.js';
+
+export class CouponManagementPage extends BasePage {
+    private static readonly COUPON_CODE_INPUT_SELECTOR = '[aria-label="Coupon Code"]';
+    private static readonly DISCOUNT_RATE_INPUT_SELECTOR = '[aria-label="Discount Rate"]';
+    private static readonly VALID_FROM_INPUT_SELECTOR = '[aria-label="Valid From"]';
+    private static readonly VALID_TO_INPUT_SELECTOR = '[aria-label="Valid To"]';
+    private static readonly USAGE_LIMIT_INPUT_SELECTOR = '[aria-label="Usage Limit"]';
+    private static readonly PUBLISH_COUPON_BUTTON_SELECTOR = '[aria-label="Create Coupon"]';
+    private static readonly COUPONS_TABLE_SELECTOR = '[aria-label="Coupons Table"]';
+
+    private static readonly TABLE_CELL_CODE_SELECTOR = 'table.table tbody tr td:nth-child(1)';
+    private static readonly TABLE_CELL_DISCOUNT_SELECTOR = 'table.table tbody tr td:nth-child(2)';
+    private static readonly TABLE_CELL_VALID_FROM_SELECTOR = 'table.table tbody tr td:nth-child(3)';
+    private static readonly TABLE_CELL_VALID_TO_SELECTOR = 'table.table tbody tr td:nth-child(4)';
+    private static readonly TABLE_CELL_USAGE_LIMIT_SELECTOR = 'table.table tbody tr td:nth-child(5)';
+    private static readonly TABLE_CELL_USED_COUNT_SELECTOR = 'table.table tbody tr td:nth-child(6)';
+
+    private static readonly PERCENT_SYMBOL = '%';
+    private static readonly TEXT_UNLIMITED = 'Unlimited';
+
+    constructor(pageClient: PageClient) {
+        super(pageClient);
+    }
+
+    async inputCouponCode(couponCode: string): Promise<void> {
+        await this.pageClient.fillAsync(CouponManagementPage.COUPON_CODE_INPUT_SELECTOR, couponCode);
+    }
+
+    async inputDiscountRate(discountRate: string): Promise<void> {
+        await this.pageClient.fillAsync(CouponManagementPage.DISCOUNT_RATE_INPUT_SELECTOR, discountRate);
+    }
+
+    async inputValidFrom(validFrom: string): Promise<void> {
+        await this.pageClient.fillAsync(CouponManagementPage.VALID_FROM_INPUT_SELECTOR, validFrom);
+    }
+
+    async inputValidTo(validTo: string): Promise<void> {
+        await this.pageClient.fillAsync(CouponManagementPage.VALID_TO_INPUT_SELECTOR, validTo);
+    }
+
+    async inputUsageLimit(usageLimit: string): Promise<void> {
+        await this.pageClient.fillAsync(CouponManagementPage.USAGE_LIMIT_INPUT_SELECTOR, usageLimit);
+    }
+
+    async clickPublishCoupon(): Promise<void> {
+        await this.pageClient.clickAsync(CouponManagementPage.PUBLISH_COUPON_BUTTON_SELECTOR);
+    }
+
+    async hasCouponsTable(): Promise<boolean> {
+        return await this.pageClient.isVisibleAsync(CouponManagementPage.COUPONS_TABLE_SELECTOR);
+    }
+
+    async readCoupons(): Promise<CouponDto[]> {
+        if (!(await this.hasCouponsTable())) return [];
+        const codes = await this.pageClient.readAllTextContentsAsync(
+            CouponManagementPage.TABLE_CELL_CODE_SELECTOR
+        );
+        if (codes.length === 0) return [];
+        const coupons: CouponDto[] = [];
+        const discountRates = await this.pageClient.readAllTextContentsAsync(
+            CouponManagementPage.TABLE_CELL_DISCOUNT_SELECTOR
+        );
+        const validFroms = await this.pageClient.readAllTextContentsAsync(
+            CouponManagementPage.TABLE_CELL_VALID_FROM_SELECTOR
+        );
+        const validTos = await this.pageClient.readAllTextContentsAsync(
+            CouponManagementPage.TABLE_CELL_VALID_TO_SELECTOR
+        );
+        const usageLimits = await this.pageClient.readAllTextContentsAsync(
+            CouponManagementPage.TABLE_CELL_USAGE_LIMIT_SELECTOR
+        );
+        const usedCounts = await this.pageClient.readAllTextContentsAsync(
+            CouponManagementPage.TABLE_CELL_USED_COUNT_SELECTOR
+        );
+        const rowCount = Math.min(
+            codes.length,
+            discountRates.length,
+            validFroms.length,
+            validTos.length,
+            usageLimits.length,
+            usedCounts.length
+        );
+        for (let i = 0; i < rowCount; i++) {
+            const discountText =
+                discountRates[i]?.replace(CouponManagementPage.PERCENT_SYMBOL, '').trim() ?? '0';
+            const rate = parseFloat(discountText) / 100 || 0;
+            const usageLimitText = usageLimits[i]?.trim() ?? '';
+            coupons.push({
+                code: codes[i]?.trim() ?? '',
+                discountRate: rate,
+                validFrom: validFroms[i] ?? '',
+                validTo: validTos[i] ?? '',
+                usageLimit:
+                    usageLimitText === CouponManagementPage.TEXT_UNLIMITED
+                        ? undefined
+                        : Integer.fromString(usageLimitText || '0'),
+                usedCount: Integer.fromString(usedCounts[i] ?? '0'),
+            });
+        }
+        return coupons;
+    }
+}

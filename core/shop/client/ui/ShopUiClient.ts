@@ -1,6 +1,6 @@
-import { chromium, Browser, BrowserContext, Page, Response } from '@playwright/test';
+import { chromium, type Browser, type BrowserContext, type Page, type Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
-import { Closer, AsyncCloseable } from '@optivem/commons/util';
+import { Closer, type AsyncCloseable } from '@optivem/commons/util';
 import { PageClient } from '@optivem/commons/playwright';
 import { HomePage } from './pages/HomePage.js';
 
@@ -19,19 +19,19 @@ export class ShopUiClient implements AsyncCloseable {
 
     constructor(baseUrl: string) {
         this.baseUrl = baseUrl;
-        this.homePage = {} as HomePage; // Will be initialized after page is created
+        this.homePage = {} as HomePage;
     }
 
     async openHomePage(): Promise<HomePage> {
         this.browser = await chromium.launch({ headless: true });
-        this.context = await this.browser.newContext();
-        this.page = await this.context.newPage();
-        
+        this.context = await this.browser!.newContext();
+        this.page = await this.context!.newPage();
+
         const pageClient = new PageClient(this.page, this.baseUrl);
         const homePage = new HomePage(pageClient);
-        
+
         this.response = await this.page.goto(this.baseUrl);
-        
+
         return homePage;
     }
 
@@ -50,9 +50,11 @@ export class ShopUiClient implements AsyncCloseable {
         }
 
         const pageContent = await this.page.content();
-        return pageContent !== null && 
-               pageContent.includes(ShopUiClient.HTML_OPENING_TAG) && 
-               pageContent.includes(ShopUiClient.HTML_CLOSING_TAG);
+        return (
+            pageContent !== null &&
+            pageContent.includes(ShopUiClient.HTML_OPENING_TAG) &&
+            pageContent.includes(ShopUiClient.HTML_CLOSING_TAG)
+        );
     }
 
     async close(): Promise<void> {
@@ -61,5 +63,3 @@ export class ShopUiClient implements AsyncCloseable {
         if (this.browser) await Closer.close(this.browser);
     }
 }
-
-

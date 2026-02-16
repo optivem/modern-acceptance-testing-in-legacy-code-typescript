@@ -1,9 +1,9 @@
-import { BaseSuccessVerification, Context } from '@optivem/commons/dsl';
-import { PlaceOrderResponse } from '../../driver/dtos/PlaceOrderResponse.js';
+import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
+import type { PlaceOrderResponse } from '../../commons/dtos/orders/index.js';
 import { expect } from '@playwright/test';
 
-export class PlaceOrderVerification extends BaseSuccessVerification<PlaceOrderResponse> {
-    constructor(response: PlaceOrderResponse, context: Context) {
+export class PlaceOrderVerification extends ResponseVerification<PlaceOrderResponse> {
+    constructor(response: PlaceOrderResponse, context: UseCaseContext) {
         super(response, context);
     }
 

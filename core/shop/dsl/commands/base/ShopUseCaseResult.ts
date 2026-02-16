@@ -1,19 +1,18 @@
-import { Result } from '@optivem/commons/util';
+import type { Result } from '@optivem/commons/util';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/commons/dsl';
-import { Error } from '../../../commons/error/index.js';
-import { ErrorFailureVerification } from '../../../commons/dsl/index.js';
+import type { SystemError } from '../../../commons/dtos/errors/SystemError.js';
+import { SystemErrorFailureVerification } from './SystemErrorFailureVerification.js';
 
 export class ShopUseCaseResult<
     TSuccessResponse,
-    TSuccessVerification extends ResponseVerification<TSuccessResponse, UseCaseContext>
-> extends UseCaseResult<TSuccessResponse, Error, UseCaseContext, TSuccessVerification, ErrorFailureVerification> {
-    
+    TSuccessVerification extends ResponseVerification<TSuccessResponse>
+> extends UseCaseResult<TSuccessResponse, SystemError, TSuccessVerification, SystemErrorFailureVerification> {
     constructor(
-        result: Result<TSuccessResponse, Error>,
+        result: Result<TSuccessResponse, SystemError>,
         context: UseCaseContext,
         verificationFactory: (response: TSuccessResponse, context: UseCaseContext) => TSuccessVerification
     ) {
-        super(result, context, verificationFactory, (error, ctx) => new ErrorFailureVerification(error, ctx));
+        super(result, context, verificationFactory, (error, ctx) => new SystemErrorFailureVerification(error, ctx));
     }
 }
 

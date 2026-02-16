@@ -1,163 +1,53 @@
-import { ShopDriver } from '../ShopDriver.js';
-import { ShopUiClient } from './client/ShopUiClient.js';
-import { HomePage } from './client/pages/HomePage.js';
-import { NewOrderPage } from './client/pages/NewOrderPage.js';
-import { OrderHistoryPage } from './client/pages/OrderHistoryPage.js';
-import { Result } from '@optivem/commons/util';
-import { PlaceOrderResponse } from '../dtos/PlaceOrderResponse.js';
-import { GetOrderResponse } from '../dtos/GetOrderResponse.js';
-import { OrderStatus } from '../dtos/enums/OrderStatus.js';
-import { Error, createError } from '../../../commons/error/index.js';
-
-enum Pages {
-    NONE = 'NONE',
-    HOME = 'HOME',
-    NEW_ORDER = 'NEW_ORDER',
-    ORDER_HISTORY = 'ORDER_HISTORY',
-}
+import type { Result } from '@optivem/commons/util';
+import type { ShopDriver } from '../ShopDriver.js';
+import type { SystemError } from '../../commons/dtos/errors/SystemError.js';
+import { ShopUiClient } from '../../client/ui/ShopUiClient.js';
+import { HomePage } from '../../client/ui/pages/HomePage.js';
+import { PageNavigator, Page } from './internal/PageNavigator.js';
+import { ShopUiOrderDriver } from './internal/ShopUiOrderDriver.js';
+import { ShopUiCouponDriver } from './internal/ShopUiCouponDriver.js';
+import { failure, success } from '../../commons/SystemResults.js';
 
 export class ShopUiDriver implements ShopDriver {
     private readonly client: ShopUiClient;
-
-    private homePage?: HomePage;
-    private newOrderPage?: NewOrderPage;
-    private orderHistoryPage?: OrderHistoryPage;
-
-    private currentPage: Pages = Pages.NONE;
+    private readonly pageNavigator: PageNavigator;
+    private readonly orderDriver: ShopUiOrderDriver;
+    private readonly couponDriver: ShopUiCouponDriver;
+    private homePage: HomePage | null = null;
 
     constructor(baseUrl: string) {
         this.client = new ShopUiClient(baseUrl);
-    }
-
-    async goToShop(): Promise<Result<void, Error>> {
-        this.homePage = await this.client.openHomePage();
-
-        if (!this.client.isStatusOk() || !(await this.client.isPageLoaded())) {
-            return Result.failure(createError('Failed to load shop page'));
-        }
-
-        this.currentPage = Pages.HOME;
-        return Result.success();
-    }
-
-    async placeOrder(sku: string, quantity: string, country: string): Promise<Result<PlaceOrderResponse, Error>> {
-        await this.ensureOnNewOrderPage();
-        
-        await this.newOrderPage!.inputSku(sku);
-        await this.newOrderPage!.inputQuantity(quantity);
-        await this.newOrderPage!.inputCountry(country);
-        await this.newOrderPage!.clickPlaceOrder();
-
-        const isSuccess = await this.newOrderPage!.hasSuccessNotification();
-
-        if (!isSuccess) {
-            const errorMessages = await this.newOrderPage!.readErrorNotification();
-            return Result.failure(createError(errorMessages.join(', ')));
-        }
-
-        const orderNumberValue = await this.newOrderPage!.getOrderNumber();
-        const response: PlaceOrderResponse = { orderNumber: orderNumberValue };
-        return Result.success(response);
-    }
-
-    async viewOrder(orderNumber: string): Promise<Result<GetOrderResponse, Error>> {
-        await this.ensureOnOrderHistoryPage();
-        
-        await this.orderHistoryPage!.inputOrderNumber(orderNumber);
-        await this.orderHistoryPage!.clickSearch();
-
-        const isSuccess = await this.orderHistoryPage!.hasOrderDetails();
-
-        if (!isSuccess) {
-            const errorMessages = await this.orderHistoryPage!.readErrorNotification();
-            return Result.failure(createError(errorMessages.join(', ')));
-        }
-
-        const displayOrderNumber = await this.orderHistoryPage!.getOrderNumber();
-        const sku = await this.orderHistoryPage!.getSku();
-        const quantityValue = await this.orderHistoryPage!.getQuantity();
-        const countryValue = await this.orderHistoryPage!.getCountry();
-        const unitPrice = await this.orderHistoryPage!.getUnitPrice();
-        const subtotalPrice = await this.orderHistoryPage!.getSubtotalPrice();
-        const discountRate = await this.orderHistoryPage!.getDiscountRate();
-        const discountAmount = await this.orderHistoryPage!.getDiscountAmount();
-        const preTaxTotal = await this.orderHistoryPage!.getPreTaxTotal();
-        const taxRate = await this.orderHistoryPage!.getTaxRate();
-        const taxAmount = await this.orderHistoryPage!.getTaxAmount();
-        const totalPrice = await this.orderHistoryPage!.getTotalPrice();
-        const status = await this.orderHistoryPage!.getStatus();
-
-        const response: GetOrderResponse = {
-            orderNumber: displayOrderNumber,
-            sku,
-            quantity: quantityValue,
-            unitPrice,
-            subtotalPrice,
-            discountRate,
-            discountAmount,
-            preTaxTotal,
-            taxRate,
-            taxAmount,
-            totalPrice,
-            country: countryValue,
-            status,
-        };
-
-        return Result.success(response);
-    }
-
-    async cancelOrder(orderNumber: string): Promise<Result<void, Error>> {
-        const viewResult = await this.viewOrder(orderNumber);
-        
-        // If order doesn't exist, return the failure from viewOrder
-        if (!viewResult.isSuccess()) {
-            return Result.failure(viewResult.getError());
-        }
-
-        // Check if cancel button exists
-        const hasCancelButton = !(await this.orderHistoryPage!.isCancelButtonHidden());
-        if (!hasCancelButton) {
-            return Result.failure(createError('Order has already been cancelled'));
-        }
-
-        await this.orderHistoryPage!.clickCancelOrder();
-
-        const cancellationMessage = await this.orderHistoryPage!.readSuccessNotification();
-        if (cancellationMessage !== 'Order cancelled successfully!') {
-            return Result.failure(createError('Cancellation was not confirmed'));
-        }
-
-        const displayStatusAfterCancel = await this.orderHistoryPage!.getStatus();
-        if (displayStatusAfterCancel !== OrderStatus.CANCELLED) {
-            return Result.failure(createError('Order status was not updated to cancelled'));
-        }
-
-        if (!(await this.orderHistoryPage!.isCancelButtonHidden())) {
-            return Result.failure(createError('Cancel button should be hidden after cancellation'));
-        }
-
-        return Result.success();
+        this.pageNavigator = new PageNavigator();
+        this.orderDriver = new ShopUiOrderDriver(() => this.getHomePage(), this.pageNavigator);
+        this.couponDriver = new ShopUiCouponDriver(() => this.getHomePage(), this.pageNavigator);
     }
 
     async close(): Promise<void> {
         await this.client.close();
     }
 
-    private async ensureOnNewOrderPage(): Promise<void> {
-        if (this.currentPage !== Pages.NEW_ORDER) {
-            this.homePage = await this.client.openHomePage();
-            this.newOrderPage = await this.homePage.clickNewOrder();
-            this.currentPage = Pages.NEW_ORDER;
+    async goToShop(): Promise<Result<void, SystemError>> {
+        this.homePage = await this.client.openHomePage();
+        if (!this.client.isStatusOk() || !(await this.client.isPageLoaded())) {
+            return failure('Failed to load home page');
         }
+        this.pageNavigator.setCurrentPage(Page.HOME);
+        return success(undefined);
     }
 
-    private async ensureOnOrderHistoryPage(): Promise<void> {
-        if (this.currentPage !== Pages.ORDER_HISTORY) {
+    orders(): ShopUiOrderDriver {
+        return this.orderDriver;
+    }
+
+    coupons(): ShopUiCouponDriver {
+        return this.couponDriver;
+    }
+
+    private async getHomePage(): Promise<HomePage> {
+        if (this.homePage == null || !this.pageNavigator.isOnPage(Page.HOME)) {
             this.homePage = await this.client.openHomePage();
-            this.orderHistoryPage = await this.homePage.clickOrderHistory();
-            this.currentPage = Pages.ORDER_HISTORY;
+            this.pageNavigator.setCurrentPage(Page.HOME);
         }
+        return this.homePage;
     }
 }
-
-

@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { Result } from '../util/index.js';
 import { mapObjectDecimals, DEFAULT_DECIMAL_KEYS } from '../util/JsonDecimal.js';
+import { mapObjectIntegers, DEFAULT_INTEGER_KEYS } from '../util/JsonInteger.js';
 
 export type JsonHttpClientOptions = {
     /**
@@ -8,16 +9,22 @@ export type JsonHttpClientOptions = {
      * Defaults to DEFAULT_DECIMAL_KEYS. Pass a custom Set to override.
      */
     decimalKeys?: Set<string>;
+    /**
+     * Keys to revive as Integer in response bodies (any nesting level).
+     * Defaults to DEFAULT_INTEGER_KEYS. Pass a custom Set to override.
+     */
+    integerKeys?: Set<string>;
 };
 
 /**
  * High-level HTTP client that returns Result<T, E> directly.
  * On failure, the error response body is used as E (deserialized from JSON, same as Java/.NET reference).
- * Response bodies are passed through mapObjectDecimals using DEFAULT_DECIMAL_KEYS (or a custom set via options).
+ * Response bodies are passed through mapObjectDecimals and mapObjectIntegers using default or custom key sets.
  */
 export class JsonHttpClient<E> {
     private readonly client: AxiosInstance;
     private readonly decimalKeys: Set<string>;
+    private readonly integerKeys: Set<string>;
 
     constructor(baseUrl: string, options?: JsonHttpClientOptions) {
         this.client = axios.create({
@@ -26,6 +33,7 @@ export class JsonHttpClient<E> {
             validateStatus: () => true,
         });
         this.decimalKeys = options?.decimalKeys ?? DEFAULT_DECIMAL_KEYS;
+        this.integerKeys = options?.integerKeys ?? DEFAULT_INTEGER_KEYS;
     }
 
     /**
@@ -96,6 +104,7 @@ export class JsonHttpClient<E> {
             let data = response.data as T;
             if (data != null && typeof data === 'object') {
                 data = mapObjectDecimals(data, this.decimalKeys) as T;
+                data = mapObjectIntegers(data, this.integerKeys) as T;
             }
             return Result.success(data);
         }

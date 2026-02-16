@@ -37,7 +37,12 @@ export class SystemDsl {
     shop(): ShopDsl {
         return this.getOrCreate(
             this.shopDsl,
-            () => (this.shopDsl = new ShopDsl(this.context, this.configuration))
+            () =>
+                (this.shopDsl = new ShopDsl(
+                    this.configuration.getShopUiBaseUrl(),
+                    this.configuration.getShopApiBaseUrl(),
+                    this.context
+                ))
         );
     }
 

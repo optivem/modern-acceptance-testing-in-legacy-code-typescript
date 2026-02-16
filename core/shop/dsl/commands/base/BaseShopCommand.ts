@@ -1,15 +1,14 @@
 import { ShopDriver } from '../../../driver/ShopDriver.js';
 import { BaseUseCase, UseCaseContext } from '@optivem/commons/dsl';
-import { Error } from '../../../commons/error/index.js';
-import { ErrorFailureVerification } from '../../../commons/dsl/index.js';
+import type { SystemError } from '../../../commons/dtos/errors/SystemError.js';
+import { SystemErrorFailureVerification } from './SystemErrorFailureVerification.js';
 
 export abstract class BaseShopCommand<TResponse, TVerification> extends BaseUseCase<
     ShopDriver,
-    UseCaseContext,
     TResponse,
-    Error,
+    SystemError,
     TVerification,
-    ErrorFailureVerification
+    SystemErrorFailureVerification
 > {
     protected constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
