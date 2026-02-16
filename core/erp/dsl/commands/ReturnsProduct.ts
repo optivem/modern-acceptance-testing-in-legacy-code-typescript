@@ -5,28 +5,29 @@ import { BaseErpCommand } from './base/BaseErpCommand.js';
 import { ErpUseCaseResult } from './base/ErpUseCaseResult.js';
 
 export class ReturnsProduct extends BaseErpCommand<void, VoidVerification> {
-    private _skuParamAlias: string = 'DEFAULT-SKU';
-    private _unitPrice: string = '20.00';
+    private skuParamAlias: string | undefined;
+    private unitPriceValue: string | undefined;
 
     constructor(driver: ErpDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    sku(alias: string): ReturnsProduct {
-        this._skuParamAlias = alias;
+    sku(skuParamAlias: string | undefined): ReturnsProduct {
+        this.skuParamAlias = skuParamAlias;
         return this;
     }
 
-    unitPrice(value: string | number): ReturnsProduct {
-        this._unitPrice = typeof value === 'number' ? value.toString() : value;
+    unitPrice(value: string | number | undefined): ReturnsProduct {
+        this.unitPriceValue =
+            value === undefined ? undefined : typeof value === 'number' ? value.toString() : value;
         return this;
     }
 
     async execute(): Promise<ErpUseCaseResult<void, VoidVerification>> {
-        const sku = this.context.getParamValue(this._skuParamAlias);
+        const sku = this.context.getParamValue(this.skuParamAlias as string);
         const request: ReturnsProductRequest = {
             sku,
-            price: this._unitPrice,
+            price: this.unitPriceValue,
         };
         const result = await this.driver.returnsProduct(request);
         return new ErpUseCaseResult<void, VoidVerification>(

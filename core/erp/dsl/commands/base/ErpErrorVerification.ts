@@ -9,7 +9,7 @@ export class ErpErrorVerification extends ResponseVerification<ErpErrorResponse>
 
     errorMessage(expectedMessage: string): ErpErrorVerification {
         const expandedExpectedMessage = this.context.expandAliases(expectedMessage);
-        const errorMessage = this.response.message ?? '';
+        const errorMessage = this.response.message;
         expect(
             errorMessage,
             `Expected error message: '${expandedExpectedMessage}', but got: '${errorMessage}'`

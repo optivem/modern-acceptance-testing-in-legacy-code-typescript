@@ -5,7 +5,7 @@ import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse
 import { from as toExtErpErrorResponse, type ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
 
 function toExtError(p: ProblemDetail): ExtErpErrorResponse {
-    return toExtErpErrorResponse(p.detail ?? p.title ?? 'Request failed');
+    return toExtErpErrorResponse(p.detail);
 }
 
 export abstract class BaseErpClient {
@@ -26,9 +26,7 @@ export abstract class BaseErpClient {
 
     getProduct(sku: string | undefined): Promise<Result<ExtProductDetailsResponse, ExtErpErrorResponse>> {
         return this.httpClient
-            .getAsync<ExtProductDetailsResponse>(
-                `${BaseErpClient.PRODUCTS_ENDPOINT}/${sku ?? ''}`
-            )
+            .getAsync<ExtProductDetailsResponse>(`${BaseErpClient.PRODUCTS_ENDPOINT}/${sku}`)
             .then((r) => r.mapError(toExtError));
     }
 }

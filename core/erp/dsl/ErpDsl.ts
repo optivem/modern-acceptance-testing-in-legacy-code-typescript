@@ -3,6 +3,7 @@ import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
 import type { ErpDriver } from '../driver/ErpDriver.js';
 import { ErpRealDriver } from '../driver/ErpRealDriver.js';
 import { ErpStubDriver } from '../driver/ErpStubDriver.js';
+import { GetProduct } from './commands/GetProduct.js';
 import { GoToErp } from './commands/GoToErp.js';
 import { ReturnsProduct } from './commands/ReturnsProduct.js';
 
@@ -29,6 +30,10 @@ export class ErpDsl {
 
     goToErp(): GoToErp {
         return new GoToErp(this.driver, this.context);
+    }
+
+    getProduct(): GetProduct {
+        return new GetProduct(this.driver, this.context);
     }
 
     returnsProduct(): ReturnsProduct {

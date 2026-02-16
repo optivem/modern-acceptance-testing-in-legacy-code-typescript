@@ -10,10 +10,10 @@ export class SystemDsl {
     private readonly context: UseCaseContext;
     private readonly configuration: SystemConfiguration;
 
-    private _shop?: ShopDsl;
-    private _erp?: ErpDsl;
-    private _tax?: TaxDsl;
-    private _clock?: ClockDsl;
+    private shopDsl?: ShopDsl;
+    private erpDsl?: ErpDsl;
+    private taxDsl?: TaxDsl;
+    private clockDsl?: ClockDsl;
 
     constructor(context: UseCaseContext, configuration: SystemConfiguration);
     constructor(configuration: SystemConfiguration);
@@ -28,37 +28,37 @@ export class SystemDsl {
     }
 
     async close(): Promise<void> {
-        await Closer.close(this._shop as Parameters<typeof Closer.close>[0]);
-        await Closer.close(this._erp as Parameters<typeof Closer.close>[0]);
-        await Closer.close(this._tax as Parameters<typeof Closer.close>[0]);
-        await Closer.close(this._clock as Parameters<typeof Closer.close>[0]);
+        await Closer.close(this.shopDsl as Parameters<typeof Closer.close>[0]);
+        await Closer.close(this.erpDsl as Parameters<typeof Closer.close>[0]);
+        await Closer.close(this.taxDsl as Parameters<typeof Closer.close>[0]);
+        await Closer.close(this.clockDsl as Parameters<typeof Closer.close>[0]);
     }
 
     shop(): ShopDsl {
         return this.getOrCreate(
-            this._shop,
-            () => (this._shop = new ShopDsl(this.context, this.configuration))
+            this.shopDsl,
+            () => (this.shopDsl = new ShopDsl(this.context, this.configuration))
         );
     }
 
     erp(): ErpDsl {
         return this.getOrCreate(
-            this._erp,
-            () => (this._erp = new ErpDsl(this.context, this.configuration))
+            this.erpDsl,
+            () => (this.erpDsl = new ErpDsl(this.context, this.configuration))
         );
     }
 
     tax(): TaxDsl {
         return this.getOrCreate(
-            this._tax,
-            () => (this._tax = new TaxDsl(this.context, this.configuration))
+            this.taxDsl,
+            () => (this.taxDsl = new TaxDsl(this.context, this.configuration))
         );
     }
 
     clock(): ClockDsl {
         return this.getOrCreate(
-            this._clock,
-            () => (this._clock = new ClockDsl(this.context, this.configuration))
+            this.clockDsl,
+            () => (this.clockDsl = new ClockDsl(this.context, this.configuration))
         );
     }
 

@@ -6,7 +6,7 @@ import type { ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
 import { ProblemDetail } from '../../commons/error/index.js';
 
 function toExtError(p: ProblemDetail): ExtErpErrorResponse {
-    return toExtErpErrorResponse(p.detail ?? p.title ?? 'Request failed');
+    return toExtErpErrorResponse(p.detail);
 }
 
 export class ErpRealClient extends BaseErpClient {

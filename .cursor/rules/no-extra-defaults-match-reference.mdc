@@ -1,0 +1,12 @@
+---
+description: Do not add defensive defaults (e.g. ?? '', ?? '0') unless the reference project (Java/.NET) does the same
+globs: core/**/*
+alwaysApply: true
+---
+
+# No extra defaults — match reference
+
+- **Do not add** defensive defaults like `?? ''`, `?? '0'`, or similar null/undefined coalescing **unless the reference project** (Java/.NET) does the equivalent.
+  - If the reference passes a value through (e.g. `request.Sku`, `error.Message`) with no default, do the same here: use the value as-is (and use non-null assertion `!` only when the reference uses null-forgiving `!`).
+  - If the reference does not default optional/nullable fields, do not add `?? ''` or `?? '0'` in TypeScript.
+- **Rule of thumb:** If it isn’t in the reference, don’t add it here. Match reference behavior; avoid inserting extra “safety” defaults.
