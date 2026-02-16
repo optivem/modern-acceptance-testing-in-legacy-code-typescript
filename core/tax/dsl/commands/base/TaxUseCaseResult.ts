@@ -1,20 +1,17 @@
 import { Result } from '@optivem/commons/util';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/commons/dsl';
-import { Error } from '../../../commons/error/index.js';
-import { ErrorFailureVerification } from '../../../commons/dsl/index.js';
+import type { TaxErrorResponse } from '../../../driver/dtos/error/TaxErrorResponse.js';
+import { TaxErrorVerification } from './TaxErrorVerification.js';
 
 export class TaxUseCaseResult<
     TSuccessResponse,
-    TSuccessVerification extends ResponseVerification<TSuccessResponse, UseCaseContext>
-> extends UseCaseResult<TSuccessResponse, Error, UseCaseContext, TSuccessVerification, ErrorFailureVerification> {
-    
+    TSuccessVerification extends ResponseVerification<TSuccessResponse>
+> extends UseCaseResult<TSuccessResponse, TaxErrorResponse, TSuccessVerification, TaxErrorVerification> {
     constructor(
-        result: Result<TSuccessResponse, Error>,
+        result: Result<TSuccessResponse, TaxErrorResponse>,
         context: UseCaseContext,
         verificationFactory: (response: TSuccessResponse, context: UseCaseContext) => TSuccessVerification
     ) {
-        super(result, context, verificationFactory, (error, ctx) => new ErrorFailureVerification(error, ctx));
+        super(result, context, verificationFactory, (error, ctx) => new TaxErrorVerification(error, ctx));
     }
 }
-
-

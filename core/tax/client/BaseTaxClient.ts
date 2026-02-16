@@ -1,0 +1,25 @@
+import { Result } from '@optivem/commons/util';
+import { JsonHttpClient } from '@optivem/commons/http';
+import type { ExtCountryDetailsResponse } from './dtos/ExtCountryDetailsResponse.js';
+import type { ExtTaxErrorResponse } from './dtos/error/ExtTaxErrorResponse.js';
+
+export abstract class BaseTaxClient {
+    protected static readonly HEALTH_ENDPOINT = '/health';
+    protected static readonly COUNTRIES_ENDPOINT = '/api/countries';
+
+    protected readonly httpClient: JsonHttpClient<ExtTaxErrorResponse>;
+
+    protected constructor(baseUrl: string) {
+        this.httpClient = new JsonHttpClient<ExtTaxErrorResponse>(baseUrl);
+    }
+
+    checkHealth(): Promise<Result<void, ExtTaxErrorResponse>> {
+        return this.httpClient.getAsync<void>(BaseTaxClient.HEALTH_ENDPOINT);
+    }
+
+    getCountry(country: string): Promise<Result<ExtCountryDetailsResponse, ExtTaxErrorResponse>> {
+        return this.httpClient.getAsync<ExtCountryDetailsResponse>(
+            `${BaseTaxClient.COUNTRIES_ENDPOINT}/${country}`,
+        );
+    }
+}

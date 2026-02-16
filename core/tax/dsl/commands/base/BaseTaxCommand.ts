@@ -1,19 +1,16 @@
-import { TaxApiDriver } from '../../../driver/TaxApiDriver.js';
 import { BaseUseCase, UseCaseContext } from '@optivem/commons/dsl';
-import { Error } from '../../../commons/error/index.js';
-import { ErrorFailureVerification } from '../../../commons/dsl/index.js';
+import type { TaxDriver } from '../../../driver/TaxDriver.js';
+import type { TaxErrorResponse } from '../../../driver/dtos/error/TaxErrorResponse.js';
+import { TaxErrorVerification } from './TaxErrorVerification.js';
 
 export abstract class BaseTaxCommand<TResponse, TVerification> extends BaseUseCase<
-    TaxApiDriver,
-    UseCaseContext,
+    TaxDriver,
     TResponse,
-    Error,
+    TaxErrorResponse,
     TVerification,
-    ErrorFailureVerification
+    TaxErrorVerification
 > {
-    protected constructor(driver: TaxApiDriver, context: UseCaseContext) {
+    protected constructor(driver: TaxDriver, context: UseCaseContext) {
         super(driver, context);
     }
 }
-
-

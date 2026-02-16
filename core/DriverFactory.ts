@@ -2,7 +2,8 @@ import { SystemConfigurationLoader } from '../system-test/SystemConfigurationLoa
 import { ShopUiDriver } from './shop/driver/ui/ShopUiDriver.js';
 import { ShopApiDriver } from './shop/driver/api/ShopApiDriver.js';
 import { ErpRealDriver } from './erp/driver/ErpRealDriver.js';
-import { TaxApiDriver } from './tax/driver/TaxApiDriver.js';
+import type { TaxDriver } from './tax/driver/TaxDriver.js';
+import { TaxRealDriver } from './tax/driver/TaxRealDriver.js';
 
 export class DriverFactory {
     private static getConfiguration() {
@@ -21,8 +22,8 @@ export class DriverFactory {
         return new ErpRealDriver(this.getConfiguration().getErpBaseUrl());
     }
 
-    static createTaxApiDriver(): TaxApiDriver {
-        return new TaxApiDriver(this.getConfiguration().getTaxBaseUrl());
+    static createTaxApiDriver(): TaxDriver {
+        return new TaxRealDriver(this.getConfiguration().getTaxBaseUrl());
     }
 }
 

@@ -12,6 +12,7 @@ export const DEFAULT_DECIMAL_KEYS = new Set<string>([
     'quantity',
     'rate',
     'tax',
+    'taxRate',
 ]);
 
 /**

@@ -1,12 +1,12 @@
 import { test as base } from '@playwright/test';
 import { ShopDriver } from '../../core/shop/driver/ShopDriver.js';
 import { ErpApiDriver } from '../../core/erp/driver/ErpApiDriver.js';
-import { TaxApiDriver } from '../../core/tax/driver/TaxApiDriver.js';
+import type { TaxDriver } from '../../core/tax/driver/TaxDriver.js';
 
 export type TestFixtures = {
     shopDriver: ShopDriver;
     erpApiDriver: ErpApiDriver;
-    taxApiDriver: TaxApiDriver;
+    taxApiDriver: TaxDriver;
 };
 
 export const test = base.extend<TestFixtures>({

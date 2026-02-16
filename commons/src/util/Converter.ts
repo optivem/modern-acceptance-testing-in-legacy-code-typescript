@@ -10,6 +10,11 @@ export class Converter {
         return this.to(value, (s) => Decimal.fromString(s));
     }
 
+    /** Number to Decimal (matches Java Converter.toBigDecimal(double)). */
+    static toDecimalFromNumber(value: number): Decimal {
+        return Decimal.fromNumber(value);
+    }
+
     static fromDecimal(value: Decimal | null | undefined): string | null {
         return value == null ? null : value.toString();
     }
