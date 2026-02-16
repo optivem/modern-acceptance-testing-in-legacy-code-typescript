@@ -5,18 +5,18 @@ import { mapObjectDecimals, DEFAULT_DECIMAL_KEYS } from '../util/JsonDecimal.js'
 export type JsonHttpClientOptions = {
     /**
      * Keys to revive as Decimal in response bodies (any nesting level).
-     * Use DEFAULT_DECIMAL_KEYS or a custom Set. When set, all get/post/put/delete success bodies are passed through mapObjectDecimals.
+     * Defaults to DEFAULT_DECIMAL_KEYS. Pass a custom Set to override.
      */
     decimalKeys?: Set<string>;
 };
 
 /**
  * High-level HTTP client that returns Result<T, E> directly.
- * Optionally set decimalKeys so that response bodies get numeric/string fields (e.g. price, amount) revived to Decimal globally.
+ * Response bodies are passed through mapObjectDecimals using DEFAULT_DECIMAL_KEYS (or a custom set via options).
  */
 export class JsonHttpClient<E> {
     private readonly client: AxiosInstance;
-    private readonly decimalKeys: Set<string> | undefined;
+    private readonly decimalKeys: Set<string>;
 
     constructor(baseUrl: string, options?: JsonHttpClientOptions) {
         this.client = axios.create({
@@ -24,7 +24,7 @@ export class JsonHttpClient<E> {
             headers: { 'Content-Type': 'application/json' },
             validateStatus: () => true,
         });
-        this.decimalKeys = options?.decimalKeys ?? undefined;
+        this.decimalKeys = options?.decimalKeys ?? DEFAULT_DECIMAL_KEYS;
     }
 
     /**
@@ -93,7 +93,7 @@ export class JsonHttpClient<E> {
         const response = httpResponse.getValue();
         if (response.status >= 200 && response.status < 300) {
             let data = response.data as T;
-            if (this.decimalKeys != null && data != null && typeof data === 'object') {
+            if (data != null && typeof data === 'object') {
                 data = mapObjectDecimals(data, this.decimalKeys) as T;
             }
             return Result.success(data);
