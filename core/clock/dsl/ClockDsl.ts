@@ -1,4 +1,3 @@
-import { SystemConfiguration } from '../../SystemConfiguration.js';
 import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
 import { ClockDriver } from '../driver/ClockDriver.js';
 import { ClockStubDriver } from '../driver/ClockStubDriver.js';
@@ -12,18 +11,18 @@ export class ClockDsl {
     private readonly driver: ClockDriver;
     private readonly context: UseCaseContext;
 
-    constructor(context: UseCaseContext, configuration: SystemConfiguration) {
+    constructor(baseUrl: string, context: UseCaseContext) {
         this.context = context;
-        this.driver = this.createDriver(context, configuration);
+        this.driver = ClockDsl.createDriver(baseUrl, context);
     }
 
-    private createDriver(context: UseCaseContext, configuration: SystemConfiguration): ClockDriver {
+    private static createDriver(baseUrl: string, context: UseCaseContext): ClockDriver {
         const mode = context.getExternalSystemMode();
         switch (mode) {
             case ExternalSystemMode.REAL:
                 return new ClockRealDriver();
             case ExternalSystemMode.STUB:
-                return new ClockStubDriver(configuration.getClockBaseUrl());
+                return new ClockStubDriver(baseUrl);
             default:
                 throw new Error(`External system mode '${mode}' is not supported for ClockDsl.`);
         }

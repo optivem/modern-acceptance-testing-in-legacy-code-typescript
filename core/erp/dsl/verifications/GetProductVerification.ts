@@ -1,5 +1,5 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
-import { Decimal } from '@optivem/commons/util';
+import { Converter, Decimal } from '@optivem/commons/util';
 import { GetProductResponse } from '../../driver/dtos/GetProductResponse.js';
 import { expect } from '@playwright/test';
 
@@ -18,16 +18,16 @@ export class GetProductVerification extends ResponseVerification<GetProductRespo
         return this;
     }
 
-    price(expectedPrice: Decimal): GetProductVerification {
+    price(expectedPrice: Decimal): GetProductVerification;
+    price(expectedPrice: string): GetProductVerification;
+    price(expectedPrice: Decimal | string): GetProductVerification {
+        const decimal =
+            typeof expectedPrice === 'string' ? Converter.toDecimal(expectedPrice)! : expectedPrice;
         const actualPrice = this.response.price;
         expect(
-            actualPrice.eq(expectedPrice),
-            `Expected price to be ${expectedPrice.toString()}, but was ${actualPrice.toString()}`
+            actualPrice.eq(decimal),
+            `Expected price to be ${decimal.toString()}, but was ${actualPrice.toString()}`
         ).toBe(true);
         return this;
-    }
-
-    price(expectedPrice: string): GetProductVerification {
-        return this.price(Decimal.fromString(expectedPrice));
     }
 }

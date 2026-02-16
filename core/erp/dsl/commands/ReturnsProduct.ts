@@ -1,4 +1,5 @@
 import { VoidVerification, UseCaseContext } from '@optivem/commons/dsl';
+import { Converter } from '@optivem/commons/util';
 import type { ErpDriver } from '../../driver/ErpDriver.js';
 import type { ReturnsProductRequest } from '../../driver/dtos/ReturnsProductRequest.js';
 import { BaseErpCommand } from './base/BaseErpCommand.js';
@@ -19,7 +20,7 @@ export class ReturnsProduct extends BaseErpCommand<void, VoidVerification> {
 
     unitPrice(value: string | number | undefined): ReturnsProduct {
         this.unitPriceValue =
-            value === undefined ? undefined : typeof value === 'number' ? value.toString() : value;
+            value === undefined ? undefined : typeof value === 'number' ? Converter.fromDouble(value) : value;
         return this;
     }
 

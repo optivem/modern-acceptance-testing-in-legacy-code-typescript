@@ -14,6 +14,11 @@ export class Converter {
         return value == null ? null : value.toString();
     }
 
+    /** Number to decimal string (matches Java Converter.fromDouble). */
+    static fromDouble(value: number): string {
+        return Decimal.fromNumber(value).toString();
+    }
+
     static toInteger(value: string | null | undefined, ...nullValues: string[]): number | null {
         if (value == null || value.trim() === '') return null;
         for (const nv of nullValues) {

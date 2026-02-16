@@ -1,20 +1,15 @@
-import { SystemConfiguration } from '../../SystemConfiguration.js';
-import { Context } from '@optivem/commons/dsl';
+import { UseCaseContext } from '@optivem/commons/dsl';
 import { TaxApiDriver } from '../driver/TaxApiDriver.js';
 import { Closer } from '@optivem/commons/util';
 import { GoToTax } from './commands/GoToTax.js';
 
 export class TaxDsl {
     private readonly driver: TaxApiDriver;
-    private readonly context: Context;
+    private readonly context: UseCaseContext;
 
-    constructor(context: Context, configuration: SystemConfiguration) {
-        this.driver = this.createDriver(configuration);
+    constructor(baseUrl: string, context: UseCaseContext) {
         this.context = context;
-    }
-
-    private createDriver(configuration: SystemConfiguration): TaxApiDriver {
-        return new TaxApiDriver(configuration.getTaxBaseUrl());
+        this.driver = new TaxApiDriver(baseUrl);
     }
 
     async close(): Promise<void> {

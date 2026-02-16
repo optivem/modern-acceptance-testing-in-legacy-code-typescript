@@ -1,4 +1,4 @@
-import { Result, Decimal } from '@optivem/commons/util';
+import { Result, Converter } from '@optivem/commons/util';
 import { ErpStubClient } from '../client/ErpStubClient.js';
 import type { ExtProductDetailsResponse } from '../client/dtos/ExtProductDetailsResponse.js';
 import type { ErpErrorResponse } from './dtos/error/ErpErrorResponse.js';
@@ -16,7 +16,7 @@ export class ErpStubDriver extends BaseErpDriver<ErpStubClient> {
             id: request.sku!,
             title: '',
             description: '',
-            price: Decimal.fromString(request.price!),
+            price: Converter.toDecimal(request.price!)!,
             category: '',
             brand: '',
         };

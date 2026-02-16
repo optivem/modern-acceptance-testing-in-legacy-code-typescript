@@ -44,21 +44,21 @@ export class SystemDsl {
     erp(): ErpDsl {
         return this.getOrCreate(
             this.erpDsl,
-            () => (this.erpDsl = new ErpDsl(this.context, this.configuration))
+            () => (this.erpDsl = new ErpDsl(this.configuration.getErpBaseUrl(), this.context))
         );
     }
 
     tax(): TaxDsl {
         return this.getOrCreate(
             this.taxDsl,
-            () => (this.taxDsl = new TaxDsl(this.context, this.configuration))
+            () => (this.taxDsl = new TaxDsl(this.configuration.getTaxBaseUrl(), this.context))
         );
     }
 
     clock(): ClockDsl {
         return this.getOrCreate(
             this.clockDsl,
-            () => (this.clockDsl = new ClockDsl(this.context, this.configuration))
+            () => (this.clockDsl = new ClockDsl(this.configuration.getClockBaseUrl(), this.context))
         );
     }
 

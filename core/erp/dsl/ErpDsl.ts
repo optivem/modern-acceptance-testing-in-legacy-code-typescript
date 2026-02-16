@@ -1,4 +1,3 @@
-import { SystemConfiguration } from '../../SystemConfiguration.js';
 import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
 import type { ErpDriver } from '../driver/ErpDriver.js';
 import { ErpRealDriver } from '../driver/ErpRealDriver.js';
@@ -11,18 +10,18 @@ export class ErpDsl {
     private readonly driver: ErpDriver;
     private readonly context: UseCaseContext;
 
-    constructor(context: UseCaseContext, configuration: SystemConfiguration) {
+    constructor(baseUrl: string, context: UseCaseContext) {
         this.context = context;
-        this.driver = this.createDriver(context, configuration);
+        this.driver = ErpDsl.createDriver(baseUrl, context);
     }
 
-    private createDriver(context: UseCaseContext, configuration: SystemConfiguration): ErpDriver {
+    private static createDriver(baseUrl: string, context: UseCaseContext): ErpDriver {
         const mode = context.getExternalSystemMode();
         switch (mode) {
             case ExternalSystemMode.REAL:
-                return new ErpRealDriver(configuration.getErpBaseUrl());
+                return new ErpRealDriver(baseUrl);
             case ExternalSystemMode.STUB:
-                return new ErpStubDriver(configuration.getErpBaseUrl());
+                return new ErpStubDriver(baseUrl);
             default:
                 throw new Error(`External system mode '${mode}' is not supported for ErpDsl.`);
         }
