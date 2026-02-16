@@ -12,6 +12,7 @@ export type JsonHttpClientOptions = {
 
 /**
  * High-level HTTP client that returns Result<T, E> directly.
+ * On failure, the error response body is used as E (deserialized from JSON, same as Java/.NET reference).
  * Response bodies are passed through mapObjectDecimals using DEFAULT_DECIMAL_KEYS (or a custom set via options).
  */
 export class JsonHttpClient<E> {
@@ -98,19 +99,20 @@ export class JsonHttpClient<E> {
             }
             return Result.success(data);
         }
-        return Result.failure(this.toError(response) as E);
+        // Deserialize error response body to E (same as Java readResponse(..., errorType) / .NET ReadResponseAsync<E>)
+        const error = this.readErrorResponse(response);
+        return Result.failure(error as E);
     }
 
-    private toError(response: AxiosResponse<unknown>): unknown {
+    /**
+     * Use response body as error E. If body is already an object (JSON), use it; otherwise wrap in { message }.
+     */
+    private readErrorResponse(response: AxiosResponse<unknown>): unknown {
         const data = response.data;
-        if (data != null && typeof data === 'object' && ('type' in data || 'title' in data || 'detail' in data)) {
+        if (data != null && typeof data === 'object') {
             return data;
         }
-        return {
-            status: response.status,
-            title: `HTTP ${response.status}`,
-            detail: typeof data === 'string' ? data : JSON.stringify(data),
-        };
+        return { message: typeof data === 'string' ? data : JSON.stringify(data) };
     }
 
     private axiosErrorToError(error: unknown): unknown {
@@ -119,17 +121,9 @@ export class JsonHttpClient<E> {
             if (ax.response?.data != null && typeof ax.response.data === 'object') {
                 return ax.response.data;
             }
-            return {
-                status: ax.response?.status ?? 0,
-                title: ax.code ?? 'Network Error',
-                detail: ax.message,
-            };
+            return { message: ax.message };
         }
-        return {
-            status: 0,
-            title: 'Unknown Error',
-            detail: error instanceof Error ? error.message : String(error),
-        };
+        return { message: error instanceof Error ? error.message : String(error) };
     }
 }
 
