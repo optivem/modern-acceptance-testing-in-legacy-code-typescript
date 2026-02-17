@@ -7,10 +7,11 @@ import type { ViewOrderResponse } from '../../../../core/shop/commons/dtos/order
 import type { ViewOrderVerification } from '../../../../core/shop/dsl/usecases/orders/ViewOrderVerification.js';
 
 export class ViewOrderBuilder extends BaseWhenBuilder<ViewOrderResponse, ViewOrderVerification> {
-    private orderNumberValue: string = GherkinDefaults.DEFAULT_ORDER_NUMBER;
+    private orderNumberValue: string;
 
     constructor(app: SystemDsl) {
         super(app);
+        this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
     }
 
     withOrderNumber(orderNumber: string): this {

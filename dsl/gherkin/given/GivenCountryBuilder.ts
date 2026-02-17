@@ -5,11 +5,13 @@ import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenCountryBuilder extends BaseGivenBuilder {
-    private countryValue: string = GherkinDefaults.DEFAULT_COUNTRY;
-    private taxRateValue: string = GherkinDefaults.DEFAULT_TAX_RATE;
+    private countryValue: string;
+    private taxRateValue: string;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
+        this.withCode(GherkinDefaults.DEFAULT_COUNTRY);
+        this.withTaxRate(GherkinDefaults.DEFAULT_TAX_RATE);
     }
 
     withCode(country: string): this {

@@ -6,10 +6,11 @@ import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseWhenBuilder } from './BaseWhenBuilder.js';
 
 export class CancelOrderBuilder extends BaseWhenBuilder<void, VoidVerification> {
-    private orderNumberValue: string = GherkinDefaults.DEFAULT_ORDER_NUMBER;
+    private orderNumberValue: string;
 
     constructor(app: SystemDsl) {
         super(app);
+        this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
     }
 
     withOrderNumber(orderNumber: string): this {

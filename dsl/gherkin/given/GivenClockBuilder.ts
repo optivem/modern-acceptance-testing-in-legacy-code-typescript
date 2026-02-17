@@ -4,14 +4,15 @@ import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenClockBuilder extends BaseGivenBuilder {
-    private timeValue: string = GherkinDefaults.DEFAULT_TIME;
+    private time: string | null | undefined;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
+        this.withTime(GherkinDefaults.DEFAULT_TIME);
     }
 
-    withTime(time: string): this {
-        this.timeValue = time;
+    withTime(time: string | null | undefined): this {
+        this.time = time;
         return this;
     }
 
@@ -19,7 +20,7 @@ export class GivenClockBuilder extends BaseGivenBuilder {
         await app
             .clock()
             .returnsTime()
-            .time(this.timeValue)
+            .time(this.time)
             .execute()
             .then((r) => r.shouldSucceed());
     }

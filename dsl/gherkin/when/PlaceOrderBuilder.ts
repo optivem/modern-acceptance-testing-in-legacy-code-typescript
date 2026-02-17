@@ -8,14 +8,19 @@ import type { PlaceOrderResponse } from '../../../../core/shop/commons/dtos/orde
 import type { PlaceOrderVerification } from '../../../../core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
 
 export class PlaceOrderBuilder extends BaseWhenBuilder<PlaceOrderResponse, PlaceOrderVerification> {
-    private orderNumberValue: string = GherkinDefaults.DEFAULT_ORDER_NUMBER;
-    private skuValue: string = GherkinDefaults.DEFAULT_SKU;
-    private quantityValue: string = GherkinDefaults.DEFAULT_QUANTITY;
-    private countryValue: string = GherkinDefaults.DEFAULT_COUNTRY;
-    private couponCodeValue: string = GherkinDefaults.EMPTY;
+    private orderNumberValue: string;
+    private skuValue: string;
+    private quantityValue: string;
+    private countryValue: string;
+    private couponCodeValue: string;
 
     constructor(app: SystemDsl) {
         super(app);
+        this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
+        this.withSku(GherkinDefaults.DEFAULT_SKU);
+        this.withQuantity(GherkinDefaults.DEFAULT_QUANTITY);
+        this.withCountry(GherkinDefaults.DEFAULT_COUNTRY);
+        this.withCouponCode(GherkinDefaults.EMPTY);
     }
 
     withOrderNumber(orderNumber: string): this {

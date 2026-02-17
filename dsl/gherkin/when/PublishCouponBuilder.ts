@@ -7,14 +7,16 @@ import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseWhenBuilder } from './BaseWhenBuilder.js';
 
 export class PublishCouponBuilder extends BaseWhenBuilder<void, VoidVerification> {
-    private couponCodeValue: string = GherkinDefaults.DEFAULT_COUPON_CODE;
-    private discountRateValue: string = GherkinDefaults.DEFAULT_DISCOUNT_RATE;
-    private validFromValue: string = GherkinDefaults.EMPTY;
-    private validToValue: string = GherkinDefaults.EMPTY;
-    private usageLimitValue: string = GherkinDefaults.EMPTY;
+    private couponCodeValue: string;
+    private discountRateValue: string;
+    private validFromValue: string | undefined;
+    private validToValue: string | undefined;
+    private usageLimitValue: string | undefined;
 
     constructor(app: SystemDsl) {
         super(app);
+        this.withCouponCode(GherkinDefaults.DEFAULT_COUPON_CODE);
+        this.withDiscountRate(GherkinDefaults.DEFAULT_DISCOUNT_RATE);
     }
 
     withCouponCode(couponCode: string): this {

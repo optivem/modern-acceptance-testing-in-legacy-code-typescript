@@ -5,11 +5,13 @@ import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenProductBuilder extends BaseGivenBuilder {
-    private skuValue: string = GherkinDefaults.DEFAULT_SKU;
-    private unitPriceValue: string = GherkinDefaults.DEFAULT_UNIT_PRICE;
+    private skuValue: string;
+    private unitPriceValue: string;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
+        this.withSku(GherkinDefaults.DEFAULT_SKU);
+        this.withUnitPrice(GherkinDefaults.DEFAULT_UNIT_PRICE);
     }
 
     withSku(sku: string): this {

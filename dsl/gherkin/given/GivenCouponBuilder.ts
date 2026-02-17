@@ -5,14 +5,19 @@ import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenCouponBuilder extends BaseGivenBuilder {
-    private couponCodeValue: string = GherkinDefaults.DEFAULT_COUPON_CODE;
-    private discountRateValue: string = GherkinDefaults.DEFAULT_DISCOUNT_RATE;
-    private validFromValue: string = GherkinDefaults.EMPTY;
-    private validToValue: string = GherkinDefaults.EMPTY;
-    private usageLimitValue: string = GherkinDefaults.EMPTY;
+    private couponCodeValue: string;
+    private discountRateValue: string;
+    private validFromValue: string;
+    private validToValue: string;
+    private usageLimitValue: string;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
+        this.withCouponCode(GherkinDefaults.DEFAULT_COUPON_CODE);
+        this.withDiscountRate(GherkinDefaults.DEFAULT_DISCOUNT_RATE);
+        this.withValidFrom(GherkinDefaults.EMPTY);
+        this.withValidTo(GherkinDefaults.EMPTY);
+        this.withUsageLimit(GherkinDefaults.EMPTY);
     }
 
     withCouponCode(couponCode: string): this {

@@ -6,13 +6,13 @@ import { VoidVerification } from '@optivem/commons/dsl';
 import { UseCaseContext } from '@optivem/commons/dsl';
 
 export class ReturnsTime extends BaseClockCommand<void, VoidVerification> {
-    private timeValue: string | undefined;
+    private timeValue: string | null | undefined;
 
     constructor(driver: ClockDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    time(value: string | undefined): ReturnsTime {
+    time(value: string | null | undefined): ReturnsTime {
         this.timeValue = value;
         return this;
     }

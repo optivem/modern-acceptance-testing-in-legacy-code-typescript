@@ -6,15 +6,21 @@ import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenOrderBuilder extends BaseGivenBuilder {
-    private orderNumberValue: string = GherkinDefaults.DEFAULT_ORDER_NUMBER;
-    private skuValue: string = GherkinDefaults.DEFAULT_SKU;
-    private quantityValue: string = GherkinDefaults.DEFAULT_QUANTITY;
-    private countryValue: string = GherkinDefaults.DEFAULT_COUNTRY;
-    private couponCodeValue: string = GherkinDefaults.EMPTY;
-    private statusValue: OrderStatus = GherkinDefaults.DEFAULT_ORDER_STATUS;
+    private orderNumberValue: string;
+    private skuValue: string;
+    private quantityValue: string;
+    private countryValue: string;
+    private couponCodeValue: string;
+    private statusValue: OrderStatus;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
+        this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
+        this.withSku(GherkinDefaults.DEFAULT_SKU);
+        this.withQuantity(GherkinDefaults.DEFAULT_QUANTITY);
+        this.withCountry(GherkinDefaults.DEFAULT_COUNTRY);
+        this.withCouponCode(GherkinDefaults.EMPTY);
+        this.withStatus(GherkinDefaults.DEFAULT_ORDER_STATUS);
     }
 
     withOrderNumber(orderNumber: string): this {

@@ -1,20 +1,30 @@
 import type { SystemDsl } from '../../system/SystemDsl.js';
-import type { WhenClause } from '../when/WhenClause.js';
+import { WhenClause } from '../when/WhenClause.js';
 import { GivenProductBuilder } from './GivenProductBuilder.js';
 import { GivenOrderBuilder } from './GivenOrderBuilder.js';
 import { GivenClockBuilder } from './GivenClockBuilder.js';
 import { GivenCountryBuilder } from './GivenCountryBuilder.js';
 import { GivenCouponBuilder } from './GivenCouponBuilder.js';
 
+/**
+ * Given clause for Gherkin scenarios. Mirrors Java GivenClause and .NET GivenClause.
+ * Constructor and method order aligned with reference (app, products, orders, clock, countries, coupons).
+ */
 export class GivenClause {
-    private readonly products: GivenProductBuilder[] = [];
-    private readonly orders: GivenOrderBuilder[] = [];
-    private clock: GivenClockBuilder;
-    private readonly countries: GivenCountryBuilder[] = [];
-    private readonly coupons: GivenCouponBuilder[] = [];
+    private readonly app: SystemDsl;
+    private readonly products: GivenProductBuilder[];
+    private readonly orders: GivenOrderBuilder[];
+    private clockBuilder: GivenClockBuilder;
+    private readonly countries: GivenCountryBuilder[];
+    private readonly coupons: GivenCouponBuilder[];
 
-    constructor(private readonly app: SystemDsl) {
-        this.clock = new GivenClockBuilder(this);
+    constructor(app: SystemDsl) {
+        this.app = app;
+        this.products = [];
+        this.orders = [];
+        this.clockBuilder = new GivenClockBuilder(this);
+        this.countries = [];
+        this.coupons = [];
     }
 
     product(): GivenProductBuilder {
@@ -30,14 +40,14 @@ export class GivenClause {
     }
 
     clock(): GivenClockBuilder {
-        this.clock = new GivenClockBuilder(this);
-        return this.clock;
+        this.clockBuilder = new GivenClockBuilder(this);
+        return this.clockBuilder;
     }
 
     country(): GivenCountryBuilder {
-        const countryBuilder = new GivenCountryBuilder(this);
-        this.countries.push(countryBuilder);
-        return countryBuilder;
+        const taxRateBuilder = new GivenCountryBuilder(this);
+        this.countries.push(taxRateBuilder);
+        return taxRateBuilder;
     }
 
     coupon(): GivenCouponBuilder {
@@ -55,7 +65,7 @@ export class GivenClause {
     }
 
     private async setupClock(): Promise<void> {
-        await this.clock.execute(this.app);
+        await this.clockBuilder.execute(this.app);
     }
 
     private async setupErp(): Promise<void> {
