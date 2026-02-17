@@ -1,12 +1,13 @@
 import { Converter } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenCountryBuilder extends BaseGivenBuilder {
-    private countryValue: string;
-    private taxRateValue: string;
+    private country: Optional<string>;
+    private taxRate: Optional<string>;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
@@ -14,13 +15,13 @@ export class GivenCountryBuilder extends BaseGivenBuilder {
         this.withTaxRate(GherkinDefaults.DEFAULT_TAX_RATE);
     }
 
-    withCode(country: string): this {
-        this.countryValue = country;
+    withCode(country: Optional<string>): this {
+        this.country = country;
         return this;
     }
 
-    withTaxRate(taxRate: string): this {
-        this.taxRateValue = taxRate;
+    withTaxRate(taxRate: Optional<string>): this {
+        this.taxRate = taxRate;
         return this;
     }
 
@@ -32,8 +33,8 @@ export class GivenCountryBuilder extends BaseGivenBuilder {
         await app
             .tax()
             .returnsTaxRate()
-            .country(this.countryValue)
-            .taxRate(this.taxRateValue)
+            .country(this.country)
+            .taxRate(this.taxRate)
             .execute()
             .then((r) => r.shouldSucceed());
     }

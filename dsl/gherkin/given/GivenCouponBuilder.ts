@@ -1,15 +1,16 @@
 import { Converter } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenCouponBuilder extends BaseGivenBuilder {
-    private couponCodeValue: string;
-    private discountRateValue: string;
-    private validFromValue: string;
-    private validToValue: string;
-    private usageLimitValue: string;
+    private couponCode: Optional<string>;
+    private discountRate: Optional<string>;
+    private validFrom: Optional<string>;
+    private validTo: Optional<string>;
+    private usageLimit: Optional<string>;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
@@ -20,13 +21,13 @@ export class GivenCouponBuilder extends BaseGivenBuilder {
         this.withUsageLimit(GherkinDefaults.EMPTY);
     }
 
-    withCouponCode(couponCode: string): this {
-        this.couponCodeValue = couponCode;
+    withCouponCode(couponCode: Optional<string>): this {
+        this.couponCode = couponCode;
         return this;
     }
 
-    withDiscountRate(discountRate: string): this {
-        this.discountRateValue = discountRate;
+    withDiscountRate(discountRate: Optional<string>): this {
+        this.discountRate = discountRate;
         return this;
     }
 
@@ -34,34 +35,33 @@ export class GivenCouponBuilder extends BaseGivenBuilder {
         return this.withDiscountRate(Converter.fromDouble(discountRate));
     }
 
-    withValidFrom(validFrom: string): this {
-        this.validFromValue = validFrom;
+    withValidFrom(validFrom: Optional<string>): this {
+        this.validFrom = validFrom;
         return this;
     }
 
-    withValidTo(validTo: string): this {
-        this.validToValue = validTo;
+    withValidTo(validTo: Optional<string>): this {
+        this.validTo = validTo;
         return this;
     }
 
-    withUsageLimit(usageLimit: string): this {
-        this.usageLimitValue = usageLimit;
+    withUsageLimit(usageLimit: Optional<string>): this {
+        this.usageLimit = usageLimit;
         return this;
     }
 
     withUsageLimit(usageLimit: number): this {
-        return this.withUsageLimit(Converter.fromInteger(usageLimit) ?? '');
+        return this.withUsageLimit(Converter.fromInteger(usageLimit) ?? undefined);
     }
 
     async execute(app: SystemDsl): Promise<void> {
-        await app
-            .shop()
+        await app.shop()
             .publishCoupon()
-            .couponCode(this.couponCodeValue)
-            .discountRate(this.discountRateValue)
-            .validFrom(this.validFromValue)
-            .validTo(this.validToValue)
-            .usageLimit(this.usageLimitValue)
+            .couponCode(this.couponCode)
+            .discountRate(this.discountRate)
+            .validFrom(this.validFrom)
+            .validTo(this.validTo)
+            .usageLimit(this.usageLimit)
             .execute()
             .then((r) => r.shouldSucceed());
     }

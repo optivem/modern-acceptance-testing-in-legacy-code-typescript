@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import type { Optional } from '../util/index.js';
 import { ExternalSystemMode } from './ExternalSystemMode.js';
 
 export class UseCaseContext {
@@ -16,7 +17,7 @@ export class UseCaseContext {
         return this.externalSystemMode;
     }
 
-    getParamValue(alias: string | null | undefined): string | null | undefined {
+    getParamValue(alias: Optional<string>): Optional<string> {
         if (this.isNullOrBlank(alias)) {
             return alias;
         }
@@ -32,7 +33,7 @@ export class UseCaseContext {
         return value;
     }
 
-    getParamValueOrLiteral(alias: string | null | undefined): string | null | undefined {
+    getParamValueOrLiteral(alias: Optional<string>): Optional<string> {
         if (this.isNullOrBlank(alias)) {
             return alias;
         }
@@ -46,7 +47,7 @@ export class UseCaseContext {
         }
     }
 
-    setResultEntry(alias: string | null | undefined, value: string): void {
+    setResultEntry(alias: Optional<string>, value: string): void {
         this.ensureAliasNotNullBlank(alias);
         const key = alias as string;
         if (this.resultMap.has(key)) {
@@ -55,12 +56,12 @@ export class UseCaseContext {
         this.resultMap.set(key, value);
     }
 
-    setResultEntryFailed(alias: string | null | undefined, errorMessage: string): void {
+    setResultEntryFailed(alias: Optional<string>, errorMessage: string): void {
         this.ensureAliasNotNullBlank(alias);
         this.setResultEntry(alias, `FAILED: ${errorMessage}`);
     }
 
-    getResultValue(alias: string | null | undefined): string | null | undefined {
+    getResultValue(alias: Optional<string>): Optional<string> {
         if (this.isNullOrBlank(alias)) {
             return alias;
         }
@@ -89,20 +90,20 @@ export class UseCaseContext {
         return expandedMessage;
     }
 
-    private generateParamValue(alias: string | null | undefined): string {
+    private generateParamValue(alias: Optional<string>): string {
         this.ensureAliasNotNullBlank(alias);
         const key = alias as string;
         const suffix = uuidv4().substring(0, 8);
         return `${key}-${suffix}`;
     }
 
-    private ensureAliasNotNullBlank(alias: string | null | undefined): void {
+    private ensureAliasNotNullBlank(alias: Optional<string>): void {
         if (this.isNullOrBlank(alias)) {
             throw new Error('Alias cannot be null or blank');
         }
     }
 
-    private isNullOrBlank(alias: string | null | undefined): boolean {
+    private isNullOrBlank(alias: Optional<string>): boolean {
         return alias === undefined || alias === null || alias.trim().length === 0;
     }
 }

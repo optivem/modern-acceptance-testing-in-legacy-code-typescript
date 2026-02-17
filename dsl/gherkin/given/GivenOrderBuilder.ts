@@ -1,4 +1,5 @@
 import { Converter } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { OrderStatus } from '../../../core/shop/commons/dtos/orders/OrderStatus.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
@@ -6,12 +7,12 @@ import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenOrderBuilder extends BaseGivenBuilder {
-    private orderNumberValue: string;
-    private skuValue: string;
-    private quantityValue: string;
-    private countryValue: string;
-    private couponCodeValue: string;
-    private statusValue: OrderStatus;
+    private orderNumber: Optional<string>;
+    private sku: Optional<string>;
+    private quantity: Optional<string>;
+    private country: Optional<string>;
+    private couponCodeAlias: Optional<string>;
+    private status: OrderStatus;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
@@ -23,57 +24,55 @@ export class GivenOrderBuilder extends BaseGivenBuilder {
         this.withStatus(GherkinDefaults.DEFAULT_ORDER_STATUS);
     }
 
-    withOrderNumber(orderNumber: string): this {
-        this.orderNumberValue = orderNumber;
+    withOrderNumber(orderNumber: Optional<string>): this {
+        this.orderNumber = orderNumber;
         return this;
     }
 
-    withSku(sku: string): this {
-        this.skuValue = sku;
+    withSku(sku: Optional<string>): this {
+        this.sku = sku;
         return this;
     }
 
-    withQuantity(quantity: string): this {
-        this.quantityValue = quantity;
+    withQuantity(quantity: Optional<string>): this {
+        this.quantity = quantity;
         return this;
     }
 
     withQuantity(quantity: number): this {
-        return this.withQuantity(Converter.fromInteger(quantity) ?? '');
+        return this.withQuantity(Converter.fromInteger(quantity) ?? undefined);
     }
 
-    withCountry(country: string): this {
-        this.countryValue = country;
+    withCountry(country: Optional<string>): this {
+        this.country = country;
         return this;
     }
 
-    withCouponCode(couponCode: string): this {
-        this.couponCodeValue = couponCode;
+    withCouponCode(couponCodeAlias: Optional<string>): this {
+        this.couponCodeAlias = couponCodeAlias;
         return this;
     }
 
     withStatus(status: OrderStatus): this {
-        this.statusValue = status;
+        this.status = status;
         return this;
     }
 
     async execute(app: SystemDsl): Promise<void> {
-        await app
-            .shop()
+        await app.shop()
             .placeOrder()
-            .orderNumber(this.orderNumberValue)
-            .sku(this.skuValue)
-            .quantity(this.quantityValue)
-            .country(this.countryValue)
-            .couponCode(this.couponCodeValue)
+            .orderNumber(this.orderNumber)
+            .sku(this.sku)
+            .quantity(this.quantity)
+            .country(this.country)
+            .couponCode(this.couponCodeAlias)
             .execute()
             .then((r) => r.shouldSucceed());
 
-        if (this.statusValue === OrderStatus.CANCELLED) {
-            await app
-                .shop()
+        if (this.status === OrderStatus.CANCELLED) {
+            await app.shop()
                 .cancelOrder()
-                .orderNumber(this.orderNumberValue)
+                .orderNumber(this.orderNumber)
                 .execute()
                 .then((r) => r.shouldSucceed());
         }

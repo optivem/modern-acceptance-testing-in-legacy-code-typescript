@@ -1,12 +1,13 @@
 import { Converter } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenProductBuilder extends BaseGivenBuilder {
-    private skuValue: string;
-    private unitPriceValue: string;
+    private sku: Optional<string>;
+    private unitPrice: Optional<string>;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
@@ -14,13 +15,13 @@ export class GivenProductBuilder extends BaseGivenBuilder {
         this.withUnitPrice(GherkinDefaults.DEFAULT_UNIT_PRICE);
     }
 
-    withSku(sku: string): this {
-        this.skuValue = sku;
+    withSku(sku: Optional<string>): this {
+        this.sku = sku;
         return this;
     }
 
-    withUnitPrice(unitPrice: string): this {
-        this.unitPriceValue = unitPrice;
+    withUnitPrice(unitPrice: Optional<string>): this {
+        this.unitPrice = unitPrice;
         return this;
     }
 
@@ -32,8 +33,8 @@ export class GivenProductBuilder extends BaseGivenBuilder {
         await app
             .erp()
             .returnsProduct()
-            .sku(this.skuValue)
-            .unitPrice(this.unitPriceValue)
+            .sku(this.sku)
+            .unitPrice(this.unitPrice)
             .execute()
             .then((r) => r.shouldSucceed());
     }

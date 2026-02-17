@@ -3,48 +3,49 @@ import { BaseShopCommand } from '../base/BaseShopCommand.js';
 import { ShopUseCaseResult } from '../base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
 import { VoidVerification } from '@optivem/commons/dsl';
+import type { Optional } from '@optivem/commons/util';
 import type { PublishCouponRequest } from '../../../commons/dtos/coupons/index.js';
 
 export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
-    private couponCodeParamAlias?: string;
-    private discountRateValue?: string;
-    private validFromValue?: string;
-    private validToValue?: string;
-    private usageLimitValue?: string;
+    private couponCodeParamAlias: string | null | undefined;
+    private discountRateValue: string | null | undefined;
+    private validFromValue: string | null | undefined;
+    private validToValue: string | null | undefined;
+    private usageLimitValue: string | null | undefined;
 
     constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    couponCode(couponCodeParamAlias: string): PublishCoupon {
+    couponCode(couponCodeParamAlias: Optional<string>): PublishCoupon {
         this.couponCodeParamAlias = couponCodeParamAlias;
         return this;
     }
 
     discountRate(discountRate: number): PublishCoupon;
     discountRate(discountRate: string): PublishCoupon;
-    discountRate(discountRate: number | string): PublishCoupon {
-        this.discountRateValue = typeof discountRate === 'number' ? String(discountRate) : discountRate;
+    discountRate(discountRate: Optional<number | string>): PublishCoupon {
+        this.discountRateValue = discountRate === undefined || discountRate === null ? undefined : typeof discountRate === 'number' ? String(discountRate) : discountRate;
         return this;
     }
 
-    validFrom(validFrom: string): PublishCoupon {
+    validFrom(validFrom: Optional<string>): PublishCoupon {
         this.validFromValue = validFrom;
         return this;
     }
 
-    validTo(validTo: string): PublishCoupon {
+    validTo(validTo: Optional<string>): PublishCoupon {
         this.validToValue = validTo;
         return this;
     }
 
-    usageLimit(usageLimit: string): PublishCoupon {
+    usageLimit(usageLimit: Optional<string>): PublishCoupon {
         this.usageLimitValue = usageLimit;
         return this;
     }
 
     async execute(): Promise<ShopUseCaseResult<void, VoidVerification>> {
-        const couponCode = this.context.getParamValue(this.couponCodeParamAlias!);
+        const couponCode = this.context.getParamValue(this.couponCodeParamAlias);
         const request: PublishCouponRequest = {
             code: couponCode,
             discountRate: this.discountRateValue,

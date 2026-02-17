@@ -2,44 +2,43 @@ import { ShopDriver } from '../../../driver/ShopDriver.js';
 import { BaseShopCommand } from '../base/BaseShopCommand.js';
 import { ShopUseCaseResult } from '../base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
+import type { Optional } from '@optivem/commons/util';
 import type { PlaceOrderRequest, PlaceOrderResponse } from '../../../commons/dtos/orders/index.js';
 import { systemErrorToString } from '../../../commons/dtos/errors/SystemError.js';
 import { PlaceOrderVerification } from './PlaceOrderVerification.js';
 
 export class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVerification> {
-    private orderNumberResultAlias?: string;
-    private skuParamAlias?: string;
-    private quantityValue?: string;
-    private countryAlias?: string;
-    private couponCodeAlias?: string;
+    private orderNumberResultAlias: string | null | undefined;
+    private skuParamAlias: string | null | undefined;
+    private quantityValue: string | null | undefined;
+    private countryAlias: string | null | undefined;
+    private couponCodeAlias: string | null | undefined;
 
     constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    orderNumber(orderNumberResultAlias: string): PlaceOrder {
+    orderNumber(orderNumberResultAlias: Optional<string>): PlaceOrder {
         this.orderNumberResultAlias = orderNumberResultAlias;
         return this;
     }
 
-    sku(skuParamAlias: string): PlaceOrder {
+    sku(skuParamAlias: Optional<string>): PlaceOrder {
         this.skuParamAlias = skuParamAlias;
         return this;
     }
 
-    quantity(value: string): PlaceOrder;
-    quantity(value: number): PlaceOrder;
-    quantity(value: string | number): PlaceOrder {
-        this.quantityValue = typeof value === 'number' ? String(value) : value;
+    quantity(value: Optional<string | number>): PlaceOrder {
+        this.quantityValue = value === undefined || value === null ? undefined : typeof value === 'number' ? String(value) : value;
         return this;
     }
 
-    country(countryAlias: string): PlaceOrder {
+    country(countryAlias: Optional<string>): PlaceOrder {
         this.countryAlias = countryAlias;
         return this;
     }
 
-    couponCode(couponCodeAlias: string): PlaceOrder {
+    couponCode(couponCodeAlias: Optional<string>): PlaceOrder {
         this.couponCodeAlias = couponCodeAlias;
         return this;
     }

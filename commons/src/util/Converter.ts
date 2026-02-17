@@ -1,3 +1,4 @@
+import type { Optional } from './Optional.js';
 import { Decimal } from './Decimal.js';
 
 /**
@@ -6,7 +7,7 @@ import { Decimal } from './Decimal.js';
 export class Converter {
     private constructor() {}
 
-    static toDecimal(value: string | null | undefined): Decimal | null {
+    static toDecimal(value: Optional<string>): Decimal | null {
         return this.to(value, (s) => Decimal.fromString(s));
     }
 
@@ -24,7 +25,7 @@ export class Converter {
         return Decimal.fromNumber(value).toString();
     }
 
-    static toInteger(value: string | null | undefined, ...nullValues: string[]): number | null {
+    static toInteger(value: Optional<string>, ...nullValues: string[]): number | null {
         if (value == null || value.trim() === '') return null;
         for (const nv of nullValues) {
             if (value.localeCompare(nv, undefined, { sensitivity: 'accent' }) === 0) return null;
@@ -36,7 +37,7 @@ export class Converter {
         return value == null ? null : String(value);
     }
 
-    static toDate(text: string | null | undefined, ...nullValues: string[]): Date | null {
+    static toDate(text: Optional<string>, ...nullValues: string[]): Date | null {
         const simple = this.to(text, (s) => new Date(s));
         if (simple !== null && !Number.isNaN(simple.getTime())) return simple;
         if (simple === null) return null;
@@ -67,14 +68,14 @@ export class Converter {
      * Normalizes Date | string to Date | null.
      * If value is already a Date, returns it (or null if invalid). If string, parses it.
      */
-    static normalizeToDate(value: Date | string | null | undefined): Date | null {
+    static normalizeToDate(value: Optional<Date | string>): Date | null {
         if (value == null) return null;
         if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
         const d = new Date(value);
         return Number.isNaN(d.getTime()) ? null : d;
     }
 
-    private static to<T>(value: string | null | undefined, converter: (s: string) => T): T | null {
+    private static to<T>(value: Optional<string>, converter: (s: string) => T): T | null {
         if (value == null || value.trim() === '') return null;
         return converter(value);
     }

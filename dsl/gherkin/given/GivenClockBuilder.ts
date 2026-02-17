@@ -1,17 +1,18 @@
+import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseGivenBuilder } from './BaseGivenBuilder.js';
 import type { GivenClause } from './GivenClause.js';
 
 export class GivenClockBuilder extends BaseGivenBuilder {
-    private time: string | null | undefined;
+    private time: Optional<string>;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
         this.withTime(GherkinDefaults.DEFAULT_TIME);
     }
 
-    withTime(time: string | null | undefined): this {
+    withTime(time: Optional<string>): this {
         this.time = time;
         return this;
     }

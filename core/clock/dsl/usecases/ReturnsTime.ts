@@ -4,15 +4,16 @@ import { BaseClockCommand } from './base/BaseClockCommand.js';
 import { ClockUseCaseResult } from './base/ClockUseCaseResult.js';
 import { VoidVerification } from '@optivem/commons/dsl';
 import { UseCaseContext } from '@optivem/commons/dsl';
+import type { Optional } from '@optivem/commons/util';
 
 export class ReturnsTime extends BaseClockCommand<void, VoidVerification> {
-    private timeValue: string | null | undefined;
+    private timeValue: Optional<string>;
 
     constructor(driver: ClockDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    time(value: string | null | undefined): ReturnsTime {
+    time(value: Optional<string>): ReturnsTime {
         this.timeValue = value;
         return this;
     }

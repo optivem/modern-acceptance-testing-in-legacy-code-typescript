@@ -1,3 +1,4 @@
+export type { Optional } from './Optional.js';
 export { Closer } from './Closer.js';
 export { Converter } from './Converter.js';
 export { Closeable } from './Closeable.js';
