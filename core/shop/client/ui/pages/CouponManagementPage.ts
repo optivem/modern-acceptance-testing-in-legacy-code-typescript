@@ -1,6 +1,7 @@
 import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/commons/playwright';
 import { Integer } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { CouponDto } from '../../../commons/dtos/coupons/BrowseCouponsResponse.js';
 
 export class CouponManagementPage extends BasePage {
@@ -26,23 +27,23 @@ export class CouponManagementPage extends BasePage {
         super(pageClient);
     }
 
-    async inputCouponCode(couponCode: string): Promise<void> {
+    async inputCouponCode(couponCode: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(CouponManagementPage.COUPON_CODE_INPUT_SELECTOR, couponCode);
     }
 
-    async inputDiscountRate(discountRate: string): Promise<void> {
+    async inputDiscountRate(discountRate: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(CouponManagementPage.DISCOUNT_RATE_INPUT_SELECTOR, discountRate);
     }
 
-    async inputValidFrom(validFrom: string): Promise<void> {
+    async inputValidFrom(validFrom: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(CouponManagementPage.VALID_FROM_INPUT_SELECTOR, validFrom);
     }
 
-    async inputValidTo(validTo: string): Promise<void> {
+    async inputValidTo(validTo: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(CouponManagementPage.VALID_TO_INPUT_SELECTOR, validTo);
     }
 
-    async inputUsageLimit(usageLimit: string): Promise<void> {
+    async inputUsageLimit(usageLimit: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(CouponManagementPage.USAGE_LIMIT_INPUT_SELECTOR, usageLimit);
     }
 
