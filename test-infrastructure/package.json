@@ -1,0 +1,19 @@
+{
+  "name": "@optivem/test-infrastructure",
+  "version": "0.0.1",
+  "description": "Test configuration and environment (matches Java/.NET test-infrastructure)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist"
+  },
+  "keywords": ["testing", "acceptance-testing", "configuration"],
+  "author": "Optivem",
+  "license": "MIT",
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  }
+}
