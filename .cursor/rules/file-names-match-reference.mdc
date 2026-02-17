@@ -1,15 +1,14 @@
 ---
-description: File and type names should match reference projects when migrating; follow idiomatic TypeScript overall
+description: File and type names in core should match established naming; idiomatic TypeScript overall
 globs: core/**/*
 alwaysApply: true
 ---
 
-# File names match reference (idiomatic overall)
+# File names (core, idiomatic overall)
 
-- When **migrating** or adding core modules, **file names** (and the main type/class names they export) should **match the reference** projects so the codebase stays aligned and easy to compare.
-  - **.NET** `ErpApiClient.cs`, `ClockStubDriver.cs` → **TS** `ErpApiClient.ts`, `ClockStubDriver.ts` (same name; TS uses PascalCase for classes, which matches).
-  - **Java** `BaseErpCommand.java` → **TS** `BaseErpCommand.ts`.
-- **Idiomatic TypeScript** still wins when there is a real conflict:
-  - Use **camelCase** for methods, properties, and file names if the project standard is camelCase for files (otherwise keep PascalCase for class files to match reference).
+- When adding or changing core modules, **file names** (and the main type/class names they export) should **match the established** naming so the codebase stays consistent.
+  - Example: `ErpApiClient.ts`, `ClockStubDriver.ts` (PascalCase for class files; one class per file).
+- **Idiomatic TypeScript:**
+  - Use **camelCase** for methods and properties; PascalCase for classes and file names of class files.
   - Prefer **one class/type per file** and **filename = primary export name** (e.g. `ClockStubClient.ts` exports `ClockStubClient`).
-- **Rule of thumb:** Same logical type as in Java/.NET → same file name in TS (with `.ts`), unless the idiomatic-first rule or project convention says otherwise (e.g. no `I` prefix, no `Async` suffix in names).
+- **Rule of thumb:** Same logical type as elsewhere in core → same file name in TS (with `.ts`); no `I` prefix, no `Async` suffix in names.

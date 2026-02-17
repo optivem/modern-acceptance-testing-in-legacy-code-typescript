@@ -11,7 +11,7 @@ export class Converter {
         return this.to(value, (s) => Decimal.fromString(s));
     }
 
-    /** Number to Decimal (matches Java Converter.toBigDecimal(double)). */
+    /** Number to Decimal. */
     static toDecimalFromNumber(value: number): Decimal {
         return Decimal.fromNumber(value);
     }
@@ -20,7 +20,7 @@ export class Converter {
         return value == null ? null : value.toString();
     }
 
-    /** Number to decimal string (matches Java Converter.fromDouble). */
+    /** Number to decimal string. */
     static fromDouble(value: number): string {
         return Decimal.fromNumber(value).toString();
     }

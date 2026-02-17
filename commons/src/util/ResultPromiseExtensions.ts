@@ -1,7 +1,7 @@
 import { Result } from './Result.js';
 
 /**
- * TypeScript equivalent of .NET ResultTaskExtensions.
+ * Result task extensions.
  * Provides mapAsync, mapErrorAsync, and mapVoidAsync over Promise<Result<T, E>>.
  */
 

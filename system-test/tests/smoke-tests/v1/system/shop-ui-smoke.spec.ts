@@ -1,5 +1,5 @@
 /**
- * V1 smoke test: raw browser (matches Java ShopUiSmokeTest / .NET ShopUiSmokeTest).
+ * V1 smoke test: raw browser.
  * Uses configuration + Playwright page; no driver. Setup: setUpShopBrowser equivalent (page from fixture).
  */
 import '../../../../setup-config.js';

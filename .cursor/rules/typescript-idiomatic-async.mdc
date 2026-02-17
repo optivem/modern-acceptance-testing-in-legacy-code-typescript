@@ -9,6 +9,6 @@ alwaysApply: true
 - **Do not suffix async methods with `Async`** (e.g. avoid `getTimeAsync`, `checkHealthAsync`).
 - **Indicate asynchrony by return type:** use `Promise<T>` (or `PromiseLike<T>`) in signatures; callers use `await` or `.then()`.
 - **Correct:** `getTime(): Promise<Result<GetTimeResponse, Error>>`, `checkHealth(): Promise<Result<void, Error>>`.
-- **Avoid ( .NET-style in TS ):**
+- **Avoid:**
   - `getTimeAsync()`, `goToClockAsync()`, `returnsTimeAsync()`.
 - This matches common TypeScript/JavaScript style; the return type already signals that the method is asynchronous.

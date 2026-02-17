@@ -5,7 +5,7 @@ import { getEnvironment, getExternalSystemMode } from './PropertyLoader.js';
 import { load } from './SystemConfigurationLoader.js';
 
 /**
- * Abstract base for configurable tests (matches Java/.NET BaseConfigurableTest).
+ * Abstract base for configurable tests.
  * Subclasses override getFixedEnvironment / getFixedExternalSystemMode to pin config; otherwise env vars are used.
  * In Playwright, use fixtures that call loadConfiguration() instead of extending this class.
  */

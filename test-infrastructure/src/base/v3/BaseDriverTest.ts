@@ -1,11 +1,10 @@
 import type { LoadedConfiguration } from '../../configuration/index.js';
 
 /**
- * Fixture shape for v3 driver test (matches Java BaseDriverTest / .NET BaseDriverTest).
+ * Fixture shape for v3 driver test.
  * Holds configuration and drivers: shopDriver (UI or API), erpDriver, taxDriver.
  * Types are unknown to avoid core dependency; implement in system-test with DriverFactory or equivalent.
- *
- * Lifecycle (reference): setUpConfiguration(), setUpShopUiDriver() or setUpShopApiDriver(), setUpExternalDrivers(), tearDown().
+ * Lifecycle: setUpConfiguration(), setUpShopUiDriver() or setUpShopApiDriver(), setUpExternalDrivers(), tearDown().
  */
 export interface BaseDriverTestFixture {
     configuration: LoadedConfiguration;

@@ -1,5 +1,6 @@
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
+import { GoToShopBuilder } from './GoToShopBuilder.js';
 import { PlaceOrderBuilder } from './PlaceOrderBuilder.js';
 import { CancelOrderBuilder } from './CancelOrderBuilder.js';
 import { ViewOrderBuilder } from './ViewOrderBuilder.js';
@@ -34,6 +35,10 @@ export class WhenClause {
                 .then((r) => r.shouldSucceed());
             this.hasTaxRate = true;
         }
+    }
+
+    goToShop(): GoToShopBuilder {
+        return new GoToShopBuilder(this.app);
     }
 
     placeOrder(): Promise<PlaceOrderBuilder> {

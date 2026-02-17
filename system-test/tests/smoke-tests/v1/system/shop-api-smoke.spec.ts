@@ -1,5 +1,5 @@
 /**
- * V1 smoke test: raw HTTP client (matches Java ShopApiSmokeTest / .NET ShopApiSmokeTest).
+ * V1 smoke test: raw HTTP client.
  * Uses configuration + fetch; no driver. Setup: setUpShopHttpClient equivalent (config + fetch).
  */
 import '../../../../setup-config.js';

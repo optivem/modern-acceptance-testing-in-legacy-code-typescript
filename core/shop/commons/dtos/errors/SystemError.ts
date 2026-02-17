@@ -35,7 +35,7 @@ export function systemErrorFrom(problemDetail: ProblemDetailLike): SystemError {
     return systemErrorOf(message);
 }
 
-/** String representation matching Java SystemError.toString() for setResultEntryFailed. */
+/** String representation for setResultEntryFailed. */
 export function systemErrorToString(error: SystemError): string {
     if (error.fields == null || error.fields.length === 0) {
         return `SystemError{message='${error.message}'}`;

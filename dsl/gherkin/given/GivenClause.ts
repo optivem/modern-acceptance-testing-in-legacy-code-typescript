@@ -7,8 +7,7 @@ import { GivenCountryBuilder } from './GivenCountryBuilder.js';
 import { GivenCouponBuilder } from './GivenCouponBuilder.js';
 
 /**
- * Given clause for Gherkin scenarios. Mirrors Java GivenClause and .NET GivenClause.
- * Constructor and method order aligned with reference (app, products, orders, clock, countries, coupons).
+ * Given clause for Gherkin scenarios (app, products, orders, clock, countries, coupons).
  */
 export class GivenClause {
     private readonly app: SystemDsl;

@@ -27,7 +27,7 @@ export class SystemDsl {
 
     /**
      * Close all DSLs. Only shop is closed asynchronously (awaited); erp, tax, and clock
-     * are closed synchronously, matching the .NET reference (Shop IAsyncDisposable, rest IDisposable).
+     * are closed synchronously (Shop async, rest sync).
      */
     async close(): Promise<void> {
         await Closer.close(this.shopDsl);

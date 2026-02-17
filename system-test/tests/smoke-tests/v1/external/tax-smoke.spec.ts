@@ -1,5 +1,5 @@
 /**
- * V1 smoke test: raw HTTP client for Tax (matches Java TaxSmokeTest / .NET TaxSmokeTest).
+ * V1 smoke test: raw HTTP client for Tax.
  * Uses configuration + fetch; no driver. Setup: setUpExternalHttpClients equivalent.
  */
 import '../../../../setup-config.js';

@@ -1,13 +1,12 @@
 ---
-description: When migrating a module, mirror reference folder/file structure and names; keep TypeScript idiomatic
+description: When adding core modules, mirror established folder/file structure and names; keep TypeScript idiomatic
 globs: core/**/*
 alwaysApply: true
 ---
 
-# Migrate: match reference structure, TypeScript idiomatic
+# Add module: match structure, TypeScript idiomatic
 
-- When **migrating** a module (e.g. tax, shop) from Java/.NET reference:
-  1. **Mirror folder structure**: Same layout as reference (client/, driver/, dsl/; client and driver are siblings; dtos under client/ and driver/ as in reference).
-  2. **Mirror file structure and names**: Same file names as reference (e.g. `BaseTaxClient.ts`, `TaxStubDriver.ts`, `GetTaxVerification.ts`). One main export per file; filename = primary type name.
-  3. **TypeScript idiomatic**: camelCase for methods/properties; no `I` prefix on interfaces; no `Async` suffix (use `Promise<T>`); no extra defensive defaults unless in reference.
-- Reference projects: Java `core/<module>/`, .NET `Core/Core.<Module>/`. Check both when adding or moving files.
+- When **adding** a module (e.g. tax, shop) under core:
+  1. **Mirror folder structure**: Same layout as existing modules (client/, driver/, dsl/; client and driver are siblings; dtos under client/ and driver/).
+  2. **Mirror file structure and names**: Same file naming as existing core (e.g. `BaseTaxClient.ts`, `TaxStubDriver.ts`, `GetTaxVerification.ts`). One main export per file; filename = primary type name.
+  3. **TypeScript idiomatic**: camelCase for methods/properties; no `I` prefix on interfaces; no `Async` suffix (use `Promise<T>`); no extra defensive defaults unless the rest of the codebase does.

@@ -2,8 +2,7 @@ import { ExternalSystemMode } from '@optivem/commons/dsl';
 import { Environment } from './Environment.js';
 
 /**
- * Loads environment and external system mode from process.env (matches Java PropertyLoader / .NET PropertyLoader).
- * Java uses -D system properties; .NET uses environment variables. We use process.env like .NET.
+ * Loads environment and external system mode from process.env.
  */
 export function getEnvironment(fixed: Environment | null | undefined): Environment {
     if (fixed != null) {

@@ -1,6 +1,4 @@
-/**
- * Test environment. Matches Java test-infrastructure Environment and .NET TestInfrastructure.
- */
+/** Test environment. */
 export enum Environment {
     LOCAL = 'LOCAL',
     ACCEPTANCE = 'ACCEPTANCE',

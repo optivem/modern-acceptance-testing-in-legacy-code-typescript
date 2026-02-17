@@ -1,12 +1,10 @@
 import type { LoadedConfiguration } from '../../configuration/index.js';
 
 /**
- * Fixture shape for v1 raw test (matches Java BaseRawTest / .NET BaseRawTest).
+ * Fixture shape for v1 raw test.
  * Holds configuration, Playwright browser/page, HTTP clients, and JSON mapper.
  * Types are unknown to avoid pulling Playwright/Node into test-infrastructure; implement in system-test with real types.
- *
- * Lifecycle (reference): setUpConfiguration(), setUpShopBrowser(), setUpShopHttpClient(), setUpExternalHttpClients(), tearDown().
- * Helpers (reference): getShopApiBaseUrl(), getShopUiBaseUrl(), getErpBaseUrl(), getTaxBaseUrl(), createUniqueSku(baseSku).
+ * Lifecycle: setUpConfiguration(), setUpShopBrowser(), setUpShopHttpClient(), setUpExternalHttpClients(), tearDown().
  */
 export interface BaseRawTestFixture {
     configuration: LoadedConfiguration;

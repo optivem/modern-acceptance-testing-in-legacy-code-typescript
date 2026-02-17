@@ -3,8 +3,7 @@ import type { LoadedConfiguration } from './LoadedConfiguration.js';
 import { Environment } from './Environment.js';
 
 /**
- * Embedded test configs (matches Java test-config-*.yml / .NET appsettings.*.json).
- * Keys: environment + mode (e.g. LOCAL_REAL).
+ * Embedded test configs. Keys: environment + mode (e.g. LOCAL_REAL).
  */
 const configs: Record<string, Omit<LoadedConfiguration, 'externalSystemMode'>> = {
     [`${Environment.LOCAL}_REAL`]: {

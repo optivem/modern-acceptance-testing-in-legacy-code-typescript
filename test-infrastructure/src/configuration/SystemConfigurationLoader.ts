@@ -4,7 +4,7 @@ import { Environment } from './Environment.js';
 import { getTestConfig } from './test-configs.js';
 
 /**
- * Loads test configuration by environment and external system mode (matches Java/.NET SystemConfigurationLoader).
+ * Loads test configuration by environment and external system mode.
  */
 export function load(
     environment: Environment,

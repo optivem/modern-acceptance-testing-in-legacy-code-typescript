@@ -27,7 +27,7 @@ export class PageClient {
         return this.page;
     }
 
-    /** Returns locator without waiting (aligns with .NET GetLocator). */
+    /** Returns locator without waiting. */
     getLocator(selector: string): Locator {
         return this.page.locator(selector);
     }
@@ -47,7 +47,7 @@ export class PageClient {
         return (await locator.textContent()) || '';
     }
 
-    /** Returns text without waiting for visibility (aligns with .NET ReadTextContentImmediatelyAsync). */
+    /** Returns text without waiting for visibility. */
     async readTextContentImmediatelyAsync(selector: string): Promise<string> {
         const locator = this.page.locator(selector);
         return (await locator.textContent()) || '';

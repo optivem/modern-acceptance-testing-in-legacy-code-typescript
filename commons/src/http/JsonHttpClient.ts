@@ -18,7 +18,7 @@ export type JsonHttpClientOptions = {
 
 /**
  * High-level HTTP client that returns Result<T, E> directly.
- * On failure, the error response body is used as E (deserialized from JSON, same as Java/.NET reference).
+ * On failure, the error response body is used as E (deserialized from JSON).
  * Response bodies are passed through mapObjectDecimals and mapObjectIntegers using default or custom key sets.
  */
 export class JsonHttpClient<E> {
@@ -108,7 +108,7 @@ export class JsonHttpClient<E> {
             }
             return Result.success(data);
         }
-        // Deserialize error response body to E (same as Java readResponse(..., errorType) / .NET ReadResponseAsync<E>)
+        // Deserialize error response body to E
         const error = this.readErrorResponse(response);
         return Result.failure(error as E);
     }

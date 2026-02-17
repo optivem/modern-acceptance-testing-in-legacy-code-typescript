@@ -1,7 +1,7 @@
 /**
  * API error body shape (e.g. RFC 7807 problem details).
  * Defined in client because it is the contract of the HTTP API the client calls.
- * Matches Java ProblemDetailResponse and .NET ProblemDetailResponse.
+ * Problem detail error response from API.
  */
 export interface ProblemDetailResponse {
     type?: string;

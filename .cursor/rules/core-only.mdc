@@ -1,5 +1,5 @@
 ---
-description: Restrict all changes to the core package only; align with Java and .NET reference projects
+description: Restrict all changes to the core package only; follow established core layout
 globs: core/**/*
 alwaysApply: true
 ---
@@ -8,7 +8,4 @@ alwaysApply: true
 
 - **Only modify** files under `core/` (DriverFactory, SystemConfiguration, SystemDsl, and everything under `core/commons/`, `core/erp/`, `core/shop/`, `core/tax/`).
 - **Do not update** commons, optivem-testing, system-test, or any file outside `core/`.
-- **Reference projects:** Align structure, naming, and behavior with:
-  - Java: `modern-acceptance-testing-in-legacy-code-java/core/`
-  - .NET: `modern-acceptance-testing-in-legacy-code-dotnet/Core/`
-- When in doubt, match Java/.NET core layout (client, driver, dsl, dtos, verifications) and naming (camelCase in TS to mirror Java; PascalCase in .NET becomes camelCase in TS).
+- Follow the **established core layout**: client/, driver/, dsl/, dtos, verifications; camelCase for methods/properties; one main export per file.

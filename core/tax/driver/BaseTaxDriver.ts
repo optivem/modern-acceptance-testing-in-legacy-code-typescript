@@ -16,7 +16,7 @@ export abstract class BaseTaxDriver<TClient extends BaseTaxClient> implements Ta
     }
 
     close(): void {
-        // Tax client has no resources to close; per reference, driver close is no-op for tax.
+        // Tax client has no resources to close; driver close is no-op for tax.
     }
 
     goToTax(): Promise<Result<void, TaxErrorResponse>> {

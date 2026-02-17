@@ -1,7 +1,7 @@
 {
   "name": "@optivem/test-infrastructure",
   "version": "0.0.1",
-  "description": "Test configuration and environment (matches Java/.NET test-infrastructure)",
+  "description": "Test configuration and environment",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

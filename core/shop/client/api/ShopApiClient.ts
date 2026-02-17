@@ -30,6 +30,6 @@ export class ShopApiClient {
     }
 
     close(): void {
-        // JsonHttpClient has no resources to release; no-op for API consistency with reference
+        // JsonHttpClient has no resources to release; no-op for API consistency.
     }
 }

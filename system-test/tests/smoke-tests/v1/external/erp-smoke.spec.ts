@@ -1,5 +1,5 @@
 /**
- * V1 smoke test: raw HTTP client for ERP (matches Java ErpSmokeTest / .NET ErpSmokeTest).
+ * V1 smoke test: raw HTTP client for ERP.
  * Uses configuration + fetch; no driver. Setup: setUpExternalHttpClients equivalent.
  */
 import '../../../../setup-config.js';

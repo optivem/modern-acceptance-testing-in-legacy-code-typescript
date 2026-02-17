@@ -1,12 +1,10 @@
 import type { LoadedConfiguration } from '../../configuration/index.js';
 
 /**
- * Fixture shape for v2 client test (matches Java BaseClientTest / .NET BaseClientTest).
+ * Fixture shape for v2 client test.
  * Holds configuration and clients: shop UI client, shop API client, ERP client, tax client.
  * Types are unknown to avoid core dependency; implement in system-test with real client types.
- *
- * Lifecycle (reference): setUpConfiguration(), setUpShopUiClient(), setUpShopApiClient(), setUpExternalClients(), tearDown().
- * Helper (reference): createUniqueSku(baseSku).
+ * Lifecycle: setUpConfiguration(), setUpShopUiClient(), setUpShopApiClient(), setUpExternalClients(), tearDown().
  */
 export interface BaseClientTestFixture {
     configuration: LoadedConfiguration;
