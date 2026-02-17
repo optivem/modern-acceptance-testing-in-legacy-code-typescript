@@ -3,12 +3,13 @@ import { expect } from '@playwright/test';
 import { Closer } from '@optivem/commons/util';
 import { DriverFactory } from '../../../../core/DriverFactory.js';
 import { setupResultMatchers } from '@optivem/commons/util';
+import { getExternalSystemMode } from '../../test.config.js';
 
 setupResultMatchers();
 
 const test = base.extend({
   taxApiDriver: async ({}, use: any) => {
-    const driver = DriverFactory.createTaxApiDriver();
+    const driver = DriverFactory.createTaxApiDriver(getExternalSystemMode());
     await use(driver);
     await Closer.close(driver);
   },

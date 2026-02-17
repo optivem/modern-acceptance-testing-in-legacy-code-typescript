@@ -7,7 +7,7 @@ import { from as toExtTaxErrorResponse } from './dtos/error/ExtTaxErrorResponse.
 import type { ExtTaxErrorResponse } from './dtos/error/ExtTaxErrorResponse.js';
 
 export class TaxStubClient extends BaseTaxClient {
-    private static readonly COUNTRIES_ENDPOINT = '/tax/api/countries';
+    protected static readonly COUNTRIES_ENDPOINT = '/tax/api/countries';
 
     private readonly wireMockClient: JsonWireMockClient;
 

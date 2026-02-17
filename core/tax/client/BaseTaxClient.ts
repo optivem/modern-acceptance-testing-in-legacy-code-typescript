@@ -4,8 +4,8 @@ import type { ExtCountryDetailsResponse } from './dtos/ExtCountryDetailsResponse
 import type { ExtTaxErrorResponse } from './dtos/error/ExtTaxErrorResponse.js';
 
 export abstract class BaseTaxClient {
-    protected static readonly HEALTH_ENDPOINT = '/health';
-    protected static readonly COUNTRIES_ENDPOINT = '/api/countries';
+    protected static readonly HEALTH_ENDPOINT: string = '/health';
+    protected static readonly COUNTRIES_ENDPOINT: string = '/api/countries';
 
     protected readonly httpClient: JsonHttpClient<ExtTaxErrorResponse>;
 

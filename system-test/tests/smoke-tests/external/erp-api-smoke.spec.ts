@@ -3,12 +3,13 @@ import { expect } from '@playwright/test';
 import { Closer } from '@optivem/commons/util';
 import { DriverFactory } from '../../../../core/DriverFactory.js';
 import { setupResultMatchers } from '@optivem/commons/util';
+import { getExternalSystemMode } from '../../test.config.js';
 
 setupResultMatchers();
 
 const test = base.extend({
   erpApiDriver: async ({}, use: any) => {
-    const driver = DriverFactory.createErpApiDriver();
+    const driver = DriverFactory.createErpDriver(getExternalSystemMode());
     await use(driver);
     await Closer.close(driver);
   },

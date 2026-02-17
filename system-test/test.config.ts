@@ -7,7 +7,6 @@ export interface TestConfig {
     erpApi: string;
     taxApi: string;
   };
-  externalSystemMode?: ExternalSystemMode;
 }
 
 export const testConfig: TestConfig = {
@@ -17,7 +16,13 @@ export const testConfig: TestConfig = {
     erpApi: process.env.ERP_API_BASE_URL || 'http://localhost:9001/erp',
     taxApi: process.env.TAX_API_BASE_URL || 'http://localhost:9001/tax',
   },
-  externalSystemMode: (process.env.EXTERNAL_SYSTEM_MODE?.toUpperCase() as 'STUB' | 'REAL') === 'STUB' ? ExternalSystemMode.STUB : ExternalSystemMode.REAL,
 };
+
+/** Resolves external system mode from env (for tests that need to pass it into load/create). */
+export function getExternalSystemMode(): ExternalSystemMode {
+  return (process.env.EXTERNAL_SYSTEM_MODE?.toUpperCase() as 'STUB' | 'REAL') === 'STUB'
+    ? ExternalSystemMode.STUB
+    : ExternalSystemMode.REAL;
+}
 
 

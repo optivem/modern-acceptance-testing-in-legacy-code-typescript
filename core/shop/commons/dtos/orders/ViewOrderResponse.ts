@@ -1,4 +1,5 @@
 import type { Decimal, Integer } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { OrderStatus } from './OrderStatus.js';
 
 export interface ViewOrderResponse {
@@ -17,5 +18,5 @@ export interface ViewOrderResponse {
     totalPrice: Decimal;
     status: OrderStatus;
     country: string;
-    appliedCouponCode?: string;
+    appliedCouponCode?: Optional<string>;
 }

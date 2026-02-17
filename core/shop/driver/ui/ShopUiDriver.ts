@@ -6,7 +6,7 @@ import { HomePage } from '../../client/ui/pages/HomePage.js';
 import { PageNavigator, Page } from './internal/PageNavigator.js';
 import { ShopUiOrderDriver } from './internal/ShopUiOrderDriver.js';
 import { ShopUiCouponDriver } from './internal/ShopUiCouponDriver.js';
-import { failure, success } from '../../commons/SystemResults.js';
+import { failure, successVoid } from '../../commons/SystemResults.js';
 
 export class ShopUiDriver implements ShopDriver {
     private readonly client: ShopUiClient;
@@ -32,7 +32,7 @@ export class ShopUiDriver implements ShopDriver {
             return failure('Failed to load home page');
         }
         this.pageNavigator.setCurrentPage(Page.HOME);
-        return success();
+        return successVoid();
     }
 
     orders(): ShopUiOrderDriver {
