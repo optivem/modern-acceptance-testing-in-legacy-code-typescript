@@ -1,4 +1,6 @@
+import type { Optional } from '@optivem/commons/util';
+
 export interface ReturnsProductRequest {
-    sku?: string | null;
-    price?: string | null;
+    sku?: Optional<string>;
+    price?: Optional<string>;
 }

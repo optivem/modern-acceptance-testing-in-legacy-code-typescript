@@ -1,7 +1,9 @@
+import type { Optional } from '@optivem/commons/util';
+
 export interface PublishCouponRequest {
-    code?: string | null;
-    discountRate?: string | null;
-    validFrom?: string | null;
-    validTo?: string | null;
-    usageLimit?: string | null;
+    code?: Optional<string>;
+    discountRate?: Optional<string>;
+    validFrom?: Optional<string>;
+    validTo?: Optional<string>;
+    usageLimit?: Optional<string>;
 }

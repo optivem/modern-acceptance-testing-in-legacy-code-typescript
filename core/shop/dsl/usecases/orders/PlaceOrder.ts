@@ -8,11 +8,11 @@ import { systemErrorToString } from '../../../commons/dtos/errors/SystemError.js
 import { PlaceOrderVerification } from './PlaceOrderVerification.js';
 
 export class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVerification> {
-    private orderNumberResultAlias: string | null | undefined;
-    private skuParamAlias: string | null | undefined;
-    private quantityValue: string | null | undefined;
-    private countryAlias: string | null | undefined;
-    private couponCodeAlias: string | null | undefined;
+    private orderNumberResultAlias: Optional<string>;
+    private skuParamAlias: Optional<string>;
+    private quantityValue: Optional<string>;
+    private countryAlias: Optional<string>;
+    private couponCodeAlias: Optional<string>;
 
     constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);

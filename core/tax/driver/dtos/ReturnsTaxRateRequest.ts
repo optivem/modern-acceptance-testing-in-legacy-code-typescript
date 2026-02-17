@@ -1,4 +1,6 @@
+import type { Optional } from '@optivem/commons/util';
+
 export interface ReturnsTaxRateRequest {
-    country?: string | null;
-    taxRate?: string | null;
+    country?: Optional<string>;
+    taxRate?: Optional<string>;
 }

@@ -1,3 +1,5 @@
+import type { Optional } from '@optivem/commons/util';
+
 export interface ReturnsTimeRequest {
-    time?: string | null;
+    time?: Optional<string>;
 }

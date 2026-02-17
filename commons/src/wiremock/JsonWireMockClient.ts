@@ -1,4 +1,5 @@
 import { Result } from '../util/index.js';
+import type { Optional } from '../util/index.js';
 
 const CONTENT_TYPE = 'Content-Type';
 const APPLICATION_JSON = 'application/json';
@@ -50,7 +51,7 @@ export class JsonWireMockClient {
         method: string,
         path: string,
         statusCode: number,
-        responseBody: string | null
+        responseBody: Optional<string>
     ): Promise<Result<void, string>> {
         const url = `${this.adminBaseUrl}/__admin/mappings`;
         const body = JSON.stringify({
@@ -68,7 +69,7 @@ export class JsonWireMockClient {
                 body,
             });
             if (res.ok) {
-                return Result.success(undefined);
+                return Result.success();
             }
             const text = await res.text();
             return Result.failure(`Failed to register stub for ${method} ${path}: ${text}`);

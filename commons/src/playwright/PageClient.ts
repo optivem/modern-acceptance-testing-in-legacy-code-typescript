@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import type { Optional } from '../util/index.js';
 import { Decimal } from '../util/Decimal.js';
 
 /**
@@ -31,7 +32,7 @@ export class PageClient {
         return this.page.locator(selector);
     }
 
-    async fillAsync(selector: string, text: string | null): Promise<void> {
+    async fillAsync(selector: string, text: Optional<string>): Promise<void> {
         const input = await this.getLocatorAsync(selector);
         await input.fill(text ?? '');
     }

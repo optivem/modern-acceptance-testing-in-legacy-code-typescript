@@ -100,7 +100,7 @@ export class ShopUiOrderDriver implements OrderDriver {
         if (!cancelHidden) {
             return failure('Cancel button still visible');
         }
-        return success(undefined);
+        return success();
     }
 
     private async ensureOnNewOrderPage(): Promise<void> {
@@ -129,6 +129,6 @@ export class ShopUiOrderDriver implements OrderDriver {
         }
         this.orderDetailsPage = await this.orderHistoryPage!.clickViewOrderDetails(orderNumber);
         this.pageNavigator.setCurrentPage(Page.ORDER_DETAILS);
-        return success(undefined);
+        return success();
     }
 }

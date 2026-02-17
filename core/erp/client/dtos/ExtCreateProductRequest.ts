@@ -1,8 +1,10 @@
+import type { Optional } from '@optivem/commons/util';
+
 export interface ExtCreateProductRequest {
-    id?: string | null;
-    title?: string | null;
-    description?: string | null;
-    price?: string | null;
-    category?: string | null;
-    brand?: string | null;
+    id?: Optional<string>;
+    title?: Optional<string>;
+    description?: Optional<string>;
+    price?: Optional<string>;
+    category?: Optional<string>;
+    brand?: Optional<string>;
 }

@@ -7,11 +7,11 @@ import type { Optional } from '@optivem/commons/util';
 import type { PublishCouponRequest } from '../../../commons/dtos/coupons/index.js';
 
 export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
-    private couponCodeParamAlias: string | null | undefined;
-    private discountRateValue: string | null | undefined;
-    private validFromValue: string | null | undefined;
-    private validToValue: string | null | undefined;
-    private usageLimitValue: string | null | undefined;
+    private couponCodeParamAlias: Optional<string>;
+    private discountRateValue: Optional<string>;
+    private validFromValue: Optional<string>;
+    private validToValue: Optional<string>;
+    private usageLimitValue: Optional<string>;
 
     constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);

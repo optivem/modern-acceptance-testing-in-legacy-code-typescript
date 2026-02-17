@@ -32,7 +32,7 @@ export class ShopUiDriver implements ShopDriver {
             return failure('Failed to load home page');
         }
         this.pageNavigator.setCurrentPage(Page.HOME);
-        return success(undefined);
+        return success();
     }
 
     orders(): ShopUiOrderDriver {

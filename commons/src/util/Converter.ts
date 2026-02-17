@@ -16,7 +16,7 @@ export class Converter {
         return Decimal.fromNumber(value);
     }
 
-    static fromDecimal(value: Decimal | null | undefined): string | null {
+    static fromDecimal(value: Decimal | null | undefined): Optional<string> {
         return value == null ? null : value.toString();
     }
 
@@ -33,7 +33,7 @@ export class Converter {
         return this.to(value, (s) => parseInt(s, 10));
     }
 
-    static fromInteger(value: number | null | undefined): string | null {
+    static fromInteger(value: number | null | undefined): Optional<string> {
         return value == null ? null : String(value);
     }
 
@@ -60,7 +60,7 @@ export class Converter {
         throw new Error(`Invalid date format: ${text} - Expected ISO format or locale-specific format.`);
     }
 
-    static fromDate(value: Date | null | undefined): string | null {
+    static fromDate(value: Date | null | undefined): Optional<string> {
         return value == null ? null : value.toISOString();
     }
 

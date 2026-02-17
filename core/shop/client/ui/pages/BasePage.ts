@@ -1,5 +1,6 @@
 import { PageClient } from '@optivem/commons/playwright';
 import { Result } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { SystemError, SystemErrorField } from '../../../commons/dtos/errors/SystemError.js';
 import { systemErrorOf } from '../../../commons/dtos/errors/SystemError.js';
 import { failure, failureWithError, success } from '../../../commons/SystemResults.js';
@@ -18,7 +19,7 @@ export abstract class BasePage {
 
     protected readonly pageClient: PageClient;
 
-    private lastNotificationId: string | null = null;
+    private lastNotificationId: Optional<string> = null;
 
     constructor(pageClient: PageClient) {
         this.pageClient = pageClient;

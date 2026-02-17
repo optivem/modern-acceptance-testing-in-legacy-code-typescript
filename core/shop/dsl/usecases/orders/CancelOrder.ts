@@ -6,7 +6,7 @@ import { VoidVerification } from '@optivem/commons/dsl';
 import type { Optional } from '@optivem/commons/util';
 
 export class CancelOrder extends BaseShopCommand<void, VoidVerification> {
-    private orderNumberResultAlias: string | null | undefined;
+    private orderNumberResultAlias: Optional<string>;
 
     constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);

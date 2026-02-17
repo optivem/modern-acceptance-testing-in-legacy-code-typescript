@@ -1,6 +1,8 @@
+import type { Optional } from '@optivem/commons/util';
+
 export interface PlaceOrderRequest {
-    sku?: string | null;
-    quantity?: string | null;
-    country?: string | null;
-    couponCode?: string | null;
+    sku?: Optional<string>;
+    quantity?: Optional<string>;
+    country?: Optional<string>;
+    couponCode?: Optional<string>;
 }
