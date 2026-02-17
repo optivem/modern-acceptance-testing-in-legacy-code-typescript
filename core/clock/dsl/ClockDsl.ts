@@ -3,9 +3,9 @@ import { ClockDriver } from '../driver/ClockDriver.js';
 import { ClockStubDriver } from '../driver/ClockStubDriver.js';
 import { ClockRealDriver } from '../driver/ClockRealDriver.js';
 import { Closer } from '@optivem/commons/util';
-import { GoToClock } from './commands/GoToClock.js';
-import { ReturnsTime } from './commands/ReturnsTime.js';
-import { GetTime } from './commands/GetTime.js';
+import { GoToClock } from './usecases/GoToClock.js';
+import { ReturnsTime } from './usecases/ReturnsTime.js';
+import { GetTime } from './usecases/GetTime.js';
 
 export class ClockDsl {
     private readonly driver: ClockDriver;

@@ -1,9 +1,9 @@
-import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseShopCommand } from './base/BaseShopCommand.js';
-import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
+import { ShopDriver } from '../../../driver/ShopDriver.js';
+import { BaseShopCommand } from '../base/BaseShopCommand.js';
+import { ShopUseCaseResult } from '../base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
-import type { PlaceOrderRequest, PlaceOrderResponse } from '../../commons/dtos/orders/index.js';
-import { PlaceOrderVerification } from '../verifications/PlaceOrderVerification.js';
+import type { PlaceOrderRequest, PlaceOrderResponse } from '../../../commons/dtos/orders/index.js';
+import { PlaceOrderVerification } from './PlaceOrderVerification.js';
 
 export class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVerification> {
     private orderNumberResultAlias?: string;

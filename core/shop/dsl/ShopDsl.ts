@@ -5,12 +5,12 @@ import { ChannelType } from '../ChannelType.js';
 import { ShopDriver } from '../driver/ShopDriver.js';
 import { ShopApiDriver } from '../driver/api/ShopApiDriver.js';
 import { ShopUiDriver } from '../driver/ui/ShopUiDriver.js';
-import { GoToShop } from './commands/GoToShop.js';
-import { PlaceOrder } from './commands/PlaceOrder.js';
-import { CancelOrder } from './commands/CancelOrder.js';
-import { ViewOrder } from './commands/ViewOrder.js';
-import { PublishCoupon } from './commands/PublishCoupon.js';
-import { BrowseCoupons } from './commands/BrowseCoupons.js';
+import { GoToShop } from './usecases/GoToShop.js';
+import { PlaceOrder } from './usecases/orders/PlaceOrder.js';
+import { CancelOrder } from './usecases/orders/CancelOrder.js';
+import { ViewOrder } from './usecases/orders/ViewOrder.js';
+import { PublishCoupon } from './usecases/coupons/PublishCoupon.js';
+import { BrowseCoupons } from './usecases/coupons/BrowseCoupons.js';
 
 export class ShopDsl {
     private readonly driver: ShopDriver;

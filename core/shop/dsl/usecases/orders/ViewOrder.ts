@@ -1,9 +1,9 @@
-import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseShopCommand } from './base/BaseShopCommand.js';
-import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
+import { ShopDriver } from '../../../driver/ShopDriver.js';
+import { BaseShopCommand } from '../base/BaseShopCommand.js';
+import { ShopUseCaseResult } from '../base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
-import type { ViewOrderResponse } from '../../commons/dtos/orders/index.js';
-import { ViewOrderVerification } from '../verifications/ViewOrderVerification.js';
+import type { ViewOrderResponse } from '../../../commons/dtos/orders/index.js';
+import { ViewOrderVerification } from './ViewOrderVerification.js';
 
 export class ViewOrder extends BaseShopCommand<ViewOrderResponse, ViewOrderVerification> {
     private orderNumberResultAlias?: string;

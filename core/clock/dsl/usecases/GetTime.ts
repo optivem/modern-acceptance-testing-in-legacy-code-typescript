@@ -2,7 +2,7 @@ import { ClockDriver } from '../../driver/ClockDriver.js';
 import { GetTimeResponse } from '../../driver/dtos/GetTimeResponse.js';
 import { BaseClockCommand } from './base/BaseClockCommand.js';
 import { ClockUseCaseResult } from './base/ClockUseCaseResult.js';
-import { GetTimeVerification } from '../verifications/GetTimeVerification.js';
+import { GetTimeVerification } from './GetTimeVerification.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
 
 export class GetTime extends BaseClockCommand<GetTimeResponse, GetTimeVerification> {

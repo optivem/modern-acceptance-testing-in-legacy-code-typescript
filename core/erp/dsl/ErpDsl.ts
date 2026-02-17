@@ -2,9 +2,9 @@ import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
 import type { ErpDriver } from '../driver/ErpDriver.js';
 import { ErpRealDriver } from '../driver/ErpRealDriver.js';
 import { ErpStubDriver } from '../driver/ErpStubDriver.js';
-import { GetProduct } from './commands/GetProduct.js';
-import { GoToErp } from './commands/GoToErp.js';
-import { ReturnsProduct } from './commands/ReturnsProduct.js';
+import { GetProduct } from './usecases/GetProduct.js';
+import { GoToErp } from './usecases/GoToErp.js';
+import { ReturnsProduct } from './usecases/ReturnsProduct.js';
 
 export class ErpDsl {
     private readonly driver: ErpDriver;

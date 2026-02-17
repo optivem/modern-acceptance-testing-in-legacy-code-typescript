@@ -1,7 +1,7 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
 import type { Decimal } from '@optivem/commons/util';
-import type { ViewOrderResponse } from '../../commons/dtos/orders/index.js';
-import { OrderStatus } from '../../commons/dtos/orders/OrderStatus.js';
+import type { ViewOrderResponse } from '../../../commons/dtos/orders/index.js';
+import { OrderStatus } from '../../../commons/dtos/orders/OrderStatus.js';
 import { expect } from '@playwright/test';
 
 function toNum(v: number | Decimal): number {

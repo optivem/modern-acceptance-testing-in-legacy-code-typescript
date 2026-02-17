@@ -1,6 +1,6 @@
-import { ShopDriver } from '../../driver/ShopDriver.js';
-import { BaseShopCommand } from './base/BaseShopCommand.js';
-import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
+import { ShopDriver } from '../../../driver/ShopDriver.js';
+import { BaseShopCommand } from '../base/BaseShopCommand.js';
+import { ShopUseCaseResult } from '../base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
 import { VoidVerification } from '@optivem/commons/dsl';
 

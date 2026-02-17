@@ -4,7 +4,7 @@ import type { GetProductRequest } from '../../driver/dtos/GetProductRequest.js';
 import type { GetProductResponse } from '../../driver/dtos/GetProductResponse.js';
 import { BaseErpCommand } from './base/BaseErpCommand.js';
 import { ErpUseCaseResult } from './base/ErpUseCaseResult.js';
-import { GetProductVerification } from '../verifications/GetProductVerification.js';
+import { GetProductVerification } from './GetProductVerification.js';
 
 export class GetProduct extends BaseErpCommand<GetProductResponse, GetProductVerification> {
     private skuParamAlias: string | undefined;

@@ -3,9 +3,9 @@ import { Closer } from '@optivem/commons/util';
 import type { TaxDriver } from '../driver/TaxDriver.js';
 import { TaxRealDriver } from '../driver/TaxRealDriver.js';
 import { TaxStubDriver } from '../driver/TaxStubDriver.js';
-import { GoToTax } from './commands/GoToTax.js';
-import { GetTaxRate } from './commands/GetTaxRate.js';
-import { ReturnsTaxRate } from './commands/ReturnsTaxRate.js';
+import { GoToTax } from './usecases/GoToTax.js';
+import { GetTaxRate } from './usecases/GetTaxRate.js';
+import { ReturnsTaxRate } from './usecases/ReturnsTaxRate.js';
 
 export class TaxDsl {
     private readonly driver: TaxDriver;
