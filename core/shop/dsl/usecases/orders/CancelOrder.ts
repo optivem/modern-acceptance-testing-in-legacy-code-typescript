@@ -19,7 +19,7 @@ export class CancelOrder extends BaseShopCommand<void, VoidVerification> {
 
     async execute(): Promise<ShopUseCaseResult<void, VoidVerification>> {
         const orderNumber = this.context.getResultValue(this.orderNumberResultAlias!);
-        const result = await this.driver.orders().cancelOrder(orderNumber!);
+        const result = await this.driver.orders().cancelOrder(orderNumber);
         return new ShopUseCaseResult(result, this.context, (_response, ctx) => new VoidVerification(undefined, ctx));
     }
 }

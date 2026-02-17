@@ -1,5 +1,5 @@
 import type { JsonHttpClient } from '@optivem/commons/http';
-import type { Result } from '@optivem/commons/util';
+import type { Optional, Result } from '@optivem/commons/util';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
 import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../../commons/dtos/orders/index.js';
 
@@ -12,11 +12,11 @@ export class OrderController {
         return this.httpClient.postAsync<PlaceOrderResponse>(OrderController.ENDPOINT, request);
     }
 
-    viewOrder(orderNumber: string): Promise<Result<ViewOrderResponse, ProblemDetailResponse>> {
+    viewOrder(orderNumber: Optional<string>): Promise<Result<ViewOrderResponse, ProblemDetailResponse>> {
         return this.httpClient.getAsync<ViewOrderResponse>(`${OrderController.ENDPOINT}/${orderNumber}`);
     }
 
-    cancelOrder(orderNumber: string): Promise<Result<void, ProblemDetailResponse>> {
+    cancelOrder(orderNumber: Optional<string>): Promise<Result<void, ProblemDetailResponse>> {
         return this.httpClient.postAsync<void>(`${OrderController.ENDPOINT}/${orderNumber}/cancel`, {});
     }
 }

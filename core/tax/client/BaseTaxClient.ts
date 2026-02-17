@@ -1,3 +1,4 @@
+import type { Optional } from '@optivem/commons/util';
 import { Result } from '@optivem/commons/util';
 import { JsonHttpClient } from '@optivem/commons/http';
 import type { ExtCountryDetailsResponse } from './dtos/ExtCountryDetailsResponse.js';
@@ -17,7 +18,7 @@ export abstract class BaseTaxClient {
         return this.httpClient.getAsync<void>(BaseTaxClient.HEALTH_ENDPOINT);
     }
 
-    getCountry(country: string): Promise<Result<ExtCountryDetailsResponse, ExtTaxErrorResponse>> {
+    getCountry(country: Optional<string>): Promise<Result<ExtCountryDetailsResponse, ExtTaxErrorResponse>> {
         return this.httpClient.getAsync<ExtCountryDetailsResponse>(
             `${BaseTaxClient.COUNTRIES_ENDPOINT}/${country}`,
         );

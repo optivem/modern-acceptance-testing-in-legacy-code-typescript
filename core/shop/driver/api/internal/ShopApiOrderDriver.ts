@@ -3,7 +3,7 @@ import type { OrderDriver } from '../../internal/OrderDriver.js';
 import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../../commons/dtos/orders/index.js';
 import type { SystemError } from '../../../commons/dtos/errors/SystemError.js';
 import { systemErrorFrom } from '../../../commons/dtos/errors/SystemError.js';
-import type { Result } from '@optivem/commons/util';
+import type { Optional, Result } from '@optivem/commons/util';
 
 export class ShopApiOrderDriver implements OrderDriver {
     constructor(private readonly apiClient: ShopApiClient) {}
@@ -14,13 +14,13 @@ export class ShopApiOrderDriver implements OrderDriver {
             .then((r) => r.mapError((e) => systemErrorFrom(e)));
     }
 
-    cancelOrder(orderNumber: string): Promise<Result<void, SystemError>> {
+    cancelOrder(orderNumber: Optional<string>): Promise<Result<void, SystemError>> {
         return this.apiClient.orders()
             .cancelOrder(orderNumber)
             .then((r) => r.mapError((e) => systemErrorFrom(e)));
     }
 
-    viewOrder(orderNumber: string): Promise<Result<ViewOrderResponse, SystemError>> {
+    viewOrder(orderNumber: Optional<string>): Promise<Result<ViewOrderResponse, SystemError>> {
         return this.apiClient
             .orders()
             .viewOrder(orderNumber)

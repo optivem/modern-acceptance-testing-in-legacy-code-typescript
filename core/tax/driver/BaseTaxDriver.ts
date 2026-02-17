@@ -1,4 +1,5 @@
-import { Result, Closer } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
+import { Result } from '@optivem/commons/util';
 import type { BaseTaxClient } from '../client/BaseTaxClient.js';
 import type { GetTaxResponse } from './dtos/GetTaxResponse.js';
 import { from as fromGetTaxResponse } from './dtos/GetTaxResponse.js';
@@ -15,14 +16,14 @@ export abstract class BaseTaxDriver<TClient extends BaseTaxClient> implements Ta
     }
 
     close(): void {
-        Closer.close(this.client);
+        // Tax client has no resources to close; per reference, driver close is no-op for tax.
     }
 
     goToTax(): Promise<Result<void, TaxErrorResponse>> {
         return this.client.checkHealth().then((r) => r.mapError(fromTaxErrorResponse));
     }
 
-    getTaxRate(country: string): Promise<Result<GetTaxResponse, TaxErrorResponse>> {
+    getTaxRate(country: Optional<string>): Promise<Result<GetTaxResponse, TaxErrorResponse>> {
         return this.client
             .getCountry(country)
             .then((r) => r.map(fromGetTaxResponse).mapError(fromTaxErrorResponse));

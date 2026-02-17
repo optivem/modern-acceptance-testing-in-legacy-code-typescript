@@ -1,3 +1,4 @@
+import type { Optional } from '@optivem/commons/util';
 import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/commons/playwright';
 import { OrderDetailsPage } from './OrderDetailsPage.js';
@@ -12,7 +13,7 @@ export class OrderHistoryPage extends BasePage {
         super(pageClient);
     }
 
-    async inputOrderNumber(orderNumber: string): Promise<void> {
+    async inputOrderNumber(orderNumber: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(OrderHistoryPage.ORDER_NUMBER_INPUT_SELECTOR, orderNumber);
     }
 
@@ -20,12 +21,12 @@ export class OrderHistoryPage extends BasePage {
         await this.pageClient.clickAsync(OrderHistoryPage.SEARCH_BUTTON_SELECTOR);
     }
 
-    async isOrderListed(orderNumber: string): Promise<boolean> {
+    async isOrderListed(orderNumber: Optional<string>): Promise<boolean> {
         const rowSelector = OrderHistoryPage.getRowSelector(orderNumber);
         return await this.pageClient.isVisibleAsync(rowSelector);
     }
 
-    async clickViewOrderDetails(orderNumber: string): Promise<OrderDetailsPage> {
+    async clickViewOrderDetails(orderNumber: Optional<string>): Promise<OrderDetailsPage> {
         const rowSelector = OrderHistoryPage.getRowSelector(orderNumber);
         const viewDetailsLinkSelector = OrderHistoryPage.VIEW_DETAILS_LINK_SELECTOR_TEMPLATE.replace(
             '%s',
@@ -35,7 +36,7 @@ export class OrderHistoryPage extends BasePage {
         return new OrderDetailsPage(this.pageClient);
     }
 
-    private static getRowSelector(orderNumber: string): string {
+    private static getRowSelector(orderNumber: Optional<string>): string {
         return OrderHistoryPage.ROW_SELECTOR_TEMPLATE.replace('%s', orderNumber);
     }
 }

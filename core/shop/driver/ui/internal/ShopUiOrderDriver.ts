@@ -1,9 +1,9 @@
-import type { Result } from '@optivem/commons/util';
+import type { Optional, Result } from '@optivem/commons/util';
 import { Integer } from '@optivem/commons/util';
 import type { OrderDriver } from '../../internal/OrderDriver.js';
 import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../../commons/dtos/orders/index.js';
 import type { SystemError } from '../../../commons/dtos/errors/SystemError.js';
-import { failure, failureWithError, success } from '../../../commons/SystemResults.js';
+import { failure, failureWithError, success, successVoid } from '../../../commons/SystemResults.js';
 import type { HomePage } from '../../../client/ui/pages/HomePage.js';
 import { PageNavigator, Page } from './PageNavigator.js';
 import { NewOrderPage } from '../../../client/ui/pages/NewOrderPage.js';
@@ -38,7 +38,7 @@ export class ShopUiOrderDriver implements OrderDriver {
         return success({ orderNumber });
     }
 
-    async viewOrder(orderNumber: string): Promise<Result<ViewOrderResponse, SystemError>> {
+    async viewOrder(orderNumber: Optional<string>): Promise<Result<ViewOrderResponse, SystemError>> {
         const ensured = await this.ensureOnOrderDetailsPage(orderNumber);
         if (ensured.isFailure()) return failureWithError(ensured.getError());
         const page = this.orderDetailsPage!;
@@ -80,7 +80,7 @@ export class ShopUiOrderDriver implements OrderDriver {
         });
     }
 
-    async cancelOrder(orderNumber: string): Promise<Result<void, SystemError>> {
+    async cancelOrder(orderNumber: Optional<string>): Promise<Result<void, SystemError>> {
         const viewResult = await this.viewOrder(orderNumber);
         if (viewResult.isFailure()) return viewResult.mapVoid();
         await this.orderDetailsPage!.clickCancelOrder();
@@ -100,7 +100,7 @@ export class ShopUiOrderDriver implements OrderDriver {
         if (!cancelHidden) {
             return failure('Cancel button still visible');
         }
-        return success();
+        return successVoid();
     }
 
     private async ensureOnNewOrderPage(): Promise<void> {
@@ -119,7 +119,7 @@ export class ShopUiOrderDriver implements OrderDriver {
         }
     }
 
-    private async ensureOnOrderDetailsPage(orderNumber: string): Promise<Result<void, SystemError>> {
+    private async ensureOnOrderDetailsPage(orderNumber: Optional<string>): Promise<Result<void, SystemError>> {
         await this.ensureOnOrderHistoryPage();
         this.orderHistoryPage!.inputOrderNumber(orderNumber);
         this.orderHistoryPage!.clickSearch();
@@ -129,6 +129,6 @@ export class ShopUiOrderDriver implements OrderDriver {
         }
         this.orderDetailsPage = await this.orderHistoryPage!.clickViewOrderDetails(orderNumber);
         this.pageNavigator.setCurrentPage(Page.ORDER_DETAILS);
-        return success();
+        return successVoid();
     }
 }

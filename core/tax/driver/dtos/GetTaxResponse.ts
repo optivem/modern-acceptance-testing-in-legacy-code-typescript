@@ -1,5 +1,5 @@
 import type { Decimal } from '@optivem/commons/util';
-import type { ExtCountryDetailsResponse } from '../../../client/dtos/ExtCountryDetailsResponse.js';
+import type { ExtCountryDetailsResponse } from '../../client/dtos/ExtCountryDetailsResponse.js';
 
 export interface GetTaxResponse {
     country: string;
