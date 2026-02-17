@@ -11,7 +11,7 @@
     "system-test"
   ],
   "scripts": {
-    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/core && npm run build -w @optivem/dsl && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/test-infrastructure",
+    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/core && npm run build -w @optivem/dsl && npm run build -w @optivem/test-infrastructure",
     "test": "npm run build && npm run test -w system-test"
   }
 }
