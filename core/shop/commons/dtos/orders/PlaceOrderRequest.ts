@@ -1,6 +1,6 @@
 export interface PlaceOrderRequest {
-    sku?: string;
-    quantity?: string;
-    country?: string;
-    couponCode?: string;
+    sku?: string | null;
+    quantity?: string | null;
+    country?: string | null;
+    couponCode?: string | null;
 }

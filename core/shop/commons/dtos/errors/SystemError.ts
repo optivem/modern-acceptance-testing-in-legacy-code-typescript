@@ -34,3 +34,12 @@ export function systemErrorFrom(problemDetail: ProblemDetailLike): SystemError {
     }
     return systemErrorOf(message);
 }
+
+/** String representation matching Java SystemError.toString() for setResultEntryFailed. */
+export function systemErrorToString(error: SystemError): string {
+    if (error.fields == null || error.fields.length === 0) {
+        return `SystemError{message='${error.message}'}`;
+    }
+    const fieldsStr = error.fields.map((f) => `FieldError{field='${f.field}', message='${f.message}'${f.code != null ? `, code='${f.code}'` : ''}}`).join(', ');
+    return `SystemError{message='${error.message}', fieldErrors=[${fieldsStr}]}`;
+}

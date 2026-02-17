@@ -63,6 +63,17 @@ export class Converter {
         return value == null ? null : value.toISOString();
     }
 
+    /**
+     * Normalizes Date | string to Date | null.
+     * If value is already a Date, returns it (or null if invalid). If string, parses it.
+     */
+    static normalizeToDate(value: Date | string | null | undefined): Date | null {
+        if (value == null) return null;
+        if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
+        const d = new Date(value);
+        return Number.isNaN(d.getTime()) ? null : d;
+    }
+
     private static to<T>(value: string | null | undefined, converter: (s: string) => T): T | null {
         if (value == null || value.trim() === '') return null;
         return converter(value);

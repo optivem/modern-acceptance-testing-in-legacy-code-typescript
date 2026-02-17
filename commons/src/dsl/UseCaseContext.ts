@@ -16,28 +16,29 @@ export class UseCaseContext {
         return this.externalSystemMode;
     }
 
-    getParamValue(alias: string): string {
+    getParamValue(alias: string | null | undefined): string | null | undefined {
         if (this.isNullOrBlank(alias)) {
             return alias;
         }
 
-        if (this.paramMap.has(alias)) {
-            return this.paramMap.get(alias)!;
+        const key = alias as string;
+        if (this.paramMap.has(key)) {
+            return this.paramMap.get(key)!;
         }
 
-        const value = this.generateParamValue(alias);
-        this.paramMap.set(alias, value);
+        const value = this.generateParamValue(key);
+        this.paramMap.set(key, value);
 
         return value;
     }
 
-    getParamValueOrLiteral(alias: string): string {
+    getParamValueOrLiteral(alias: string | null | undefined): string | null | undefined {
         if (this.isNullOrBlank(alias)) {
             return alias;
         }
         switch (this.externalSystemMode) {
             case ExternalSystemMode.STUB:
-                return this.getParamValue(alias);
+                return this.getParamValue(alias) as string;
             case ExternalSystemMode.REAL:
                 return alias;
             default:
@@ -45,35 +46,32 @@ export class UseCaseContext {
         }
     }
 
-    setResultEntry(alias: string, value: string): void {
+    setResultEntry(alias: string | null | undefined, value: string): void {
         this.ensureAliasNotNullBlank(alias);
-
-        if (this.resultMap.has(alias)) {
-            throw new Error(`Alias already exists: ${alias}`);
+        const key = alias as string;
+        if (this.resultMap.has(key)) {
+            throw new Error(`Alias already exists: ${key}`);
         }
-
-        this.resultMap.set(alias, value);
+        this.resultMap.set(key, value);
     }
 
-    setResultEntryFailed(alias: string, errorMessage: string): void {
+    setResultEntryFailed(alias: string | null | undefined, errorMessage: string): void {
         this.ensureAliasNotNullBlank(alias);
         this.setResultEntry(alias, `FAILED: ${errorMessage}`);
     }
 
-    getResultValue(alias: string): string {
+    getResultValue(alias: string | null | undefined): string | null | undefined {
         if (this.isNullOrBlank(alias)) {
             return alias;
         }
-
-        const value = this.resultMap.get(alias);
+        const key = alias as string;
+        const value = this.resultMap.get(key);
         if (value === undefined) {
             return alias;
         }
-
         if (value.includes('FAILED')) {
-            throw new Error(`Cannot get result value for alias '${alias}' because the operation failed: ${value}`);
+            throw new Error(`Cannot get result value for alias '${key}' because the operation failed: ${value}`);
         }
-
         return value;
     }
 
@@ -91,19 +89,20 @@ export class UseCaseContext {
         return expandedMessage;
     }
 
-    private generateParamValue(alias: string): string {
+    private generateParamValue(alias: string | null | undefined): string {
         this.ensureAliasNotNullBlank(alias);
+        const key = alias as string;
         const suffix = uuidv4().substring(0, 8);
-        return `${alias}-${suffix}`;
+        return `${key}-${suffix}`;
     }
 
-    private ensureAliasNotNullBlank(alias: string): void {
+    private ensureAliasNotNullBlank(alias: string | null | undefined): void {
         if (this.isNullOrBlank(alias)) {
             throw new Error('Alias cannot be null or blank');
         }
     }
 
-    private isNullOrBlank(alias: string): boolean {
+    private isNullOrBlank(alias: string | null | undefined): boolean {
         return alias === undefined || alias === null || alias.trim().length === 0;
     }
 }

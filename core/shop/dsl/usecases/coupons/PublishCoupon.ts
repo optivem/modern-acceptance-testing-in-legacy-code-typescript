@@ -7,10 +7,10 @@ import type { PublishCouponRequest } from '../../../commons/dtos/coupons/index.j
 
 export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
     private couponCodeParamAlias?: string;
-    private discountRateValue = '';
-    private validFromValue = '';
-    private validToValue = '';
-    private usageLimitValue = '';
+    private discountRateValue?: string;
+    private validFromValue?: string;
+    private validToValue?: string;
+    private usageLimitValue?: string;
 
     constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
@@ -21,8 +21,10 @@ export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
         return this;
     }
 
-    discountRate(discountRate: string): PublishCoupon {
-        this.discountRateValue = discountRate;
+    discountRate(discountRate: number): PublishCoupon;
+    discountRate(discountRate: string): PublishCoupon;
+    discountRate(discountRate: number | string): PublishCoupon {
+        this.discountRateValue = typeof discountRate === 'number' ? String(discountRate) : discountRate;
         return this;
     }
 

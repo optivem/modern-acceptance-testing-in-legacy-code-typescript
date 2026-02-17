@@ -1,4 +1,5 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
+import { Converter } from '@optivem/commons/util';
 import type { BrowseCouponsResponse, CouponDto } from '../../../commons/dtos/coupons/index.js';
 import { expect } from '@playwright/test';
 
@@ -18,6 +19,28 @@ export class BrowseCouponsVerification extends ResponseVerification<BrowseCoupon
             coupon.discountRate,
             `Discount rate for coupon '${couponCodeAlias}'`
         ).toBe(expectedDiscountRate);
+        return this;
+    }
+
+    couponHasValidFrom(couponCodeAlias: string, expectedValidFrom: string): BrowseCouponsVerification {
+        const coupon = this.findCouponByCode(couponCodeAlias);
+        const expected = Converter.toDate(expectedValidFrom);
+        const actual = Converter.normalizeToDate(coupon.validFrom);
+        expect(
+            actual?.getTime(),
+            `ValidFrom for coupon '${couponCodeAlias}'`
+        ).toBe(expected?.getTime());
+        return this;
+    }
+
+    couponHasValidTo(couponCodeAlias: string, expectedValidTo: string): BrowseCouponsVerification {
+        const coupon = this.findCouponByCode(couponCodeAlias);
+        const expected = Converter.toDate(expectedValidTo);
+        const actual = Converter.normalizeToDate(coupon.validTo);
+        expect(
+            actual?.getTime(),
+            `ValidTo for coupon '${couponCodeAlias}'`
+        ).toBe(expected?.getTime());
         return this;
     }
 
