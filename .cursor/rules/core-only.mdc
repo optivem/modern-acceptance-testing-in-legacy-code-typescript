@@ -7,7 +7,7 @@ alwaysApply: true
 # Core-only scope
 
 - **Only modify** files under `core/` (DriverFactory, SystemConfiguration, SystemDsl, and everything under `core/commons/`, `core/erp/`, `core/shop/`, `core/tax/`).
-- **Do not update** commons, core-shop, optivem-testing, system-test, or any file outside `core/`.
+- **Do not update** commons, optivem-testing, system-test, or any file outside `core/`.
 - **Reference projects:** Align structure, naming, and behavior with:
   - Java: `modern-acceptance-testing-in-legacy-code-java/core/`
   - .NET: `modern-acceptance-testing-in-legacy-code-dotnet/Core/`
