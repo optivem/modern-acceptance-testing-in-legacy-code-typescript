@@ -37,6 +37,6 @@ export class OrderHistoryPage extends BasePage {
     }
 
     private static getRowSelector(orderNumber: Optional<string>): string {
-        return OrderHistoryPage.ROW_SELECTOR_TEMPLATE.replace('%s', orderNumber);
+        return OrderHistoryPage.ROW_SELECTOR_TEMPLATE.replace('%s', String(orderNumber));
     }
 }
