@@ -1,4 +1,4 @@
 export interface ReturnsTaxRateRequest {
-    country?: string;
-    taxRate?: string;
+    country?: string | null;
+    taxRate?: string | null;
 }

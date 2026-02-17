@@ -1,4 +1,4 @@
 export interface ReturnsProductRequest {
-    sku?: string;
-    price?: string;
+    sku?: string | null;
+    price?: string | null;
 }

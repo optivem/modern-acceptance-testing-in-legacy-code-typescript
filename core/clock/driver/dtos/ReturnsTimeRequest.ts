@@ -1,3 +1,3 @@
 export interface ReturnsTimeRequest {
-    time?: string;
+    time?: string | null;
 }

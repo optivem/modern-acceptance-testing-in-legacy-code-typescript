@@ -1,3 +1,3 @@
 export interface GetProductRequest {
-    sku?: string;
+    sku?: string | null;
 }
