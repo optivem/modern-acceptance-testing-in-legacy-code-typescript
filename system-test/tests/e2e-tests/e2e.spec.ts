@@ -1,8 +1,11 @@
-// TODO: VJ: DELETE
+import '../../setup-config.js';
+import { test, expect } from '@playwright/test';
+
+test('hello world', () => {
+    expect(true).toBe(true);
+});
 
 /*
-import '../../setup-config.js';
-import { expect } from '@playwright/test';
 import { setupResultMatchers } from '@optivem/commons/util';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { shopChannelTest as channelTest } from '@optivem/test-infrastructure';
@@ -205,6 +208,4 @@ channelTest(getExternalSystemMode(), [ChannelType.API], 'should not cancel alrea
     const secondCancelResult = await shopDriver.cancelOrder(orderNumber);
     expect(secondCancelResult).toBeFailureWith('Order has already been cancelled');
 });
-
-
 */
