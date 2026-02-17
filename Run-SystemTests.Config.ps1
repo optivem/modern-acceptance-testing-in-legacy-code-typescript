@@ -8,7 +8,7 @@ $Config = @{
             Command = "npm ci"
         },
         @{  Name = "Build Base Packages";
-            Command = "npm run build -w libs/optivem-lang -w libs/optivem-results --if-present"
+            Command = "npm run build"
         },
         @{  Name = "Build All Packages";
             Command = "npm run build --workspaces --if-present"
