@@ -26,13 +26,11 @@ export class GivenCouponBuilder extends BaseGivenBuilder {
         return this;
     }
 
-    withDiscountRate(discountRate: Optional<string>): this {
-        this.discountRate = discountRate;
+    withDiscountRate(discountRate: Optional<string>): this;
+    withDiscountRate(discountRate: number): this;
+    withDiscountRate(discountRate: Optional<string> | number): this {
+        this.discountRate = typeof discountRate === 'number' ? Converter.fromDouble(discountRate) : discountRate;
         return this;
-    }
-
-    withDiscountRate(discountRate: number): this {
-        return this.withDiscountRate(Converter.fromDouble(discountRate));
     }
 
     withValidFrom(validFrom: Optional<string>): this {
@@ -45,13 +43,11 @@ export class GivenCouponBuilder extends BaseGivenBuilder {
         return this;
     }
 
-    withUsageLimit(usageLimit: Optional<string>): this {
-        this.usageLimit = usageLimit;
+    withUsageLimit(usageLimit: Optional<string>): this;
+    withUsageLimit(usageLimit: number): this;
+    withUsageLimit(usageLimit: Optional<string> | number): this {
+        this.usageLimit = typeof usageLimit === 'number' ? (Converter.fromInteger(usageLimit) ?? undefined) : usageLimit;
         return this;
-    }
-
-    withUsageLimit(usageLimit: number): this {
-        return this.withUsageLimit(Converter.fromInteger(usageLimit) ?? undefined);
     }
 
     async execute(app: SystemDsl): Promise<void> {

@@ -18,43 +18,31 @@ export abstract class BaseThenVerifier<
         return this;
     }
 
-    async order(orderNumber: string): Promise<ThenOrderVerifier<TSuccessResponse, TSuccessVerification>> {
-        return ThenOrderVerifier.create(
-            this.app,
-            this.executionResult,
-            orderNumber,
-            this.successVerification
-        );
+    order(orderNumber: string): Promise<ThenOrderVerifier<TSuccessResponse, TSuccessVerification>>;
+    order(): Promise<ThenOrderVerifier<TSuccessResponse, TSuccessVerification>>;
+    async order(
+        orderNumber?: string
+    ): Promise<ThenOrderVerifier<TSuccessResponse, TSuccessVerification>> {
+        const resolved =
+            orderNumber ?? this.executionResult.getOrderNumber() ?? (() => {
+                throw new Error(
+                    'Cannot verify order: no order number available from the executed operation'
+                );
+            })();
+        return ThenOrderVerifier.create(this.app, this.executionResult, resolved, this.successVerification);
     }
 
-    async order(): Promise<ThenOrderVerifier<TSuccessResponse, TSuccessVerification>> {
-        const orderNumber = this.executionResult.getOrderNumber();
-        if (orderNumber == null) {
-            throw new Error(
-                'Cannot verify order: no order number available from the executed operation'
-            );
-        }
-        return this.order(orderNumber);
-    }
-
+    coupon(couponCode: string): Promise<ThenCouponVerifier<TSuccessResponse, TSuccessVerification>>;
+    coupon(): Promise<ThenCouponVerifier<TSuccessResponse, TSuccessVerification>>;
     async coupon(
-        couponCode: string
+        couponCode?: string
     ): Promise<ThenCouponVerifier<TSuccessResponse, TSuccessVerification>> {
-        return ThenCouponVerifier.create(
-            this.app,
-            this.executionResult,
-            couponCode,
-            this.successVerification
-        );
-    }
-
-    async coupon(): Promise<ThenCouponVerifier<TSuccessResponse, TSuccessVerification>> {
-        const couponCode = this.executionResult.getCouponCode();
-        if (couponCode == null) {
-            throw new Error(
-                'Cannot verify coupon: no coupon code available from the executed operation'
-            );
-        }
-        return this.coupon(couponCode);
+        const resolved =
+            couponCode ?? this.executionResult.getCouponCode() ?? (() => {
+                throw new Error(
+                    'Cannot verify coupon: no coupon code available from the executed operation'
+                );
+            })();
+        return ThenCouponVerifier.create(this.app, this.executionResult, resolved, this.successVerification);
     }
 }

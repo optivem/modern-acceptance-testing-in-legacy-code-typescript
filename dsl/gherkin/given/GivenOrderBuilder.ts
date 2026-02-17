@@ -12,7 +12,7 @@ export class GivenOrderBuilder extends BaseGivenBuilder {
     private quantity: Optional<string>;
     private country: Optional<string>;
     private couponCodeAlias: Optional<string>;
-    private status: OrderStatus;
+    private status!: OrderStatus;
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
@@ -34,13 +34,11 @@ export class GivenOrderBuilder extends BaseGivenBuilder {
         return this;
     }
 
-    withQuantity(quantity: Optional<string>): this {
-        this.quantity = quantity;
+    withQuantity(quantity: Optional<string>): this;
+    withQuantity(quantity: number): this;
+    withQuantity(quantity: Optional<string> | number): this {
+        this.quantity = typeof quantity === 'number' ? (Converter.fromInteger(quantity) ?? undefined) : quantity;
         return this;
-    }
-
-    withQuantity(quantity: number): this {
-        return this.withQuantity(Converter.fromInteger(quantity) ?? undefined);
     }
 
     withCountry(country: Optional<string>): this {

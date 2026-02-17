@@ -1,9 +1,9 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
-import type { ViewOrderVerification } from '../../../../core/shop/dsl/usecases/orders/ViewOrderVerification.js';
-import type { PlaceOrderVerification } from '../../../../core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
-import { OrderStatus } from '../../../../core/shop/commons/dtos/orders/OrderStatus.js';
+import type { ViewOrderVerification } from '../../../core/shop/dsl/usecases/orders/ViewOrderVerification.js';
+import type { PlaceOrderVerification } from '../../../core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
+import { OrderStatus } from '../../../core/shop/commons/dtos/orders/OrderStatus.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseThenVerifier } from './BaseThenVerifier.js';
 
@@ -67,27 +67,25 @@ export class ThenOrderVerifier<
         return this;
     }
 
-    hasBasePrice(expectedBasePrice: number): this {
-        this.orderVerification.basePrice(expectedBasePrice);
-        return this;
-    }
-
-    hasBasePrice(basePrice: string): this {
+    hasBasePrice(expectedBasePrice: number): this;
+    hasBasePrice(basePrice: string): this;
+    hasBasePrice(basePrice: number | string): this {
         this.orderVerification.basePrice(basePrice);
         return this;
     }
 
-    hasSubtotalPrice(expectedSubtotalPrice: number): this {
-        this.orderVerification.subtotalPrice(expectedSubtotalPrice);
+    hasSubtotalPrice(expectedSubtotalPrice: number): this;
+    hasSubtotalPrice(expectedSubtotalPrice: string): this;
+    hasSubtotalPrice(expectedSubtotalPrice: number | string): this {
+        this.orderVerification.subtotalPrice(
+            typeof expectedSubtotalPrice === 'string' ? parseFloat(expectedSubtotalPrice) : expectedSubtotalPrice
+        );
         return this;
     }
 
-    hasSubtotalPrice(expectedSubtotalPrice: string): this {
-        this.orderVerification.subtotalPrice(parseFloat(expectedSubtotalPrice));
-        return this;
-    }
-
-    hasTotalPrice(expectedTotalPrice: number): this {
+    hasTotalPrice(expectedTotalPrice: number): this;
+    hasTotalPrice(expectedTotalPrice: string): this;
+    hasTotalPrice(expectedTotalPrice: number | string): this {
         this.orderVerification.totalPrice(expectedTotalPrice);
         return this;
     }
@@ -107,23 +105,18 @@ export class ThenOrderVerifier<
         return this;
     }
 
-    hasDiscountAmount(expectedDiscountAmount: number): this {
+    hasDiscountAmount(expectedDiscountAmount: number): this;
+    hasDiscountAmount(expectedDiscountAmount: string): this;
+    hasDiscountAmount(expectedDiscountAmount: number | string): this {
         this.orderVerification.discountAmount(expectedDiscountAmount);
         return this;
     }
 
-    hasDiscountAmount(expectedDiscountAmount: string): this {
-        this.orderVerification.discountAmount(expectedDiscountAmount);
+    hasAppliedCoupon(expectedCouponCode: string): this;
+    hasAppliedCoupon(): this;
+    hasAppliedCoupon(expectedCouponCode?: string): this {
+        this.orderVerification.appliedCouponCode(expectedCouponCode ?? GherkinDefaults.DEFAULT_COUPON_CODE);
         return this;
-    }
-
-    hasAppliedCoupon(expectedCouponCode: string): this {
-        this.orderVerification.appliedCouponCode(expectedCouponCode);
-        return this;
-    }
-
-    hasAppliedCoupon(): this {
-        return this.hasAppliedCoupon(GherkinDefaults.DEFAULT_COUPON_CODE);
     }
 
     hasDiscountAmountGreaterThanOrEqualToZero(): this {
@@ -136,12 +129,9 @@ export class ThenOrderVerifier<
         return this;
     }
 
-    hasTaxRate(expectedTaxRate: number): this {
-        this.orderVerification.taxRate(expectedTaxRate);
-        return this;
-    }
-
-    hasTaxRate(expectedTaxRate: string): this {
+    hasTaxRate(expectedTaxRate: number): this;
+    hasTaxRate(expectedTaxRate: string): this;
+    hasTaxRate(expectedTaxRate: number | string): this {
         this.orderVerification.taxRate(expectedTaxRate);
         return this;
     }
@@ -151,18 +141,15 @@ export class ThenOrderVerifier<
         return this;
     }
 
-    hasTaxAmount(expectedTaxAmount: string): this {
+    hasTaxAmount(expectedTaxAmount: number): this;
+    hasTaxAmount(expectedTaxAmount: string): this;
+    hasTaxAmount(expectedTaxAmount: number | string): this {
         this.orderVerification.taxAmount(expectedTaxAmount);
         return this;
     }
 
     hasTaxAmountGreaterThanOrEqualToZero(): this {
         this.orderVerification.taxAmountGreaterThanOrEqualToZero();
-        return this;
-    }
-
-    hasTotalPrice(expectedTotalPrice: string): this {
-        this.orderVerification.totalPrice(expectedTotalPrice);
         return this;
     }
 
@@ -174,11 +161,11 @@ export class ThenOrderVerifier<
     hasOrderNumberPrefix(expectedPrefix: string): this {
         const sv = this.successVerification;
         if (sv != null) {
-            if ('orderNumberStartsWith' in sv && typeof (sv as PlaceOrderVerification).orderNumberStartsWith === 'function') {
-                (sv as PlaceOrderVerification).orderNumberStartsWith(expectedPrefix);
+            if ('orderNumberStartsWith' in sv && typeof (sv as unknown as PlaceOrderVerification).orderNumberStartsWith === 'function') {
+                (sv as unknown as PlaceOrderVerification).orderNumberStartsWith(expectedPrefix);
             }
-            if ('orderNumberHasPrefix' in sv && typeof (sv as ViewOrderVerification).orderNumberHasPrefix === 'function') {
-                (sv as ViewOrderVerification).orderNumberHasPrefix(expectedPrefix);
+            if ('orderNumberHasPrefix' in sv && typeof (sv as unknown as ViewOrderVerification).orderNumberHasPrefix === 'function') {
+                (sv as unknown as ViewOrderVerification).orderNumberHasPrefix(expectedPrefix);
             }
         }
         this.orderVerification.orderNumberHasPrefix(expectedPrefix);

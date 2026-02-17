@@ -36,19 +36,16 @@ export class WhenClause {
         }
     }
 
-    async placeOrder(): Promise<PlaceOrderBuilder> {
-        await this.ensureDefaults();
-        return new PlaceOrderBuilder(this.app);
+    placeOrder(): Promise<PlaceOrderBuilder> {
+        return this.ensureDefaults().then(() => new PlaceOrderBuilder(this.app));
     }
 
-    async cancelOrder(): Promise<CancelOrderBuilder> {
-        await this.ensureDefaults();
-        return new CancelOrderBuilder(this.app);
+    cancelOrder(): Promise<CancelOrderBuilder> {
+        return this.ensureDefaults().then(() => new CancelOrderBuilder(this.app));
     }
 
-    async viewOrder(): Promise<ViewOrderBuilder> {
-        await this.ensureDefaults();
-        return new ViewOrderBuilder(this.app);
+    viewOrder(): Promise<ViewOrderBuilder> {
+        return this.ensureDefaults().then(() => new ViewOrderBuilder(this.app));
     }
 
     publishCoupon(): PublishCouponBuilder {

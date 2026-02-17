@@ -24,6 +24,7 @@ export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
 
     discountRate(discountRate: number): PublishCoupon;
     discountRate(discountRate: string): PublishCoupon;
+    discountRate(discountRate: Optional<string>): PublishCoupon;
     discountRate(discountRate: Optional<number | string>): PublishCoupon {
         this.discountRateValue = discountRate === undefined || discountRate === null ? undefined : typeof discountRate === 'number' ? String(discountRate) : discountRate;
         return this;

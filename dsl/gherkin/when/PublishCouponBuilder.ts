@@ -8,8 +8,8 @@ import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseWhenBuilder } from './BaseWhenBuilder.js';
 
 export class PublishCouponBuilder extends BaseWhenBuilder<void, VoidVerification> {
-    private couponCodeValue: string;
-    private discountRateValue: string;
+    private couponCodeValue: Optional<string>;
+    private discountRateValue: Optional<string>;
     private validFromValue: Optional<string>;
     private validToValue: Optional<string>;
     private usageLimitValue: Optional<string>;
@@ -20,37 +20,33 @@ export class PublishCouponBuilder extends BaseWhenBuilder<void, VoidVerification
         this.withDiscountRate(GherkinDefaults.DEFAULT_DISCOUNT_RATE);
     }
 
-    withCouponCode(couponCode: string): this {
+    withCouponCode(couponCode: Optional<string>): this {
         this.couponCodeValue = couponCode;
         return this;
     }
 
-    withDiscountRate(discountRate: string): this {
-        this.discountRateValue = discountRate;
+    withDiscountRate(discountRate: Optional<string>): this;
+    withDiscountRate(discountRate: number): this;
+    withDiscountRate(discountRate: Optional<string> | number): this {
+        this.discountRateValue = typeof discountRate === 'number' ? Converter.fromDouble(discountRate) : discountRate;
         return this;
     }
 
-    withDiscountRate(discountRate: number): this {
-        return this.withDiscountRate(Converter.fromDouble(discountRate));
-    }
-
-    withValidFrom(validFrom: string): this {
+    withValidFrom(validFrom: Optional<string>): this {
         this.validFromValue = validFrom;
         return this;
     }
 
-    withValidTo(validTo: string): this {
+    withValidTo(validTo: Optional<string>): this {
         this.validToValue = validTo;
         return this;
     }
 
-    withUsageLimit(usageLimit: string): this {
-        this.usageLimitValue = usageLimit;
+    withUsageLimit(usageLimit: Optional<string>): this;
+    withUsageLimit(usageLimit: number): this;
+    withUsageLimit(usageLimit: Optional<string> | number): this {
+        this.usageLimitValue = typeof usageLimit === 'number' ? String(usageLimit) : usageLimit;
         return this;
-    }
-
-    withUsageLimit(usageLimit: number): this {
-        return this.withUsageLimit(String(usageLimit));
     }
 
     protected override async execute(

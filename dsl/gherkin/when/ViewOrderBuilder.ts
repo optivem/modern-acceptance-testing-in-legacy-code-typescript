@@ -1,20 +1,21 @@
+import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseWhenBuilder } from './BaseWhenBuilder.js';
-import type { ViewOrderResponse } from '../../../../core/shop/commons/dtos/orders/index.js';
-import type { ViewOrderVerification } from '../../../../core/shop/dsl/usecases/orders/ViewOrderVerification.js';
+import type { ViewOrderResponse } from '../../../core/shop/commons/dtos/orders/index.js';
+import type { ViewOrderVerification } from '../../../core/shop/dsl/usecases/orders/ViewOrderVerification.js';
 
 export class ViewOrderBuilder extends BaseWhenBuilder<ViewOrderResponse, ViewOrderVerification> {
-    private orderNumberValue: string;
+    private orderNumberValue: Optional<string>;
 
     constructor(app: SystemDsl) {
         super(app);
         this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
     }
 
-    withOrderNumber(orderNumber: string): this {
+    withOrderNumber(orderNumber: Optional<string>): this {
         this.orderNumberValue = orderNumber;
         return this;
     }

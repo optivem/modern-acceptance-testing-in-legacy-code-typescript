@@ -1,3 +1,4 @@
+import type { Optional } from '@optivem/commons/util';
 import { ShopDriver } from '../../../driver/ShopDriver.js';
 import { BaseShopCommand } from '../base/BaseShopCommand.js';
 import { ShopUseCaseResult } from '../base/ShopUseCaseResult.js';
@@ -6,13 +7,13 @@ import type { ViewOrderResponse } from '../../../commons/dtos/orders/index.js';
 import { ViewOrderVerification } from './ViewOrderVerification.js';
 
 export class ViewOrder extends BaseShopCommand<ViewOrderResponse, ViewOrderVerification> {
-    private orderNumberResultAlias?: string;
+    private orderNumberResultAlias: Optional<string>;
 
     constructor(driver: ShopDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    orderNumber(orderNumberResultAlias: string): ViewOrder {
+    orderNumber(orderNumberResultAlias: Optional<string>): ViewOrder {
         this.orderNumberResultAlias = orderNumberResultAlias;
         return this;
     }

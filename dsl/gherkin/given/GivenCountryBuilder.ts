@@ -20,13 +20,11 @@ export class GivenCountryBuilder extends BaseGivenBuilder {
         return this;
     }
 
-    withTaxRate(taxRate: Optional<string>): this {
-        this.taxRate = taxRate;
+    withTaxRate(taxRate: Optional<string>): this;
+    withTaxRate(taxRate: number): this;
+    withTaxRate(taxRate: Optional<string> | number): this {
+        this.taxRate = typeof taxRate === 'number' ? Converter.fromDouble(taxRate) : taxRate;
         return this;
-    }
-
-    withTaxRate(taxRate: number): this {
-        return this.withTaxRate(Converter.fromDouble(taxRate));
     }
 
     async execute(app: SystemDsl): Promise<void> {

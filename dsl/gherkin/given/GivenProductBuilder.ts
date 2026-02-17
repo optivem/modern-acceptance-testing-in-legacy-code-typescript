@@ -20,13 +20,11 @@ export class GivenProductBuilder extends BaseGivenBuilder {
         return this;
     }
 
-    withUnitPrice(unitPrice: Optional<string>): this {
-        this.unitPrice = unitPrice;
+    withUnitPrice(unitPrice: Optional<string>): this;
+    withUnitPrice(unitPrice: number): this;
+    withUnitPrice(unitPrice: Optional<string> | number): this {
+        this.unitPrice = typeof unitPrice === 'number' ? Converter.fromDouble(unitPrice) : unitPrice;
         return this;
-    }
-
-    withUnitPrice(unitPrice: number): this {
-        return this.withUnitPrice(Converter.fromDouble(unitPrice));
     }
 
     async execute(app: SystemDsl): Promise<void> {

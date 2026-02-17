@@ -1,7 +1,7 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
-import type { BrowseCouponsVerification } from '../../../../core/shop/dsl/usecases/coupons/BrowseCouponsVerification.js';
+import type { BrowseCouponsVerification } from '../../../core/shop/dsl/usecases/coupons/BrowseCouponsVerification.js';
 import { BaseThenVerifier } from './BaseThenVerifier.js';
 
 export class ThenCouponVerifier<
