@@ -7,11 +7,8 @@ $Config = @{
         @{  Name = "Clean Install";
             Command = "npm ci"
         },
-        @{  Name = "Build Base Packages";
+        @{  Name = "Build Packages";
             Command = "npm run build"
-        },
-        @{  Name = "Build All Packages";
-            Command = "npm run build --workspaces --if-present"
         }
     )
 

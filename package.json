@@ -1,1 +1,17 @@
-{"name":"modern-acceptance-testing-monorepo","version":"1.0.0","private":true,"workspaces":["commons","optivem-testing","core","dsl","test-infrastructure","system-test"],"scripts":{"build":"npm run build -w @optivem/commons && npm run build -w @optivem/core && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/test-infrastructure","test":"npm run build && npm run test -w system-test"}}
+{
+  "name": "modern-acceptance-testing-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "commons",
+    "optivem-testing",
+    "core",
+    "dsl",
+    "test-infrastructure",
+    "system-test"
+  ],
+  "scripts": {
+    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/core && npm run build -w @optivem/dsl && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/test-infrastructure",
+    "test": "npm run build && npm run test -w system-test"
+  }
+}
