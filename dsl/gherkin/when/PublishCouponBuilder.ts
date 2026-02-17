@@ -1,5 +1,6 @@
 import { VoidVerification } from '@optivem/commons/dsl';
 import { Converter } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
@@ -9,9 +10,9 @@ import { BaseWhenBuilder } from './BaseWhenBuilder.js';
 export class PublishCouponBuilder extends BaseWhenBuilder<void, VoidVerification> {
     private couponCodeValue: string;
     private discountRateValue: string;
-    private validFromValue: string | undefined;
-    private validToValue: string | undefined;
-    private usageLimitValue: string | undefined;
+    private validFromValue: Optional<string>;
+    private validToValue: Optional<string>;
+    private usageLimitValue: Optional<string>;
 
     constructor(app: SystemDsl) {
         super(app);

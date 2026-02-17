@@ -1,6 +1,7 @@
 import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/commons/playwright';
 import { Decimal } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import type { OrderStatus } from '../../../commons/dtos/orders/OrderStatus.js';
 
 /** Order details view (same DOM as order history details section; used for view/cancel flow). */
@@ -111,7 +112,7 @@ export class OrderDetailsPage extends BasePage {
         return status as OrderStatus;
     }
 
-    async getAppliedCoupon(): Promise<string | undefined> {
+    async getAppliedCoupon(): Promise<Optional<string>> {
         const coupon = await this.pageClient.readTextContentAsync(
             OrderDetailsPage.APPLIED_COUPON_OUTPUT_SELECTOR
         );

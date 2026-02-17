@@ -1,4 +1,5 @@
 import { UseCaseContext } from '@optivem/commons/dsl';
+import type { Optional } from '@optivem/commons/util';
 import type { ErpDriver } from '../../driver/ErpDriver.js';
 import type { GetProductRequest } from '../../driver/dtos/GetProductRequest.js';
 import type { GetProductResponse } from '../../driver/dtos/GetProductResponse.js';
@@ -7,13 +8,13 @@ import { ErpUseCaseResult } from './base/ErpUseCaseResult.js';
 import { GetProductVerification } from './GetProductVerification.js';
 
 export class GetProduct extends BaseErpCommand<GetProductResponse, GetProductVerification> {
-    private skuParamAlias: string | undefined;
+    private skuParamAlias: Optional<string>;
 
     constructor(driver: ErpDriver, context: UseCaseContext) {
         super(driver, context);
     }
 
-    sku(alias: string | undefined): GetProduct {
+    sku(alias: Optional<string>): GetProduct {
         this.skuParamAlias = alias;
         return this;
     }

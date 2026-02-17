@@ -1,14 +1,16 @@
+import type { Optional } from '@optivem/commons/util';
+
 export class ExecutionResultContext {
     constructor(
-        private readonly orderNumber: string,
-        private readonly couponCode: string
+        private readonly orderNumber: Optional<string>,
+        private readonly couponCode: Optional<string>
     ) {}
 
-    getOrderNumber(): string {
+    getOrderNumber(): Optional<string> {
         return this.orderNumber;
     }
 
-    getCouponCode(): string {
+    getCouponCode(): Optional<string> {
         return this.couponCode;
     }
 }

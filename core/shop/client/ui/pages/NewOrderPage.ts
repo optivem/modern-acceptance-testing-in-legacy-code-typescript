@@ -1,5 +1,6 @@
 import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/commons/playwright';
+import type { Optional } from '@optivem/commons/util';
 
 export class NewOrderPage extends BasePage {
     private static readonly SKU_INPUT_SELECTOR = '[aria-label="SKU"]';
@@ -15,19 +16,19 @@ export class NewOrderPage extends BasePage {
         super(pageClient);
     }
 
-    async inputSku(sku: string | undefined): Promise<void> {
+    async inputSku(sku: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(NewOrderPage.SKU_INPUT_SELECTOR, sku ?? null);
     }
 
-    async inputQuantity(quantity: string | undefined): Promise<void> {
+    async inputQuantity(quantity: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(NewOrderPage.QUANTITY_INPUT_SELECTOR, quantity ?? null);
     }
 
-    async inputCountry(country: string | undefined): Promise<void> {
+    async inputCountry(country: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(NewOrderPage.COUNTRY_INPUT_SELECTOR, country ?? null);
     }
 
-    async inputCouponCode(couponCode: string | undefined): Promise<void> {
+    async inputCouponCode(couponCode: Optional<string>): Promise<void> {
         await this.pageClient.fillAsync(NewOrderPage.COUPON_CODE_INPUT_SELECTOR, couponCode ?? null);
     }
 

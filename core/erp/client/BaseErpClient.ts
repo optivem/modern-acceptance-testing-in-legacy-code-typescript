@@ -1,4 +1,5 @@
 import { Result } from '@optivem/commons/util';
+import type { Optional } from '@optivem/commons/util';
 import { JsonHttpClient } from '@optivem/commons/http';
 import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse.js';
 import type { ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
@@ -17,7 +18,7 @@ export abstract class BaseErpClient {
         return this.httpClient.getAsync<void>(BaseErpClient.HEALTH_ENDPOINT);
     }
 
-    getProduct(sku: string | undefined): Promise<Result<ExtProductDetailsResponse, ExtErpErrorResponse>> {
+    getProduct(sku: Optional<string>): Promise<Result<ExtProductDetailsResponse, ExtErpErrorResponse>> {
         return this.httpClient.getAsync<ExtProductDetailsResponse>(`${BaseErpClient.PRODUCTS_ENDPOINT}/${sku}`,);
     }
 }

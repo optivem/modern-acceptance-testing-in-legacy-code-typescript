@@ -1,4 +1,5 @@
 import { UseCaseContext } from '@optivem/commons/dsl';
+import type { Optional } from '@optivem/commons/util';
 import type { TaxDriver } from '../../driver/TaxDriver.js';
 import type { GetTaxResponse } from '../../driver/dtos/GetTaxResponse.js';
 import { BaseTaxCommand } from './base/BaseTaxCommand.js';
@@ -6,7 +7,7 @@ import { TaxUseCaseResult } from './base/TaxUseCaseResult.js';
 import { GetTaxVerification } from './GetTaxVerification.js';
 
 export class GetTaxRate extends BaseTaxCommand<GetTaxResponse, GetTaxVerification> {
-    private countryValueOrAlias: string | undefined;
+    private countryValueOrAlias: Optional<string>;
 
     constructor(driver: TaxDriver, context: UseCaseContext) {
         super(driver, context);
