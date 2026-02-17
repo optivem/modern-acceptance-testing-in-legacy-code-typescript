@@ -12,6 +12,9 @@
   "keywords": ["testing", "acceptance-testing", "configuration"],
   "author": "Optivem",
   "license": "MIT",
+  "dependencies": {
+    "@optivem/commons": "file:../commons"
+  },
   "devDependencies": {
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2"
