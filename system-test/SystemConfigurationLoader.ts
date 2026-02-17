@@ -1,5 +1,5 @@
 import type { ExternalSystemMode } from '@optivem/commons/dsl';
-import { SystemConfiguration } from '../core/SystemConfiguration.js';
+import { SystemConfiguration } from '../dsl/system/SystemConfiguration.js';
 import { testConfig } from './test.config.js';
 
 export class SystemConfigurationLoader {
