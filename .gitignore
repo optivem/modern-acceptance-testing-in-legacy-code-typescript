@@ -6,6 +6,8 @@ dist/
 build/
 *.js
 *.js.map
+*.d.ts
+*.d.ts.map
 !jest.config.js
 !playwright.config.ts
 !system-test/core/reporters/*.js

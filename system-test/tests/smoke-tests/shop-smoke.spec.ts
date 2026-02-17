@@ -1,8 +1,9 @@
+import '../../setup-config.js';
 import { expect } from '@playwright/test';
 import { setupResultMatchers } from '@optivem/commons/util';
-import { shopChannelTest as channelTest, ShopFixtures } from '../../../core/shopChannelTest.js';
-import { ChannelType } from '../../../core/shop/ChannelType.js';
-import { getExternalSystemMode } from '../../../test.config.js';
+import { shopChannelTest as channelTest, type ShopFixtures } from '@optivem/test-infrastructure';
+import { ChannelType } from '@optivem/core/shop/ChannelType.js';
+import { getExternalSystemMode } from '../../test.config.js';
 
 setupResultMatchers();
 

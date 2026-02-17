@@ -1,9 +1,10 @@
+import '../../setup-config.js';
 import { expect } from '@playwright/test';
 import { setupResultMatchers } from '@optivem/commons/util';
-import { ChannelType } from '../../../core/shop/ChannelType.js';
-import { shopChannelTest as channelTest } from '../../../core/shopChannelTest.js';
-import { OrderStatus } from '../../../core/shop/driver/dtos/enums/OrderStatus.js';
-import { getExternalSystemMode } from '../../../test.config.js';
+import { ChannelType } from '@optivem/core/shop/ChannelType.js';
+import { shopChannelTest as channelTest } from '@optivem/test-infrastructure';
+import { OrderStatus } from '@optivem/core/shop/driver/dtos/enums/OrderStatus.js';
+import { getExternalSystemMode } from '../../test.config.js';
 
 setupResultMatchers();
 

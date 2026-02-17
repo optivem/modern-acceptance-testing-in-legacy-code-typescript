@@ -1,0 +1,8 @@
+{
+  "name": "@optivem/core",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": { "./*": "./dist/*" },
+  "scripts": { "build": "tsc -p tsconfig.build.json" }
+}

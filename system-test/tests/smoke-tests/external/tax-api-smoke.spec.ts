@@ -1,9 +1,10 @@
+import '../../../setup-config.js';
 import { test as base } from '../../fixtures.js';
 import { expect } from '@playwright/test';
 import { Closer } from '@optivem/commons/util';
-import { DriverFactory } from '../../../../core/DriverFactory.js';
+import { DriverFactory } from '@optivem/test-infrastructure';
 import { setupResultMatchers } from '@optivem/commons/util';
-import { getExternalSystemMode } from '../../test.config.js';
+import { getExternalSystemMode } from '../../../test.config.js';
 
 setupResultMatchers();
 
