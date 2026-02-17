@@ -1,9 +1,9 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
-import type { ViewOrderVerification } from '../../../core/shop/dsl/usecases/orders/ViewOrderVerification.js';
-import type { PlaceOrderVerification } from '../../../core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
-import { OrderStatus } from '../../../core/shop/commons/dtos/orders/OrderStatus.js';
+import type { ViewOrderVerification } from '@optivem/core/shop/dsl/usecases/orders/ViewOrderVerification.js';
+import type { PlaceOrderVerification } from '@optivem/core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
+import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseThenVerifier } from './BaseThenVerifier.js';
 

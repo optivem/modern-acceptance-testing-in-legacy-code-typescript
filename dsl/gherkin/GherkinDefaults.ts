@@ -1,4 +1,4 @@
-import { OrderStatus } from '../../core/shop/commons/dtos/orders/OrderStatus.js';
+import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 
 /**
  * Default values for Gherkin test builders.

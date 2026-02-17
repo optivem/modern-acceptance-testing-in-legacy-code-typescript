@@ -1,6 +1,6 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { Optional } from '@optivem/commons/util';
-import type { ShopUseCaseResult } from '../../core/shop/dsl/usecases/base/ShopUseCaseResult.js';
+import type { ShopUseCaseResult } from '@optivem/core/shop/dsl/usecases/base/ShopUseCaseResult.js';
 import { ExecutionResultContext } from './ExecutionResultContext.js';
 
 export class ExecutionResult<

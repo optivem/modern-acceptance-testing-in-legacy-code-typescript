@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
-  "scripts": {
-    "build": "tsc"
+  "scripts": { "build": "tsc -p tsconfig.build.json" },
+  "exports": { "./*": "./dist/*" },
+  "dependencies": {
+    "@optivem/commons": "file:../commons",
+    "@optivem/core": "file:../core"
   }
 }

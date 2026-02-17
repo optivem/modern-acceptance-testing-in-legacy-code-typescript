@@ -2,8 +2,8 @@ import type { ResponseVerification } from '@optivem/commons/dsl';
 import { VoidVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
-import type { ShopUseCaseResult } from '../../../core/shop/dsl/usecases/base/ShopUseCaseResult.js';
-import type { SystemErrorFailureVerification } from '../../../core/shop/dsl/usecases/base/SystemErrorFailureVerification.js';
+import type { ShopUseCaseResult } from '@optivem/core/shop/dsl/usecases/base/ShopUseCaseResult.js';
+import type { SystemErrorFailureVerification } from '@optivem/core/shop/dsl/usecases/base/SystemErrorFailureVerification.js';
 import { BaseThenVerifier } from './BaseThenVerifier.js';
 
 export class ThenFailureVerifier<

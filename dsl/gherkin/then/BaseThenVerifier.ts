@@ -1,8 +1,8 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
-import { ThenOrderVerifier } from './ThenOrderVerifier.js';
-import { ThenCouponVerifier } from './ThenCouponVerifier.js';
+import type { ThenOrderVerifier } from './ThenOrderVerifier.js';
+import type { ThenCouponVerifier } from './ThenCouponVerifier.js';
 
 export abstract class BaseThenVerifier<
     TSuccessResponse,
@@ -29,6 +29,7 @@ export abstract class BaseThenVerifier<
                     'Cannot verify order: no order number available from the executed operation'
                 );
             })();
+        const { ThenOrderVerifier } = await import('./ThenOrderVerifier.js');
         return ThenOrderVerifier.create(this.app, this.executionResult, resolved, this.successVerification);
     }
 
@@ -43,6 +44,7 @@ export abstract class BaseThenVerifier<
                     'Cannot verify coupon: no coupon code available from the executed operation'
                 );
             })();
+        const { ThenCouponVerifier } = await import('./ThenCouponVerifier.js');
         return ThenCouponVerifier.create(this.app, this.executionResult, resolved, this.successVerification);
     }
 }
