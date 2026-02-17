@@ -15,7 +15,7 @@ export function systemErrorOf(message: string, fields?: SystemErrorField[]): Sys
 
 /**
  * Minimal shape of an API error body (e.g. RFC 7807) that systemErrorFrom can convert.
- * Kept in commons so we do not depend on client; client's ProblemDetailsResponse is structurally compatible.
+ * Kept in commons so we do not depend on client; client's ProblemDetailResponse is structurally compatible.
  */
 export interface ProblemDetailLike {
     detail?: string;
