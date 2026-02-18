@@ -8,5 +8,5 @@ import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { getExternalSystemMode } from '../../../../test.config.js';
 
 scenarioChannelTest(getExternalSystemMode(), [ChannelType.UI, ChannelType.API], 'should be able to go to shop', async ({ scenario }) => {
-    (await scenario.when().goToShop().then()).shouldSucceed();
+    await scenario.when().goToShop().then().shouldSucceed();
 });
