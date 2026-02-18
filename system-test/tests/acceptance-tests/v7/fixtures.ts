@@ -29,13 +29,23 @@ export interface ScenarioChannelFixtures {
     scenario: ScenarioDsl;
 }
 
+/**
+ * When CHANNEL env is set (e.g. API or UI), only that channel is run.
+ * When CHANNEL is not set or empty (cleared), run for all channels.
+ * Matches reference: dotnet test -e CHANNEL=API so only API channel tests execute.
+ */
 export function scenarioChannelTest(
     _externalSystemMode: unknown,
     channelTypes: string[],
     testName: string,
     testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>
 ): void {
-    for (const channel of channelTypes) {
+    const channelEnv = process.env.CHANNEL;
+    const channelsToRun =
+        channelEnv != null && channelEnv !== ''
+            ? channelTypes.filter((c) => c === channelEnv)
+            : channelTypes;
+    for (const channel of channelsToRun) {
         test(`[${channel} Channel] ${testName}`, async ({ scenario }) => {
             try {
                 ChannelContext.set(channel);

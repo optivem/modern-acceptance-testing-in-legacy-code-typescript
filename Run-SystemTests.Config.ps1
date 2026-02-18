@@ -17,25 +17,25 @@ $Config = @{
             Name = "Smoke Tests";
             Command = "npm test -- tests/smoke-tests";
             Path = "system-test";
-            TestReportPath = "playwright-report/index.html"
+            TestReportPath = "system-test/playwright-report/index.html"
             TestInstallCommands = @(
                 "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "acceptance-api";
             Name = "Acceptance Tests - Channel: API";
-            Command = "npm test -- tests/acceptance-tests --grep \"[API Channel]\"";
+            Command = "npx cross-env CHANNEL=API npm test -- tests/acceptance-tests";
             Path = "system-test";
-            TestReportPath = "playwright-report/index.html";
+            TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
                 "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "acceptance-ui";
             Name = "Acceptance Tests - Channel: UI";
-            Command = "npm test -- tests/acceptance-tests --grep \"[UI Channel]\"";
+            Command = "npx cross-env CHANNEL=UI npm test -- tests/acceptance-tests";
             Path = "system-test";
-            TestReportPath = "playwright-report/index.html";
+            TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
                 "npm install",
                 "npx playwright install chromium"
@@ -45,7 +45,7 @@ $Config = @{
             Name = "E2E Tests";
             Command = "npm test -- tests/e2e-tests";
             Path = "system-test";
-            TestReportPath = "playwright-report/index.html";
+            TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
                 "npm install",
                 "npx playwright install chromium"
