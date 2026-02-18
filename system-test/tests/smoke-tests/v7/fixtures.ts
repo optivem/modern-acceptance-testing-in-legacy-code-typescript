@@ -1,6 +1,8 @@
 import { test as base } from '@playwright/test';
+import type { ExternalSystemMode } from '@optivem/commons/dsl';
 import type { SystemDsl } from '@optivem/dsl/system/SystemDsl.js';
 import { ScenarioDsl } from '@optivem/dsl/gherkin/ScenarioDsl.js';
+import { ChannelContext } from '@optivem/optivem-testing';
 import { SystemDslFactory } from '../../../SystemDslFactory.js';
 import { getExternalSystemMode } from '../../../test.config.js';
 
@@ -21,3 +23,30 @@ export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
 });
 
 export { expect } from '@playwright/test';
+
+/** Fixtures passed to scenarioChannelTest callback. */
+export interface ScenarioChannelFixtures {
+    scenario: ScenarioDsl;
+}
+
+/**
+ * Run the same scenario-based test for each channel (UI/API). Same header style as shopChannelTest.
+ * Sets ChannelContext before the test and clears it in finally.
+ */
+export function scenarioChannelTest(
+    _externalSystemMode: ExternalSystemMode,
+    channelTypes: string[],
+    testName: string,
+    testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>
+): void {
+    for (const channel of channelTypes) {
+        test(`[${channel} Channel] ${testName}`, async ({ scenario }) => {
+            try {
+                ChannelContext.set(channel);
+                await testFn({ scenario });
+            } finally {
+                ChannelContext.clear();
+            }
+        });
+    }
+}

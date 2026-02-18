@@ -1,21 +1,12 @@
 /**
- * V7 smoke test: ScenarioDsl + channel (UI/API).
- * Uses scenario.when().goToShop().then().shouldSucceed() (async, like .NET).
+ * V7 smoke test: scenario + channelTest-style header (like shopChannelTest).
+ * Uses scenario.when().goToShop().then().shouldSucceed().
  */
 import '../../../../setup-config.js';
-import { test } from '../fixtures.js';
-import { ChannelContext } from '@optivem/optivem-testing';
+import { scenarioChannelTest } from '../fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
+import { getExternalSystemMode } from '../../../../test.config.js';
 
-test.describe('V7 System – Shop', () => {
-    for (const channel of [ChannelType.UI, ChannelType.API]) {
-        test(`[${channel} Channel] should be able to go to shop`, async ({ scenario }) => {
-            ChannelContext.set(channel);
-            try {
-                (await scenario.when().goToShop().then()).shouldSucceed();
-            } finally {
-                ChannelContext.clear();
-            }
-        });
-    }
+scenarioChannelTest(getExternalSystemMode(), [ChannelType.UI, ChannelType.API], 'should be able to go to shop', async ({ scenario }) => {
+    (await scenario.when().goToShop().then()).shouldSucceed();
 });
