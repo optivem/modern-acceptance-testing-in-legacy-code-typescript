@@ -22,7 +22,25 @@ $Config = @{
                 "npm install",
                 "npx playwright install chromium"
             ) },
-        @{ 
+        @{  Id = "acceptance-api";
+            Name = "Acceptance Tests - Channel: API";
+            Command = "npm test -- tests/acceptance-tests --grep \"[API Channel]\"";
+            Path = "system-test";
+            TestReportPath = "playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
+            ) },
+        @{  Id = "acceptance-ui";
+            Name = "Acceptance Tests - Channel: UI";
+            Command = "npm test -- tests/acceptance-tests --grep \"[UI Channel]\"";
+            Path = "system-test";
+            TestReportPath = "playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
+            ) },
+        @{
             Id = "e2e";
             Name = "E2E Tests";
             Command = "npm test -- tests/e2e-tests";
