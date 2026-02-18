@@ -24,7 +24,7 @@ export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
 
 export { expect } from '@playwright/test';
 
-/** Fixtures passed to scenarioChannelTest callback. */
+/** Fixtures passed to scenarioChannelTest / Channel callback. */
 export interface ScenarioChannelFixtures {
     scenario: ScenarioDsl;
 }
@@ -49,4 +49,17 @@ export function scenarioChannelTest(
             }
         });
     }
+}
+
+/**
+ * Curried helper that mirrors Java's @Channel(ChannelType.UI, ChannelType.API) on the test method.
+ * Usage: Channel(ChannelType.UI, ChannelType.API)('should be able to go to shop', async ({ scenario }) => { ... });
+ * Registers one test per channel; uses getExternalSystemMode() and scenario fixtures.
+ */
+export function Channel(
+    ...channelTypes: string[]
+): (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => void {
+    return (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => {
+        scenarioChannelTest(getExternalSystemMode(), channelTypes, testName, testFn);
+    };
 }
