@@ -4,5 +4,5 @@
   "type": "module",
   "private": true,
   "exports": { "./*": "./dist/*" },
-  "scripts": { "build": "tsc -p tsconfig.build.json" }
+  "scripts": { "clean": "rimraf dist", "build": "rimraf dist && tsc -p tsconfig.build.json" }
 }

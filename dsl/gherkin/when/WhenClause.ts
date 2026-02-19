@@ -16,23 +16,32 @@ export class WhenClause {
 
     private async ensureDefaults(): Promise<void> {
         if (!this.hasProduct) {
-            await this.app
-                .erp()
-                .returnsProduct()
-                .sku(GherkinDefaults.DEFAULT_SKU)
-                .unitPrice(GherkinDefaults.DEFAULT_UNIT_PRICE)
-                .execute()
-                .then((r) => r.shouldSucceed());
+            try {
+                await this.app
+                    .erp()
+                    .returnsProduct()
+                    .sku(GherkinDefaults.DEFAULT_SKU)
+                    .unitPrice(GherkinDefaults.DEFAULT_UNIT_PRICE)
+                    .execute()
+                    .then((r) => r.shouldSucceed());
+            } catch (e) {
+                // Ignore "already exists" errors (duplicate id from re-entrant calls)
+                if (!String(e).includes('duplicate') && !String(e).includes('Insert failed')) throw e;
+            }
             this.hasProduct = true;
         }
         if (!this.hasTaxRate) {
-            await this.app
-                .tax()
-                .returnsTaxRate()
-                .country(GherkinDefaults.DEFAULT_COUNTRY)
-                .taxRate(GherkinDefaults.DEFAULT_TAX_RATE)
-                .execute()
-                .then((r) => r.shouldSucceed());
+            try {
+                await this.app
+                    .tax()
+                    .returnsTaxRate()
+                    .country(GherkinDefaults.DEFAULT_COUNTRY)
+                    .taxRate(GherkinDefaults.DEFAULT_TAX_RATE)
+                    .execute()
+                    .then((r) => r.shouldSucceed());
+            } catch (e) {
+                if (!String(e).includes('duplicate') && !String(e).includes('Insert failed')) throw e;
+            }
             this.hasTaxRate = true;
         }
     }
@@ -41,16 +50,16 @@ export class WhenClause {
         return new GoToShopBuilder(this.app);
     }
 
-    placeOrder(): Promise<PlaceOrderBuilder> {
-        return this.ensureDefaults().then(() => new PlaceOrderBuilder(this.app));
+    placeOrder(): PlaceOrderBuilder {
+        return new PlaceOrderBuilder(this.app, () => this.ensureDefaults());
     }
 
-    cancelOrder(): Promise<CancelOrderBuilder> {
-        return this.ensureDefaults().then(() => new CancelOrderBuilder(this.app));
+    cancelOrder(): CancelOrderBuilder {
+        return new CancelOrderBuilder(this.app, () => this.ensureDefaults());
     }
 
-    viewOrder(): Promise<ViewOrderBuilder> {
-        return this.ensureDefaults().then(() => new ViewOrderBuilder(this.app));
+    viewOrder(): ViewOrderBuilder {
+        return new ViewOrderBuilder(this.app, () => this.ensureDefaults());
     }
 
     publishCoupon(): PublishCouponBuilder {

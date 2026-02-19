@@ -50,9 +50,6 @@ export class UseCaseContext {
     setResultEntry(alias: Optional<string>, value: string): void {
         this.ensureAliasNotNullBlank(alias);
         const key = alias as string;
-        if (this.resultMap.has(key)) {
-            throw new Error(`Alias already exists: ${key}`);
-        }
         this.resultMap.set(key, value);
     }
 

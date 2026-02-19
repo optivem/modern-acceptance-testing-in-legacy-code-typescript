@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
-  "scripts": { "build": "tsc -p tsconfig.build.json" },
+  "scripts": { "clean": "rimraf dist", "build": "rimraf dist && tsc -p tsconfig.build.json" },
   "exports": { "./*": "./dist/*" },
   "dependencies": {
     "@optivem/commons": "file:../commons",

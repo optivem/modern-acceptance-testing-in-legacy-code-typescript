@@ -15,8 +15,8 @@ export class PlaceOrderBuilder extends BaseWhenBuilder<PlaceOrderResponse, Place
     private countryValue: Optional<string>;
     private couponCodeValue: Optional<string>;
 
-    constructor(app: SystemDsl) {
-        super(app);
+    constructor(app: SystemDsl, setup?: () => Promise<void>) {
+        super(app, setup);
         this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
         this.withSku(GherkinDefaults.DEFAULT_SKU);
         this.withQuantity(GherkinDefaults.DEFAULT_QUANTITY);

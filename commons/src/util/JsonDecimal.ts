@@ -23,6 +23,12 @@ export const DEFAULT_DECIMAL_KEYS = new Set<string>([
  * @param decimalKeys - Keys to convert (default: DEFAULT_DECIMAL_KEYS)
  * @returns New object/array with those keys as Decimal instances
  */
+function isPlainObject(value: unknown): boolean {
+    if (value === null || typeof value !== 'object') return false;
+    const proto = Object.getPrototypeOf(value);
+    return proto === Object.prototype || proto === null;
+}
+
 export function mapObjectDecimals<T>(
     obj: T,
     decimalKeys: Set<string> = DEFAULT_DECIMAL_KEYS
@@ -35,6 +41,10 @@ export function mapObjectDecimals<T>(
     }
     if (Array.isArray(obj)) {
         return obj.map((item) => mapObjectDecimals(item, decimalKeys)) as T;
+    }
+    // Do not recurse into class instances (e.g. Integer, custom types) — only plain objects
+    if (!isPlainObject(obj)) {
+        return obj;
     }
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {

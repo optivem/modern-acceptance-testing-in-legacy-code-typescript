@@ -8,12 +8,12 @@ export abstract class BaseWhenBuilder<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse>
 > {
-    constructor(protected readonly app: SystemDsl) {}
+    constructor(protected readonly app: SystemDsl, private readonly setup?: () => Promise<void>) {}
 
     then(): PendingThenClause<TSuccessResponse, TSuccessVerification> {
-        const thenClausePromise = this.execute(this.app).then(
-            (result) => new ThenClause(this.app, result)
-        );
+        const thenClausePromise = (this.setup ? this.setup() : Promise.resolve())
+            .then(() => this.execute(this.app))
+            .then((result) => new ThenClause(this.app, result));
         return new PendingThenClause(thenClausePromise);
     }
 

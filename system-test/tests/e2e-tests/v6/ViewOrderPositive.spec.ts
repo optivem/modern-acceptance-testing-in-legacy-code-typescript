@@ -17,7 +17,7 @@ Channel(ChannelType.UI, ChannelType.API)('should view placed order', async ({ sc
         .withSku('DEFAULT-SKU')
         .withQuantity(4)
         .when();
-    const success = await (await whenClause.viewOrder()).then().shouldSucceed();
+    const success = await whenClause.viewOrder().then().shouldSucceed();
     const orderVerifier = await success.order();
     orderVerifier
         .hasQuantity(4)

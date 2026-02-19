@@ -2,20 +2,21 @@ import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
 import type { BrowseCouponsVerification } from '@optivem/core/shop/dsl/usecases/coupons/BrowseCouponsVerification.js';
-import { BaseThenVerifier } from './BaseThenVerifier.js';
 
 export class ThenCouponVerifier<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse>
-> extends BaseThenVerifier<TSuccessResponse, TSuccessVerification> {
+> {
     private constructor(
-        app: SystemDsl,
-        executionResult: ExecutionResultContext,
+        private readonly app: SystemDsl,
+        private readonly executionResult: ExecutionResultContext,
         private readonly couponCode: string,
-        successVerification: TSuccessVerification | null,
+        private readonly successVerification: TSuccessVerification | null,
         private readonly verification: BrowseCouponsVerification
-    ) {
-        super(app, executionResult, successVerification);
+    ) {}
+
+    and(): this {
+        return this;
     }
 
     static async create<TSuccessResponse, TSuccessVerification extends ResponseVerification<TSuccessResponse>>(

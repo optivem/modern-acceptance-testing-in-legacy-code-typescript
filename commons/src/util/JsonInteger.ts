@@ -15,6 +15,12 @@ export const DEFAULT_INTEGER_KEYS = new Set<string>(['usageLimit', 'usedCount', 
  * @param integerKeys - Keys to convert (default: DEFAULT_INTEGER_KEYS)
  * @returns New object/array with those keys as Integer instances
  */
+function isPlainObject(value: unknown): boolean {
+    if (value === null || typeof value !== 'object') return false;
+    const proto = Object.getPrototypeOf(value);
+    return proto === Object.prototype || proto === null;
+}
+
 export function mapObjectIntegers<T>(
     obj: T,
     integerKeys: Set<string> = DEFAULT_INTEGER_KEYS
@@ -27,6 +33,10 @@ export function mapObjectIntegers<T>(
     }
     if (Array.isArray(obj)) {
         return obj.map((item) => mapObjectIntegers(item, integerKeys)) as T;
+    }
+    // Do not recurse into class instances (e.g. Decimal, Integer) — only plain objects
+    if (!isPlainObject(obj)) {
+        return obj;
     }
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {

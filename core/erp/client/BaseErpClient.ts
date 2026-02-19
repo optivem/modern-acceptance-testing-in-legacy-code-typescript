@@ -2,6 +2,7 @@ import { Result } from '@optivem/commons/util';
 import type { Optional } from '@optivem/commons/util';
 import { JsonHttpClient } from '@optivem/commons/http';
 import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse.js';
+import type { ExtCreateProductRequest } from './dtos/ExtCreateProductRequest.js';
 import type { ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
 
 export abstract class BaseErpClient {
@@ -20,5 +21,9 @@ export abstract class BaseErpClient {
 
     getProduct(sku: Optional<string>): Promise<Result<ExtProductDetailsResponse, ExtErpErrorResponse>> {
         return this.httpClient.getAsync<ExtProductDetailsResponse>(`${BaseErpClient.PRODUCTS_ENDPOINT}/${sku}`,);
+    }
+
+    updateProduct(sku: string, request: ExtCreateProductRequest): Promise<Result<void, ExtErpErrorResponse>> {
+        return this.httpClient.putAsync<void>(`${BaseErpClient.PRODUCTS_ENDPOINT}/${sku}`, request);
     }
 }

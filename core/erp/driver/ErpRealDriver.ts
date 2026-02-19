@@ -25,6 +25,15 @@ export class ErpRealDriver extends BaseErpDriver<ErpRealClient> {
             brand: ErpRealDriver.DEFAULT_BRAND,
             price: request.price,
         };
-        return this.client.createProduct(extRequest).then((r) => r.mapError(fromErpErrorResponse));
+        return this.client.createProduct(extRequest).then(async (r) => {
+            if (r.isSuccess()) return r.mapError(fromErpErrorResponse);
+            // If duplicate key, update the existing product (PUT)
+            const err = r.getError();
+            const errStr = JSON.stringify(err);
+            if (errStr.includes('duplicate') || errStr.includes('Insert failed') || errStr.includes('already')) {
+                return this.client.updateProduct(request.sku!, extRequest).then((ur) => ur.mapError(fromErpErrorResponse));
+            }
+            return r.mapError(fromErpErrorResponse);
+        });
     }
 }

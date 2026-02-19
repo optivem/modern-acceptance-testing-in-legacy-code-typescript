@@ -9,8 +9,8 @@ import { BaseWhenBuilder } from './BaseWhenBuilder.js';
 export class CancelOrderBuilder extends BaseWhenBuilder<void, VoidVerification> {
     private orderNumberValue: Optional<string>;
 
-    constructor(app: SystemDsl) {
-        super(app);
+    constructor(app: SystemDsl, setup?: () => Promise<void>) {
+        super(app, setup);
         this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
     }
 

@@ -10,8 +10,8 @@ import type { ViewOrderVerification } from '@optivem/core/shop/dsl/usecases/orde
 export class ViewOrderBuilder extends BaseWhenBuilder<ViewOrderResponse, ViewOrderVerification> {
     private orderNumberValue: Optional<string>;
 
-    constructor(app: SystemDsl) {
-        super(app);
+    constructor(app: SystemDsl, setup?: () => Promise<void>) {
+        super(app, setup);
         this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
     }
 

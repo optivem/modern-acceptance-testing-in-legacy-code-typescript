@@ -5,20 +5,21 @@ import type { ViewOrderVerification } from '@optivem/core/shop/dsl/usecases/orde
 import type { PlaceOrderVerification } from '@optivem/core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
-import { BaseThenVerifier } from './BaseThenVerifier.js';
 
 export class ThenOrderVerifier<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse>
-> extends BaseThenVerifier<TSuccessResponse, TSuccessVerification> {
+> {
     private constructor(
-        app: SystemDsl,
-        executionResult: ExecutionResultContext,
-        orderNumber: string,
-        successVerification: TSuccessVerification | null,
+        private readonly app: SystemDsl,
+        private readonly executionResult: ExecutionResultContext,
+        private readonly orderNumber: string,
+        private readonly successVerification: TSuccessVerification | null,
         private readonly orderVerification: ViewOrderVerification
-    ) {
-        super(app, executionResult, successVerification);
+    ) {}
+
+    and(): this {
+        return this;
     }
 
     static async create<TSuccessResponse, TSuccessVerification extends ResponseVerification<TSuccessResponse>>(

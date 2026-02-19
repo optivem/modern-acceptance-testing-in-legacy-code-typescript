@@ -7,5 +7,5 @@ import { Channel } from './fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 
 Channel(ChannelType.UI, ChannelType.API)('should place order', async ({ scenario }) => {
-    await (await scenario.when().placeOrder()).then().shouldSucceed();
+    await scenario.when().placeOrder().then().shouldSucceed();
 });
