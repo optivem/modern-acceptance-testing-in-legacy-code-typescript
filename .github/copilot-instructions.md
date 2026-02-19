@@ -1,4 +1,6 @@
-# Reference projects – dependency comparison
+# Copilot instructions
+
+## Reference projects - dependency comparison
 
 Checked against:
 - **Java:** `C:\GitHub\optivem\modern-acceptance-testing-in-legacy-code-java`
@@ -21,7 +23,7 @@ Checked against:
 | **system-test/e2e-test** | `testImplementation project(':test-infrastructure')` |
 | **system-test/external-system-contract-test** | `testImplementation project(':test-infrastructure')` |
 
-**Note:** `BaseScenarioDslTest` (in test-infrastructure) uses `SystemDsl` and `ScenarioDsl` (from dsl). test-infrastructure’s `build.gradle` only declares `:commons` and `:core`; it does **not** declare `:dsl`. So either `:core` (or another path) brings in dsl transitively, or the Java reference is missing an explicit `project(':dsl')` in test-infrastructure.
+**Note:** `BaseScenarioDslTest` (in test-infrastructure) uses `SystemDsl` and `ScenarioDsl` (from dsl). test-infrastructure's `build.gradle` only declares `:commons` and `:core`; it does **not** declare `:dsl`. So either `:core` (or another path) brings in dsl transitively, or the Java reference is missing an explicit `project(':dsl')` in test-infrastructure.
 
 ---
 
@@ -60,9 +62,9 @@ Test projects get DSL **only** via TestInfrastructure (no direct reference to Ds
 | Aspect | Java | .NET | TypeScript |
 |--------|------|------|------------|
 | **Test project depends on** | test-infrastructure only | TestInfrastructure (+ Commons) | test-infrastructure **and** dsl |
-| **Who depends on dsl** | Unclear (test-infrastructure uses it but doesn’t declare `:dsl`) | TestInfrastructure | system-test (and dsl → core, commons) |
+| **Who depends on dsl** | Unclear (test-infrastructure uses it but doesn't declare `:dsl`) | TestInfrastructure | system-test (and dsl -> core, commons) |
 | **test-infrastructure depends on dsl?** | No (only commons, core) | **Yes** (Dsl.System, Dsl.Gherkin) | **No** (commons, core, optivem-testing) |
 
 To mirror .NET: **test-infrastructure** could depend on **@optivem/dsl** and system-test could drop its direct dsl dependency (get it transitively via test-infrastructure). That would match .NET where SmokeTests only reference TestInfrastructure and get DSL through it.
 
-Current TypeScript setup (system-test → dsl + test-infrastructure) is valid; the main difference is that in .NET, test projects do not reference Dsl directly.
+Current TypeScript setup (system-test -> dsl + test-infrastructure) is valid; the main difference is that in .NET, test projects do not reference Dsl directly.
