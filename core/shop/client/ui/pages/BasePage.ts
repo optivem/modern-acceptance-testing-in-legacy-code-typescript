@@ -76,15 +76,15 @@ export abstract class BasePage {
             BasePage.NOTIFICATION_SUCCESS_SELECTOR,
             notificationId
         );
-        const isSuccess = await this.pageClient.isVisibleAsync(successSelector);
-        if (isSuccess) return true;
+        const successLocator = this.pageClient.getLocator(successSelector);
+        if ((await successLocator.count()) > 0) return true;
 
         const errorSelector = BasePage.withNotificationId(
             BasePage.NOTIFICATION_ERROR_SELECTOR,
             notificationId
         );
-        const isError = await this.pageClient.isVisibleAsync(errorSelector);
-        if (isError) return false;
+        const errorLocator = this.pageClient.getLocator(errorSelector);
+        if ((await errorLocator.count()) > 0) return false;
 
         throw new Error(BasePage.UNRECOGNIZED_NOTIFICATION_ERROR_MESSAGE);
     }
@@ -117,11 +117,11 @@ export abstract class BasePage {
     }
 
     private parseFieldError(text: string): SystemErrorField {
-        const parts = text.split(':', 2);
-        if (parts.length !== 2) {
+        const idx = text.indexOf(':');
+        if (idx < 0) {
             throw new Error(`Invalid field error format: ${text}`);
         }
-        return { field: parts[0].trim(), message: parts[1].trim() };
+        return { field: text.slice(0, idx).trim(), message: text.slice(idx + 1).trim() };
     }
 
     private static withNotificationId(selector: string, notificationId: string): string {
