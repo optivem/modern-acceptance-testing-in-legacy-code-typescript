@@ -5,9 +5,9 @@ import { OrderHistoryPage } from './OrderHistoryPage.js';
 import { CouponManagementPage } from './CouponManagementPage.js';
 
 export class HomePage extends BasePage {
-    private static readonly SHOP_BUTTON_SELECTOR = 'a[href="/shop.html"]';
-    private static readonly ORDER_HISTORY_BUTTON_SELECTOR = 'a[href="/order-history.html"]';
-    private static readonly COUPON_MANAGEMENT_BUTTON_SELECTOR = 'a[href="/coupon-management.html"]';
+    private static readonly SHOP_BUTTON_SELECTOR = "a[href='/shop']";
+    private static readonly ORDER_HISTORY_BUTTON_SELECTOR = "a[href='/order-history']";
+    private static readonly COUPON_MANAGEMENT_BUTTON_SELECTOR = "a[href='/admin-coupons']";
 
     constructor(pageClient: PageClient) {
         super(pageClient);

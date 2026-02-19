@@ -22,8 +22,15 @@ export class ShopUiClient implements AsyncCloseable {
         this.homePage = {} as HomePage;
     }
 
+    private static isHeadless(): boolean {
+        const headed = process.env['HEADED'];
+        if (headed != null) return !Boolean(JSON.parse(headed));
+        return true;
+    }
+
     async openHomePage(): Promise<HomePage> {
-        this.browser = await chromium.launch({ headless: true });
+        const headless = ShopUiClient.isHeadless();
+        this.browser = await chromium.launch({ headless, slowMo: headless ? 0 : 100 });
         this.context = await this.browser!.newContext();
         this.page = await this.context!.newPage();
 
