@@ -121,8 +121,8 @@ export class ShopUiOrderDriver implements OrderDriver {
 
     private async ensureOnOrderDetailsPage(orderNumber: Optional<string>): Promise<Result<void, SystemError>> {
         await this.ensureOnOrderHistoryPage();
-        this.orderHistoryPage!.inputOrderNumber(orderNumber);
-        this.orderHistoryPage!.clickSearch();
+        await this.orderHistoryPage!.inputOrderNumber(orderNumber);
+        await this.orderHistoryPage!.clickSearch();
         const isListed = await this.orderHistoryPage!.isOrderListed(orderNumber);
         if (!isListed) {
             return failure(`Order ${orderNumber} does not exist.`);
