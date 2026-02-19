@@ -14,6 +14,7 @@ export abstract class BasePage {
     private static readonly NOTIFICATION_ERROR_FIELD_SELECTOR =
         "[role='alert'].notification.error .field-error";
     private static readonly NOTIFICATION_ID_ATTRIBUTE = 'data-notification-id';
+    private static readonly NO_NOTIFICATION_ERROR_MESSAGE = 'No notification appeared';
     private static readonly UNRECOGNIZED_NOTIFICATION_ERROR_MESSAGE =
         'Notification type is not recognized';
 
@@ -54,9 +55,13 @@ export abstract class BasePage {
                 ? BasePage.NOTIFICATION_SELECTOR
                 : `${BasePage.NOTIFICATION_SELECTOR}:not([${BasePage.NOTIFICATION_ID_ATTRIBUTE}='${this.lastNotificationId}'])`;
 
-        await this.pageClient.waitForVisibleAsync(selector);
-        const locator = this.pageClient.getLocator(selector);
-        const notificationId = await locator.first().getAttribute(BasePage.NOTIFICATION_ID_ATTRIBUTE);
+        const hasNotification = await this.pageClient.isVisibleAsync(selector);
+
+        if (!hasNotification) {
+            throw new Error(BasePage.NO_NOTIFICATION_ERROR_MESSAGE);
+        }
+
+        const notificationId = await this.pageClient.readAttributeAsync(selector, BasePage.NOTIFICATION_ID_ATTRIBUTE);
 
         if (notificationId == null) {
             throw new Error(
@@ -124,43 +129,6 @@ export abstract class BasePage {
         return selector.replace(
             BasePage.NOTIFICATION_SELECTOR,
             BasePage.NOTIFICATION_SELECTOR + idAttribute
-        );
-    }
-
-    async hasSuccessNotification(): Promise<boolean> {
-        await this.pageClient.waitForVisibleAsync(BasePage.NOTIFICATION_SELECTOR);
-        if (await this.pageClient.isVisibleAsync(BasePage.NOTIFICATION_SUCCESS_SELECTOR)) {
-            return true;
-        }
-        if (await this.pageClient.isVisibleAsync(BasePage.NOTIFICATION_ERROR_SELECTOR)) {
-            return false;
-        }
-        throw new Error('Notification is neither success nor error');
-    }
-
-    async readSuccessNotification(): Promise<string> {
-        return await this.pageClient.readTextContentAsync(BasePage.NOTIFICATION_SUCCESS_SELECTOR);
-    }
-
-    async readErrorNotification(): Promise<string[]> {
-        const text = await this.pageClient.readTextContentAsync(
-            BasePage.NOTIFICATION_ERROR_SELECTOR
-        );
-        return text.split('\n').filter((line: string) => line.trim() !== '');
-    }
-
-    async readGeneralErrorMessage(): Promise<string> {
-        return await this.pageClient.readTextContentAsync(
-            BasePage.NOTIFICATION_ERROR_MESSAGE_SELECTOR
-        );
-    }
-
-    async readFieldErrors(): Promise<string[]> {
-        if (!(await this.pageClient.isVisibleAsync(BasePage.NOTIFICATION_ERROR_FIELD_SELECTOR))) {
-            return [];
-        }
-        return await this.pageClient.readAllTextContentsAsync(
-            BasePage.NOTIFICATION_ERROR_FIELD_SELECTOR
         );
     }
 }

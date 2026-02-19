@@ -21,6 +21,16 @@ export class OrderHistoryPage extends BasePage {
         await this.pageClient.clickAsync(OrderHistoryPage.SEARCH_BUTTON_SELECTOR);
     }
 
+    async waitForOrderRow(orderNumber: Optional<string>, timeoutMilliseconds: number = 10000): Promise<boolean> {
+        try {
+            const rowSelector = OrderHistoryPage.getRowSelector(orderNumber);
+            await this.pageClient.waitForVisibleAsync(rowSelector, timeoutMilliseconds);
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
     async isOrderListed(orderNumber: Optional<string>): Promise<boolean> {
         const rowSelector = OrderHistoryPage.getRowSelector(orderNumber);
         return await this.pageClient.isVisibleAsync(rowSelector);

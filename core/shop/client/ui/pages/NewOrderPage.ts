@@ -36,13 +36,6 @@ export class NewOrderPage extends BasePage {
         await this.pageClient.clickAsync(NewOrderPage.PLACE_ORDER_BUTTON_SELECTOR);
     }
 
-    async getOrderNumber(): Promise<string> {
-        const confirmationMessageText = await this.readSuccessNotification();
-        const match = confirmationMessageText.match(NewOrderPage.ORDER_NUMBER_REGEX);
-        if (!match) throw new Error(NewOrderPage.ORDER_NUMBER_NOT_FOUND_ERROR);
-        return match[NewOrderPage.ORDER_NUMBER_MATCHER_GROUP];
-    }
-
     static getOrderNumber(successMessageText: string): string {
         const match = successMessageText.match(NewOrderPage.ORDER_NUMBER_REGEX);
         if (!match) throw new Error(NewOrderPage.ORDER_NUMBER_NOT_FOUND_ERROR);

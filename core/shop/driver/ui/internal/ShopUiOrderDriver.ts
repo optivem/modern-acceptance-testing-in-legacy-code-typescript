@@ -29,12 +29,13 @@ export class ShopUiOrderDriver implements OrderDriver {
         await page.inputCountry(request.country);
         await page.inputCouponCode(request.couponCode);
         await page.clickPlaceOrder();
-        const hasSuccess = await page.hasSuccessNotification();
-        if (!hasSuccess) {
-            const messages = await page.readErrorNotification();
-            return failure(messages.join(', '));
+
+        const result = await page.getResult();
+        if (result.isFailure()) {
+            return failureWithError(result.getError());
         }
-        const orderNumber = await page.getOrderNumber();
+
+        const orderNumber = NewOrderPage.getOrderNumber(result.getValue());
         return success({ orderNumber });
     }
 
@@ -84,14 +85,17 @@ export class ShopUiOrderDriver implements OrderDriver {
         const viewResult = await this.viewOrder(orderNumber);
         if (viewResult.isFailure()) return viewResult.mapVoid();
         await this.orderDetailsPage!.clickCancelOrder();
-        const hasSuccess = await this.orderDetailsPage!.hasSuccessNotification();
-        if (!hasSuccess) {
+
+        const cancelResult = await this.orderDetailsPage!.getResult();
+        if (cancelResult.isFailure()) {
+            return failureWithError(cancelResult.getError());
+        }
+
+        const successMessage = cancelResult.getValue();
+        if (!successMessage.includes('cancelled successfully!')) {
             return failure('Did not receive expected cancellation success message');
         }
-        const message = await this.orderDetailsPage!.readSuccessNotification();
-        if (message !== 'Order cancelled successfully!') {
-            return failure('Did not receive expected cancellation success message');
-        }
+
         const statusAfter = await this.orderDetailsPage!.getStatus();
         if (statusAfter !== OrderStatus.CANCELLED) {
             return failure('Order status not updated to CANCELLED');
@@ -123,8 +127,8 @@ export class ShopUiOrderDriver implements OrderDriver {
         await this.ensureOnOrderHistoryPage();
         await this.orderHistoryPage!.inputOrderNumber(orderNumber);
         await this.orderHistoryPage!.clickSearch();
-        const isListed = await this.orderHistoryPage!.isOrderListed(orderNumber);
-        if (!isListed) {
+        const isOrderListed = await this.orderHistoryPage!.waitForOrderRow(orderNumber);
+        if (!isOrderListed) {
             return failure(`Order ${orderNumber} does not exist.`);
         }
         this.orderDetailsPage = await this.orderHistoryPage!.clickViewOrderDetails(orderNumber);

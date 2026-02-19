@@ -105,9 +105,15 @@ export class PageClient {
         await locator.waitFor({ state: 'hidden', timeout: this.timeoutMilliseconds });
     }
 
-    async waitForVisibleAsync(selector: string): Promise<void> {
+    async waitForVisibleAsync(selector: string, timeoutMilliseconds?: number): Promise<void> {
         const locator = this.page.locator(selector);
-        await locator.waitFor({ state: 'visible', timeout: this.timeoutMilliseconds });
+        const timeout = timeoutMilliseconds ?? this.timeoutMilliseconds;
+        await locator.waitFor({ state: 'visible', timeout });
+    }
+
+    async readAttributeAsync(selector: string, attributeName: string): Promise<string | null> {
+        const locator = this.page.locator(selector);
+        return await locator.getAttribute(attributeName);
     }
 
     private async getLocatorAsync(selector: string): Promise<Locator> {
