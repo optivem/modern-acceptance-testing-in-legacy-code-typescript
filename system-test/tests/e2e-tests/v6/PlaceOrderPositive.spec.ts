@@ -13,6 +13,15 @@ Channel(ChannelType.UI, ChannelType.API)('should place order with correct subtot
     orderVerifier.hasSubtotalPrice(100.0);
 });
 
+// TODO: VJ: DELETE THIS
+Channel(ChannelType.API)('should place order with correct subtotal price - TEMPORARY', async ({ scenario }) => {
+    const whenClause = await scenario.given().product().withUnitPrice(20.0).when();
+    const success = await (await whenClause.placeOrder()).withQuantity(5).then().shouldSucceed();
+    const orderVerifier = await success.order();
+    orderVerifier.hasSubtotalPrice(100.0);
+});
+
+
 const subtotalPriceCases = [
     { unitPrice: '20.00', quantity: '5', subtotalPrice: '100.00' },
     { unitPrice: '10.00', quantity: '3', subtotalPrice: '30.00' },
