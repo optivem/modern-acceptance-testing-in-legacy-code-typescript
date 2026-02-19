@@ -24,7 +24,7 @@ $Config = @{
             ) },
         @{  Id = "acceptance-api";
             Name = "Acceptance Tests - Channel: API";
-            Command = "npx cross-env CHANNEL=API npm test -- tests/acceptance-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
@@ -33,7 +33,7 @@ $Config = @{
             ) },
         @{  Id = "acceptance-ui";
             Name = "Acceptance Tests - Channel: UI";
-            Command = "npx cross-env CHANNEL=UI npm test -- tests/acceptance-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
@@ -43,7 +43,7 @@ $Config = @{
         @{
             Id = "e2e";
             Name = "E2E Tests";
-            Command = "npm test -- tests/e2e-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=REAL npm test -- tests/e2e-tests";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
@@ -53,7 +53,7 @@ $Config = @{
         @{
             Id = "e2e-api";
             Name = "E2E Tests - Channel: API";
-            Command = "npx cross-env CHANNEL=API npm test -- tests/e2e-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=REAL CHANNEL=API npm test -- tests/e2e-tests";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
@@ -63,7 +63,7 @@ $Config = @{
         @{
             Id = "e2e-ui";
             Name = "E2E Tests - Channel: UI";
-            Command = "npx cross-env CHANNEL=UI npm test -- tests/e2e-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=REAL CHANNEL=UI npm test -- tests/e2e-tests";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
