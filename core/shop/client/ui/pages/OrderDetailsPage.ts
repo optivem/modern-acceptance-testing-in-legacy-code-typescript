@@ -60,51 +60,35 @@ export class OrderDetailsPage extends BasePage {
     }
 
     async getUnitPrice(): Promise<Decimal> {
-        return (await this.pageClient.readInputCurrencyDecimalValueAsync(
-            OrderDetailsPage.UNIT_PRICE_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextMoneyAsync(OrderDetailsPage.UNIT_PRICE_OUTPUT_SELECTOR);
     }
 
     async getBasePrice(): Promise<Decimal> {
-        return (await this.pageClient.readInputCurrencyDecimalValueAsync(
-            OrderDetailsPage.BASE_PRICE_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextMoneyAsync(OrderDetailsPage.BASE_PRICE_OUTPUT_SELECTOR);
     }
 
     async getDiscountRate(): Promise<Decimal> {
-        return (await this.pageClient.readInputPercentageDecimalValueAsync(
-            OrderDetailsPage.DISCOUNT_RATE_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextPercentageAsync(OrderDetailsPage.DISCOUNT_RATE_OUTPUT_SELECTOR);
     }
 
     async getDiscountAmount(): Promise<Decimal> {
-        return (await this.pageClient.readInputCurrencyDecimalValueAsync(
-            OrderDetailsPage.DISCOUNT_AMOUNT_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextMoneyAsync(OrderDetailsPage.DISCOUNT_AMOUNT_OUTPUT_SELECTOR);
     }
 
     async getSubtotalPrice(): Promise<Decimal> {
-        return (await this.pageClient.readInputCurrencyDecimalValueAsync(
-            OrderDetailsPage.SUBTOTAL_PRICE_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextMoneyAsync(OrderDetailsPage.SUBTOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
     async getTaxRate(): Promise<Decimal> {
-        return (await this.pageClient.readInputPercentageDecimalValueAsync(
-            OrderDetailsPage.TAX_RATE_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextPercentageAsync(OrderDetailsPage.TAX_RATE_OUTPUT_SELECTOR);
     }
 
     async getTaxAmount(): Promise<Decimal> {
-        return (await this.pageClient.readInputCurrencyDecimalValueAsync(
-            OrderDetailsPage.TAX_AMOUNT_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextMoneyAsync(OrderDetailsPage.TAX_AMOUNT_OUTPUT_SELECTOR);
     }
 
     async getTotalPrice(): Promise<Decimal> {
-        return (await this.pageClient.readInputCurrencyDecimalValueAsync(
-            OrderDetailsPage.TOTAL_PRICE_OUTPUT_SELECTOR
-        )) as Decimal;
+        return this.readTextMoneyAsync(OrderDetailsPage.TOTAL_PRICE_OUTPUT_SELECTOR);
     }
 
     async getStatus(): Promise<OrderStatus> {
@@ -125,5 +109,17 @@ export class OrderDetailsPage extends BasePage {
 
     async isCancelButtonHidden(): Promise<boolean> {
         return await this.pageClient.isHiddenAsync(OrderDetailsPage.CANCEL_ORDER_OUTPUT_SELECTOR);
+    }
+
+    private async readTextMoneyAsync(selector: string): Promise<Decimal> {
+        const text = await this.pageClient.readTextContentAsync(selector);
+        const cleaned = text.replace('$', '').trim();
+        return Decimal.fromString(cleaned);
+    }
+
+    private async readTextPercentageAsync(selector: string): Promise<Decimal> {
+        const text = await this.pageClient.readTextContentAsync(selector);
+        const cleaned = text.replace('%', '').trim();
+        return Decimal.fromString(cleaned).div(Decimal.fromNumber(100));
     }
 }
