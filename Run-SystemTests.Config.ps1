@@ -49,6 +49,26 @@ $Config = @{
             TestInstallCommands = @(
                 "npm install",
                 "npx playwright install chromium"
+            ) },
+        @{
+            Id = "e2e-api";
+            Name = "E2E Tests - Channel: API";
+            Command = "npx cross-env CHANNEL=API npm test -- tests/e2e-tests";
+            Path = "system-test";
+            TestReportPath = "system-test/playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
+            ) },
+        @{
+            Id = "e2e-ui";
+            Name = "E2E Tests - Channel: UI";
+            Command = "npx cross-env CHANNEL=UI npm test -- tests/e2e-tests";
+            Path = "system-test";
+            TestReportPath = "system-test/playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
             ) }
     )
 }
