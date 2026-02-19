@@ -6,8 +6,8 @@ export class SystemConfiguration {
         private readonly shopApiBaseUrl: string,
         private readonly erpBaseUrl: string,
         private readonly taxBaseUrl: string,
-        private readonly externalSystemMode: ExternalSystemMode,
-        private readonly clockBaseUrl: string = ''
+        private readonly clockBaseUrl: string,
+        private readonly externalSystemMode: ExternalSystemMode
     ) {}
 
     getShopUiBaseUrl(): string {

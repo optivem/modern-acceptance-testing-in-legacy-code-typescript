@@ -6,17 +6,9 @@ export interface TestConfig {
     shopApi: string;
     erpApi: string;
     taxApi: string;
+    clockApi: string;
   };
 }
-
-export const testConfig: TestConfig = {
-  urls: {
-    shopUi: process.env.SHOP_UI_BASE_URL || 'http://localhost:3001',
-    shopApi: process.env.SHOP_API_BASE_URL || 'http://localhost:8081',
-    erpApi: process.env.ERP_API_BASE_URL || 'http://localhost:9001/erp',
-    taxApi: process.env.TAX_API_BASE_URL || 'http://localhost:9001/tax',
-  },
-};
 
 /** Resolves external system mode from env (for tests that need to pass it into load/create). */
 export function getExternalSystemMode(): ExternalSystemMode {
@@ -24,5 +16,22 @@ export function getExternalSystemMode(): ExternalSystemMode {
     ? ExternalSystemMode.STUB
     : ExternalSystemMode.REAL;
 }
+
+/**
+ * Mode-aware URL defaults — mirrors .NET appsettings.*.stub.json / appsettings.*.real.json.
+ */
+function isStub(): boolean {
+  return getExternalSystemMode() === ExternalSystemMode.STUB;
+}
+
+export const testConfig: TestConfig = {
+  urls: {
+    shopUi:   process.env.SHOP_UI_BASE_URL  || (isStub() ? 'http://localhost:3002' : 'http://localhost:3001'),
+    shopApi:  process.env.SHOP_API_BASE_URL || (isStub() ? 'http://localhost:8082' : 'http://localhost:8081'),
+    erpApi:   process.env.ERP_API_BASE_URL  || (isStub() ? 'http://localhost:9002/erp'   : 'http://localhost:9001/erp'),
+    taxApi:   process.env.TAX_API_BASE_URL  || (isStub() ? 'http://localhost:9002/tax'   : 'http://localhost:9001/tax'),
+    clockApi: process.env.CLOCK_API_BASE_URL || (isStub() ? 'http://localhost:9002/clock' : 'http://localhost:9001/clock'),
+  },
+};
 
 

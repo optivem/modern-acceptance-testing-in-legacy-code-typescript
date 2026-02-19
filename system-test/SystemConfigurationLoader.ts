@@ -9,6 +9,7 @@ export class SystemConfigurationLoader {
       testConfig.urls.shopApi,
       testConfig.urls.erpApi,
       testConfig.urls.taxApi,
+      testConfig.urls.clockApi,
       externalSystemMode
     );
   }

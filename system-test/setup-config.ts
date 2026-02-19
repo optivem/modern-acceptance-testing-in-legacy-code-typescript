@@ -8,6 +8,6 @@ setConfigurationLoader((mode: ExternalSystemMode): LoadedConfiguration => ({
     shopApiBaseUrl: testConfig.urls.shopApi,
     erpBaseUrl: testConfig.urls.erpApi,
     taxBaseUrl: testConfig.urls.taxApi,
-    clockBaseUrl: '',
+    clockBaseUrl: testConfig.urls.clockApi,
     externalSystemMode: mode,
 }));

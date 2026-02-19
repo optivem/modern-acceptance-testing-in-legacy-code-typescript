@@ -7,6 +7,8 @@ import { from as toExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.
 import type { ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
 
 export class ErpStubClient extends BaseErpClient {
+    private static readonly ERP_PRODUCTS_ENDPOINT = '/erp/api/products';
+
     private readonly wireMockClient: JsonWireMockClient;
 
     constructor(baseUrl: string) {
@@ -15,7 +17,7 @@ export class ErpStubClient extends BaseErpClient {
     }
 
     configureGetProduct(response: ExtProductDetailsResponse): Promise<Result<void, ExtErpErrorResponse>> {
-        const path = `${BaseErpClient.PRODUCTS_ENDPOINT}/${response.id}`;
+        const path = `${ErpStubClient.ERP_PRODUCTS_ENDPOINT}/${response.id}`;
         return this.wireMockClient.stubGet(path, HttpStatus.OK, response).then((r) => r.mapError(toExtErpErrorResponse));
     }
 }

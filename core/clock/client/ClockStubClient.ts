@@ -26,7 +26,7 @@ export class ClockStubClient {
 
     async configureGetTime(response: ExtGetTimeResponse): Promise<Result<void, ExtClockErrorResponse>> {
         return this.wireMockClient
-            .stubGet(ClockStubClient.TIME_ENDPOINT, HttpStatus.OK, response)
+            .stubGet('/clock/api/time', HttpStatus.OK, response)
             .then((r) => r.mapError(fromExtClockError));
     }
 }
