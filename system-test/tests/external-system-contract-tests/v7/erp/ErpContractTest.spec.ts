@@ -18,6 +18,6 @@ test.describe('ERP Contract Tests', () => {
             .execute())
             .shouldSucceed()
             .sku('SKU-123')
-            .price(12.0);
+            .price('12.0');
     });
 });
