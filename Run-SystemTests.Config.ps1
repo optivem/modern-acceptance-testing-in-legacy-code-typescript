@@ -19,7 +19,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html"
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "acceptance-api";
@@ -28,7 +27,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "acceptance-ui";
@@ -37,7 +35,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "acceptance-isolated-api";
@@ -46,7 +43,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "acceptance-isolated-ui";
@@ -55,7 +51,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "contract-stub";
@@ -64,7 +59,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{  Id = "contract-real";
@@ -73,7 +67,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{
@@ -83,7 +76,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{
@@ -93,7 +85,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) },
         @{
@@ -103,7 +94,6 @@ $Config = @{
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
-                "npm install",
                 "npx playwright install chromium"
             ) }
     )
