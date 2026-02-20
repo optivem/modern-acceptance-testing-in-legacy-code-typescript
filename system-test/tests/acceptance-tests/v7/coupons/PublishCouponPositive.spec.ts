@@ -14,9 +14,7 @@ Channel(ChannelType.UI, ChannelType.API)('should be able to publish coupon with 
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should be able to correctly save coupon', async ({ scenario }) => {
-    const success = await scenario.when().publishCoupon().withCouponCode('SUMMER2025').withDiscountRate(0.15).withValidFrom('2024-06-01T00:00:00Z').withValidTo('2024-08-31T23:59:00Z').withUsageLimit(100).then().shouldSucceed();
-    const couponVerifier = await success.coupon('SUMMER2025');
-    couponVerifier
+    await scenario.when().publishCoupon().withCouponCode('SUMMER2025').withDiscountRate(0.15).withValidFrom('2024-06-01T00:00:00Z').withValidTo('2024-08-31T23:59:00Z').withUsageLimit(100).then().shouldSucceed().coupon('SUMMER2025')
         .hasDiscountRate(0.15)
         .isValidFrom('2024-06-01T00:00:00Z')
         .isValidTo('2024-08-31T23:59:00Z')

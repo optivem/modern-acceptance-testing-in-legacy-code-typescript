@@ -7,7 +7,7 @@ import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 
 Channel(ChannelType.UI, ChannelType.API)('should be able to place order for valid input', async ({ scenario }) => {
-    const whenClause = await scenario
+    const whenClause = scenario
         .given()
         .product()
         .withSku('ABC')
@@ -21,16 +21,19 @@ Channel(ChannelType.UI, ChannelType.API)('should be able to place order for vali
 });
 
 Channel(ChannelType.UI, ChannelType.API)('order status should be placed after placing order', async ({ scenario }) => {
-    const success = await scenario.when().placeOrder().then().shouldSucceed();
-    const orderVerifier = await success.order();
-    orderVerifier.hasStatus(OrderStatus.PLACED);
+    await scenario.when().placeOrder().then().shouldSucceed().order().hasStatus(OrderStatus.PLACED);
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should calculate base price as product of unit price and quantity', async ({ scenario }) => {
-    const whenClause = await scenario.given().product().withUnitPrice(20.0).when();
-    const success = await whenClause.placeOrder().withQuantity(5).then().shouldSucceed();
-    const orderVerifier = await success.order();
-    orderVerifier.hasBasePrice(100.0);
+    await scenario.given().product().withUnitPrice(20.0).when()
+        .placeOrder().withQuantity(5).then().shouldSucceed().order()
+        .hasBasePrice(100.0);
+});
+
+Channel(ChannelType.API)('order price calculation - single chain test', async ({ scenario }) => {
+    await scenario.given().product().withUnitPrice(20.0).when()
+        .placeOrder().withQuantity(5).then().shouldSucceed().order()
+        .hasBasePrice(100.0);
 });
 
 const basePriceCases = [
@@ -42,35 +45,30 @@ const basePriceCases = [
 
 Channel(ChannelType.UI, ChannelType.API)('should place order with correct base price parameterized', async ({ scenario }) => {
     for (const { unitPrice, quantity, basePrice } of basePriceCases) {
-        const whenClause = await scenario.given().product().withUnitPrice(unitPrice).when();
-        const success = await whenClause.placeOrder().withQuantity(quantity).then().shouldSucceed();
-        const orderVerifier = await success.order();
-        orderVerifier.hasBasePrice(basePrice);
+        await scenario.given().product().withUnitPrice(unitPrice).when()
+            .placeOrder().withQuantity(quantity).then().shouldSucceed().order()
+            .hasBasePrice(basePrice);
     }
 });
 
 Channel(ChannelType.UI, ChannelType.API)('order prefix should be ORD', async ({ scenario }) => {
-    const success = await scenario.when().placeOrder().then().shouldSucceed();
-    const orderVerifier = await success.order();
-    orderVerifier.hasOrderNumberPrefix('ORD-');
+    await scenario.when().placeOrder().then().shouldSucceed().order()
+        .hasOrderNumberPrefix('ORD-');
 });
 
 Channel(ChannelType.UI, ChannelType.API)('discount rate should be applied for coupon', async ({ scenario }) => {
-    const whenClause = await scenario
+    const whenClause = scenario
         .given()
         .coupon()
         .withCouponCode('SUMMER2025')
         .withDiscountRate(0.15)
         .when();
-    const success = await whenClause.placeOrder().withCouponCode('SUMMER2025').then().shouldSucceed();
-    const orderVerifier = await success.order();
-    orderVerifier.hasAppliedCoupon('SUMMER2025').hasDiscountRate(0.15);
+    await whenClause.placeOrder().withCouponCode('SUMMER2025').then().shouldSucceed().order()
+        .hasAppliedCoupon('SUMMER2025').hasDiscountRate(0.15);
 });
 
 Channel(ChannelType.UI, ChannelType.API)('discount rate should not be applied when there is no coupon', async ({ scenario }) => {
-    const success = await scenario.when().placeOrder().withCouponCode(null).then().shouldSucceed();
-    const orderVerifier = await success.order();
-    orderVerifier
+    await scenario.when().placeOrder().withCouponCode(null).then().shouldSucceed().order()
         .hasStatus(OrderStatus.PLACED)
         .hasAppliedCoupon(null as unknown as string)
         .hasDiscountRate(0.0)
@@ -80,10 +78,8 @@ Channel(ChannelType.UI, ChannelType.API)('discount rate should not be applied wh
 Channel(ChannelType.UI, ChannelType.API)(
     'subtotal price should be calculated as the base price minus discount amount when we have coupon',
     async ({ scenario }) => {
-        const whenClause = await scenario.given().coupon().withDiscountRate(0.15).and().product().withUnitPrice(20.0).when();
-        const success = await whenClause.placeOrder().withCouponCode().withQuantity(5).then().shouldSucceed();
-        const orderVerifier = await success.order();
-        orderVerifier
+        await scenario.given().coupon().withDiscountRate(0.15).and().product().withUnitPrice(20.0).when()
+            .placeOrder().withCouponCode().withQuantity(5).then().shouldSucceed().order()
             .hasAppliedCoupon()
             .hasDiscountRate(0.15)
             .hasBasePrice(100.0)
@@ -93,10 +89,9 @@ Channel(ChannelType.UI, ChannelType.API)(
 );
 
 Channel(ChannelType.UI, ChannelType.API)('subtotal price should be same as base price when no coupon', async ({ scenario }) => {
-    const whenClause = await scenario.given().product().withUnitPrice(20.0).when();
-    const success = await whenClause.placeOrder().withQuantity(5).then().shouldSucceed();
-    const orderVerifier = await success.order();
-    orderVerifier.hasBasePrice(100.0).hasDiscountAmount(0.0).hasSubtotalPrice(100.0);
+    await scenario.given().product().withUnitPrice(20.0).when()
+        .placeOrder().withQuantity(5).then().shouldSucceed().order()
+        .hasBasePrice(100.0).hasDiscountAmount(0.0).hasSubtotalPrice(100.0);
 });
 
 const taxRateCases = [
@@ -106,10 +101,9 @@ const taxRateCases = [
 
 Channel(ChannelType.UI, ChannelType.API)('correct tax rate should be used based on country', async ({ scenario }) => {
     for (const { country, taxRate } of taxRateCases) {
-        const whenClause = await scenario.given().country().withCode(country).withTaxRate(taxRate).when();
-        const success = await whenClause.placeOrder().withCountry(country).then().shouldSucceed();
-        const orderVerifier = await success.order();
-        orderVerifier.hasTaxRate(taxRate);
+        await scenario.given().country().withCode(country).withTaxRate(taxRate).when()
+            .placeOrder().withCountry(country).then().shouldSucceed().order()
+            .hasTaxRate(taxRate);
     }
 });
 
@@ -122,7 +116,7 @@ Channel(ChannelType.UI, ChannelType.API)(
     'total price should be subtotal price plus tax amount',
     async ({ scenario }) => {
         for (const { country, taxRate, subtotalPrice, expectedTaxAmount, expectedTotalPrice } of totalPriceCases) {
-            const whenClause = await scenario
+            await scenario
                 .given()
                 .country()
                 .withCode(country)
@@ -130,10 +124,8 @@ Channel(ChannelType.UI, ChannelType.API)(
                 .and()
                 .product()
                 .withUnitPrice(subtotalPrice)
-                .when();
-            const success = await whenClause.placeOrder().withCountry(country).withQuantity(1).then().shouldSucceed();
-            const orderVerifier = await success.order();
-            orderVerifier
+                .when()
+                .placeOrder().withCountry(country).withQuantity(1).then().shouldSucceed().order()
                 .hasTaxRate(taxRate)
                 .hasSubtotalPrice(subtotalPrice)
                 .hasTaxAmount(expectedTaxAmount)
@@ -143,8 +135,7 @@ Channel(ChannelType.UI, ChannelType.API)(
 );
 
 Channel(ChannelType.UI, ChannelType.API)('coupon usage count has been incremented after its been used', async ({ scenario }) => {
-    const whenClause = await scenario.given().coupon().withCouponCode('SUMMER2025').when();
-    const success = await whenClause.placeOrder().withCouponCode('SUMMER2025').then().shouldSucceed();
-    const couponVerifier = await success.coupon('SUMMER2025');
-    couponVerifier.hasUsedCount(1);
+    await scenario.given().coupon().withCouponCode('SUMMER2025').when()
+        .placeOrder().withCouponCode('SUMMER2025').then().shouldSucceed().coupon('SUMMER2025')
+        .hasUsedCount(1);
 });

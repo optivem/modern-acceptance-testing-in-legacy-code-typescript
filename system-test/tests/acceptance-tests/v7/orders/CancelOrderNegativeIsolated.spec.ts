@@ -25,15 +25,16 @@ test.describe('@isolated', () => {
         Channel(ChannelType.UI, ChannelType.API)(
             `cannot cancel an order on 31st Dec between 22:00 and 22:30 (${time})`,
             async ({ scenario }) => {
-                const whenClause = await scenario
+                await scenario
                     .given()
                     .clock().withTime(time)
                     .and().order().withStatus(OrderStatus.PLACED)
-                    .when();
-                const failure = await whenClause.cancelOrder().then().shouldFail();
-                failure.errorMessage(BLACKOUT_ERROR);
-                const orderVerifier = await failure.order();
-                orderVerifier.hasStatus(OrderStatus.PLACED);
+                    .when()
+                    .cancelOrder().then()
+                    .shouldFail()
+                    .errorMessage(BLACKOUT_ERROR)
+                    .and().order()
+                    .hasStatus(OrderStatus.PLACED);
             }
         );
     }

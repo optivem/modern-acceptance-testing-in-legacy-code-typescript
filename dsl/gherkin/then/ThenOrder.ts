@@ -1,85 +1,69 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
-import type { ExecutionResultContext } from '../ExecutionResultContext.js';
+import type { ExecutionResult } from '../ExecutionResult.js';
 import type { ViewOrderVerification } from '@optivem/core/shop/dsl/usecases/orders/ViewOrderVerification.js';
 import type { PlaceOrderVerification } from '@optivem/core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
+import type { ThenClause } from './Then.js';
 
-export class ThenOrderVerifier<
+/**
+ * Base deferred order verifier. Collects has*() assertions as lambdas and only
+ * executes when awaited — matching .NET's BaseThenResultOrder<T> + GetAwaiter().
+ *
+ * Subclasses override runPrelude() to handle success vs failure paths.
+ */
+export abstract class BaseThenOrderVerifier<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse>
-> {
-    private constructor(
-        private readonly app: SystemDsl,
-        private readonly executionResult: ExecutionResultContext,
-        private readonly orderNumber: string,
-        private readonly successVerification: TSuccessVerification | null,
-        private readonly orderVerification: ViewOrderVerification
+> implements PromiseLike<void> {
+    protected readonly verifications: Array<(v: ViewOrderVerification) => void> = [];
+
+    constructor(
+        protected readonly thenClause: ThenClause<TSuccessResponse, TSuccessVerification>,
+        protected readonly orderNumberFactory: () => Promise<string>
     ) {}
+
+    protected abstract runPrelude(result: ExecutionResult<TSuccessResponse, TSuccessVerification>): void;
 
     and(): this {
         return this;
     }
 
-    static async create<TSuccessResponse, TSuccessVerification extends ResponseVerification<TSuccessResponse>>(
-        app: SystemDsl,
-        executionResult: ExecutionResultContext,
-        orderNumber: string,
-        successVerification: TSuccessVerification | null
-    ): Promise<ThenOrderVerifier<TSuccessResponse, TSuccessVerification>> {
-        if (orderNumber == null) {
-            throw new Error(
-                'Cannot verify order: no order number available from the executed operation'
-            );
-        }
-        const viewOrderResult = await app
-            .shop()
-            .viewOrder()
-            .orderNumber(orderNumber)
-            .execute();
-        const orderVerification = viewOrderResult.shouldSucceed();
-        return new ThenOrderVerifier(
-            app,
-            executionResult,
-            orderNumber,
-            successVerification,
-            orderVerification
-        );
-    }
-
     hasSku(expectedSku: string): this {
-        this.orderVerification.sku(expectedSku);
+        this.verifications.push((v) => v.sku(expectedSku));
         return this;
     }
 
     hasQuantity(expectedQuantity: number): this {
-        this.orderVerification.quantity(expectedQuantity);
+        this.verifications.push((v) => v.quantity(expectedQuantity));
         return this;
     }
 
     hasCountry(expectedCountry: string): this {
-        this.orderVerification.country(expectedCountry);
+        this.verifications.push((v) => v.country(expectedCountry));
         return this;
     }
 
     hasUnitPrice(expectedUnitPrice: number): this {
-        this.orderVerification.unitPrice(expectedUnitPrice);
+        this.verifications.push((v) => v.unitPrice(expectedUnitPrice));
         return this;
     }
 
     hasBasePrice(expectedBasePrice: number): this;
     hasBasePrice(basePrice: string): this;
     hasBasePrice(basePrice: number | string): this {
-        this.orderVerification.basePrice(basePrice);
+        this.verifications.push((v) => v.basePrice(basePrice));
         return this;
     }
 
     hasSubtotalPrice(expectedSubtotalPrice: number): this;
     hasSubtotalPrice(expectedSubtotalPrice: string): this;
     hasSubtotalPrice(expectedSubtotalPrice: number | string): this {
-        this.orderVerification.subtotalPrice(
-            typeof expectedSubtotalPrice === 'string' ? parseFloat(expectedSubtotalPrice) : expectedSubtotalPrice
+        this.verifications.push((v) =>
+            v.subtotalPrice(
+                typeof expectedSubtotalPrice === 'string' ? parseFloat(expectedSubtotalPrice) : expectedSubtotalPrice
+            )
         );
         return this;
     }
@@ -87,91 +71,147 @@ export class ThenOrderVerifier<
     hasTotalPrice(expectedTotalPrice: number): this;
     hasTotalPrice(expectedTotalPrice: string): this;
     hasTotalPrice(expectedTotalPrice: number | string): this {
-        this.orderVerification.totalPrice(expectedTotalPrice);
+        this.verifications.push((v) => v.totalPrice(expectedTotalPrice));
         return this;
     }
 
     hasStatus(expectedStatus: OrderStatus): this {
-        this.orderVerification.status(expectedStatus);
+        this.verifications.push((v) => v.status(expectedStatus));
         return this;
     }
 
     hasDiscountRateGreaterThanOrEqualToZero(): this {
-        this.orderVerification.discountRateGreaterThanOrEqualToZero();
+        this.verifications.push((v) => v.discountRateGreaterThanOrEqualToZero());
         return this;
     }
 
     hasDiscountRate(expectedDiscountRate: number): this {
-        this.orderVerification.discountRate(expectedDiscountRate);
+        this.verifications.push((v) => v.discountRate(expectedDiscountRate));
         return this;
     }
 
     hasDiscountAmount(expectedDiscountAmount: number): this;
     hasDiscountAmount(expectedDiscountAmount: string): this;
     hasDiscountAmount(expectedDiscountAmount: number | string): this {
-        this.orderVerification.discountAmount(expectedDiscountAmount);
+        this.verifications.push((v) => v.discountAmount(expectedDiscountAmount));
         return this;
     }
 
     hasAppliedCoupon(expectedCouponCode: string | null): this;
     hasAppliedCoupon(): this;
     hasAppliedCoupon(expectedCouponCode?: string | null): this {
-        // undefined (no-arg) → use default coupon alias; null → pass through (checks null in response) — mirrors Java
         const resolved = expectedCouponCode === undefined ? GherkinDefaults.DEFAULT_COUPON_CODE : expectedCouponCode;
-        this.orderVerification.appliedCouponCode(resolved);
+        this.verifications.push((v) => v.appliedCouponCode(resolved));
         return this;
     }
 
     hasDiscountAmountGreaterThanOrEqualToZero(): this {
-        this.orderVerification.discountAmountGreaterThanOrEqualToZero();
+        this.verifications.push((v) => v.discountAmountGreaterThanOrEqualToZero());
         return this;
     }
 
     hasSubtotalPriceGreaterThanZero(): this {
-        this.orderVerification.subtotalPriceGreaterThanZero();
+        this.verifications.push((v) => v.subtotalPriceGreaterThanZero());
         return this;
     }
 
     hasTaxRate(expectedTaxRate: number): this;
     hasTaxRate(expectedTaxRate: string): this;
     hasTaxRate(expectedTaxRate: number | string): this {
-        this.orderVerification.taxRate(expectedTaxRate);
+        this.verifications.push((v) => v.taxRate(expectedTaxRate));
         return this;
     }
 
     hasTaxRateGreaterThanOrEqualToZero(): this {
-        this.orderVerification.taxRateGreaterThanOrEqualToZero();
+        this.verifications.push((v) => v.taxRateGreaterThanOrEqualToZero());
         return this;
     }
 
     hasTaxAmount(expectedTaxAmount: number): this;
     hasTaxAmount(expectedTaxAmount: string): this;
     hasTaxAmount(expectedTaxAmount: number | string): this {
-        this.orderVerification.taxAmount(expectedTaxAmount);
+        this.verifications.push((v) => v.taxAmount(expectedTaxAmount));
         return this;
     }
 
     hasTaxAmountGreaterThanOrEqualToZero(): this {
-        this.orderVerification.taxAmountGreaterThanOrEqualToZero();
+        this.verifications.push((v) => v.taxAmountGreaterThanOrEqualToZero());
         return this;
     }
 
     hasTotalPriceGreaterThanZero(): this {
-        this.orderVerification.totalPriceGreaterThanZero();
+        this.verifications.push((v) => v.totalPriceGreaterThanZero());
         return this;
     }
 
     hasOrderNumberPrefix(expectedPrefix: string): this {
-        const sv = this.successVerification;
-        if (sv != null) {
-            if ('orderNumberStartsWith' in sv && typeof (sv as unknown as PlaceOrderVerification).orderNumberStartsWith === 'function') {
-                (sv as unknown as PlaceOrderVerification).orderNumberStartsWith(expectedPrefix);
-            }
-            if ('orderNumberHasPrefix' in sv && typeof (sv as unknown as ViewOrderVerification).orderNumberHasPrefix === 'function') {
-                (sv as unknown as ViewOrderVerification).orderNumberHasPrefix(expectedPrefix);
-            }
-        }
-        this.orderVerification.orderNumberHasPrefix(expectedPrefix);
+        this.verifications.push((v) => v.orderNumberHasPrefix(expectedPrefix));
         return this;
+    }
+
+    /** PromiseLike — when awaited, executes the full chain. */
+    then<TResult1 = void, TResult2 = never>(
+        onfulfilled?: ((value: void) => TResult1 | PromiseLike<TResult1>) | null,
+        onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null
+    ): PromiseLike<TResult1 | TResult2> {
+        return this.execute().then(onfulfilled, onrejected);
+    }
+
+    private async execute(): Promise<void> {
+        const result = await this.thenClause.getExecutionResult();
+        this.runPrelude(result);
+
+        const orderNumber = await this.orderNumberFactory();
+        const viewOrderResult = await this.thenClause.app
+            .shop()
+            .viewOrder()
+            .orderNumber(orderNumber)
+            .execute();
+        const verification = viewOrderResult.shouldSucceed();
+
+        for (const v of this.verifications) {
+            v(verification);
+        }
+    }
+}
+
+/**
+ * Deferred order verifier for the success path.
+ * runPrelude calls shouldSucceed() on the execution result.
+ */
+export class ThenSuccessOrderVerifier<
+    TSuccessResponse,
+    TSuccessVerification extends ResponseVerification<TSuccessResponse>
+> extends BaseThenOrderVerifier<TSuccessResponse, TSuccessVerification> {
+
+    protected runPrelude(result: ExecutionResult<TSuccessResponse, TSuccessVerification>): void {
+        result.getResult().shouldSucceed();
+    }
+}
+
+/**
+ * Deferred order verifier for the failure path.
+ * runPrelude calls shouldFail() and runs the collected failure assertions.
+ */
+export class ThenFailureOrderVerifier<
+    TSuccessResponse,
+    TSuccessVerification extends ResponseVerification<TSuccessResponse>
+> extends BaseThenOrderVerifier<TSuccessResponse, TSuccessVerification> {
+    private readonly failureAssertions: Array<(v: import('@optivem/core/shop/dsl/usecases/base/SystemErrorFailureVerification.js').SystemErrorFailureVerification) => void>;
+
+    constructor(
+        thenClause: ThenClause<TSuccessResponse, TSuccessVerification>,
+        failureAssertions: Array<(v: import('@optivem/core/shop/dsl/usecases/base/SystemErrorFailureVerification.js').SystemErrorFailureVerification) => void>,
+        orderNumberFactory: () => Promise<string>
+    ) {
+        super(thenClause, orderNumberFactory);
+        this.failureAssertions = failureAssertions;
+    }
+
+    protected runPrelude(result: ExecutionResult<TSuccessResponse, TSuccessVerification>): void {
+        const failureVerification = result.getResult().shouldFail();
+        for (const assertion of this.failureAssertions) {
+            assertion(failureVerification);
+        }
     }
 }

@@ -9,7 +9,7 @@ export abstract class BaseGivenBuilder {
         return this.givenClause;
     }
 
-    when(): Promise<WhenClause> {
+    when(): WhenClause {
         return this.givenClause.when();
     }
 

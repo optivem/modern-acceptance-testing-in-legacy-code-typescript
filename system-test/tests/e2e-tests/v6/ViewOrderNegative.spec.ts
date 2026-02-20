@@ -13,7 +13,8 @@ const nonExistentOrderCases = [
 
 Channel(ChannelType.UI, ChannelType.API)('should not be able to view non-existent order', async ({ scenario }) => {
     for (const { orderNumber, expectedMessage } of nonExistentOrderCases) {
-        const failure = await scenario.when().viewOrder().withOrderNumber(orderNumber).then().shouldFail();
-        failure.errorMessage(expectedMessage);
+        await scenario.when().viewOrder().withOrderNumber(orderNumber).then()
+            .shouldFail()
+            .errorMessage(expectedMessage);
     }
 });

@@ -14,18 +14,21 @@ const nonExistentOrderCases = [
 
 Channel(ChannelType.API)('should not cancel non-existent order', async ({ scenario }) => {
     for (const { orderNumber, message } of nonExistentOrderCases) {
-        const failure = await scenario.when().cancelOrder().withOrderNumber(orderNumber).then().shouldFail();
-        failure.errorMessage(message);
+        await scenario.when().cancelOrder().withOrderNumber(orderNumber).then()
+            .shouldFail()
+            .errorMessage(message);
     }
 });
 
 Channel(ChannelType.API)('should not cancel already cancelled order', async ({ scenario }) => {
-    const whenClause = await scenario.given().order().withStatus(OrderStatus.CANCELLED).when();
-    const failure = await whenClause.cancelOrder().then().shouldFail();
-    failure.errorMessage('Order has already been cancelled');
+    const whenClause = scenario.given().order().withStatus(OrderStatus.CANCELLED).when();
+    await whenClause.cancelOrder().then()
+        .shouldFail()
+        .errorMessage('Order has already been cancelled');
 });
 
 Channel(ChannelType.API)('cannot cancel non-existent order', async ({ scenario }) => {
-    const failure = await scenario.when().cancelOrder().withOrderNumber('non-existent-order-12345').then().shouldFail();
-    failure.errorMessage('Order non-existent-order-12345 does not exist.');
+    await scenario.when().cancelOrder().withOrderNumber('non-existent-order-12345').then()
+        .shouldFail()
+        .errorMessage('Order non-existent-order-12345 does not exist.');
 });

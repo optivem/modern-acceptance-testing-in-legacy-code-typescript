@@ -14,8 +14,8 @@ export class PublishCouponBuilder extends BaseWhenBuilder<void, VoidVerification
     private validToValue: Optional<string>;
     private usageLimitValue: Optional<string>;
 
-    constructor(app: SystemDsl) {
-        super(app);
+    constructor(app: SystemDsl, setup?: () => Promise<void>) {
+        super(app, setup);
         this.withCouponCode(GherkinDefaults.DEFAULT_COUPON_CODE);
         this.withDiscountRate(GherkinDefaults.DEFAULT_DISCOUNT_RATE);
     }

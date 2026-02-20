@@ -11,10 +11,15 @@ export class WhenClause {
     constructor(
         private readonly app: SystemDsl,
         private hasProduct: boolean = false,
-        private hasTaxRate: boolean = false
+        private hasTaxRate: boolean = false,
+        private readonly givenSetup?: () => Promise<void>
     ) {}
 
-    private async ensureDefaults(): Promise<void> {
+    private async ensureGiven(): Promise<void> {
+        if (this.givenSetup) {
+            await this.givenSetup();
+        }
+
         if (!this.hasProduct) {
             try {
                 await this.app
@@ -51,19 +56,19 @@ export class WhenClause {
     }
 
     placeOrder(): PlaceOrderBuilder {
-        return new PlaceOrderBuilder(this.app, () => this.ensureDefaults());
+        return new PlaceOrderBuilder(this.app, () => this.ensureGiven());
     }
 
     cancelOrder(): CancelOrderBuilder {
-        return new CancelOrderBuilder(this.app, () => this.ensureDefaults());
+        return new CancelOrderBuilder(this.app, () => this.ensureGiven());
     }
 
     viewOrder(): ViewOrderBuilder {
-        return new ViewOrderBuilder(this.app, () => this.ensureDefaults());
+        return new ViewOrderBuilder(this.app, () => this.ensureGiven());
     }
 
     publishCoupon(): PublishCouponBuilder {
-        return new PublishCouponBuilder(this.app);
+        return new PublishCouponBuilder(this.app, this.givenSetup);
     }
 
     browseCoupons(): BrowseCouponsBuilder {

@@ -55,12 +55,20 @@ export class GivenClause {
         return couponBuilder;
     }
 
-    async when(): Promise<WhenClause> {
+    when(): WhenClause {
+        return new WhenClause(
+            this.app,
+            this.products.length > 0,
+            this.countries.length > 0,
+            () => this.setupGiven()
+        );
+    }
+
+    private async setupGiven(): Promise<void> {
         await this.setupClock();
         await this.setupErp();
         await this.setupTax();
         await this.setupShop();
-        return new WhenClause(this.app, this.products.length > 0, this.countries.length > 0);
     }
 
     private async setupClock(): Promise<void> {

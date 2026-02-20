@@ -11,14 +11,13 @@ Channel(ChannelType.UI, ChannelType.API)(
     'cannot publish coupon with zero or negative discount',
     async ({ scenario }) => {
         for (const discountRate of ['0.0', '-0.01', '-0.15']) {
-            const failure = await scenario
+            await scenario
                 .when()
                 .publishCoupon()
                 .withCouponCode('INVALID-COUPON')
                 .withDiscountRate(discountRate)
                 .then()
-                .shouldFail();
-            failure
+                .shouldFail()
                 .errorMessage(validationError)
                 .fieldErrorMessage('discountRate', 'Discount rate must be greater than 0.00');
         }
@@ -29,14 +28,13 @@ Channel(ChannelType.UI, ChannelType.API)(
     'cannot publish coupon with discount greater than 100 percent',
     async ({ scenario }) => {
         for (const discountRate of ['1.01', '2.00']) {
-            const failure = await scenario
+            await scenario
                 .when()
                 .publishCoupon()
                 .withCouponCode('INVALID-COUPON')
                 .withDiscountRate(discountRate)
                 .then()
-                .shouldFail();
-            failure
+                .shouldFail()
                 .errorMessage(validationError)
                 .fieldErrorMessage('discountRate', 'Discount rate must be at most 1.00');
         }
@@ -44,19 +42,17 @@ Channel(ChannelType.UI, ChannelType.API)(
 );
 
 Channel(ChannelType.UI, ChannelType.API)('cannot publish coupon with duplicate coupon code', async ({ scenario }) => {
-    const whenClause = await scenario
+    await scenario
         .given()
         .coupon()
         .withCouponCode('EXISTING-COUPON')
         .withDiscountRate(0.1)
-        .when();
-    const failure = await whenClause
+        .when()
         .publishCoupon()
         .withCouponCode('EXISTING-COUPON')
         .withDiscountRate(0.2)
         .then()
-        .shouldFail();
-    failure
+        .shouldFail()
         .errorMessage(validationError)
         .fieldErrorMessage('couponCode', 'Coupon code EXISTING-COUPON already exists');
 });
@@ -65,15 +61,14 @@ Channel(ChannelType.UI, ChannelType.API)(
     'cannot publish coupon with zero or negative usage limit',
     async ({ scenario }) => {
         for (const usageLimit of ['0', '-1', '-100']) {
-            const failure = await scenario
+            await scenario
                 .when()
                 .publishCoupon()
                 .withCouponCode('INVALID-LIMIT')
                 .withDiscountRate(0.15)
                 .withUsageLimit(usageLimit)
                 .then()
-                .shouldFail();
-            failure
+                .shouldFail()
                 .errorMessage(validationError)
                 .fieldErrorMessage('usageLimit', 'Usage limit must be positive');
         }
