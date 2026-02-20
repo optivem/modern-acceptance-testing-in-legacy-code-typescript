@@ -40,6 +40,24 @@ $Config = @{
                 "npm install",
                 "npx playwright install chromium"
             ) },
+        @{  Id = "contract-stub";
+            Name = "External System Contract Tests - Stubbed External Systems";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB npm test -- tests/external-system-contract-tests";
+            Path = "system-test";
+            TestReportPath = "system-test/playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
+            ) },
+        @{  Id = "contract-real";
+            Name = "External System Contract Tests - Real External Systems";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=REAL npm test -- tests/external-system-contract-tests";
+            Path = "system-test";
+            TestReportPath = "system-test/playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
+            ) },
         @{
             Id = "e2e";
             Name = "E2E Tests";
