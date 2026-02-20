@@ -1,8 +1,7 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResult } from '../ExecutionResult.js';
-import { ThenClause } from '../then/Then.js';
-import { PendingThen } from '../then/PendingThen.js';
+import { createThenInternal, PendingThen } from '../then/Then.js';
 
 export abstract class BaseWhenBuilder<
     TSuccessResponse,
@@ -13,7 +12,7 @@ export abstract class BaseWhenBuilder<
     then(): PendingThen<TSuccessResponse, TSuccessVerification> {
         const thenClausePromise = (this.setup ? this.setup() : Promise.resolve())
             .then(() => this.execute(this.app))
-            .then((result) => new ThenClause(this.app, result));
+            .then((result) => createThenInternal(this.app, result));
         return new PendingThen(thenClausePromise);
     }
 
