@@ -104,6 +104,8 @@ export class OrderDetailsPage extends BasePage {
     }
 
     async clickCancelOrder(): Promise<void> {
+        // TODO: VJ: Apparently this has to be here due to timing that it must be before the click, not after
+        await this.snapshotCurrentNotificationId();
         await this.pageClient.clickAsync(OrderDetailsPage.CANCEL_ORDER_OUTPUT_SELECTOR);
     }
 
