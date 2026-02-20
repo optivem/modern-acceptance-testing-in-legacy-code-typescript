@@ -6,5 +6,7 @@ import { Channel } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 
 Channel(ChannelType.UI, ChannelType.API)('should be able to browse coupons', async ({ scenario }) => {
-    await scenario.when().browseCoupons().then().shouldSucceed();
+    await scenario
+        .when().browseCoupons()
+        .then().shouldSucceed();
 });
