@@ -26,12 +26,15 @@ test.describe('@isolated', () => {
             `cannot cancel an order on 31st Dec between 22:00 and 22:30 (${time})`,
             async ({ scenario }) => {
                 await scenario
-                    .given().clock().withTime(time).and().order().withStatus(OrderStatus.PLACED)
+                    .given().clock()
+                        .withTime(time)
+                        .and().order()
+                        .withStatus(OrderStatus.PLACED)
                     .when().cancelOrder()
                     .then().shouldFail()
-                    .errorMessage(BLACKOUT_ERROR)
-                    .and().order()
-                    .hasStatus(OrderStatus.PLACED);
+                        .errorMessage(BLACKOUT_ERROR)
+                        .and().order()
+                        .hasStatus(OrderStatus.PLACED);
             }
         );
     }

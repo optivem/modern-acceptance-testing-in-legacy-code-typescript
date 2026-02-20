@@ -8,17 +8,22 @@ import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.
 
 Channel(ChannelType.UI, ChannelType.API)('should view placed order', async ({ scenario }) => {
     await scenario
-        .given().product().withSku('DEFAULT-SKU').withUnitPrice(25.0).and().order().withSku('DEFAULT-SKU').withQuantity(4)
+        .given().product()
+            .withSku('DEFAULT-SKU')
+            .withUnitPrice(25.0)
+            .and().order()
+            .withSku('DEFAULT-SKU')
+            .withQuantity(4)
         .when().viewOrder()
-        .then().shouldSucceed().order()
-        .hasQuantity(4)
-        .hasUnitPrice(25.0)
-        .hasSubtotalPrice(100.0)
-        .hasStatus(OrderStatus.PLACED)
-        .hasDiscountRateGreaterThanOrEqualToZero()
-        .hasDiscountAmountGreaterThanOrEqualToZero()
-        .hasSubtotalPriceGreaterThanZero()
-        .hasTaxRateGreaterThanOrEqualToZero()
-        .hasTaxAmountGreaterThanOrEqualToZero()
-        .hasTotalPriceGreaterThanZero();
+        .then().shouldSucceed().and().order()
+            .hasQuantity(4)
+            .hasUnitPrice(25.0)
+            .hasSubtotalPrice(100.0)
+            .hasStatus(OrderStatus.PLACED)
+            .hasDiscountRateGreaterThanOrEqualToZero()
+            .hasDiscountAmountGreaterThanOrEqualToZero()
+            .hasSubtotalPriceGreaterThanZero()
+            .hasTaxRateGreaterThanOrEqualToZero()
+            .hasTaxAmountGreaterThanOrEqualToZero()
+            .hasTotalPriceGreaterThanZero();
 });

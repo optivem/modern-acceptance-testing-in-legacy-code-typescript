@@ -8,29 +8,47 @@ import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.
 
 Channel(ChannelType.UI, ChannelType.API)('should be able to place order for valid input', async ({ scenario }) => {
     await scenario
-        .given().product().withSku('ABC').withUnitPrice(20.0).and().country().withCode('US').withTaxRate(0.1)
-        .when().placeOrder().withSku('ABC').withQuantity(5).withCountry('US')
+        .given().product()
+            .withSku('ABC')
+            .withUnitPrice(20.0)
+            .and().country()
+            .withCode('US')
+            .withTaxRate(0.1)
+        .when().placeOrder()
+            .withSku('ABC')
+            .withQuantity(5)
+            .withCountry('US')
         .then().shouldSucceed();
 });
 
 Channel(ChannelType.UI, ChannelType.API)('order status should be placed after placing order', async ({ scenario }) => {
-    await scenario.when().placeOrder().then().shouldSucceed().order().hasStatus(OrderStatus.PLACED);
+    await scenario
+        .when().placeOrder()
+        .then().shouldSucceed()
+        .and().order()
+            .hasStatus(OrderStatus.PLACED);
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should calculate base price as product of unit price and quantity', async ({ scenario }) => {
     await scenario
-        .given().product().withUnitPrice(20.0)
-        .when().placeOrder().withQuantity(5)
-        .then().shouldSucceed().order()
-        .hasBasePrice(100.0);
+        .given().product()
+            .withUnitPrice(20.0)
+        .when().placeOrder()
+            .withQuantity(5)
+        .then().shouldSucceed()
+        .and().order()
+            .hasBasePrice(100.0);
 });
 
 Channel(ChannelType.API)('order price calculation - single chain test', async ({ scenario }) => {
     await scenario
-        .given().product().withUnitPrice(20.0)
-        .when().placeOrder().withQuantity(5)
-        .then().shouldSucceed().order()
-        .hasBasePrice(100.0);
+        .given().product()
+            .withUnitPrice(20.0)
+        .when().placeOrder()
+            .withQuantity(5)
+        .then().shouldSucceed()
+        .and().order()
+            .hasBasePrice(100.0);
 });
 
 const basePriceCases = [
@@ -43,59 +61,81 @@ const basePriceCases = [
 Channel(ChannelType.UI, ChannelType.API)('should place order with correct base price parameterized', async ({ scenario }) => {
     for (const { unitPrice, quantity, basePrice } of basePriceCases) {
         await scenario
-            .given().product().withUnitPrice(unitPrice)
-            .when().placeOrder().withQuantity(quantity)
-            .then().shouldSucceed().order()
-            .hasBasePrice(basePrice);
+            .given().product()
+                .withUnitPrice(unitPrice)
+            .when().placeOrder()
+                .withQuantity(quantity)
+            .then().shouldSucceed()
+            .and().order()
+                .hasBasePrice(basePrice);
     }
 });
 
 Channel(ChannelType.UI, ChannelType.API)('order prefix should be ORD', async ({ scenario }) => {
     await scenario
         .when().placeOrder()
-        .then().shouldSucceed().order()
-        .hasOrderNumberPrefix('ORD-');
+        .then().shouldSucceed()
+        .and().order()
+            .hasOrderNumberPrefix('ORD-');
 });
 
 Channel(ChannelType.UI, ChannelType.API)('discount rate should be applied for coupon', async ({ scenario }) => {
     await scenario
-        .given().coupon().withCouponCode('SUMMER2025').withDiscountRate(0.15)
-        .when().placeOrder().withCouponCode('SUMMER2025')
-        .then().shouldSucceed().order()
-        .hasAppliedCoupon('SUMMER2025').hasDiscountRate(0.15);
+        .given().coupon()
+            .withCouponCode('SUMMER2025')
+            .withDiscountRate(0.15)
+        .when().placeOrder()
+            .withCouponCode('SUMMER2025')
+        .then().shouldSucceed()
+        .and().order()
+            .hasAppliedCoupon('SUMMER2025')
+            .hasDiscountRate(0.15);
 });
 
 Channel(ChannelType.UI, ChannelType.API)('discount rate should not be applied when there is no coupon', async ({ scenario }) => {
     await scenario
-        .when().placeOrder().withCouponCode(null)
-        .then().shouldSucceed().order()
-        .hasStatus(OrderStatus.PLACED)
-        .hasAppliedCoupon(null as unknown as string)
-        .hasDiscountRate(0.0)
-        .hasDiscountAmount(0.0);
+        .when().placeOrder()
+            .withCouponCode(null)
+        .then().shouldSucceed()
+        .and().order()
+            .hasStatus(OrderStatus.PLACED)
+            .hasAppliedCoupon(null as unknown as string)
+            .hasDiscountRate(0.0)
+            .hasDiscountAmount(0.0);
 });
 
 Channel(ChannelType.UI, ChannelType.API)(
     'subtotal price should be calculated as the base price minus discount amount when we have coupon',
     async ({ scenario }) => {
         await scenario
-            .given().coupon().withDiscountRate(0.15).and().product().withUnitPrice(20.0)
-            .when().placeOrder().withCouponCode().withQuantity(5)
-            .then().shouldSucceed().order()
-            .hasAppliedCoupon()
-            .hasDiscountRate(0.15)
-            .hasBasePrice(100.0)
-            .hasDiscountAmount(15.0)
-            .hasSubtotalPrice(85.0);
+            .given().coupon()
+                .withDiscountRate(0.15)
+                .and().product()
+                .withUnitPrice(20.0)
+            .when().placeOrder()
+                .withCouponCode()
+                .withQuantity(5)
+            .then().shouldSucceed()
+            .and().order()
+                .hasAppliedCoupon()
+                .hasDiscountRate(0.15)
+                .hasBasePrice(100.0)
+                .hasDiscountAmount(15.0)
+                .hasSubtotalPrice(85.0);
     }
 );
 
 Channel(ChannelType.UI, ChannelType.API)('subtotal price should be same as base price when no coupon', async ({ scenario }) => {
     await scenario
-        .given().product().withUnitPrice(20.0)
-        .when().placeOrder().withQuantity(5)
-        .then().shouldSucceed().order()
-        .hasBasePrice(100.0).hasDiscountAmount(0.0).hasSubtotalPrice(100.0);
+        .given().product()
+            .withUnitPrice(20.0)
+        .when().placeOrder()
+            .withQuantity(5)
+        .then().shouldSucceed()
+        .and().order()
+            .hasBasePrice(100.0)
+            .hasDiscountAmount(0.0)
+            .hasSubtotalPrice(100.0);
 });
 
 const taxRateCases = [
@@ -106,10 +146,14 @@ const taxRateCases = [
 Channel(ChannelType.UI, ChannelType.API)('correct tax rate should be used based on country', async ({ scenario }) => {
     for (const { country, taxRate } of taxRateCases) {
         await scenario
-            .given().country().withCode(country).withTaxRate(taxRate)
-            .when().placeOrder().withCountry(country)
-            .then().shouldSucceed().order()
-            .hasTaxRate(taxRate);
+            .given().country()
+                .withCode(country)
+                .withTaxRate(taxRate)
+            .when().placeOrder()
+                .withCountry(country)
+            .then().shouldSucceed()
+            .and().order()
+                .hasTaxRate(taxRate);
     }
 });
 
@@ -123,21 +167,31 @@ Channel(ChannelType.UI, ChannelType.API)(
     async ({ scenario }) => {
         for (const { country, taxRate, subtotalPrice, expectedTaxAmount, expectedTotalPrice } of totalPriceCases) {
             await scenario
-                .given().country().withCode(country).withTaxRate(taxRate).and().product().withUnitPrice(subtotalPrice)
-                .when().placeOrder().withCountry(country).withQuantity(1)
-                .then().shouldSucceed().order()
-                .hasTaxRate(taxRate)
-                .hasSubtotalPrice(subtotalPrice)
-                .hasTaxAmount(expectedTaxAmount)
-                .hasTotalPrice(expectedTotalPrice);
+                .given().country()
+                    .withCode(country)
+                    .withTaxRate(taxRate)
+                    .and().product()
+                    .withUnitPrice(subtotalPrice)
+                .when().placeOrder()
+                    .withCountry(country)
+                    .withQuantity(1)
+                .then().shouldSucceed()
+                .and().order()
+                    .hasTaxRate(taxRate)
+                    .hasSubtotalPrice(subtotalPrice)
+                    .hasTaxAmount(expectedTaxAmount)
+                    .hasTotalPrice(expectedTotalPrice);
         }
     }
 );
 
 Channel(ChannelType.UI, ChannelType.API)('coupon usage count has been incremented after its been used', async ({ scenario }) => {
     await scenario
-        .given().coupon().withCouponCode('SUMMER2025')
-        .when().placeOrder().withCouponCode('SUMMER2025')
-        .then().shouldSucceed().coupon('SUMMER2025')
-        .hasUsedCount(1);
+        .given().coupon()
+            .withCouponCode('SUMMER2025')
+        .when().placeOrder()
+            .withCouponCode('SUMMER2025')
+        .then().shouldSucceed()
+        .coupon('SUMMER2025')
+            .hasUsedCount(1);
 });

@@ -15,23 +15,26 @@ const nonExistentOrderCases = [
 Channel(ChannelType.API)('should not cancel non-existent order', async ({ scenario }) => {
     for (const { orderNumber, message } of nonExistentOrderCases) {
         await scenario
-            .when().cancelOrder().withOrderNumber(orderNumber)
+            .when().cancelOrder()
+                .withOrderNumber(orderNumber)
             .then().shouldFail()
-            .errorMessage(message);
+                .errorMessage(message);
     }
 });
 
 Channel(ChannelType.API)('should not cancel already cancelled order', async ({ scenario }) => {
     await scenario
-        .given().order().withStatus(OrderStatus.CANCELLED)
+        .given().order()
+            .withStatus(OrderStatus.CANCELLED)
         .when().cancelOrder()
         .then().shouldFail()
-        .errorMessage('Order has already been cancelled');
+            .errorMessage('Order has already been cancelled');
 });
 
 Channel(ChannelType.API)('cannot cancel non-existent order', async ({ scenario }) => {
     await scenario
-        .when().cancelOrder().withOrderNumber('non-existent-order-12345')
+        .when().cancelOrder()
+            .withOrderNumber('non-existent-order-12345')
         .then().shouldFail()
-        .errorMessage('Order non-existent-order-12345 does not exist.');
+            .errorMessage('Order non-existent-order-12345 does not exist.');
 });

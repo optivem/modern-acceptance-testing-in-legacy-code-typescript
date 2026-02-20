@@ -10,6 +10,7 @@ Channel(ChannelType.UI, ChannelType.API)('should have cancelled status when canc
     await scenario
         .given().order()
         .when().cancelOrder()
-        .then().shouldSucceed().order()
-        .hasStatus(OrderStatus.CANCELLED);
+        .then().shouldSucceed()
+        .and().order()
+            .hasStatus(OrderStatus.CANCELLED);
 });
