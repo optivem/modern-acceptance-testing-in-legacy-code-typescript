@@ -24,7 +24,7 @@ $Config = @{
             ) },
         @{  Id = "acceptance-api";
             Name = "Acceptance Tests - Channel: API";
-            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep-invert `"@isolated`"";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
@@ -33,7 +33,25 @@ $Config = @{
             ) },
         @{  Id = "acceptance-ui";
             Name = "Acceptance Tests - Channel: UI";
-            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep-invert `"@isolated`"";
+            Path = "system-test";
+            TestReportPath = "system-test/playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
+            ) },
+        @{  Id = "acceptance-isolated-api";
+            Name = "Acceptance Tests (Isolated) - Channel: API";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep `"@isolated`" --workers=1";
+            Path = "system-test";
+            TestReportPath = "system-test/playwright-report/index.html";
+            TestInstallCommands = @(
+                "npm install",
+                "npx playwright install chromium"
+            ) },
+        @{  Id = "acceptance-isolated-ui";
+            Name = "Acceptance Tests (Isolated) - Channel: UI";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep `"@isolated`" --workers=1";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(

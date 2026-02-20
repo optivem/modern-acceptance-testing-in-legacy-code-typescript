@@ -108,20 +108,20 @@ jobs:
         working-directory: system-test
 
       - name: Run Acceptance Tests - API Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep-invert "@isolated"
         working-directory: system-test
 
       - name: Run Acceptance Tests - UI Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep-invert "@isolated"
         working-directory: system-test
 
-      # - name: Run Acceptance Tests (Isolated) - API Channel
-      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep "@isolated"
-      #   working-directory: system-test
+      - name: Run Acceptance Tests (Isolated) - API Channel
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep "@isolated" --workers=1
+        working-directory: system-test
 
-      # - name: Run Acceptance Tests (Isolated) - UI Channel
-      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep "@isolated"
-      #   working-directory: system-test
+      - name: Run Acceptance Tests (Isolated) - UI Channel
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep "@isolated" --workers=1
+        working-directory: system-test
 
       - name: Run External System Contract Tests (Stubbed External Systems)
         run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB npm test -- tests/external-system-contract-tests
