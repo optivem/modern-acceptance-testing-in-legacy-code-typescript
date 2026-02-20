@@ -72,7 +72,7 @@ Channel(ChannelType.UI, ChannelType.API)('discount rate should not be applied wh
     const orderVerifier = await success.order();
     orderVerifier
         .hasStatus(OrderStatus.PLACED)
-        .hasAppliedCoupon(undefined as unknown as string)
+        .hasAppliedCoupon(null as unknown as string)
         .hasDiscountRate(0.0)
         .hasDiscountAmount(0.0);
 });

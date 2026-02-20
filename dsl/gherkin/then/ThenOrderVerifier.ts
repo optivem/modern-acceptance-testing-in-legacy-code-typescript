@@ -113,10 +113,12 @@ export class ThenOrderVerifier<
         return this;
     }
 
-    hasAppliedCoupon(expectedCouponCode: string): this;
+    hasAppliedCoupon(expectedCouponCode: string | null): this;
     hasAppliedCoupon(): this;
-    hasAppliedCoupon(expectedCouponCode?: string): this {
-        this.orderVerification.appliedCouponCode(expectedCouponCode ?? GherkinDefaults.DEFAULT_COUPON_CODE);
+    hasAppliedCoupon(expectedCouponCode?: string | null): this {
+        // undefined (no-arg) → use default coupon alias; null → pass through (checks null in response) — mirrors Java
+        const resolved = expectedCouponCode === undefined ? GherkinDefaults.DEFAULT_COUPON_CODE : expectedCouponCode;
+        this.orderVerification.appliedCouponCode(resolved);
         return this;
     }
 

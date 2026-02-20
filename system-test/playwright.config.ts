@@ -10,6 +10,7 @@ export default defineConfig({
   reporter: [['./custom-reporter.ts'], ['html', { open: 'never' }]],
   use: {
     trace: 'on-first-retry',
+    timezoneId: 'UTC',
   },
   projects: [
     {

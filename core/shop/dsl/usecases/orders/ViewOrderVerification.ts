@@ -120,11 +120,16 @@ export class ViewOrderVerification extends ResponseVerification<ViewOrderRespons
         return this;
     }
 
-    appliedCouponCode(expectedCouponCodeAlias: string): ViewOrderVerification {
+    appliedCouponCode(expectedCouponCodeAlias: string | null): ViewOrderVerification {
         const expectedCouponCode = this.context.getParamValue(expectedCouponCodeAlias);
         const actualCouponCode = this.response.appliedCouponCode;
-        expect(actualCouponCode, `Expected applied coupon code to be '${expectedCouponCode}', but was '${actualCouponCode}'`)
-            .toBe(expectedCouponCode);
+        if (expectedCouponCode == null) {
+            // null expected — accept both null and undefined from the response
+            expect(actualCouponCode == null, `Expected applied coupon code to be null/absent, but was '${actualCouponCode}'`).toBe(true);
+        } else {
+            expect(actualCouponCode, `Expected applied coupon code to be '${expectedCouponCode}', but was '${actualCouponCode}'`)
+                .toBe(expectedCouponCode);
+        }
         return this;
     }
 

@@ -36,11 +36,25 @@ export class CouponManagementPage extends BasePage {
     }
 
     async inputValidFrom(validFrom: Optional<string>): Promise<void> {
-        await this.pageClient.fillAsync(CouponManagementPage.VALID_FROM_INPUT_SELECTOR, validFrom);
+        const datetimeValue = CouponManagementPage.getValidFromDateTimeString(validFrom);
+        await this.pageClient.fillAsync(CouponManagementPage.VALID_FROM_INPUT_SELECTOR, datetimeValue);
     }
 
     async inputValidTo(validTo: Optional<string>): Promise<void> {
-        await this.pageClient.fillAsync(CouponManagementPage.VALID_TO_INPUT_SELECTOR, validTo);
+        const datetimeValue = CouponManagementPage.getValidToDateTimeString(validTo);
+        await this.pageClient.fillAsync(CouponManagementPage.VALID_TO_INPUT_SELECTOR, datetimeValue);
+    }
+
+    private static getValidFromDateTimeString(validFrom: Optional<string>): string {
+        if (validFrom == null || validFrom === '') return '';
+        // Extract date from ISO 8601 (2024-06-01T00:00:00Z -> 2024-06-01T00:00)
+        return validFrom.substring(0, 10) + 'T00:00';
+    }
+
+    private static getValidToDateTimeString(validTo: Optional<string>): string {
+        if (validTo == null || validTo === '') return '';
+        // Extract date from ISO 8601 (2024-08-31T23:59:59Z -> 2024-08-31T23:59)
+        return validTo.substring(0, 10) + 'T23:59';
     }
 
     async inputUsageLimit(usageLimit: Optional<string>): Promise<void> {

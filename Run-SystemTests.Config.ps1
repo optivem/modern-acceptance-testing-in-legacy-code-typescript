@@ -24,7 +24,7 @@ $Config = @{
             ) },
         @{  Id = "acceptance-api";
             Name = "Acceptance Tests - Channel: API";
-            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API TZ=UTC npm test -- tests/acceptance-tests";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
@@ -33,7 +33,7 @@ $Config = @{
             ) },
         @{  Id = "acceptance-ui";
             Name = "Acceptance Tests - Channel: UI";
-            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI TZ=UTC npm test -- tests/acceptance-tests";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
