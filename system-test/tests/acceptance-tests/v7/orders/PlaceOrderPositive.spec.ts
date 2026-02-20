@@ -11,7 +11,7 @@ Channel(ChannelType.UI, ChannelType.API)('should be able to place order for vali
         .given().product()
             .withSku('ABC')
             .withUnitPrice(20.0)
-            .and().country()
+        .and().country()
             .withCode('US')
             .withTaxRate(0.1)
         .when().placeOrder()
@@ -30,17 +30,6 @@ Channel(ChannelType.UI, ChannelType.API)('order status should be placed after pl
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should calculate base price as product of unit price and quantity', async ({ scenario }) => {
-    await scenario
-        .given().product()
-            .withUnitPrice(20.0)
-        .when().placeOrder()
-            .withQuantity(5)
-        .then().shouldSucceed()
-        .and().order()
-            .hasBasePrice(100.0);
-});
-
-Channel(ChannelType.API)('order price calculation - single chain test', async ({ scenario }) => {
     await scenario
         .given().product()
             .withUnitPrice(20.0)
@@ -110,7 +99,7 @@ Channel(ChannelType.UI, ChannelType.API)(
         await scenario
             .given().coupon()
                 .withDiscountRate(0.15)
-                .and().product()
+            .and().product()
                 .withUnitPrice(20.0)
             .when().placeOrder()
                 .withCouponCode()
@@ -170,7 +159,7 @@ Channel(ChannelType.UI, ChannelType.API)(
                 .given().country()
                     .withCode(country)
                     .withTaxRate(taxRate)
-                    .and().product()
+                .and().product()
                     .withUnitPrice(subtotalPrice)
                 .when().placeOrder()
                     .withCountry(country)

@@ -28,12 +28,12 @@ test.describe('@isolated', () => {
                 await scenario
                     .given().clock()
                         .withTime(time)
-                        .and().order()
+                    .and().order()
                         .withStatus(OrderStatus.PLACED)
                     .when().cancelOrder()
                     .then().shouldFail()
                         .errorMessage(BLACKOUT_ERROR)
-                        .and().order()
+                    .and().order()
                         .hasStatus(OrderStatus.PLACED);
             }
         );

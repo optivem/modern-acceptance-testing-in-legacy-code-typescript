@@ -11,7 +11,7 @@ Channel(ChannelType.UI, ChannelType.API)('should view placed order', async ({ sc
         .given().product()
             .withSku('DEFAULT-SKU')
             .withUnitPrice(25.0)
-            .and().order()
+        .and().order()
             .withSku('DEFAULT-SKU')
             .withQuantity(4)
         .when().viewOrder()

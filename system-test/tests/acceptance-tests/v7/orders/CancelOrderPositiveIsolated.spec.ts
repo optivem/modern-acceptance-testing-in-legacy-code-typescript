@@ -25,7 +25,7 @@ test.describe('@isolated', () => {
                 await scenario
                     .given().clock()
                         .withTime(time)
-                        .and().order()
+                    .and().order()
                         .withStatus(OrderStatus.PLACED)
                     .when().cancelOrder()
                     .then().shouldSucceed();
