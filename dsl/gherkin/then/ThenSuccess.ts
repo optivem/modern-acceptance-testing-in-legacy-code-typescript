@@ -1,7 +1,7 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
-import { BaseThenVerifier } from './BaseThenVerifier.js';
+import { BaseThenVerifier } from './BaseThenStep.js';
 
 export class ThenSuccessVerifier<
     TSuccessResponse,

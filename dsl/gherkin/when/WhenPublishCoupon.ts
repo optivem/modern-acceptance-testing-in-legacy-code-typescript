@@ -5,7 +5,7 @@ import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
-import { BaseWhenBuilder } from './BaseWhenBuilder.js';
+import { BaseWhenBuilder } from './BaseWhenStep.js';
 
 export class PublishCouponBuilder extends BaseWhenBuilder<void, VoidVerification> {
     private couponCodeValue: Optional<string>;

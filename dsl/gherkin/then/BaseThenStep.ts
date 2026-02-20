@@ -1,8 +1,8 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
-import { ThenOrderVerifier } from './ThenOrderVerifier.js';
-import { ThenCouponVerifier } from './ThenCouponVerifier.js';
+import { ThenOrderVerifier } from './ThenOrder.js';
+import { ThenCouponVerifier } from './ThenCoupon.js';
 
 export abstract class BaseThenVerifier<
     TSuccessResponse,

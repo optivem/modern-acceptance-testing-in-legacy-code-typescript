@@ -4,7 +4,7 @@ import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
-import { BaseWhenBuilder } from './BaseWhenBuilder.js';
+import { BaseWhenBuilder } from './BaseWhenStep.js';
 import type { PlaceOrderResponse } from '@optivem/core/shop/commons/dtos/orders/index.js';
 import type { PlaceOrderVerification } from '@optivem/core/shop/dsl/usecases/orders/PlaceOrderVerification.js';
 

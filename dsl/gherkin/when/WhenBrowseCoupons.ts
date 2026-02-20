@@ -1,7 +1,7 @@
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
-import { BaseWhenBuilder } from './BaseWhenBuilder.js';
+import { BaseWhenBuilder } from './BaseWhenStep.js';
 import type { BrowseCouponsResponse } from '@optivem/core/shop/commons/dtos/coupons/index.js';
 import type { BrowseCouponsVerification } from '@optivem/core/shop/dsl/usecases/coupons/BrowseCouponsVerification.js';
 

@@ -1,6 +1,6 @@
 import type { SystemDsl } from '../system/SystemDsl.js';
-import { GivenClause } from './given/GivenClause.js';
-import { WhenClause } from './when/WhenClause.js';
+import { GivenClause } from './given/Given.js';
+import { WhenClause } from './when/When.js';
 
 export class ScenarioDsl {
     private executed = false;

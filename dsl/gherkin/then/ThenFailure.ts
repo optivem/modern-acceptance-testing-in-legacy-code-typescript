@@ -4,7 +4,7 @@ import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResultContext } from '../ExecutionResultContext.js';
 import type { ShopUseCaseResult } from '@optivem/core/shop/dsl/usecases/base/ShopUseCaseResult.js';
 import type { SystemErrorFailureVerification } from '@optivem/core/shop/dsl/usecases/base/SystemErrorFailureVerification.js';
-import { BaseThenVerifier } from './BaseThenVerifier.js';
+import { BaseThenVerifier } from './BaseThenStep.js';
 
 export class ThenFailureVerifier<
     TSuccessResponse,

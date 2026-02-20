@@ -1,13 +1,13 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
-import type { ThenClause } from './ThenClause.js';
-import type { ThenSuccessVerifier } from './ThenSuccessVerifier.js';
-import type { ThenFailureVerifier } from './ThenFailureVerifier.js';
+import type { ThenClause } from './Then.js';
+import type { ThenSuccessVerifier } from './ThenSuccess.js';
+import type { ThenFailureVerifier } from './ThenFailure.js';
 
 /**
  * Wraps a promise of ThenClause so callers can chain .shouldSucceed() / .shouldFail()
  * without awaiting first, e.g. await scenario.when().goToShop().then().shouldSucceed().
  */
-export class PendingThenClause<
+export class PendingThen<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse>
 > {
