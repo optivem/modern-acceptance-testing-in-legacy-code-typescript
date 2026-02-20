@@ -1,11 +1,11 @@
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
-import { GoToShopBuilder } from './GoToShopBuilder.js';
-import { PlaceOrderBuilder } from './PlaceOrderBuilder.js';
-import { CancelOrderBuilder } from './CancelOrderBuilder.js';
-import { ViewOrderBuilder } from './ViewOrderBuilder.js';
-import { PublishCouponBuilder } from './PublishCouponBuilder.js';
-import { BrowseCouponsBuilder } from './BrowseCouponsBuilder.js';
+import { GoToShopBuilder } from './WhenGoToShop.js';
+import { PlaceOrderBuilder } from './WhenPlaceOrder.js';
+import { CancelOrderBuilder } from './WhenCancelOrder.js';
+import { ViewOrderBuilder } from './WhenViewOrder.js';
+import { PublishCouponBuilder } from './WhenPublishCoupon.js';
+import { BrowseCouponsBuilder } from './WhenBrowseCoupons.js';
 
 export class WhenClause {
     constructor(

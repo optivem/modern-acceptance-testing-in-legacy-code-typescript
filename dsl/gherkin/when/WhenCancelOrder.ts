@@ -1,13 +1,12 @@
 import type { Optional } from '@optivem/commons/util';
+import { VoidVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
-import { BaseWhenBuilder } from './BaseWhenBuilder.js';
-import type { ViewOrderResponse } from '@optivem/core/shop/commons/dtos/orders/index.js';
-import type { ViewOrderVerification } from '@optivem/core/shop/dsl/usecases/orders/ViewOrderVerification.js';
+import { BaseWhenBuilder } from './BaseWhenStep.js';
 
-export class ViewOrderBuilder extends BaseWhenBuilder<ViewOrderResponse, ViewOrderVerification> {
+export class CancelOrderBuilder extends BaseWhenBuilder<void, VoidVerification> {
     private orderNumberValue: Optional<string>;
 
     constructor(app: SystemDsl, setup?: () => Promise<void>) {
@@ -22,13 +21,15 @@ export class ViewOrderBuilder extends BaseWhenBuilder<ViewOrderResponse, ViewOrd
 
     protected override async execute(
         app: SystemDsl
-    ): Promise<ExecutionResult<ViewOrderResponse, ViewOrderVerification>> {
+    ): Promise<ExecutionResult<void, VoidVerification>> {
         const result = await app
             .shop()
-            .viewOrder()
+            .cancelOrder()
             .orderNumber(this.orderNumberValue)
             .execute();
 
-        return new ExecutionResultBuilder(result).orderNumber(this.orderNumberValue).build();
+        return new ExecutionResultBuilder(result)
+            .orderNumber(this.orderNumberValue)
+            .build();
     }
 }

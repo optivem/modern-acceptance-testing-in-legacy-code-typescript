@@ -1,6 +1,6 @@
 import type { SystemDsl } from '../../system/SystemDsl.js';
-import type { GivenClause } from './GivenClause.js';
-import type { WhenClause } from '../when/WhenClause.js';
+import type { GivenClause } from './Given.js';
+import type { WhenClause } from '../when/When.js';
 
 export abstract class BaseGivenBuilder {
     constructor(protected readonly givenClause: GivenClause) {}

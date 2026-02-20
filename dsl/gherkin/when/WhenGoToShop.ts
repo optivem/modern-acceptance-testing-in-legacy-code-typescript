@@ -2,7 +2,7 @@ import { VoidVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
-import { BaseWhenBuilder } from './BaseWhenBuilder.js';
+import { BaseWhenBuilder } from './BaseWhenStep.js';
 
 /** When-builder for go-to-shop. */
 export class GoToShopBuilder extends BaseWhenBuilder<void, VoidVerification> {

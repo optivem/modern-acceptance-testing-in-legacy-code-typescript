@@ -1,10 +1,10 @@
 import type { SystemDsl } from '../../system/SystemDsl.js';
-import { WhenClause } from '../when/WhenClause.js';
-import { GivenProductBuilder } from './GivenProductBuilder.js';
-import { GivenOrderBuilder } from './GivenOrderBuilder.js';
-import { GivenClockBuilder } from './GivenClockBuilder.js';
-import { GivenCountryBuilder } from './GivenCountryBuilder.js';
-import { GivenCouponBuilder } from './GivenCouponBuilder.js';
+import { WhenClause } from '../when/When.js';
+import { GivenProductBuilder } from './GivenProduct.js';
+import { GivenOrderBuilder } from './GivenOrder.js';
+import { GivenClockBuilder } from './GivenClock.js';
+import { GivenCountryBuilder } from './GivenCountry.js';
+import { GivenCouponBuilder } from './GivenCoupon.js';
 
 /**
  * Given clause for Gherkin scenarios (app, products, orders, clock, countries, coupons).
