@@ -3,10 +3,12 @@
  * Uses getExternalSystemMode() so e2e can run against REAL or STUB.
  */
 import { test as base } from '@playwright/test';
-import type { ExternalSystemMode } from '@optivem/commons/dsl';
 import type { SystemDsl } from '@optivem/dsl/system/SystemDsl.js';
 import { ScenarioDsl } from '@optivem/dsl/gherkin/ScenarioDsl.js';
-import { ChannelContext } from '@optivem/optivem-testing';
+import {
+    scenarioChannelTest as sharedScenarioChannelTest,
+    type ScenarioChannelFixtures as SharedScenarioChannelFixtures,
+} from '@optivem/optivem-testing';
 import { SystemDslFactory } from '../../../../SystemDslFactory.js';
 import { getExternalSystemMode } from '../../../../test.config.js';
 
@@ -24,31 +26,24 @@ export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
 
 export { expect } from '@playwright/test';
 
-export interface ScenarioChannelFixtures {
-    scenario: ScenarioDsl;
-}
+export type ScenarioChannelFixtures = SharedScenarioChannelFixtures<ScenarioDsl>;
 
 export function scenarioChannelTest(
-    _externalSystemMode: ExternalSystemMode,
+    _externalSystemMode: unknown,
     channelTypes: string[],
     testName: string,
     testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>
 ): void {
-    const channelEnv = process.env.CHANNEL;
-    const channelsToRun =
-        channelEnv != null && channelEnv !== ''
-            ? channelTypes.filter((c) => c === channelEnv)
-            : channelTypes;
-    for (const channel of channelsToRun) {
-        test(`[${channel} Channel] ${testName}`, async ({ scenario }) => {
-            try {
-                ChannelContext.set(channel);
-                await testFn({ scenario });
-            } finally {
-                ChannelContext.clear();
-            }
-        });
-    }
+    sharedScenarioChannelTest<ScenarioDsl>(
+        (name, scenarioTestFn) => {
+            test(name, async ({ scenario }) => {
+                await scenarioTestFn({ scenario });
+            });
+        },
+        channelTypes,
+        testName,
+        testFn
+    );
 }
 
 export function Channel(
