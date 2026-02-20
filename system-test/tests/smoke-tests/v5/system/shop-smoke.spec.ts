@@ -10,7 +10,9 @@ test.describe('V5 Shop Smoke Tests', () => {
         [ChannelType.UI, ChannelType.API],
         'should be able to go to shop',
         async ({ app }) => {
-            (await app.shop().goToShop().execute()).shouldSucceed();
+            (await app.shop().goToShop()
+                .execute())
+                .shouldSucceed();
         }
     );
 });

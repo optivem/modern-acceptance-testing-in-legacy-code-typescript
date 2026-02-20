@@ -88,7 +88,7 @@ Channel(ChannelType.UI, ChannelType.API)('discount rate should not be applied wh
         .then().shouldSucceed()
         .and().order()
             .hasStatus(OrderStatus.PLACED)
-            .hasAppliedCoupon(null as unknown as string)
+            .hasAppliedCoupon(null)
             .hasDiscountRate(0.0)
             .hasDiscountAmount(0.0);
 });
