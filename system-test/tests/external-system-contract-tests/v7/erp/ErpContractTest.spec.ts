@@ -3,7 +3,7 @@
  * Runs for both STUB and REAL external system modes.
  */
 import '../../../../setup-config.js';
-import { test } from '../fixtures.js';
+import { test } from '../base/fixtures.js';
 
 test.describe('ERP Contract Tests', () => {
     test('should be able to get product', async ({ app }) => {

@@ -2,7 +2,7 @@
  * V7 acceptance: publish coupon (positive). Migrated from Java PublishCouponPositiveTest.
  */
 import '../../../../setup-config.js';
-import { Channel } from '../fixtures.js';
+import { Channel } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 
 Channel(ChannelType.UI, ChannelType.API)('should be able to publish valid coupon', async ({ scenario }) => {

@@ -2,7 +2,7 @@
  * V6 e2e: place order negative (matches reference PlaceOrderNegativeTest).
  */
 import '../../../setup-config.js';
-import { Channel } from './fixtures.js';
+import { Channel } from './base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 
 const validationError = 'The request contains one or more validation errors';

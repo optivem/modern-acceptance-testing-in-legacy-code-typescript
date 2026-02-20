@@ -5,7 +5,7 @@
  */
 import '../../../../setup-config.js';
 import { ExternalSystemMode } from '@optivem/commons/dsl';
-import { test } from '../fixtures.js';
+import { test } from '../base/fixtures.js';
 import { getExternalSystemMode } from '../../../../test.config.js';
 
 test.describe('Tax Stub Contract Tests', () => {

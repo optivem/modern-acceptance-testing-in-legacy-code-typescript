@@ -2,7 +2,7 @@
  * V6 e2e: view order positive (matches reference ViewOrderPositiveTest).
  */
 import '../../../setup-config.js';
-import { Channel } from './fixtures.js';
+import { Channel } from './base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 

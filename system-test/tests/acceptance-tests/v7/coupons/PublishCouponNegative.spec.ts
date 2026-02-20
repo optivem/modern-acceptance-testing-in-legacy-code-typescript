@@ -2,7 +2,7 @@
  * V7 acceptance: publish coupon (negative). Migrated from Java PublishCouponNegativeTest.
  */
 import '../../../../setup-config.js';
-import { Channel } from '../fixtures.js';
+import { Channel } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 
 const validationError = 'The request contains one or more validation errors';
@@ -43,16 +43,9 @@ Channel(ChannelType.UI, ChannelType.API)(
 
 Channel(ChannelType.UI, ChannelType.API)('cannot publish coupon with duplicate coupon code', async ({ scenario }) => {
     await scenario
-        .given()
-        .coupon()
-        .withCouponCode('EXISTING-COUPON')
-        .withDiscountRate(0.1)
-        .when()
-        .publishCoupon()
-        .withCouponCode('EXISTING-COUPON')
-        .withDiscountRate(0.2)
-        .then()
-        .shouldFail()
+        .given().coupon().withCouponCode('EXISTING-COUPON').withDiscountRate(0.1)
+        .when().publishCoupon().withCouponCode('EXISTING-COUPON').withDiscountRate(0.2)
+        .then().shouldFail()
         .errorMessage(validationError)
         .fieldErrorMessage('couponCode', 'Coupon code EXISTING-COUPON already exists');
 });

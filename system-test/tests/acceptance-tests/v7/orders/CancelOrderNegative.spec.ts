@@ -2,7 +2,7 @@
  * V7 acceptance: cancel order (negative). Migrated from Java CancelOrderNegativeTest.
  */
 import '../../../../setup-config.js';
-import { Channel } from '../fixtures.js';
+import { Channel } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 

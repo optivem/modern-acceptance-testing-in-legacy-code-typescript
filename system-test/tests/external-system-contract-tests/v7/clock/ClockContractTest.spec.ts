@@ -6,7 +6,7 @@
  */
 import '../../../../setup-config.js';
 import { ExternalSystemMode } from '@optivem/commons/dsl';
-import { test } from '../fixtures.js';
+import { test } from '../base/fixtures.js';
 import { getExternalSystemMode } from '../../../../test.config.js';
 
 // Serial: all clock tests share the same stub endpoint, so they must not run in parallel.

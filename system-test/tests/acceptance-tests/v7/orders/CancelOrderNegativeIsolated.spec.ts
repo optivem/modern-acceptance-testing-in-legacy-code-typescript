@@ -4,7 +4,7 @@
  * Isolated tests run sequentially (serial mode) to avoid clock state conflicts.
  */
 import '../../../../setup-config.js';
-import { test, Channel } from '../fixtures.js';
+import { test, Channel } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 

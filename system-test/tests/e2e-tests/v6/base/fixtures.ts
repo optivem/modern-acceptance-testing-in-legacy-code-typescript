@@ -1,5 +1,5 @@
 /**
- * V7 e2e fixtures: app (SystemDsl) and scenario (ScenarioDsl).
+ * V6 e2e fixtures: app (SystemDsl) and scenario (ScenarioDsl).
  * Uses getExternalSystemMode() so e2e can run against REAL or STUB.
  */
 import { test as base } from '@playwright/test';
@@ -7,8 +7,8 @@ import type { ExternalSystemMode } from '@optivem/commons/dsl';
 import type { SystemDsl } from '@optivem/dsl/system/SystemDsl.js';
 import { ScenarioDsl } from '@optivem/dsl/gherkin/ScenarioDsl.js';
 import { ChannelContext } from '@optivem/optivem-testing';
-import { SystemDslFactory } from '../../../SystemDslFactory.js';
-import { getExternalSystemMode } from '../../../test.config.js';
+import { SystemDslFactory } from '../../../../SystemDslFactory.js';
+import { getExternalSystemMode } from '../../../../test.config.js';
 
 export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
     app: async ({}, use) => {

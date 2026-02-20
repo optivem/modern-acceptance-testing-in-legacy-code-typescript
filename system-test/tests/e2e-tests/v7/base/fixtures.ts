@@ -1,15 +1,14 @@
 /**
- * V7 acceptance test fixtures: same as smoke v7 but force STUB external system mode
- * (mirrors Java BaseAcceptanceTest.getFixedExternalSystemMode() = STUB).
+ * V7 e2e fixtures: app (SystemDsl) and scenario (ScenarioDsl).
+ * Uses getExternalSystemMode() so e2e can run against REAL or STUB.
  */
-process.env.EXTERNAL_SYSTEM_MODE = process.env.EXTERNAL_SYSTEM_MODE ?? 'STUB';
-
 import { test as base } from '@playwright/test';
+import type { ExternalSystemMode } from '@optivem/commons/dsl';
 import type { SystemDsl } from '@optivem/dsl/system/SystemDsl.js';
 import { ScenarioDsl } from '@optivem/dsl/gherkin/ScenarioDsl.js';
 import { ChannelContext } from '@optivem/optivem-testing';
-import { SystemDslFactory } from '../../../SystemDslFactory.js';
-import { getExternalSystemMode } from '../../../test.config.js';
+import { SystemDslFactory } from '../../../../SystemDslFactory.js';
+import { getExternalSystemMode } from '../../../../test.config.js';
 
 export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
     app: async ({}, use) => {
@@ -29,13 +28,8 @@ export interface ScenarioChannelFixtures {
     scenario: ScenarioDsl;
 }
 
-/**
- * When CHANNEL env is set (e.g. API or UI), only that channel is run.
- * When CHANNEL is not set or empty (cleared), run for all channels.
- * Matches reference: dotnet test -e CHANNEL=API so only API channel tests execute.
- */
 export function scenarioChannelTest(
-    _externalSystemMode: unknown,
+    _externalSystemMode: ExternalSystemMode,
     channelTypes: string[],
     testName: string,
     testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>
@@ -57,9 +51,6 @@ export function scenarioChannelTest(
     }
 }
 
-/**
- * Channel(UI, API) - mirrors Java @Channel({ChannelType.UI, ChannelType.API}).
- */
 export function Channel(
     ...channelTypes: string[]
 ): (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => void {
