@@ -108,33 +108,33 @@ jobs:
         working-directory: system-test
 
       - name: Run Acceptance Tests - API Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API TZ=UTC npm test -- tests/acceptance-tests
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests
         working-directory: system-test
 
       - name: Run Acceptance Tests - UI Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI TZ=UTC npm test -- tests/acceptance-tests
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests
         working-directory: system-test
 
       # - name: Run Acceptance Tests (Isolated) - API Channel
-      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API TZ=UTC npm test -- tests/acceptance-tests --grep "@isolated"
+      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep "@isolated"
       #   working-directory: system-test
 
       # - name: Run Acceptance Tests (Isolated) - UI Channel
-      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI TZ=UTC npm test -- tests/acceptance-tests --grep "@isolated"
+      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep "@isolated"
       #   working-directory: system-test
 
       # - name: Run External System Contract Tests (Stubbed External Systems)
-      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB TZ=UTC npm test -- tests/external-system-contract-tests
+      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB npm test -- tests/external-system-contract-tests
       #   working-directory: system-test
 
       # - name: Run External System Contract Tests (Real External Systems)
-      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL TZ=UTC npm test -- tests/external-system-contract-tests
+      #   run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL npm test -- tests/external-system-contract-tests
       #   working-directory: system-test
 
       - name: Run E2E Tests - API Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=API TZ=UTC npm test -- tests/e2e-tests
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=API npm test -- tests/e2e-tests
         working-directory: system-test
 
       - name: Run E2E Tests - UI Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=UI TZ=UTC npm test -- tests/e2e-tests
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=UI npm test -- tests/e2e-tests
         working-directory: system-test
