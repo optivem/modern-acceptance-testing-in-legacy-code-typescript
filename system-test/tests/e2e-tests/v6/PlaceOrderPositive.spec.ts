@@ -7,15 +7,19 @@ import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
 
 Channel(ChannelType.UI, ChannelType.API)('should place order with correct subtotal price', async ({ scenario }) => {
-    await scenario.given().product().withUnitPrice(20.0).when()
-        .placeOrder().withQuantity(5).then().shouldSucceed().order()
+    await scenario
+        .given().product().withUnitPrice(20.0)
+        .when().placeOrder().withQuantity(5)
+        .then().shouldSucceed().order()
         .hasSubtotalPrice(100.0);
 });
 
 // TODO: VJ: DELETE THIS
 Channel(ChannelType.API)('should place order with correct subtotal price - TEMPORARY', async ({ scenario }) => {
-    await scenario.given().product().withUnitPrice(20.0).when()
-        .placeOrder().withQuantity(5).then().shouldSucceed().order()
+    await scenario
+        .given().product().withUnitPrice(20.0)
+        .when().placeOrder().withQuantity(5)
+        .then().shouldSucceed().order()
         .hasSubtotalPrice(100.0);
 });
 
@@ -29,15 +33,19 @@ const subtotalPriceCases = [
 
 Channel(ChannelType.UI, ChannelType.API)('should place order with correct subtotal price parameterized', async ({ scenario }) => {
     for (const { unitPrice, quantity, subtotalPrice } of subtotalPriceCases) {
-        await scenario.given().product().withUnitPrice(unitPrice).when()
-            .placeOrder().withQuantity(quantity).then().shouldSucceed().order()
+        await scenario
+            .given().product().withUnitPrice(unitPrice)
+            .when().placeOrder().withQuantity(quantity)
+            .then().shouldSucceed().order()
             .hasSubtotalPrice(subtotalPrice);
     }
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should place order', async ({ scenario }) => {
-    await scenario.given().product().withUnitPrice(20.0).when()
-        .placeOrder().withQuantity(5).then().shouldSucceed().order()
+    await scenario
+        .given().product().withUnitPrice(20.0)
+        .when().placeOrder().withQuantity(5)
+        .then().shouldSucceed().order()
         .hasOrderNumberPrefix('ORD-')
         .hasQuantity(5)
         .hasUnitPrice(20.0)

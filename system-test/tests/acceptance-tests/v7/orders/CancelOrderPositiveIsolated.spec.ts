@@ -23,11 +23,9 @@ test.describe('@isolated', () => {
             `should be able to cancel order outside of blackout period 31st Dec between 22:00 and 22:30 (${time})`,
             async ({ scenario }) => {
                 await scenario
-                    .given()
-                    .clock().withTime(time)
-                    .and().order().withStatus(OrderStatus.PLACED)
-                    .when()
-                    .cancelOrder().then().shouldSucceed();
+                    .given().clock().withTime(time).and().order().withStatus(OrderStatus.PLACED)
+                    .when().cancelOrder()
+                    .then().shouldSucceed();
             }
         );
     }
