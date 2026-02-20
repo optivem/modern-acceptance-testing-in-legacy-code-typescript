@@ -10,7 +10,7 @@ import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 test.describe.configure({ mode: 'serial' });
 
 test.describe('@isolated', () => {
-    Channel(ChannelType.UI, ChannelType.API)('cannot place order with expired coupon code', async ({ scenario }) => {
+    Channel(ChannelType.UI, ChannelType.API)('cannot place order with expired coupon', async ({ scenario }) => {
         const whenClause = await scenario
             .given()
             .clock().withTime('2023-09-01T12:00:00Z')

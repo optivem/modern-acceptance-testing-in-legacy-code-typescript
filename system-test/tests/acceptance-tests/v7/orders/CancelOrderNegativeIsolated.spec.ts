@@ -23,7 +23,7 @@ const BLACKOUT_ERROR = 'Order cancellation is not allowed on December 31st betwe
 test.describe('@isolated', () => {
     for (const time of times) {
         Channel(ChannelType.UI, ChannelType.API)(
-            `cannot cancel order during blackout period (${time})`,
+            `cannot cancel an order on 31st Dec between 22:00 and 22:30 (${time})`,
             async ({ scenario }) => {
                 const whenClause = await scenario
                     .given()

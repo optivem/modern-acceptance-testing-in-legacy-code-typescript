@@ -78,7 +78,7 @@ Channel(ChannelType.UI, ChannelType.API)('discount rate should not be applied wh
 });
 
 Channel(ChannelType.UI, ChannelType.API)(
-    'subtotal price should be calculated as base price minus discount when we have coupon',
+    'subtotal price should be calculated as the base price minus discount amount when we have coupon',
     async ({ scenario }) => {
         const whenClause = await scenario.given().coupon().withDiscountRate(0.15).and().product().withUnitPrice(20.0).when();
         const success = await whenClause.placeOrder().withCouponCode().withQuantity(5).then().shouldSucceed();
