@@ -19,6 +19,7 @@ export class CouponManagementPage extends BasePage {
     private static readonly TABLE_CELL_VALID_TO_SELECTOR = 'table.table tbody tr td:nth-child(4)';
     private static readonly TABLE_CELL_USAGE_LIMIT_SELECTOR = 'table.table tbody tr td:nth-child(5)';
     private static readonly TABLE_CELL_USED_COUNT_SELECTOR = 'table.table tbody tr td:nth-child(6)';
+    private static readonly TABLE_EMPTY_STATE_SELECTOR = 'table.table tbody td.text-muted';
 
     private static readonly PERCENT_SYMBOL = '%';
     private static readonly TEXT_UNLIMITED = 'Unlimited';
@@ -71,6 +72,20 @@ export class CouponManagementPage extends BasePage {
 
     async readCoupons(): Promise<CouponDto[]> {
         if (!(await this.hasCouponsTable())) return [];
+
+        // Wait for table loading to complete before reading data.
+        // During loading/empty states the frontend renders a single colSpan'd <td>,
+        // while data rows have multiple <td> elements per row.
+        // Use or() to wait for either data rows (td:nth-child(2)) or empty state (td.text-muted).
+        const dataLocator = this.pageClient.getLocator(CouponManagementPage.TABLE_CELL_DISCOUNT_SELECTOR);
+        const emptyLocator = this.pageClient.getLocator(CouponManagementPage.TABLE_EMPTY_STATE_SELECTOR);
+        try {
+            await dataLocator.or(emptyLocator).first().waitFor({ state: 'visible' });
+        } catch {
+            return [];
+        }
+        if ((await dataLocator.count()) === 0) return [];
+
         const codes = await this.pageClient.readAllTextContentsAsync(
             CouponManagementPage.TABLE_CELL_CODE_SELECTOR
         );
