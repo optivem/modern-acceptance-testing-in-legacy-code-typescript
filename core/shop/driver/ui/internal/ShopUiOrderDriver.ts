@@ -84,6 +84,9 @@ export class ShopUiOrderDriver implements OrderDriver {
     async cancelOrder(orderNumber: Optional<string>): Promise<Result<void, SystemError>> {
         const viewResult = await this.viewOrder(orderNumber);
         if (viewResult.isFailure()) return viewResult.mapVoid();
+        // Snapshot any stale notification (e.g. from a prior placeOrder in given)
+        // so getResult() below skips it and waits for the cancel response notification.
+        await this.orderDetailsPage!.snapshotCurrentNotificationId();
         await this.orderDetailsPage!.clickCancelOrder();
 
         const cancelResult = await this.orderDetailsPage!.getResult();

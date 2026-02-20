@@ -26,6 +26,20 @@ export abstract class BasePage {
         this.pageClient = pageClient;
     }
 
+    /**
+     * Snapshots any currently-visible notification ID so that subsequent getResult()
+     * calls skip it and only react to notifications that appear after this point.
+     * Call this before triggering an action that produces a new notification when
+     * a stale notification from a prior step may still be visible.
+     */
+    async snapshotCurrentNotificationId(): Promise<void> {
+        const locator = this.pageClient.getLocator(BasePage.NOTIFICATION_SELECTOR);
+        if ((await locator.count()) > 0) {
+            const id = await locator.getAttribute(BasePage.NOTIFICATION_ID_ATTRIBUTE);
+            this.lastNotificationId = id;
+        }
+    }
+
     async getResult(): Promise<Result<string, SystemError>> {
         const notificationId = await this.waitForNewNotification();
         this.lastNotificationId = notificationId;
