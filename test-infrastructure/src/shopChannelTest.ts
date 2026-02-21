@@ -3,9 +3,9 @@ import {
     createShopApiDriver,
     createShopUiDriver,
     createErpDriver,
-    createTaxApiDriver,
-    getDefaultExternalSystemMode,
+    createTaxApiDriver
 } from './driver/createDrivers.js';
+import { getDefaultExternalSystemMode } from './driver/configurationLoaderRegistry.js';
 import type { ChannelTypeValue } from '@optivem/core/shop/ChannelType.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { channelTest } from '@optivem/optivem-testing';
