@@ -4,6 +4,7 @@
 import '../../../setup-config.js';
 import { Channel } from './base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
+import { emptyArgumentsProvider } from '../../shared/argumentProviders.js';
 
 const validationError = 'The request contains one or more validation errors';
 
@@ -45,7 +46,7 @@ Channel(ChannelType.UI, ChannelType.API)('should reject order with zero quantity
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should reject order with empty SKU', async ({ scenario }) => {
-    for (const sku of ['', '   ']) {
+    for (const sku of emptyArgumentsProvider) {
         await scenario
             .when().placeOrder()
                 .withSku(sku)
@@ -56,7 +57,7 @@ Channel(ChannelType.UI, ChannelType.API)('should reject order with empty SKU', a
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should reject order with empty quantity', async ({ scenario }) => {
-    for (const emptyQuantity of ['', '   ']) {
+    for (const emptyQuantity of emptyArgumentsProvider) {
         await scenario
             .when().placeOrder()
                 .withQuantity(emptyQuantity)
@@ -78,7 +79,7 @@ Channel(ChannelType.UI, ChannelType.API)('should reject order with non-integer q
 });
 
 Channel(ChannelType.UI, ChannelType.API)('should reject order with empty country', async ({ scenario }) => {
-    for (const emptyCountry of ['', '   ']) {
+    for (const emptyCountry of emptyArgumentsProvider) {
         await scenario
             .when().placeOrder()
                 .withCountry(emptyCountry)
