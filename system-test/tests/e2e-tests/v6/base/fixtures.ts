@@ -5,12 +5,10 @@
 import { test as base } from '@playwright/test';
 import type { SystemDsl } from '@optivem/dsl/system/SystemDsl.js';
 import { ScenarioDsl } from '@optivem/dsl/gherkin/ScenarioDsl.js';
-import {
-    scenarioChannelTest as sharedScenarioChannelTest,
-    type ScenarioChannelFixtures as SharedScenarioChannelFixtures,
-} from '@optivem/optivem-testing';
+import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/optivem-testing';
 import { SystemDslFactory } from '../../../../SystemDslFactory.js';
 import { getExternalSystemMode } from '../../../../test.config.js';
+import { createScenarioChannelHelpers } from '../../../shared/scenarioChannelHelpers.js';
 
 export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
     app: async ({}, use) => {
@@ -28,28 +26,14 @@ export { expect } from '@playwright/test';
 
 export type ScenarioChannelFixtures = SharedScenarioChannelFixtures<ScenarioDsl>;
 
-export function scenarioChannelTest(
-    _externalSystemMode: unknown,
-    channelTypes: string[],
-    testName: string,
-    testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>
-): void {
-    sharedScenarioChannelTest<ScenarioDsl>(
-        (name, scenarioTestFn) => {
-            test(name, async ({ scenario }) => {
-                await scenarioTestFn({ scenario });
-            });
-        },
-        channelTypes,
-        testName,
-        testFn
-    );
-}
+const scenarioChannel = createScenarioChannelHelpers<ScenarioDsl>(
+    (name, scenarioTestFn) => {
+        test(name, async ({ scenario }) => {
+            await scenarioTestFn({ scenario });
+        });
+    },
+    getExternalSystemMode
+);
 
-export function Channel(
-    ...channelTypes: string[]
-): (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => void {
-    return (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => {
-        scenarioChannelTest(getExternalSystemMode(), channelTypes, testName, testFn);
-    };
-}
+export const scenarioChannelTest = scenarioChannel.scenarioChannelTest;
+export const Channel = scenarioChannel.Channel;
