@@ -1,6 +1,3 @@
-/**
- * V4 e2e: place order negative (driver-level style).
- */
 import '../../../setup-config.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { GherkinDefaults } from '@optivem/dsl/gherkin/GherkinDefaults.js';

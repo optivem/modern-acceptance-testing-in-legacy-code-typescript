@@ -1,6 +1,3 @@
-/**
- * V4 e2e: view order negative (driver-level style).
- */
 import '../../../setup-config.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { channelShopDriverTest, expect } from './base/fixtures.js';

@@ -1,6 +1,3 @@
-/**
- * V4 e2e: place order positive (driver-level style).
- */
 import '../../../setup-config.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';

@@ -1,6 +1,3 @@
-/**
- * V5 e2e: place order positive (app/SystemDsl style).
- */
 import '../../../setup-config.js';
 import { Channel } from './base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
