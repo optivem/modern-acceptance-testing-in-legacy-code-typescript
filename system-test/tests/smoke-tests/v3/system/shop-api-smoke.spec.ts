@@ -7,7 +7,7 @@ import { ShopApiSmokeTest } from './ShopBaseSmokeTest.js';
 
 test.describe('V3 Shop API Smoke Tests', () => {
     test('should be able to go to shop', async ({ shopApiDriver }) => {
-        const suite = new ShopApiSmokeTest(shopApiDriver);
-        await suite.shouldBeAbleToGoToShop();
+        const test = new ShopApiSmokeTest(shopApiDriver);
+        await test.shouldBeAbleToGoToShop();
     });
 });
