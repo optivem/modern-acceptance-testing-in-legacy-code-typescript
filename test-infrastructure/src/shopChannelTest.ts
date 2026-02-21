@@ -1,5 +1,11 @@
 import type { ExternalSystemMode } from '@optivem/commons/dsl';
-import { DriverFactory, getDefaultExternalSystemMode } from './driver/DriverFactory.js';
+import {
+    createShopApiDriver,
+    createShopUiDriver,
+    createErpDriver,
+    createTaxApiDriver,
+    getDefaultExternalSystemMode,
+} from './driver/createDrivers.js';
 import type { ChannelTypeValue } from '@optivem/core/shop/ChannelType.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { channelTest } from '@optivem/optivem-testing';
@@ -14,8 +20,8 @@ export interface ShopFixtures {
 
 function shopDriverFactory(externalSystemMode: ExternalSystemMode): (channelType: string) => unknown {
     const factories: Record<ChannelTypeValue, () => unknown> = {
-        [ChannelType.API]: () => DriverFactory.createShopApiDriver(externalSystemMode),
-        [ChannelType.UI]: () => DriverFactory.createShopUiDriver(externalSystemMode)
+        [ChannelType.API]: () => createShopApiDriver(externalSystemMode),
+        [ChannelType.UI]: () => createShopUiDriver(externalSystemMode)
     };
     return (channelType: string) => factories[channelType as ChannelTypeValue]();
 }
@@ -58,8 +64,8 @@ export function shopChannelTest<T = never>(
     testFn?: (fixtures: ShopFixtures, data: T) => Promise<void>
 ): void {
     const additionalFixtures = {
-        erpApiDriver: () => DriverFactory.createErpDriver(externalSystemMode),
-        taxApiDriver: () => DriverFactory.createTaxApiDriver(externalSystemMode)
+        erpApiDriver: () => createErpDriver(externalSystemMode),
+        taxApiDriver: () => createTaxApiDriver(externalSystemMode)
     };
     const createShopDriver = shopDriverFactory(externalSystemMode);
 

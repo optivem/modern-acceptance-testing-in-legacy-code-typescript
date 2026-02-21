@@ -2,7 +2,7 @@ import '../../../setup-config.js';
 import { test as base } from '../../fixtures.js';
 import { expect } from '@playwright/test';
 import { Closer } from '@optivem/commons/util';
-import { DriverFactory } from '@optivem/test-infrastructure';
+import { createTaxApiDriver } from '@optivem/test-infrastructure';
 import { setupResultMatchers } from '@optivem/commons/util';
 import { getExternalSystemMode } from '../../../test.config.js';
 
@@ -10,7 +10,7 @@ setupResultMatchers();
 
 const test = base.extend({
   taxApiDriver: async ({}, use: any) => {
-    const driver = DriverFactory.createTaxApiDriver(getExternalSystemMode());
+    const driver = createTaxApiDriver(getExternalSystemMode());
     await use(driver);
     await Closer.close(driver);
   },

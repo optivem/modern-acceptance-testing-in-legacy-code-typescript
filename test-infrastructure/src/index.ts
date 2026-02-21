@@ -15,6 +15,13 @@ export type {
     BaseScenarioDslTestFixture,
     BaseScenarioDslTestFixtureV6,
 } from './base/index.js';
-export { DriverFactory, setConfigurationLoader, getDefaultExternalSystemMode } from './driver/DriverFactory.js';
+export {
+    createShopUiDriver,
+    createShopApiDriver,
+    createErpDriver,
+    createTaxApiDriver,
+    setConfigurationLoader,
+    getDefaultExternalSystemMode,
+} from './driver/createDrivers.js';
 export { shopChannelTest, shopChannelTestEach, channelTest } from './shopChannelTest.js';
 export type { ShopFixtures } from './shopChannelTest.js';
