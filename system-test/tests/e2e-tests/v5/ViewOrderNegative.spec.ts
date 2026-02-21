@@ -1,5 +1,5 @@
 /**
- * V6 e2e: view order negative (matches reference ViewOrderNegativeTest).
+ * V5 e2e: view order negative (app/SystemDsl style).
  */
 import '../../../setup-config.js';
 import { Channel } from './base/fixtures.js';
@@ -11,12 +11,12 @@ const nonExistentOrderCases = [
     { orderNumber: 'NON-EXISTENT-ORDER-77777', expectedMessage: 'Order NON-EXISTENT-ORDER-77777 does not exist.' },
 ];
 
-Channel(ChannelType.UI, ChannelType.API)('should not be able to view non-existent order', async ({ scenario }) => {
+Channel(ChannelType.UI, ChannelType.API)('should not be able to view non-existent order', async ({ app }) => {
     for (const { orderNumber, expectedMessage } of nonExistentOrderCases) {
-        await scenario
-            .when().viewOrder()
-                .withOrderNumber(orderNumber)
-            .then().shouldFail()
-                .errorMessage(expectedMessage);
+        (await app.shop().viewOrder()
+            .orderNumber(orderNumber)
+            .execute())
+            .shouldFail()
+            .errorMessage(expectedMessage);
     }
 });
