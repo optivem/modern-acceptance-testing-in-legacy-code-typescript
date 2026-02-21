@@ -55,7 +55,7 @@ $Config = @{
             ) },
         @{  Id = "contract-stub";
             Name = "External System Contract Tests - Stubbed External Systems";
-            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB npm test -- tests/external-system-contract-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=STUB npm test -- tests/external-system-contract-tests --workers=1";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
@@ -63,7 +63,7 @@ $Config = @{
             ) },
         @{  Id = "contract-real";
             Name = "External System Contract Tests - Real External Systems";
-            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=REAL npm test -- tests/external-system-contract-tests";
+            Command = "npx cross-env EXTERNAL_SYSTEM_MODE=REAL npm test -- tests/external-system-contract-tests --workers=1";
             Path = "system-test";
             TestReportPath = "system-test/playwright-report/index.html";
             TestInstallCommands = @(
