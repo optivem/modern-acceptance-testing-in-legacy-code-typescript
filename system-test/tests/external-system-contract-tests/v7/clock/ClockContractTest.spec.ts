@@ -13,7 +13,7 @@ test.describe.configure({ mode: 'serial' });
 test.describe('Clock Contract Tests', () => {
     test('should be able to get time', async ({ app }) => {
         (await app.clock().returnsTime()
-            .time('2024-06-15T12:00:00Z')
+            .time('2024-01-02T09:00:00Z')
             .execute())
             .shouldSucceed();
 
