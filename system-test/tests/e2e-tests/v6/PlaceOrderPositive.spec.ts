@@ -1,6 +1,3 @@
-/**
- * V6 e2e: place order positive (matches reference PlaceOrderPositiveTest).
- */
 import '../../../setup-config.js';
 import { Channel } from './base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
