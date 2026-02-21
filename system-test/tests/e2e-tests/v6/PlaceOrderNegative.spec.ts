@@ -102,7 +102,7 @@ Channel(ChannelType.UI, ChannelType.API)('should reject order with invalid count
 Channel(ChannelType.API)('should reject order with null quantity', async ({ scenario }) => {
     await scenario
         .when().placeOrder()
-            .withQuantity(null as unknown as string)
+            .withQuantity(null)
         .then().shouldFail()
             .errorMessage(validationError)
             .fieldErrorMessage('quantity', 'Quantity must not be empty');
@@ -111,7 +111,7 @@ Channel(ChannelType.API)('should reject order with null quantity', async ({ scen
 Channel(ChannelType.API)('should reject order with null SKU', async ({ scenario }) => {
     await scenario
         .when().placeOrder()
-            .withSku(null as unknown as string)
+            .withSku(null)
         .then().shouldFail()
             .errorMessage(validationError)
             .fieldErrorMessage('sku', 'SKU must not be empty');
@@ -120,7 +120,7 @@ Channel(ChannelType.API)('should reject order with null SKU', async ({ scenario 
 Channel(ChannelType.API)('should reject order with null country', async ({ scenario }) => {
     await scenario
         .when().placeOrder()
-            .withCountry(null as unknown as string)
+            .withCountry(null)
         .then().shouldFail()
             .errorMessage(validationError)
             .fieldErrorMessage('country', 'Country must not be empty');
