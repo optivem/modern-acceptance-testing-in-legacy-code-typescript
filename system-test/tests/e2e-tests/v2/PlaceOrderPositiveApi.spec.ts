@@ -13,9 +13,9 @@ function asNumber(value: unknown): number {
     return Number(value);
 }
 
-test('should place order with correct subtotal price', async ({ shopApiClient, erpClient }) => {
+test('should place order with correct subtotal price', async ({ shopApiClient, erpDriver }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpClient.createProduct({ sku, price: '20.00' })).toBeSuccess();
+    expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
 
     const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();
@@ -33,10 +33,10 @@ const subtotalPriceCases = [
     { unitPrice: '99.99', quantity: '1', subtotalPrice: '99.99' },
 ];
 
-test('should place order with correct subtotal price parameterized', async ({ shopApiClient, erpClient }) => {
+test('should place order with correct subtotal price parameterized', async ({ shopApiClient, erpDriver }) => {
     for (const { unitPrice, quantity, subtotalPrice } of subtotalPriceCases) {
         const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-        expect(await erpClient.createProduct({ sku, price: unitPrice })).toBeSuccess();
+        expect(await erpDriver.returnsProduct({ sku, price: unitPrice })).toBeSuccess();
 
         const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
         expect(placeOrderResult).toBeSuccess();
@@ -48,9 +48,9 @@ test('should place order with correct subtotal price parameterized', async ({ sh
     }
 });
 
-test('should place order', async ({ shopApiClient, erpClient }) => {
+test('should place order', async ({ shopApiClient, erpDriver }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpClient.createProduct({ sku, price: '20.00' })).toBeSuccess();
+    expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
 
     const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();
