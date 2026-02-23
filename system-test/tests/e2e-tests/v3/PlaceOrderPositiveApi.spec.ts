@@ -3,16 +3,6 @@ import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.
 import { GherkinDefaults } from '@optivem/dsl/gherkin/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 
-function asNumber(value: unknown): number {
-	if (typeof value === 'number') {
-		return value;
-	}
-	if (value != null && typeof (value as { toNumber?: () => number }).toNumber === 'function') {
-		return (value as { toNumber: () => number }).toNumber();
-	}
-	return Number(value);
-}
-
 test('should place order with correct subtotal price', async ({ shopApiDriver, erpDriver }) => {
 	const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
 	expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
@@ -23,7 +13,7 @@ test('should place order with correct subtotal price', async ({ shopApiDriver, e
 	const orderNumber = placeOrderResult.getValue().orderNumber;
 	const viewOrderResult = await shopApiDriver.orders().viewOrder(orderNumber);
 	expect(viewOrderResult).toBeSuccess();
-	expect(asNumber(viewOrderResult.getValue().subtotalPrice)).toBe(100.0);
+	expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(100.0);
 });
 
 const subtotalPriceCases = [
@@ -44,7 +34,7 @@ test('should place order with correct subtotal price parameterized', async ({ sh
 		const orderNumber = placeOrderResult.getValue().orderNumber;
 		const viewOrderResult = await shopApiDriver.orders().viewOrder(orderNumber);
 		expect(viewOrderResult).toBeSuccess();
-		expect(asNumber(viewOrderResult.getValue().subtotalPrice)).toBe(parseFloat(subtotalPrice));
+		expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(subtotalPrice);
 	}
 });
 
@@ -65,14 +55,14 @@ test('should place order', async ({ shopApiDriver, erpDriver }) => {
 	expect(order.orderNumber).toBe(orderNumber);
 	expect(order.sku).toBe(sku);
 	expect(order.country).toBe(GherkinDefaults.DEFAULT_COUNTRY);
-	expect(asNumber(order.quantity)).toBe(5);
-	expect(asNumber(order.unitPrice)).toBe(20.0);
-	expect(asNumber(order.subtotalPrice)).toBe(100.0);
+	expect(order.quantity).toEqualInteger(5);
+	expect(order.unitPrice).toEqualDecimal(20.0);
+	expect(order.subtotalPrice).toEqualDecimal(100.0);
 	expect(order.status).toBe(OrderStatus.PLACED);
-	expect(asNumber(order.discountRate)).toBeGreaterThanOrEqual(0);
-	expect(asNumber(order.discountAmount)).toBeGreaterThanOrEqual(0);
-	expect(asNumber(order.subtotalPrice)).toBeGreaterThan(0);
-	expect(asNumber(order.taxRate)).toBeGreaterThanOrEqual(0);
-	expect(asNumber(order.taxAmount)).toBeGreaterThanOrEqual(0);
-	expect(asNumber(order.totalPrice)).toBeGreaterThan(0);
+	expect(order.discountRate).toBeGreaterThanOrEqualDecimal(0);
+	expect(order.discountAmount).toBeGreaterThanOrEqualDecimal(0);
+	expect(order.subtotalPrice).toBeGreaterThanDecimal(0);
+	expect(order.taxRate).toBeGreaterThanOrEqualDecimal(0);
+	expect(order.taxAmount).toBeGreaterThanOrEqualDecimal(0);
+	expect(order.totalPrice).toBeGreaterThanDecimal(0);
 });
