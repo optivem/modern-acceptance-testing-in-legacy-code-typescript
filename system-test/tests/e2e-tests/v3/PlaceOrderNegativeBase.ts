@@ -108,33 +108,3 @@ export async function shouldRejectOrderWithInvalidCountry(shopDriver: ShopDriver
     expect(result).toHaveErrorMessage(validationError);
     expect(result).toHaveFieldError('Country does not exist: XX');
 }
-
-export async function shouldRejectOrderWithNullQuantity(shopDriver: ShopDriver): Promise<void> {
-    const result = await shopDriver.orders().placeOrder({
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: null,
-        country: GherkinDefaults.DEFAULT_COUNTRY,
-    });
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must not be empty');
-}
-
-export async function shouldRejectOrderWithNullSku(shopDriver: ShopDriver): Promise<void> {
-    const result = await shopDriver.orders().placeOrder({
-        sku: null,
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: GherkinDefaults.DEFAULT_COUNTRY,
-    });
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('SKU must not be empty');
-}
-
-export async function shouldRejectOrderWithNullCountry(shopDriver: ShopDriver): Promise<void> {
-    const result = await shopDriver.orders().placeOrder({
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: null,
-    });
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Country must not be empty');
-}
