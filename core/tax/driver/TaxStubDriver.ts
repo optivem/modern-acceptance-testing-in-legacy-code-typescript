@@ -1,9 +1,9 @@
 import { Result, Converter } from '@optivem/commons/util';
 import { TaxStubClient } from '../client/TaxStubClient.js';
 import type { ExtCountryDetailsResponse } from '../client/dtos/ExtCountryDetailsResponse.js';
-import type { ReturnsTaxRateRequest } from './dtos/ReturnsTaxRateRequest.js';
-import type { TaxErrorResponse } from './dtos/error/TaxErrorResponse.js';
-import { from as fromTaxErrorResponse } from './dtos/error/TaxErrorResponse.js';
+import type { ReturnsTaxRateRequest } from '@optivem/driver-api/tax/driver/dtos/ReturnsTaxRateRequest.js';
+import type { TaxErrorResponse } from '@optivem/driver-api/tax/driver/dtos/error/TaxErrorResponse.js';
+import { from as fromTaxErrorResponse } from './TaxErrorResponseMapper.js';
 import { BaseTaxDriver } from './BaseTaxDriver.js';
 
 export class TaxStubDriver extends BaseTaxDriver<TaxStubClient> {

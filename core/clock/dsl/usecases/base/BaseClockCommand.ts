@@ -1,6 +1,6 @@
-import { ClockDriver } from '../../../driver/ClockDriver.js';
+import type { ClockDriver } from '@optivem/driver-api/clock/driver/ClockDriver.js';
 import { BaseUseCase, UseCaseContext } from '@optivem/commons/dsl';
-import { ClockErrorResponse } from '../../../driver/dtos/error/ClockErrorResponse.js';
+import { ClockErrorResponse } from '@optivem/driver-api/clock/driver/dtos/error/ClockErrorResponse.js';
 import { ClockErrorVerification } from './ClockErrorVerification.js';
 
 export abstract class BaseClockCommand<TResponse, TVerification> extends BaseUseCase<

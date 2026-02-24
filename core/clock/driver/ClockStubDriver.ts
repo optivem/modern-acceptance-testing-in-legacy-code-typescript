@@ -1,10 +1,12 @@
 import { ClockStubClient } from '../client/ClockStubClient.js';
-import { GetTimeResponse, from } from './dtos/GetTimeResponse.js';
-import { ReturnsTimeRequest } from './dtos/ReturnsTimeRequest.js';
-import { ClockErrorResponse, from as fromClockErrorResponse } from './dtos/error/ClockErrorResponse.js';
+import type { GetTimeResponse } from '@optivem/driver-api/clock/driver/dtos/GetTimeResponse.js';
+import type { ReturnsTimeRequest } from '@optivem/driver-api/clock/driver/dtos/ReturnsTimeRequest.js';
+import type { ClockErrorResponse } from '@optivem/driver-api/clock/driver/dtos/error/ClockErrorResponse.js';
 import { ExtGetTimeResponse } from '../client/dtos/ExtGetTimeResponse.js';
 import { Result } from '@optivem/commons/util';
-import { ClockDriver } from './ClockDriver.js';
+import type { ClockDriver } from '@optivem/driver-api/clock/driver/ClockDriver.js';
+import { from as fromGetTimeResponse } from './GetTimeResponseMapper.js';
+import { from as fromClockErrorResponse } from './ClockErrorResponseMapper.js';
 
 export class ClockStubDriver implements ClockDriver {
     private readonly client: ClockStubClient;
@@ -22,7 +24,7 @@ export class ClockStubDriver implements ClockDriver {
     }
 
     async getTime(): Promise<Result<GetTimeResponse, ClockErrorResponse>> {
-        return this.client.getTime().then((r) => r.map(from).mapError(fromClockErrorResponse));
+        return this.client.getTime().then((r) => r.map(fromGetTimeResponse).mapError(fromClockErrorResponse));
     }
 
     async returnsTime(request: ReturnsTimeRequest): Promise<Result<void, ClockErrorResponse>> {

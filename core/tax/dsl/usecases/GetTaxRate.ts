@@ -1,7 +1,7 @@
 import { UseCaseContext } from '@optivem/commons/dsl';
 import type { Optional } from '@optivem/commons/util';
-import type { TaxDriver } from '../../driver/TaxDriver.js';
-import type { GetTaxResponse } from '../../driver/dtos/GetTaxResponse.js';
+import type { TaxDriver } from '@optivem/driver-api/tax/driver/TaxDriver.js';
+import type { GetTaxResponse } from '@optivem/driver-api/tax/driver/dtos/GetTaxResponse.js';
 import { BaseTaxCommand } from './base/BaseTaxCommand.js';
 import { TaxUseCaseResult } from './base/TaxUseCaseResult.js';
 import { GetTaxVerification } from './GetTaxVerification.js';

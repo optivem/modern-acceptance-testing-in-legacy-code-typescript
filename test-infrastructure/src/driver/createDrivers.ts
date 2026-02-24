@@ -2,7 +2,7 @@ import { ExternalSystemMode } from '@optivem/commons/dsl';
 import { ShopUiDriver } from '@optivem/core/shop/driver/ui/ShopUiDriver.js';
 import { ShopApiDriver } from '@optivem/core/shop/driver/api/ShopApiDriver.js';
 import { ErpRealDriver } from '@optivem/core/erp/driver/ErpRealDriver.js';
-import type { TaxDriver } from '@optivem/core/tax/driver/TaxDriver.js';
+import type { TaxDriver } from '@optivem/driver-api/tax/driver/TaxDriver.js';
 import { TaxRealDriver } from '@optivem/core/tax/driver/TaxRealDriver.js';
 import { getConfiguration } from './configurationLoaderRegistry.js';
 

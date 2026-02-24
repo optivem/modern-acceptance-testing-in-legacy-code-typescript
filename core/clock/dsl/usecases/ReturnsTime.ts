@@ -1,5 +1,5 @@
-import { ClockDriver } from '../../driver/ClockDriver.js';
-import { ReturnsTimeRequest } from '../../driver/dtos/ReturnsTimeRequest.js';
+import type { ClockDriver } from '@optivem/driver-api/clock/driver/ClockDriver.js';
+import type { ReturnsTimeRequest } from '@optivem/driver-api/clock/driver/dtos/ReturnsTimeRequest.js';
 import { BaseClockCommand } from './base/BaseClockCommand.js';
 import { ClockUseCaseResult } from './base/ClockUseCaseResult.js';
 import { VoidVerification } from '@optivem/commons/dsl';

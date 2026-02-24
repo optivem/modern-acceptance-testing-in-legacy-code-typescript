@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons/util';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/commons/dsl';
-import { ClockErrorResponse } from '../../../driver/dtos/error/ClockErrorResponse.js';
+import { ClockErrorResponse } from '@optivem/driver-api/clock/driver/dtos/error/ClockErrorResponse.js';
 import { ClockErrorVerification } from './ClockErrorVerification.js';
 
 export class ClockUseCaseResult<

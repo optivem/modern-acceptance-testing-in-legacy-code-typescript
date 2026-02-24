@@ -1,12 +1,12 @@
 import type { Optional } from '@optivem/commons/util';
 import { Result } from '@optivem/commons/util';
 import type { BaseTaxClient } from '../client/BaseTaxClient.js';
-import type { GetTaxResponse } from './dtos/GetTaxResponse.js';
-import { from as fromGetTaxResponse } from './dtos/GetTaxResponse.js';
-import type { ReturnsTaxRateRequest } from './dtos/ReturnsTaxRateRequest.js';
-import type { TaxErrorResponse } from './dtos/error/TaxErrorResponse.js';
-import { from as fromTaxErrorResponse } from './dtos/error/TaxErrorResponse.js';
-import type { TaxDriver } from './TaxDriver.js';
+import type { TaxDriver } from '@optivem/driver-api/tax/driver/TaxDriver.js';
+import type { GetTaxResponse } from '@optivem/driver-api/tax/driver/dtos/GetTaxResponse.js';
+import type { ReturnsTaxRateRequest } from '@optivem/driver-api/tax/driver/dtos/ReturnsTaxRateRequest.js';
+import type { TaxErrorResponse } from '@optivem/driver-api/tax/driver/dtos/error/TaxErrorResponse.js';
+import { from as fromGetTaxResponse } from './GetTaxResponseMapper.js';
+import { from as fromTaxErrorResponse } from './TaxErrorResponseMapper.js';
 
 export abstract class BaseTaxDriver<TClient extends BaseTaxClient> implements TaxDriver {
     protected readonly client: TClient;
