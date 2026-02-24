@@ -1,5 +1,5 @@
 import { VoidVerification, UseCaseContext } from '@optivem/commons/dsl';
-import type { ErpDriver } from '../../driver/ErpDriver.js';
+import type { ErpDriver } from '@optivem/driver-api/erp/driver/ErpDriver.js';
 import { BaseErpCommand } from './base/BaseErpCommand.js';
 import { ErpUseCaseResult } from './base/ErpUseCaseResult.js';
 

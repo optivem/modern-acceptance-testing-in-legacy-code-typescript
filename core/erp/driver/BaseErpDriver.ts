@@ -1,12 +1,12 @@
 import { Result } from '@optivem/commons/util';
 import type { BaseErpClient } from '../client/BaseErpClient.js';
-import type { ErpErrorResponse } from './dtos/error/ErpErrorResponse.js';
-import type { GetProductRequest } from './dtos/GetProductRequest.js';
-import type { GetProductResponse } from './dtos/GetProductResponse.js';
-import { from as fromGetProductResponse } from './dtos/GetProductResponse.js';
-import type { ReturnsProductRequest } from './dtos/ReturnsProductRequest.js';
-import { from as fromErpErrorResponse } from './dtos/error/ErpErrorResponse.js';
-import type { ErpDriver } from './ErpDriver.js';
+import type { ErpDriver } from '@optivem/driver-api/erp/driver/ErpDriver.js';
+import type { ErpErrorResponse } from '@optivem/driver-api/erp/driver/dtos/error/ErpErrorResponse.js';
+import type { GetProductRequest } from '@optivem/driver-api/erp/driver/dtos/GetProductRequest.js';
+import type { GetProductResponse } from '@optivem/driver-api/erp/driver/dtos/GetProductResponse.js';
+import type { ReturnsProductRequest } from '@optivem/driver-api/erp/driver/dtos/ReturnsProductRequest.js';
+import { from as fromGetProductResponse } from './GetProductResponseMapper.js';
+import { from as fromErpErrorResponse } from './ErpErrorResponseMapper.js';
 
 export abstract class BaseErpDriver<TClient extends BaseErpClient> implements ErpDriver {
     protected readonly client: TClient;

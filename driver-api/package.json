@@ -1,11 +1,12 @@
 {
-  "name": "@optivem/core",
+  "name": "@optivem/driver-api",
   "version": "0.0.1",
   "type": "module",
   "private": true,
-  "exports": { "./*": "./dist/*" },
   "scripts": { "clean": "rimraf dist", "build": "rimraf dist && tsc -p tsconfig.build.json" },
-  "dependencies": {
-    "@optivem/driver-api": "file:../driver-api"
+  "exports": { "./*": "./dist/*" },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
   }
 }

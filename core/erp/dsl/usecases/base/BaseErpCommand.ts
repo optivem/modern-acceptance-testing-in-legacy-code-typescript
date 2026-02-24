@@ -1,6 +1,6 @@
 import { BaseUseCase, UseCaseContext } from '@optivem/commons/dsl';
-import type { ErpDriver } from '../../../driver/ErpDriver.js';
-import type { ErpErrorResponse } from '../../../driver/dtos/error/ErpErrorResponse.js';
+import type { ErpDriver } from '@optivem/driver-api/erp/driver/ErpDriver.js';
+import type { ErpErrorResponse } from '@optivem/driver-api/erp/driver/dtos/error/ErpErrorResponse.js';
 import { ErpErrorVerification } from './ErpErrorVerification.js';
 
 export abstract class BaseErpCommand<TResponse, TVerification> extends BaseUseCase<

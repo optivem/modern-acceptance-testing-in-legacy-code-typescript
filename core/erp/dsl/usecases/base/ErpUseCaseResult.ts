@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons/util';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/commons/dsl';
-import type { ErpErrorResponse } from '../../../driver/dtos/error/ErpErrorResponse.js';
+import type { ErpErrorResponse } from '@optivem/driver-api/erp/driver/dtos/error/ErpErrorResponse.js';
 import { ErpErrorVerification } from './ErpErrorVerification.js';
 
 export class ErpUseCaseResult<

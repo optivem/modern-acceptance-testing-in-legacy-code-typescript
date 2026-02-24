@@ -6,13 +6,14 @@
     "commons",
     "optivem-testing",
     "core",
+    "driver-api",
     "dsl-api",
     "dsl-core",
     "test-infrastructure",
     "system-test"
   ],
   "scripts": {
-    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/core && npm run build -w @optivem/dsl-api && npm run build -w @optivem/dsl-core && npm run build -w @optivem/test-infrastructure",
+    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/driver-api && npm run build -w @optivem/core && npm run build -w @optivem/dsl-api && npm run build -w @optivem/dsl-core && npm run build -w @optivem/test-infrastructure",
     "test": "npm run build && npm run test -w system-test"
   }
 }
