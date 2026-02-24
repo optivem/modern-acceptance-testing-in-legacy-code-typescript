@@ -2,116 +2,159 @@ import '../../../setup-config.js';
 import { GherkinDefaults } from '@optivem/dsl/gherkin/GherkinDefaults.js';
 import { emptyArgumentsProvider } from '../../shared/argumentProviders.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
-import { placeOrderUsingUiClient } from './base/shopUiClientOrderFlows.js';
 
 const validationError = 'The request contains one or more validation errors';
 
-test('should reject order with invalid quantity', async ({ shopUiClient }) => {
-    const result = await placeOrderUsingUiClient(shopUiClient, {
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: 'invalid-quantity',
-        country: GherkinDefaults.DEFAULT_COUNTRY,
-    });
+function assertValidationError(result: any, field: string, message: string): void {
+    expect(result.isFailure()).toBe(true);
+    const error = result.getError();
+    expect(error.message).toBe(validationError);
+    expect(error.fields?.some((item: any) => item.field === field && item.message === message)).toBe(true);
+}
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must be an integer');
+test('should reject order with invalid quantity', async ({ shopUiClient }) => {
+    await shopUiClient.close();
+    const homePage = await shopUiClient.openHomePage();
+    const newOrderPage = await homePage.clickNewOrder();
+
+    await newOrderPage.inputSku(createUniqueSku(GherkinDefaults.DEFAULT_SKU));
+    await newOrderPage.inputQuantity('invalid-quantity');
+    await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+    await newOrderPage.inputCouponCode(null);
+    await newOrderPage.clickPlaceOrder();
+
+    const result = await newOrderPage.getResult();
+    assertValidationError(result, 'quantity', 'Quantity must be an integer');
 });
 
 test('should reject order with non-existent SKU', async ({ shopUiClient }) => {
-    const result = await placeOrderUsingUiClient(shopUiClient, {
-        sku: 'NON-EXISTENT-SKU-12345',
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: GherkinDefaults.DEFAULT_COUNTRY,
-    });
+    await shopUiClient.close();
+    const homePage = await shopUiClient.openHomePage();
+    const newOrderPage = await homePage.clickNewOrder();
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Product does not exist for SKU: NON-EXISTENT-SKU-12345');
+    await newOrderPage.inputSku('NON-EXISTENT-SKU-12345');
+    await newOrderPage.inputQuantity(GherkinDefaults.DEFAULT_QUANTITY);
+    await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+    await newOrderPage.inputCouponCode(null);
+    await newOrderPage.clickPlaceOrder();
+
+    const result = await newOrderPage.getResult();
+    assertValidationError(result, 'sku', 'Product does not exist for SKU: NON-EXISTENT-SKU-12345');
 });
 
 test('should reject order with negative quantity', async ({ shopUiClient }) => {
-    const result = await placeOrderUsingUiClient(shopUiClient, {
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: '-10',
-        country: GherkinDefaults.DEFAULT_COUNTRY,
-    });
+    await shopUiClient.close();
+    const homePage = await shopUiClient.openHomePage();
+    const newOrderPage = await homePage.clickNewOrder();
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must be positive');
+    await newOrderPage.inputSku(createUniqueSku(GherkinDefaults.DEFAULT_SKU));
+    await newOrderPage.inputQuantity('-10');
+    await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+    await newOrderPage.inputCouponCode(null);
+    await newOrderPage.clickPlaceOrder();
+
+    const result = await newOrderPage.getResult();
+    assertValidationError(result, 'quantity', 'Quantity must be positive');
 });
 
 test('should reject order with zero quantity', async ({ shopUiClient }) => {
-    const result = await placeOrderUsingUiClient(shopUiClient, {
-        sku: 'ANOTHER-SKU-67890',
-        quantity: '0',
-        country: GherkinDefaults.DEFAULT_COUNTRY,
-    });
+    await shopUiClient.close();
+    const homePage = await shopUiClient.openHomePage();
+    const newOrderPage = await homePage.clickNewOrder();
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must be positive');
+    await newOrderPage.inputSku(createUniqueSku(GherkinDefaults.DEFAULT_SKU));
+    await newOrderPage.inputQuantity('0');
+    await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+    await newOrderPage.inputCouponCode(null);
+    await newOrderPage.clickPlaceOrder();
+
+    const result = await newOrderPage.getResult();
+    assertValidationError(result, 'quantity', 'Quantity must be positive');
 });
 
 test('should reject order with empty SKU', async ({ shopUiClient }) => {
     for (const sku of emptyArgumentsProvider) {
-        const result = await placeOrderUsingUiClient(shopUiClient, {
-            sku,
-            quantity: GherkinDefaults.DEFAULT_QUANTITY,
-            country: GherkinDefaults.DEFAULT_COUNTRY,
-        });
+        await shopUiClient.close();
+        const homePage = await shopUiClient.openHomePage();
+        const newOrderPage = await homePage.clickNewOrder();
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('SKU must not be empty');
+        await newOrderPage.inputSku(sku);
+        await newOrderPage.inputQuantity(GherkinDefaults.DEFAULT_QUANTITY);
+        await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+        await newOrderPage.inputCouponCode(null);
+        await newOrderPage.clickPlaceOrder();
+
+        const result = await newOrderPage.getResult();
+        assertValidationError(result, 'sku', 'SKU must not be empty');
     }
 });
 
 test('should reject order with empty quantity', async ({ shopUiClient }) => {
     for (const emptyQuantity of emptyArgumentsProvider) {
-        const result = await placeOrderUsingUiClient(shopUiClient, {
-            sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-            quantity: emptyQuantity,
-            country: GherkinDefaults.DEFAULT_COUNTRY,
-        });
+        await shopUiClient.close();
+        const homePage = await shopUiClient.openHomePage();
+        const newOrderPage = await homePage.clickNewOrder();
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('Quantity must not be empty');
+        await newOrderPage.inputSku(createUniqueSku(GherkinDefaults.DEFAULT_SKU));
+        await newOrderPage.inputQuantity(emptyQuantity);
+        await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+        await newOrderPage.inputCouponCode(null);
+        await newOrderPage.clickPlaceOrder();
+
+        const result = await newOrderPage.getResult();
+        assertValidationError(result, 'quantity', 'Quantity must not be empty');
     }
 });
 
 test('should reject order with non-integer quantity', async ({ shopUiClient }) => {
     for (const nonIntegerQuantity of ['3.5', 'lala']) {
-        const result = await placeOrderUsingUiClient(shopUiClient, {
-            sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-            quantity: nonIntegerQuantity,
-            country: GherkinDefaults.DEFAULT_COUNTRY,
-        });
+        await shopUiClient.close();
+        const homePage = await shopUiClient.openHomePage();
+        const newOrderPage = await homePage.clickNewOrder();
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('Quantity must be an integer');
+        await newOrderPage.inputSku(createUniqueSku(GherkinDefaults.DEFAULT_SKU));
+        await newOrderPage.inputQuantity(nonIntegerQuantity);
+        await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+        await newOrderPage.inputCouponCode(null);
+        await newOrderPage.clickPlaceOrder();
+
+        const result = await newOrderPage.getResult();
+        assertValidationError(result, 'quantity', 'Quantity must be an integer');
     }
 });
 
 test('should reject order with empty country', async ({ shopUiClient }) => {
     for (const emptyCountry of emptyArgumentsProvider) {
-        const result = await placeOrderUsingUiClient(shopUiClient, {
-            sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-            quantity: GherkinDefaults.DEFAULT_QUANTITY,
-            country: emptyCountry,
-        });
+        await shopUiClient.close();
+        const homePage = await shopUiClient.openHomePage();
+        const newOrderPage = await homePage.clickNewOrder();
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('Country must not be empty');
+        await newOrderPage.inputSku(createUniqueSku(GherkinDefaults.DEFAULT_SKU));
+        await newOrderPage.inputQuantity(GherkinDefaults.DEFAULT_QUANTITY);
+        await newOrderPage.inputCountry(emptyCountry);
+        await newOrderPage.inputCouponCode(null);
+        await newOrderPage.clickPlaceOrder();
+
+        const result = await newOrderPage.getResult();
+        assertValidationError(result, 'country', 'Country must not be empty');
     }
 });
 
 test('should reject order with invalid country', async ({ shopUiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpClient.createProduct({ id: sku, price: '20.00' })).toBeSuccess();
+    const createProductResult = await erpClient.createProduct({ id: sku, price: '20.00' });
+    expect(createProductResult.isSuccess()).toBe(true);
 
-    const result = await placeOrderUsingUiClient(shopUiClient, {
-        sku,
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: 'XX',
-    });
+    await shopUiClient.close();
+    const homePage = await shopUiClient.openHomePage();
+    const newOrderPage = await homePage.clickNewOrder();
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Country does not exist: XX');
+    await newOrderPage.inputSku(sku);
+    await newOrderPage.inputQuantity(GherkinDefaults.DEFAULT_QUANTITY);
+    await newOrderPage.inputCountry('XX');
+    await newOrderPage.inputCouponCode(null);
+    await newOrderPage.clickPlaceOrder();
+
+    const result = await newOrderPage.getResult();
+    assertValidationError(result, 'country', 'Country does not exist: XX');
 });

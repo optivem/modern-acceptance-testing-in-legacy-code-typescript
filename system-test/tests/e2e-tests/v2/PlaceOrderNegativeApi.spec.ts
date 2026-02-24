@@ -5,6 +5,13 @@ import { test, expect, createUniqueSku } from './base/fixtures.js';
 
 const validationError = 'The request contains one or more validation errors';
 
+function assertValidationError(result: any, field: string, message: string): void {
+    expect(result.isFailure()).toBe(true);
+    const error = result.getError();
+    expect(error.detail).toBe(validationError);
+    expect(error.errors?.some((item: any) => item.field === field && item.message === message)).toBe(true);
+}
+
 test('should reject order with invalid quantity', async ({ shopApiClient }) => {
     const result = await shopApiClient.orders().placeOrder({
         sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
@@ -12,8 +19,7 @@ test('should reject order with invalid quantity', async ({ shopApiClient }) => {
         country: GherkinDefaults.DEFAULT_COUNTRY,
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must be an integer');
+    assertValidationError(result, 'quantity', 'Quantity must be an integer');
 });
 
 test('should reject order with non-existent SKU', async ({ shopApiClient }) => {
@@ -23,8 +29,7 @@ test('should reject order with non-existent SKU', async ({ shopApiClient }) => {
         country: GherkinDefaults.DEFAULT_COUNTRY,
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Product does not exist for SKU: NON-EXISTENT-SKU-12345');
+    assertValidationError(result, 'sku', 'Product does not exist for SKU: NON-EXISTENT-SKU-12345');
 });
 
 test('should reject order with negative quantity', async ({ shopApiClient }) => {
@@ -34,8 +39,7 @@ test('should reject order with negative quantity', async ({ shopApiClient }) => 
         country: GherkinDefaults.DEFAULT_COUNTRY,
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must be positive');
+    assertValidationError(result, 'quantity', 'Quantity must be positive');
 });
 
 test('should reject order with zero quantity', async ({ shopApiClient }) => {
@@ -45,8 +49,7 @@ test('should reject order with zero quantity', async ({ shopApiClient }) => {
         country: GherkinDefaults.DEFAULT_COUNTRY,
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must be positive');
+    assertValidationError(result, 'quantity', 'Quantity must be positive');
 });
 
 test('should reject order with empty SKU', async ({ shopApiClient }) => {
@@ -57,8 +60,7 @@ test('should reject order with empty SKU', async ({ shopApiClient }) => {
             country: GherkinDefaults.DEFAULT_COUNTRY,
         });
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('SKU must not be empty');
+        assertValidationError(result, 'sku', 'SKU must not be empty');
     }
 });
 
@@ -70,8 +72,7 @@ test('should reject order with empty quantity', async ({ shopApiClient }) => {
             country: GherkinDefaults.DEFAULT_COUNTRY,
         });
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('Quantity must not be empty');
+        assertValidationError(result, 'quantity', 'Quantity must not be empty');
     }
 });
 
@@ -83,8 +84,7 @@ test('should reject order with non-integer quantity', async ({ shopApiClient }) 
             country: GherkinDefaults.DEFAULT_COUNTRY,
         });
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('Quantity must be an integer');
+        assertValidationError(result, 'quantity', 'Quantity must be an integer');
     }
 });
 
@@ -96,8 +96,7 @@ test('should reject order with empty country', async ({ shopApiClient }) => {
             country: emptyCountry,
         });
 
-        expect(result).toHaveErrorMessage(validationError);
-        expect(result).toHaveFieldError('Country must not be empty');
+        assertValidationError(result, 'country', 'Country must not be empty');
     }
 });
 
@@ -111,8 +110,7 @@ test('should reject order with invalid country', async ({ shopApiClient, erpClie
         country: 'XX',
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Country does not exist: XX');
+    assertValidationError(result, 'country', 'Country does not exist: XX');
 });
 
 test('should reject order with null quantity', async ({ shopApiClient }) => {
@@ -122,8 +120,7 @@ test('should reject order with null quantity', async ({ shopApiClient }) => {
         country: GherkinDefaults.DEFAULT_COUNTRY,
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Quantity must not be empty');
+    assertValidationError(result, 'quantity', 'Quantity must not be empty');
 });
 
 test('should reject order with null SKU', async ({ shopApiClient }) => {
@@ -133,8 +130,7 @@ test('should reject order with null SKU', async ({ shopApiClient }) => {
         country: GherkinDefaults.DEFAULT_COUNTRY,
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('SKU must not be empty');
+    assertValidationError(result, 'sku', 'SKU must not be empty');
 });
 
 test('should reject order with null country', async ({ shopApiClient }) => {
@@ -144,6 +140,5 @@ test('should reject order with null country', async ({ shopApiClient }) => {
         country: null,
     });
 
-    expect(result).toHaveErrorMessage(validationError);
-    expect(result).toHaveFieldError('Country must not be empty');
+    assertValidationError(result, 'country', 'Country must not be empty');
 });

@@ -1,20 +1,50 @@
 import '../../../setup-config.js';
+import { NewOrderPage } from '@optivem/core/shop/client/ui/pages/NewOrderPage.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
+import { Integer } from '@optivem/commons/util';
 import { GherkinDefaults } from '@optivem/dsl/gherkin/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
-import { placeOrderUsingUiClient, viewOrderUsingUiClient } from './base/shopUiClientOrderFlows.js';
+
+function decimalToNumber(value: any): number {
+    return value?.toNumber();
+}
+
+function integerToNumber(value: Integer): number {
+    return value?.toNumber();
+}
 
 test('should place order with correct subtotal price', async ({ shopUiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpClient.createProduct({ id: sku, price: '20.00' })).toBeSuccess();
+    const createProductResult = await erpClient.createProduct({ id: sku, price: '20.00' });
+    expect(createProductResult.isSuccess()).toBe(true);
 
-    const placeOrderResult = await placeOrderUsingUiClient(shopUiClient, { sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
-    expect(placeOrderResult).toBeSuccess();
+    await shopUiClient.close();
+    let homePage = await shopUiClient.openHomePage();
+    let newOrderPage = await homePage.clickNewOrder();
 
-    const orderNumber = placeOrderResult.getValue().orderNumber;
-    const viewOrderResult = await viewOrderUsingUiClient(shopUiClient, orderNumber);
-    expect(viewOrderResult).toBeSuccess();
-    expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(100.0);
+    await newOrderPage.inputSku(sku);
+    await newOrderPage.inputQuantity('5');
+    await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+    await newOrderPage.inputCouponCode(null);
+    await newOrderPage.clickPlaceOrder();
+
+    const placeOrderResult = await newOrderPage.getResult();
+    expect(placeOrderResult.isSuccess()).toBe(true);
+    const orderNumber = NewOrderPage.getOrderNumber(placeOrderResult.getValue());
+
+    await shopUiClient.close();
+    homePage = await shopUiClient.openHomePage();
+    const orderHistoryPage = await homePage.clickOrderHistory();
+    await orderHistoryPage.inputOrderNumber(orderNumber);
+    await orderHistoryPage.clickSearch();
+    const isListed = await orderHistoryPage.waitForOrderRow(orderNumber);
+    expect(isListed).toBe(true);
+    const orderDetailsPage = await orderHistoryPage.clickViewOrderDetails(orderNumber);
+    const isLoaded = await orderDetailsPage.isLoadedSuccessfully();
+    expect(isLoaded).toBe(true);
+
+    const subtotalPrice = await orderDetailsPage.getSubtotalPrice();
+    expect(decimalToNumber(subtotalPrice)).toBe(100.0);
 });
 
 const subtotalPriceCases = [
@@ -27,43 +57,94 @@ const subtotalPriceCases = [
 test('should place order with correct subtotal price parameterized', async ({ shopUiClient, erpClient }) => {
     for (const { unitPrice, quantity, subtotalPrice } of subtotalPriceCases) {
         const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-        expect(await erpClient.createProduct({ id: sku, price: unitPrice })).toBeSuccess();
+        const createProductResult = await erpClient.createProduct({ id: sku, price: unitPrice });
+        expect(createProductResult.isSuccess()).toBe(true);
 
-        const placeOrderResult = await placeOrderUsingUiClient(shopUiClient, { sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
-        expect(placeOrderResult).toBeSuccess();
+        await shopUiClient.close();
+        let homePage = await shopUiClient.openHomePage();
+        let newOrderPage = await homePage.clickNewOrder();
 
-        const orderNumber = placeOrderResult.getValue().orderNumber;
-        const viewOrderResult = await viewOrderUsingUiClient(shopUiClient, orderNumber);
-        expect(viewOrderResult).toBeSuccess();
-        expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(subtotalPrice);
+        await newOrderPage.inputSku(sku);
+        await newOrderPage.inputQuantity(quantity);
+        await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+        await newOrderPage.inputCouponCode(null);
+        await newOrderPage.clickPlaceOrder();
+
+        const placeOrderResult = await newOrderPage.getResult();
+        expect(placeOrderResult.isSuccess()).toBe(true);
+        const orderNumber = NewOrderPage.getOrderNumber(placeOrderResult.getValue());
+
+        await shopUiClient.close();
+        homePage = await shopUiClient.openHomePage();
+        const orderHistoryPage = await homePage.clickOrderHistory();
+        await orderHistoryPage.inputOrderNumber(orderNumber);
+        await orderHistoryPage.clickSearch();
+        const isListed = await orderHistoryPage.waitForOrderRow(orderNumber);
+        expect(isListed).toBe(true);
+        const orderDetailsPage = await orderHistoryPage.clickViewOrderDetails(orderNumber);
+        const isLoaded = await orderDetailsPage.isLoadedSuccessfully();
+        expect(isLoaded).toBe(true);
+
+        const actualSubtotalPrice = await orderDetailsPage.getSubtotalPrice();
+        expect(decimalToNumber(actualSubtotalPrice)).toBe(Number(subtotalPrice));
     }
 });
 
 test('should place order', async ({ shopUiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpClient.createProduct({ id: sku, price: '20.00' })).toBeSuccess();
+    const createProductResult = await erpClient.createProduct({ id: sku, price: '20.00' });
+    expect(createProductResult.isSuccess()).toBe(true);
 
-    const placeOrderResult = await placeOrderUsingUiClient(shopUiClient, { sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
-    expect(placeOrderResult).toBeSuccess();
+    await shopUiClient.close();
+    let homePage = await shopUiClient.openHomePage();
+    const newOrderPage = await homePage.clickNewOrder();
+    await newOrderPage.inputSku(sku);
+    await newOrderPage.inputQuantity('5');
+    await newOrderPage.inputCountry(GherkinDefaults.DEFAULT_COUNTRY);
+    await newOrderPage.inputCouponCode(null);
+    await newOrderPage.clickPlaceOrder();
 
-    const orderNumber = placeOrderResult.getValue().orderNumber;
+    const placeOrderResult = await newOrderPage.getResult();
+    expect(placeOrderResult.isSuccess()).toBe(true);
+
+    const orderNumber = NewOrderPage.getOrderNumber(placeOrderResult.getValue());
     expect(orderNumber.startsWith('ORD-')).toBe(true);
 
-    const viewOrderResult = await viewOrderUsingUiClient(shopUiClient, orderNumber);
-    expect(viewOrderResult).toBeSuccess();
+    await shopUiClient.close();
+    homePage = await shopUiClient.openHomePage();
+    const orderHistoryPage = await homePage.clickOrderHistory();
+    await orderHistoryPage.inputOrderNumber(orderNumber);
+    await orderHistoryPage.clickSearch();
+    const isListed = await orderHistoryPage.waitForOrderRow(orderNumber);
+    expect(isListed).toBe(true);
+    const orderDetailsPage = await orderHistoryPage.clickViewOrderDetails(orderNumber);
+    const isLoaded = await orderDetailsPage.isLoadedSuccessfully();
+    expect(isLoaded).toBe(true);
 
-    const order = viewOrderResult.getValue();
-    expect(order.orderNumber).toBe(orderNumber);
-    expect(order.sku).toBe(sku);
-    expect(order.country).toBe(GherkinDefaults.DEFAULT_COUNTRY);
-    expect(order.quantity).toEqualInteger(5);
-    expect(order.unitPrice).toEqualDecimal(20.0);
-    expect(order.subtotalPrice).toEqualDecimal(100.0);
-    expect(order.status).toBe(OrderStatus.PLACED);
-    expect(order.discountRate).toBeGreaterThanOrEqualDecimal(0);
-    expect(order.discountAmount).toBeGreaterThanOrEqualDecimal(0);
-    expect(order.subtotalPrice).toBeGreaterThanDecimal(0);
-    expect(order.taxRate).toBeGreaterThanOrEqualDecimal(0);
-    expect(order.taxAmount).toBeGreaterThanOrEqualDecimal(0);
-    expect(order.totalPrice).toBeGreaterThanDecimal(0);
+    const orderNumberValue = await orderDetailsPage.getOrderNumber();
+    const skuValue = await orderDetailsPage.getSku();
+    const countryValue = await orderDetailsPage.getCountry();
+    const quantityValue = Integer.fromNumber(await orderDetailsPage.getQuantity());
+    const unitPriceValue = await orderDetailsPage.getUnitPrice();
+    const subtotalPriceValue = await orderDetailsPage.getSubtotalPrice();
+    const statusValue = await orderDetailsPage.getStatus();
+    const discountRateValue = await orderDetailsPage.getDiscountRate();
+    const discountAmountValue = await orderDetailsPage.getDiscountAmount();
+    const taxRateValue = await orderDetailsPage.getTaxRate();
+    const taxAmountValue = await orderDetailsPage.getTaxAmount();
+    const totalPriceValue = await orderDetailsPage.getTotalPrice();
+
+    expect(orderNumberValue).toBe(orderNumber);
+    expect(skuValue).toBe(sku);
+    expect(countryValue).toBe(GherkinDefaults.DEFAULT_COUNTRY);
+    expect(integerToNumber(quantityValue)).toBe(5);
+    expect(decimalToNumber(unitPriceValue)).toBe(20.0);
+    expect(decimalToNumber(subtotalPriceValue)).toBe(100.0);
+    expect(statusValue).toBe(OrderStatus.PLACED);
+    expect(decimalToNumber(discountRateValue)).toBeGreaterThanOrEqual(0);
+    expect(decimalToNumber(discountAmountValue)).toBeGreaterThanOrEqual(0);
+    expect(decimalToNumber(subtotalPriceValue)).toBeGreaterThan(0);
+    expect(decimalToNumber(taxRateValue)).toBeGreaterThanOrEqual(0);
+    expect(decimalToNumber(taxAmountValue)).toBeGreaterThanOrEqual(0);
+    expect(decimalToNumber(totalPriceValue)).toBeGreaterThan(0);
 });
