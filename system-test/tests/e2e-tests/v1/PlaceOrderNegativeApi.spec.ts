@@ -8,40 +8,6 @@ const validationError = 'The request contains one or more validation errors';
 const shopApiBaseUrl = testConfig.urls.shopApi;
 const erpApiBaseUrl = testConfig.urls.erpApi;
 
-type PlaceOrderPayload = {
-    sku: string | null;
-    quantity: string | null;
-    country: string | null;
-};
-
-async function createProductViaErp(sku: string, price: string): Promise<void> {
-    const response = await fetch(`${erpApiBaseUrl}/api/products`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            id: sku,
-            title: 'Test Product',
-            description: 'Test Description',
-            category: 'Test Category',
-            brand: 'Test Brand',
-            price,
-        }),
-    });
-
-    expect(response.status).toBe(201);
-}
-
-async function placeOrderViaApi(payload: PlaceOrderPayload): Promise<{ status: number; body: any }> {
-    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-    });
-
-    const body = await response.json();
-    return { status: response.status, body };
-}
-
 function assertValidationError(status: number, body: any, field: string, message: string): void {
     expect(status).toBe(422);
     expect(body.detail).toBe(validationError);
@@ -54,132 +20,186 @@ function assertValidationError(status: number, body: any, field: string, message
 }
 
 test('should reject order with invalid quantity', async () => {
-    const { status, body } = await placeOrderViaApi({
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: 'invalid-quantity',
-        country: GherkinDefaults.DEFAULT_COUNTRY,
+    const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":"invalid-quantity","country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'quantity', 'Quantity must be an integer');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'quantity', 'Quantity must be an integer');
 });
 
 test('should reject order with non-existent SKU', async () => {
-    const { status, body } = await placeOrderViaApi({
-        sku: 'NON-EXISTENT-SKU-12345',
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: GherkinDefaults.DEFAULT_COUNTRY,
+    const placeOrderJson = `{"sku":"NON-EXISTENT-SKU-12345","quantity":"${GherkinDefaults.DEFAULT_QUANTITY}","country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'sku', 'Product does not exist for SKU: NON-EXISTENT-SKU-12345');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'sku', 'Product does not exist for SKU: NON-EXISTENT-SKU-12345');
 });
 
 test('should reject order with negative quantity', async () => {
-    const { status, body } = await placeOrderViaApi({
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: '-10',
-        country: GherkinDefaults.DEFAULT_COUNTRY,
+    const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":"-10","country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'quantity', 'Quantity must be positive');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'quantity', 'Quantity must be positive');
 });
 
 test('should reject order with zero quantity', async () => {
-    const { status, body } = await placeOrderViaApi({
-        sku: 'ANOTHER-SKU-67890',
-        quantity: '0',
-        country: GherkinDefaults.DEFAULT_COUNTRY,
+    const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":"0","country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'quantity', 'Quantity must be positive');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'quantity', 'Quantity must be positive');
 });
 
 test('should reject order with empty SKU', async () => {
     for (const sku of emptyArgumentsProvider) {
-        const { status, body } = await placeOrderViaApi({
-            sku,
-            quantity: GherkinDefaults.DEFAULT_QUANTITY,
-            country: GherkinDefaults.DEFAULT_COUNTRY,
+        const placeOrderJson = `{"sku":${sku == null ? 'null' : `"${sku}"`},"quantity":"${GherkinDefaults.DEFAULT_QUANTITY}","country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+        const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: placeOrderJson,
         });
 
-        assertValidationError(status, body, 'sku', 'SKU must not be empty');
+        const body = await response.json();
+
+        assertValidationError(response.status, body, 'sku', 'SKU must not be empty');
     }
 });
 
 test('should reject order with empty quantity', async () => {
     for (const emptyQuantity of emptyArgumentsProvider) {
-        const { status, body } = await placeOrderViaApi({
-            sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-            quantity: emptyQuantity,
-            country: GherkinDefaults.DEFAULT_COUNTRY,
+        const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":${emptyQuantity == null ? 'null' : `"${emptyQuantity}"`},"country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+        const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: placeOrderJson,
         });
 
-        assertValidationError(status, body, 'quantity', 'Quantity must not be empty');
+        const body = await response.json();
+
+        assertValidationError(response.status, body, 'quantity', 'Quantity must not be empty');
     }
 });
 
 test('should reject order with non-integer quantity', async () => {
     for (const nonIntegerQuantity of ['3.5', 'lala']) {
-        const { status, body } = await placeOrderViaApi({
-            sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-            quantity: nonIntegerQuantity,
-            country: GherkinDefaults.DEFAULT_COUNTRY,
+        const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":"${nonIntegerQuantity}","country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+        const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: placeOrderJson,
         });
 
-        assertValidationError(status, body, 'quantity', 'Quantity must be an integer');
+        const body = await response.json();
+
+        assertValidationError(response.status, body, 'quantity', 'Quantity must be an integer');
     }
 });
 
 test('should reject order with empty country', async () => {
     for (const emptyCountry of emptyArgumentsProvider) {
-        const { status, body } = await placeOrderViaApi({
-            sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-            quantity: GherkinDefaults.DEFAULT_QUANTITY,
-            country: emptyCountry,
+        const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":"${GherkinDefaults.DEFAULT_QUANTITY}","country":${emptyCountry == null ? 'null' : `"${emptyCountry}"`}}`;
+
+        const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: placeOrderJson,
         });
 
-        assertValidationError(status, body, 'country', 'Country must not be empty');
+        const body = await response.json();
+
+        assertValidationError(response.status, body, 'country', 'Country must not be empty');
     }
 });
 
 test('should reject order with invalid country', async () => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    await createProductViaErp(sku, '20.00');
 
-    const { status, body } = await placeOrderViaApi({
-        sku,
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: 'XX',
+    const createProductJson = `{"id":"${sku}","title":"Test Product","description":"Test Description","category":"Test Category","brand":"Test Brand","price":"20.00"}`;
+    const createProductResponse = await fetch(`${erpApiBaseUrl}/api/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: createProductJson,
+    });
+    expect(createProductResponse.status).toBe(201);
+
+    const placeOrderJson = `{"sku":"${sku}","quantity":"${GherkinDefaults.DEFAULT_QUANTITY}","country":"XX"}`;
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'country', 'Country does not exist: XX');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'country', 'Country does not exist: XX');
 });
 
 test('should reject order with null quantity', async () => {
-    const { status, body } = await placeOrderViaApi({
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: null,
-        country: GherkinDefaults.DEFAULT_COUNTRY,
+    const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":null,"country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'quantity', 'Quantity must not be empty');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'quantity', 'Quantity must not be empty');
 });
 
 test('should reject order with null SKU', async () => {
-    const { status, body } = await placeOrderViaApi({
-        sku: null,
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: GherkinDefaults.DEFAULT_COUNTRY,
+    const placeOrderJson = `{"sku":null,"quantity":"${GherkinDefaults.DEFAULT_QUANTITY}","country":"${GherkinDefaults.DEFAULT_COUNTRY}"}`;
+
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'sku', 'SKU must not be empty');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'sku', 'SKU must not be empty');
 });
 
 test('should reject order with null country', async () => {
-    const { status, body } = await placeOrderViaApi({
-        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
-        quantity: GherkinDefaults.DEFAULT_QUANTITY,
-        country: null,
+    const placeOrderJson = `{"sku":"${createUniqueSku(GherkinDefaults.DEFAULT_SKU)}","quantity":"${GherkinDefaults.DEFAULT_QUANTITY}","country":null}`;
+
+    const response = await fetch(`${shopApiBaseUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: placeOrderJson,
     });
 
-    assertValidationError(status, body, 'country', 'Country must not be empty');
+    const body = await response.json();
+
+    assertValidationError(response.status, body, 'country', 'Country must not be empty');
 });

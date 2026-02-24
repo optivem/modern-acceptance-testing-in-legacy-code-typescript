@@ -3,9 +3,9 @@ import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.
 import { GherkinDefaults } from '@optivem/dsl/gherkin/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 
-test('should view placed order', async ({ shopApiClient, erpDriver }) => {
+test('should view placed order', async ({ shopApiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpDriver.returnsProduct({ sku, price: '25.00' })).toBeSuccess();
+    expect(await erpClient.createProduct({ id: sku, price: '25.00' })).toBeSuccess();
 
     const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity: '4', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();

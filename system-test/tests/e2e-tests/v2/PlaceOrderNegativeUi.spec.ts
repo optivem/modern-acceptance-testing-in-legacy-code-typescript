@@ -102,9 +102,9 @@ test('should reject order with empty country', async ({ shopUiClient }) => {
     }
 });
 
-test('should reject order with invalid country', async ({ shopUiClient, erpDriver }) => {
+test('should reject order with invalid country', async ({ shopUiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
+    expect(await erpClient.createProduct({ id: sku, price: '20.00' })).toBeSuccess();
 
     const result = await placeOrderUsingUiClient(shopUiClient, {
         sku,

@@ -4,9 +4,9 @@ import { GherkinDefaults } from '@optivem/dsl/gherkin/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 import { placeOrderUsingUiClient, viewOrderUsingUiClient } from './base/shopUiClientOrderFlows.js';
 
-test('should place order with correct subtotal price', async ({ shopUiClient, erpDriver }) => {
+test('should place order with correct subtotal price', async ({ shopUiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
+    expect(await erpClient.createProduct({ id: sku, price: '20.00' })).toBeSuccess();
 
     const placeOrderResult = await placeOrderUsingUiClient(shopUiClient, { sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();
@@ -24,10 +24,10 @@ const subtotalPriceCases = [
     { unitPrice: '99.99', quantity: '1', subtotalPrice: '99.99' },
 ];
 
-test('should place order with correct subtotal price parameterized', async ({ shopUiClient, erpDriver }) => {
+test('should place order with correct subtotal price parameterized', async ({ shopUiClient, erpClient }) => {
     for (const { unitPrice, quantity, subtotalPrice } of subtotalPriceCases) {
         const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-        expect(await erpDriver.returnsProduct({ sku, price: unitPrice })).toBeSuccess();
+        expect(await erpClient.createProduct({ id: sku, price: unitPrice })).toBeSuccess();
 
         const placeOrderResult = await placeOrderUsingUiClient(shopUiClient, { sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
         expect(placeOrderResult).toBeSuccess();
@@ -39,9 +39,9 @@ test('should place order with correct subtotal price parameterized', async ({ sh
     }
 });
 
-test('should place order', async ({ shopUiClient, erpDriver }) => {
+test('should place order', async ({ shopUiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
+    expect(await erpClient.createProduct({ id: sku, price: '20.00' })).toBeSuccess();
 
     const placeOrderResult = await placeOrderUsingUiClient(shopUiClient, { sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();

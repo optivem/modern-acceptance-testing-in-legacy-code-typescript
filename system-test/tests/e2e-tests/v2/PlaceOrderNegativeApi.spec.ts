@@ -40,7 +40,7 @@ test('should reject order with negative quantity', async ({ shopApiClient }) => 
 
 test('should reject order with zero quantity', async ({ shopApiClient }) => {
     const result = await shopApiClient.orders().placeOrder({
-        sku: 'ANOTHER-SKU-67890',
+        sku: createUniqueSku(GherkinDefaults.DEFAULT_SKU),
         quantity: '0',
         country: GherkinDefaults.DEFAULT_COUNTRY,
     });
@@ -101,9 +101,9 @@ test('should reject order with empty country', async ({ shopApiClient }) => {
     }
 });
 
-test('should reject order with invalid country', async ({ shopApiClient, erpDriver }) => {
+test('should reject order with invalid country', async ({ shopApiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
+    expect(await erpClient.createProduct({ id: sku, price: '20.00' })).toBeSuccess();
 
     const result = await shopApiClient.orders().placeOrder({
         sku,

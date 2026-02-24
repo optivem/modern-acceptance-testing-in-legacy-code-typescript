@@ -5,8 +5,6 @@ import { ShopApiClient } from '@optivem/core/shop/client/api/ShopApiClient.js';
 import { ErpRealClient } from '@optivem/core/erp/client/ErpRealClient.js';
 import { TaxRealClient } from '@optivem/core/tax/client/TaxRealClient.js';
 import { Closer, setupResultMatchers } from '@optivem/commons/util';
-import { createErpDriver } from '@optivem/test-infrastructure';
-import { getExternalSystemMode } from '../../../../test.config.js';
 import { testConfig } from '../../../../test.config.js';
 
 setupResultMatchers();
@@ -15,7 +13,6 @@ export const test = base.extend<{
     shopUiClient: ShopUiClient;
     shopApiClient: ShopApiClient;
     erpClient: ErpRealClient;
-    erpDriver: ReturnType<typeof createErpDriver>;
     taxClient: TaxRealClient;
 }>({
     shopUiClient: async ({}, use) => {
@@ -32,11 +29,6 @@ export const test = base.extend<{
         const client = new ErpRealClient(testConfig.urls.erpApi);
         await use(client);
         await Closer.close(client);
-    },
-    erpDriver: async ({}, use) => {
-        const driver = createErpDriver(getExternalSystemMode());
-        await use(driver);
-        await Closer.close(driver);
     },
     taxClient: async ({}, use) => {
         const client = new TaxRealClient(testConfig.urls.taxApi);

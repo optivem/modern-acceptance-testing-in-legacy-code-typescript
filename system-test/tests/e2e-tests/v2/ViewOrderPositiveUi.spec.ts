@@ -4,9 +4,9 @@ import { GherkinDefaults } from '@optivem/dsl/gherkin/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 import { placeOrderUsingUiClient, viewOrderUsingUiClient } from './base/shopUiClientOrderFlows.js';
 
-test('should view placed order', async ({ shopUiClient, erpDriver }) => {
+test('should view placed order', async ({ shopUiClient, erpClient }) => {
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
-    expect(await erpDriver.returnsProduct({ sku, price: '25.00' })).toBeSuccess();
+    expect(await erpClient.createProduct({ id: sku, price: '25.00' })).toBeSuccess();
 
     const placeOrderResult = await placeOrderUsingUiClient(shopUiClient, { sku, quantity: '4', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();
