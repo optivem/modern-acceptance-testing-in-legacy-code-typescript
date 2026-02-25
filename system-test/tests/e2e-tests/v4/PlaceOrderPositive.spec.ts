@@ -8,11 +8,11 @@ channelShopDriverTest([ChannelType.UI, ChannelType.API], 'should place order wit
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
     expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
 
-    const placeOrderResult = await shopDriver.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
+    const placeOrderResult = await shopDriver.placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();
 
     const orderNumber = placeOrderResult.getValue().orderNumber;
-    const viewOrderResult = await shopDriver.orders().viewOrder(orderNumber);
+    const viewOrderResult = await shopDriver.viewOrder(orderNumber);
     expect(viewOrderResult).toBeSuccess();
     expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(100.0);
 });
@@ -29,11 +29,11 @@ channelShopDriverTest([ChannelType.UI, ChannelType.API], 'should place order wit
         const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
         expect(await erpDriver.returnsProduct({ sku, price: unitPrice })).toBeSuccess();
 
-        const placeOrderResult = await shopDriver.orders().placeOrder({ sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
+        const placeOrderResult = await shopDriver.placeOrder({ sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
         expect(placeOrderResult).toBeSuccess();
 
         const orderNumber = placeOrderResult.getValue().orderNumber;
-        const viewOrderResult = await shopDriver.orders().viewOrder(orderNumber);
+        const viewOrderResult = await shopDriver.viewOrder(orderNumber);
         expect(viewOrderResult).toBeSuccess();
         expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(subtotalPrice);
     }
@@ -43,13 +43,13 @@ channelShopDriverTest([ChannelType.UI, ChannelType.API], 'should place order', a
     const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
     expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
 
-    const placeOrderResult = await shopDriver.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
+    const placeOrderResult = await shopDriver.placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult).toBeSuccess();
 
     const orderNumber = placeOrderResult.getValue().orderNumber;
     expect(orderNumber.startsWith('ORD-')).toBe(true);
 
-    const viewOrderResult = await shopDriver.orders().viewOrder(orderNumber);
+    const viewOrderResult = await shopDriver.viewOrder(orderNumber);
     expect(viewOrderResult).toBeSuccess();
 
     const order = viewOrderResult.getValue();
@@ -67,3 +67,4 @@ channelShopDriverTest([ChannelType.UI, ChannelType.API], 'should place order', a
     expect(order.taxAmount).toBeGreaterThanOrEqualDecimal(0);
     expect(order.totalPrice).toBeGreaterThanDecimal(0);
 });
+

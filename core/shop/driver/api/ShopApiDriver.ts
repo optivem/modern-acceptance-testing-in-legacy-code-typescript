@@ -2,19 +2,16 @@ import type { Result } from '@optivem/commons/util';
 import type { ShopDriver } from '../ShopDriver.js';
 import type { SystemError } from '../../commons/dtos/errors/SystemError.js';
 import { ShopApiClient } from '../../client/api/ShopApiClient.js';
-import { ShopApiOrderDriver } from './internal/ShopApiOrderDriver.js';
-import { ShopApiCouponDriver } from './internal/ShopApiCouponDriver.js';
 import { systemErrorFrom } from '../../commons/dtos/errors/SystemError.js';
+import type { Optional } from '@optivem/commons/util';
+import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../commons/dtos/orders/index.js';
+import type { PublishCouponRequest, BrowseCouponsResponse } from '../../commons/dtos/coupons/index.js';
 
 export class ShopApiDriver implements ShopDriver {
     private readonly apiClient: ShopApiClient;
-    private readonly orderDriver: ShopApiOrderDriver;
-    private readonly couponDriver: ShopApiCouponDriver;
 
     constructor(baseUrl: string) {
         this.apiClient = new ShopApiClient(baseUrl);
-        this.orderDriver = new ShopApiOrderDriver(this.apiClient);
-        this.couponDriver = new ShopApiCouponDriver(this.apiClient);
     }
     
     async close(): Promise<void> {
@@ -25,11 +22,35 @@ export class ShopApiDriver implements ShopDriver {
         return this.apiClient.health().checkHealth().then((r) => r.mapError((e) => systemErrorFrom(e)));
     }
 
-    orders(): ShopApiOrderDriver {
-        return this.orderDriver;
+    placeOrder(request: PlaceOrderRequest): Promise<Result<PlaceOrderResponse, SystemError>> {
+        return this.apiClient.orders()
+            .placeOrder(request)
+            .then((result) => result.mapError((error) => systemErrorFrom(error)));
     }
 
-    coupons(): ShopApiCouponDriver {
-        return this.couponDriver;
+    cancelOrder(orderNumber: Optional<string>): Promise<Result<void, SystemError>> {
+        return this.apiClient.orders()
+            .cancelOrder(orderNumber)
+            .then((result) => result.mapError((error) => systemErrorFrom(error)));
+    }
+
+    viewOrder(orderNumber: Optional<string>): Promise<Result<ViewOrderResponse, SystemError>> {
+        return this.apiClient
+            .orders()
+            .viewOrder(orderNumber)
+            .then((result) => result.mapError((error) => systemErrorFrom(error)));
+    }
+
+    publishCoupon(request: PublishCouponRequest): Promise<Result<void, SystemError>> {
+        return this.apiClient.coupons()
+            .publishCoupon(request)
+            .then((result) => result.mapError((error) => systemErrorFrom(error)));
+    }
+
+    browseCoupons(): Promise<Result<BrowseCouponsResponse, SystemError>> {
+        return this.apiClient
+            .coupons()
+            .browseCoupons()
+            .then((result) => result.mapError((error) => systemErrorFrom(error)));
     }
 }

@@ -10,7 +10,8 @@ const nonExistentOrderCases = [
 
 channelShopDriverTest([ChannelType.UI, ChannelType.API], 'should not be able to view non-existent order', async ({ shopDriver }) => {
     for (const { orderNumber, expectedMessage } of nonExistentOrderCases) {
-        const result = await shopDriver.orders().viewOrder(orderNumber);
+        const result = await shopDriver.viewOrder(orderNumber);
         expect(result).toBeFailureWith(expectedMessage);
     }
 });
+

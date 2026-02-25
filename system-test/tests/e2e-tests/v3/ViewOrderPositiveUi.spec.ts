@@ -7,11 +7,11 @@ test('should view placed order', async ({ shopUiDriver, erpDriver }) => {
 	const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
 	expect(await erpDriver.returnsProduct({ sku, price: '25.00' })).toBeSuccess();
 
-	const placeOrderResult = await shopUiDriver.orders().placeOrder({ sku, quantity: '4', country: GherkinDefaults.DEFAULT_COUNTRY });
+	const placeOrderResult = await shopUiDriver.placeOrder({ sku, quantity: '4', country: GherkinDefaults.DEFAULT_COUNTRY });
 	expect(placeOrderResult).toBeSuccess();
 
 	const orderNumber = placeOrderResult.getValue().orderNumber;
-	const viewOrderResult = await shopUiDriver.orders().viewOrder(orderNumber);
+	const viewOrderResult = await shopUiDriver.viewOrder(orderNumber);
 	expect(viewOrderResult).toBeSuccess();
 
 	const order = viewOrderResult.getValue();

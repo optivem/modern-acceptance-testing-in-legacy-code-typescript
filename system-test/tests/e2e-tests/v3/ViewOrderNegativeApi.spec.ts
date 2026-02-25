@@ -9,7 +9,7 @@ const nonExistentOrderCases = [
 
 test('should not be able to view non-existent order', async ({ shopApiDriver }) => {
 	for (const { orderNumber, expectedMessage } of nonExistentOrderCases) {
-		const result = await shopApiDriver.orders().viewOrder(orderNumber);
+		const result = await shopApiDriver.viewOrder(orderNumber);
 		expect(result).toBeFailureWith(expectedMessage);
 	}
 });

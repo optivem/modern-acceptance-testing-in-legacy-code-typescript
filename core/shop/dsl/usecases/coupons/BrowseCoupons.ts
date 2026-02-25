@@ -11,7 +11,7 @@ export class BrowseCoupons extends BaseShopCommand<BrowseCouponsResponse, Browse
     }
 
     async execute(): Promise<ShopUseCaseResult<BrowseCouponsResponse, BrowseCouponsVerification>> {
-        const result = await this.driver.coupons().browseCoupons();
+        const result = await this.driver.browseCoupons();
         return new ShopUseCaseResult(
             result,
             this.context,

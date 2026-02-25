@@ -20,7 +20,7 @@ export class ViewOrder extends BaseShopCommand<ViewOrderResponse, ViewOrderVerif
 
     async execute(): Promise<ShopUseCaseResult<ViewOrderResponse, ViewOrderVerification>> {
         const orderNumber = this.context.getResultValue(this.orderNumberResultAlias!);
-        const result = await this.driver.orders().viewOrder(orderNumber);
+        const result = await this.driver.viewOrder(orderNumber);
         return new ShopUseCaseResult(result, this.context, (response, ctx) => new ViewOrderVerification(response, ctx));
     }
 }

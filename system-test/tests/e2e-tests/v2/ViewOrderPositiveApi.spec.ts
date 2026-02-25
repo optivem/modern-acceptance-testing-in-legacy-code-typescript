@@ -16,11 +16,11 @@ test('should view placed order', async ({ shopApiClient, erpClient }) => {
     const createProductResult = await erpClient.createProduct({ id: sku, price: '20.00' });
     expect(createProductResult.isSuccess()).toBe(true);
 
-    const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
+    const placeOrderResult = await shopApiClient.placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult.isSuccess()).toBe(true);
 
     const orderNumber = placeOrderResult.getValue().orderNumber;
-    const viewOrderResult = await shopApiClient.orders().viewOrder(orderNumber);
+    const viewOrderResult = await shopApiClient.viewOrder(orderNumber);
     expect(viewOrderResult.isSuccess()).toBe(true);
 
     const order = viewOrderResult.getValue();

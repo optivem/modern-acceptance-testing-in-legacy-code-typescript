@@ -16,11 +16,11 @@ test('should place order with correct subtotal price', async ({ shopApiClient, e
     const createProductResult = await erpClient.createProduct({ id: sku, price: '20.00' });
     expect(createProductResult.isSuccess()).toBe(true);
 
-    const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
+    const placeOrderResult = await shopApiClient.placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult.isSuccess()).toBe(true);
 
     const orderNumber = placeOrderResult.getValue().orderNumber;
-    const viewOrderResult = await shopApiClient.orders().viewOrder(orderNumber);
+    const viewOrderResult = await shopApiClient.viewOrder(orderNumber);
     expect(viewOrderResult.isSuccess()).toBe(true);
     expect(decimalToNumber(viewOrderResult.getValue().subtotalPrice)).toBe(100.0);
 });
@@ -38,11 +38,11 @@ test('should place order with correct subtotal price parameterized', async ({ sh
         const createProductResult = await erpClient.createProduct({ id: sku, price: unitPrice });
         expect(createProductResult.isSuccess()).toBe(true);
 
-        const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
+        const placeOrderResult = await shopApiClient.placeOrder({ sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
         expect(placeOrderResult.isSuccess()).toBe(true);
 
         const orderNumber = placeOrderResult.getValue().orderNumber;
-        const viewOrderResult = await shopApiClient.orders().viewOrder(orderNumber);
+        const viewOrderResult = await shopApiClient.viewOrder(orderNumber);
         expect(viewOrderResult.isSuccess()).toBe(true);
         expect(decimalToNumber(viewOrderResult.getValue().subtotalPrice)).toBe(Number(subtotalPrice));
     }
@@ -53,13 +53,13 @@ test('should place order', async ({ shopApiClient, erpClient }) => {
     const createProductResult = await erpClient.createProduct({ id: sku, price: '20.00' });
     expect(createProductResult.isSuccess()).toBe(true);
 
-    const placeOrderResult = await shopApiClient.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
+    const placeOrderResult = await shopApiClient.placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
     expect(placeOrderResult.isSuccess()).toBe(true);
 
     const orderNumber = placeOrderResult.getValue().orderNumber;
     expect(orderNumber.startsWith('ORD-')).toBe(true);
 
-    const viewOrderResult = await shopApiClient.orders().viewOrder(orderNumber);
+    const viewOrderResult = await shopApiClient.viewOrder(orderNumber);
     expect(viewOrderResult.isSuccess()).toBe(true);
 
     const order = viewOrderResult.getValue();

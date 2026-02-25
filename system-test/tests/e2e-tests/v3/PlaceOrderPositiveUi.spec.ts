@@ -7,11 +7,11 @@ test('should place order with correct subtotal price', async ({ shopUiDriver, er
 	const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
 	expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
 
-	const placeOrderResult = await shopUiDriver.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
+	const placeOrderResult = await shopUiDriver.placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
 	expect(placeOrderResult).toBeSuccess();
 
 	const orderNumber = placeOrderResult.getValue().orderNumber;
-	const viewOrderResult = await shopUiDriver.orders().viewOrder(orderNumber);
+	const viewOrderResult = await shopUiDriver.viewOrder(orderNumber);
 	expect(viewOrderResult).toBeSuccess();
 	expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(100.0);
 });
@@ -28,11 +28,11 @@ test('should place order with correct subtotal price parameterized', async ({ sh
 		const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
 		expect(await erpDriver.returnsProduct({ sku, price: unitPrice })).toBeSuccess();
 
-		const placeOrderResult = await shopUiDriver.orders().placeOrder({ sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
+		const placeOrderResult = await shopUiDriver.placeOrder({ sku, quantity, country: GherkinDefaults.DEFAULT_COUNTRY });
 		expect(placeOrderResult).toBeSuccess();
 
 		const orderNumber = placeOrderResult.getValue().orderNumber;
-		const viewOrderResult = await shopUiDriver.orders().viewOrder(orderNumber);
+		const viewOrderResult = await shopUiDriver.viewOrder(orderNumber);
 		expect(viewOrderResult).toBeSuccess();
 		expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(subtotalPrice);
 	}
@@ -42,13 +42,13 @@ test('should place order', async ({ shopUiDriver, erpDriver }) => {
 	const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
 	expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();
 
-	const placeOrderResult = await shopUiDriver.orders().placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
+	const placeOrderResult = await shopUiDriver.placeOrder({ sku, quantity: '5', country: GherkinDefaults.DEFAULT_COUNTRY });
 	expect(placeOrderResult).toBeSuccess();
 
 	const orderNumber = placeOrderResult.getValue().orderNumber;
 	expect(orderNumber.startsWith('ORD-')).toBe(true);
 
-	const viewOrderResult = await shopUiDriver.orders().viewOrder(orderNumber);
+	const viewOrderResult = await shopUiDriver.viewOrder(orderNumber);
 	expect(viewOrderResult).toBeSuccess();
 
 	const order = viewOrderResult.getValue();

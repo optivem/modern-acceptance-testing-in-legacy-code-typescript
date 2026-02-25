@@ -54,7 +54,7 @@ export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
             validTo: this.validToValue,
             usageLimit: this.usageLimitValue,
         };
-        const result = await this.driver.coupons().publishCoupon(request);
+        const result = await this.driver.publishCoupon(request);
         return new ShopUseCaseResult(result, this.context, (_r, ctx) => new VoidVerification(undefined, ctx));
     }
 }

@@ -50,7 +50,7 @@ export class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVe
 
         const request: PlaceOrderRequest = { sku, quantity: this.quantityValue, country, couponCode };
         
-        const result = await this.driver.orders().placeOrder(request);
+        const result = await this.driver.placeOrder(request);
         
         if (this.orderNumberResultAlias != null) {
             if (result.isSuccess()) {
