@@ -2,7 +2,7 @@ import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/commons/playwright';
 import { Decimal } from '@optivem/commons/util';
 import type { Optional } from '@optivem/commons/util';
-import type { OrderStatus } from '../../../commons/dtos/orders/OrderStatus.js';
+import type { OrderStatus } from '../../../commons/dtos/OrderStatus.js';
 
 /** Order details view (same DOM as order history details section; used for view/cancel flow). */
 export class OrderDetailsPage extends BasePage {
@@ -125,3 +125,4 @@ export class OrderDetailsPage extends BasePage {
         return Decimal.fromString(cleaned).div(Decimal.fromNumber(100));
     }
 }
+

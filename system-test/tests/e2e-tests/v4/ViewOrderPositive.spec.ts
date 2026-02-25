@@ -1,6 +1,6 @@
 import '../../../setup-config.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
-import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
+import { OrderStatus } from '@optivem/core/shop/commons/dtos/OrderStatus.js';
 import { GherkinDefaults } from '@optivem/dsl-core/gherkin/GherkinDefaults.js';
 import { channelShopDriverTest, createUniqueSku, expect } from './base/fixtures.js';
 
@@ -30,4 +30,5 @@ channelShopDriverTest([ChannelType.UI, ChannelType.API], 'should view placed ord
     expect(order.taxAmount).toBeGreaterThanOrEqualDecimal(0);
     expect(order.totalPrice).toBeGreaterThanDecimal(0);
 });
+
 

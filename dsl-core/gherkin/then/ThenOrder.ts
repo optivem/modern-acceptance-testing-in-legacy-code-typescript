@@ -3,7 +3,7 @@ import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ExecutionResult } from '../ExecutionResult.js';
 import type { ViewOrderVerification } from '@optivem/core/shop/dsl/usecases/ViewOrderVerification.js';
 import type { PlaceOrderVerification } from '@optivem/core/shop/dsl/usecases/PlaceOrderVerification.js';
-import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
+import { OrderStatus } from '@optivem/core/shop/commons/dtos/OrderStatus.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import type { ThenClause } from './Then.js';
 
@@ -215,4 +215,5 @@ export class ThenFailureOrderVerifier<
         }
     }
 }
+
 

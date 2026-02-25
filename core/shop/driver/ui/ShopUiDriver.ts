@@ -9,9 +9,9 @@ import { OrderHistoryPage } from '../../client/ui/pages/OrderHistoryPage.js';
 import { OrderDetailsPage } from '../../client/ui/pages/OrderDetailsPage.js';
 import { CouponManagementPage } from '../../client/ui/pages/CouponManagementPage.js';
 import { failure, failureWithError, success, successVoid } from '../../commons/SystemResults.js';
-import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../commons/dtos/orders/index.js';
-import { OrderStatus } from '../../commons/dtos/orders/OrderStatus.js';
-import type { PublishCouponRequest, BrowseCouponsResponse } from '../../commons/dtos/coupons/index.js';
+import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../commons/dtos/index.js';
+import { OrderStatus } from '../../commons/dtos/OrderStatus.js';
+import type { PublishCouponRequest, BrowseCouponsResponse } from '../../commons/dtos/index.js';
 
 export class ShopUiDriver implements ShopDriver {
     private readonly client: ShopUiClient;
@@ -226,3 +226,4 @@ enum Page {
     ORDER_DETAILS = 'ORDER_DETAILS',
     COUPON_MANAGEMENT = 'COUPON_MANAGEMENT',
 }
+

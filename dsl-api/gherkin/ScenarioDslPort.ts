@@ -1,4 +1,4 @@
-import type { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
+import type { OrderStatus } from '@optivem/core/shop/commons/dtos/OrderStatus.js';
 
 export type StringInput = string | null | undefined;
 export type NumberLikeInput = number | string;
@@ -158,3 +158,4 @@ export interface ThenCouponPort extends PromiseLike<void> {
     hasUsageLimit(usageLimit: number): this;
     hasUsedCount(usedCount: number): this;
 }
+

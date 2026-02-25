@@ -1,7 +1,7 @@
 import type { JsonHttpClient } from '@optivem/commons/http';
 import type { Optional, Result } from '@optivem/commons/util';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
-import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../../commons/dtos/orders/index.js';
+import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../../commons/dtos/index.js';
 
 export class OrderController {
     private static readonly ENDPOINT = '/api/orders';
@@ -20,3 +20,4 @@ export class OrderController {
         return this.httpClient.postAsync<void>(`${OrderController.ENDPOINT}/${orderNumber}/cancel`, {});
     }
 }
+

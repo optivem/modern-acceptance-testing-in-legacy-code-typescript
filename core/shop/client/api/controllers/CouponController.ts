@@ -1,7 +1,7 @@
 import type { JsonHttpClient } from '@optivem/commons/http';
 import type { Result } from '@optivem/commons/util';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
-import type { BrowseCouponsResponse, PublishCouponRequest } from '../../../commons/dtos/coupons/index.js';
+import type { BrowseCouponsResponse, PublishCouponRequest } from '../../../commons/dtos/index.js';
 
 export class CouponController {
     private static readonly ENDPOINT = '/api/coupons';
@@ -16,3 +16,4 @@ export class CouponController {
         return this.httpClient.getAsync<BrowseCouponsResponse>(CouponController.ENDPOINT);
     }
 }
+

@@ -4,8 +4,8 @@ import type { SystemError } from '../../commons/dtos/errors/SystemError.js';
 import { ShopApiClient } from '../../client/api/ShopApiClient.js';
 import { systemErrorFrom } from '../../commons/dtos/errors/SystemError.js';
 import type { Optional } from '@optivem/commons/util';
-import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../commons/dtos/orders/index.js';
-import type { PublishCouponRequest, BrowseCouponsResponse } from '../../commons/dtos/coupons/index.js';
+import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../commons/dtos/index.js';
+import type { PublishCouponRequest, BrowseCouponsResponse } from '../../commons/dtos/index.js';
 
 export class ShopApiDriver implements ShopDriver {
     private readonly apiClient: ShopApiClient;
@@ -54,3 +54,4 @@ export class ShopApiDriver implements ShopDriver {
             .then((result) => result.mapError((error) => systemErrorFrom(error)));
     }
 }
+

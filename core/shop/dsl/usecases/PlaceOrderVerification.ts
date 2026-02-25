@@ -1,5 +1,5 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
-import type { PlaceOrderResponse } from '../../commons/dtos/orders/index.js';
+import type { PlaceOrderResponse } from '../../commons/dtos/index.js';
 import { expect } from '@playwright/test';
 
 export class PlaceOrderVerification extends ResponseVerification<PlaceOrderResponse> {
@@ -22,6 +22,7 @@ export class PlaceOrderVerification extends ResponseVerification<PlaceOrderRespo
         return this;
     }
 }
+
 
 
 

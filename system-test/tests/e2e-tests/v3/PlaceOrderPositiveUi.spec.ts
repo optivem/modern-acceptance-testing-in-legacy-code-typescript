@@ -1,5 +1,5 @@
 import '../../../setup-config.js';
-import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
+import { OrderStatus } from '@optivem/core/shop/commons/dtos/OrderStatus.js';
 import { GherkinDefaults } from '@optivem/dsl-core/gherkin/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 
@@ -66,3 +66,4 @@ test('should place order', async ({ shopUiDriver, erpDriver }) => {
 	expect(order.taxAmount).toBeGreaterThanOrEqualDecimal(0);
 	expect(order.totalPrice).toBeGreaterThanDecimal(0);
 });
+

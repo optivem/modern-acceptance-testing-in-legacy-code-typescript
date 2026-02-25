@@ -1,7 +1,7 @@
 import '../../../setup-config.js';
 import { Channel } from './base/fixtures.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
-import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
+import { OrderStatus } from '@optivem/core/shop/commons/dtos/OrderStatus.js';
 import { GherkinDefaults } from '../../../../dsl-core/gherkin/GherkinDefaults.js';
 
 Channel(ChannelType.UI, ChannelType.API)('should view placed order', async ({ scenario }) => {
@@ -31,3 +31,4 @@ Channel(ChannelType.UI, ChannelType.API)('should view placed order', async ({ sc
             .hasTaxAmountGreaterThanOrEqualToZero()
             .hasTotalPriceGreaterThanZero();
 });
+

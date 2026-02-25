@@ -4,7 +4,7 @@ import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseWhenBuilder } from './BaseWhenStep.js';
-import type { ViewOrderResponse } from '@optivem/core/shop/commons/dtos/orders/index.js';
+import type { ViewOrderResponse } from '@optivem/core/shop/commons/dtos/index.js';
 import type { ViewOrderVerification } from '@optivem/core/shop/dsl/usecases/ViewOrderVerification.js';
 
 export class ViewOrderBuilder extends BaseWhenBuilder<ViewOrderResponse, ViewOrderVerification> {
@@ -32,4 +32,5 @@ export class ViewOrderBuilder extends BaseWhenBuilder<ViewOrderResponse, ViewOrd
         return new ExecutionResultBuilder(result).orderNumber(this.orderNumberValue).build();
     }
 }
+
 

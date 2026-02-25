@@ -4,7 +4,7 @@ import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
 import { VoidVerification } from '@optivem/commons/dsl';
 import type { Optional } from '@optivem/commons/util';
-import type { PublishCouponRequest } from '../../commons/dtos/coupons/index.js';
+import type { PublishCouponRequest } from '../../commons/dtos/index.js';
 
 export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
     private couponCodeParamAlias: Optional<string>;
@@ -58,5 +58,6 @@ export class PublishCoupon extends BaseShopCommand<void, VoidVerification> {
         return new ShopUseCaseResult(result, this.context, (_r, ctx) => new VoidVerification(undefined, ctx));
     }
 }
+
 
 

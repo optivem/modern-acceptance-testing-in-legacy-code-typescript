@@ -2,7 +2,7 @@ import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/commons/playwright';
 import { Integer } from '@optivem/commons/util';
 import type { Optional } from '@optivem/commons/util';
-import type { CouponDto } from '../../../commons/dtos/coupons/BrowseCouponsResponse.js';
+import type { CouponDto } from '../../../commons/dtos/BrowseCouponsResponse.js';
 
 export class CouponManagementPage extends BasePage {
     private static readonly COUPON_CODE_INPUT_SELECTOR = '[aria-label="Coupon Code"]';
@@ -134,3 +134,4 @@ export class CouponManagementPage extends BasePage {
         return coupons;
     }
 }
+

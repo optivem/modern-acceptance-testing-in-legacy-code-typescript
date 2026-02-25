@@ -1,7 +1,7 @@
 import { Converter } from '@optivem/commons/util';
 import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';
-import { OrderStatus } from '@optivem/core/shop/commons/dtos/orders/OrderStatus.js';
+import { OrderStatus } from '@optivem/core/shop/commons/dtos/OrderStatus.js';
 import { GherkinDefaults } from '../GherkinDefaults.js';
 import { BaseGivenBuilder } from './BaseGivenStep.js';
 import type { GivenClause } from './Given.js';
@@ -76,3 +76,4 @@ export class GivenOrderBuilder extends BaseGivenBuilder {
         }
     }
 }
+
