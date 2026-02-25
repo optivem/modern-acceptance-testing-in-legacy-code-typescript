@@ -1,5 +1,5 @@
 import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
-import type { ClockDriver } from '@optivem/driver-api/clock/driver/ClockDriver.js';
+import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
 import { ClockStubDriver } from '../driver/ClockStubDriver.js';
 import { ClockRealDriver } from '../driver/ClockRealDriver.js';
 import { Closer } from '@optivem/commons/util';

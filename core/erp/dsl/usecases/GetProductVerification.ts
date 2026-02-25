@@ -1,6 +1,6 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
 import { Converter, Decimal } from '@optivem/commons/util';
-import { GetProductResponse } from '@optivem/driver-api/erp/driver/dtos/GetProductResponse.js';
+import { GetProductResponse } from '@optivem/driver-api/erp/dtos/GetProductResponse.js';
 import { expect } from '@playwright/test';
 
 export class GetProductVerification extends ResponseVerification<GetProductResponse> {

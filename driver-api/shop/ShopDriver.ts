@@ -9,10 +9,10 @@ import type { ViewOrderResponse } from './dtos/ViewOrderResponse.js';
 import type { SystemError } from './dtos/errors/SystemError.js';
 
 export interface ShopDriver extends AsyncCloseable {
-    goToShop(): Promise<Result<void, SystemError>>;
-    placeOrder(request: PlaceOrderRequest): Promise<Result<PlaceOrderResponse, SystemError>>;
-    cancelOrder(orderNumber: Optional<string>): Promise<Result<void, SystemError>>;
-    viewOrder(orderNumber: Optional<string>): Promise<Result<ViewOrderResponse, SystemError>>;
-    publishCoupon(request: PublishCouponRequest): Promise<Result<void, SystemError>>;
-    browseCoupons(): Promise<Result<BrowseCouponsResponse, SystemError>>;
+	goToShop(): Promise<Result<void, SystemError>>;
+	placeOrder(request: PlaceOrderRequest): Promise<Result<PlaceOrderResponse, SystemError>>;
+	cancelOrder(orderNumber: Optional<string>): Promise<Result<void, SystemError>>;
+	viewOrder(orderNumber: Optional<string>): Promise<Result<ViewOrderResponse, SystemError>>;
+	publishCoupon(request: PublishCouponRequest): Promise<Result<void, SystemError>>;
+	browseCoupons(): Promise<Result<BrowseCouponsResponse, SystemError>>;
 }

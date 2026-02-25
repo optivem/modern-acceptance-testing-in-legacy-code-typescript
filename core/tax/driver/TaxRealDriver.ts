@@ -1,7 +1,7 @@
 import { Result } from '@optivem/commons/util';
 import { TaxRealClient } from '../client/TaxRealClient.js';
-import type { ReturnsTaxRateRequest } from '@optivem/driver-api/tax/driver/dtos/ReturnsTaxRateRequest.js';
-import type { TaxErrorResponse } from '@optivem/driver-api/tax/driver/dtos/error/TaxErrorResponse.js';
+import type { ReturnsTaxRateRequest } from '@optivem/driver-api/tax/dtos/ReturnsTaxRateRequest.js';
+import type { TaxErrorResponse } from '@optivem/driver-api/tax/dtos/error/TaxErrorResponse.js';
 import { BaseTaxDriver } from './BaseTaxDriver.js';
 
 export class TaxRealDriver extends BaseTaxDriver<TaxRealClient> {

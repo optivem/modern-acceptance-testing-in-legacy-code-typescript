@@ -1,9 +1,9 @@
 import { Result } from '@optivem/commons/util';
 import { ClockRealClient } from '../client/ClockRealClient.js';
-import type { ClockDriver } from '@optivem/driver-api/clock/driver/ClockDriver.js';
-import type { GetTimeResponse } from '@optivem/driver-api/clock/driver/dtos/GetTimeResponse.js';
-import type { ReturnsTimeRequest } from '@optivem/driver-api/clock/driver/dtos/ReturnsTimeRequest.js';
-import type { ClockErrorResponse } from '@optivem/driver-api/clock/driver/dtos/error/ClockErrorResponse.js';
+import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
+import type { GetTimeResponse } from '@optivem/driver-api/clock/dtos/GetTimeResponse.js';
+import type { ReturnsTimeRequest } from '@optivem/driver-api/clock/dtos/ReturnsTimeRequest.js';
+import type { ClockErrorResponse } from '@optivem/driver-api/clock/dtos/error/ClockErrorResponse.js';
 import { from as fromGetTimeResponse } from './GetTimeResponseMapper.js';
 import { from as fromClockErrorResponse } from './ClockErrorResponseMapper.js';
 

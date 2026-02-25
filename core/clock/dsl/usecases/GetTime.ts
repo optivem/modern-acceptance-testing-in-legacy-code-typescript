@@ -1,5 +1,5 @@
-import type { ClockDriver } from '@optivem/driver-api/clock/driver/ClockDriver.js';
-import type { GetTimeResponse } from '@optivem/driver-api/clock/driver/dtos/GetTimeResponse.js';
+import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
+import type { GetTimeResponse } from '@optivem/driver-api/clock/dtos/GetTimeResponse.js';
 import { BaseClockCommand } from './base/BaseClockCommand.js';
 import { ClockUseCaseResult } from './base/ClockUseCaseResult.js';
 import { GetTimeVerification } from './GetTimeVerification.js';

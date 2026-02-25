@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons/util';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/commons/dsl';
-import type { TaxErrorResponse } from '@optivem/driver-api/tax/driver/dtos/error/TaxErrorResponse.js';
+import type { TaxErrorResponse } from '@optivem/driver-api/tax/dtos/error/TaxErrorResponse.js';
 import { TaxErrorVerification } from './TaxErrorVerification.js';
 
 export class TaxUseCaseResult<

@@ -1,3 +1,3 @@
 export interface TaxErrorResponse {
-    message?: string;
+	message?: string;
 }

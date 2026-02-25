@@ -5,7 +5,7 @@ import type { GetProductResponse } from './dtos/GetProductResponse.js';
 import type { ReturnsProductRequest } from './dtos/ReturnsProductRequest.js';
 
 export interface ErpDriver {
-    goToErp(): Promise<Result<void, ErpErrorResponse>>;
-    getProduct(request: GetProductRequest): Promise<Result<GetProductResponse, ErpErrorResponse>>;
-    returnsProduct(request: ReturnsProductRequest): Promise<Result<void, ErpErrorResponse>>;
+	goToErp(): Promise<Result<void, ErpErrorResponse>>;
+	getProduct(request: GetProductRequest): Promise<Result<GetProductResponse, ErpErrorResponse>>;
+	returnsProduct(request: ReturnsProductRequest): Promise<Result<void, ErpErrorResponse>>;
 }

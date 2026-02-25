@@ -1,3 +1,3 @@
 export interface GetTimeResponse {
-    time: Date;
+	time: Date;
 }

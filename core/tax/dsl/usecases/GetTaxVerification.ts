@@ -1,6 +1,6 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
 import { Converter, Decimal } from '@optivem/commons/util';
-import type { GetTaxResponse } from '@optivem/driver-api/tax/driver/dtos/GetTaxResponse.js';
+import type { GetTaxResponse } from '@optivem/driver-api/tax/dtos/GetTaxResponse.js';
 import { expect } from '@playwright/test';
 
 export class GetTaxVerification extends ResponseVerification<GetTaxResponse> {

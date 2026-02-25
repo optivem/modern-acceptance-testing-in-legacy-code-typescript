@@ -1,8 +1,8 @@
 import { VoidVerification, UseCaseContext } from '@optivem/commons/dsl';
 import { Converter } from '@optivem/commons/util';
 import type { Optional } from '@optivem/commons/util';
-import type { ErpDriver } from '@optivem/driver-api/erp/driver/ErpDriver.js';
-import type { ReturnsProductRequest } from '@optivem/driver-api/erp/driver/dtos/ReturnsProductRequest.js';
+import type { ErpDriver } from '@optivem/driver-api/erp/ErpDriver.js';
+import type { ReturnsProductRequest } from '@optivem/driver-api/erp/dtos/ReturnsProductRequest.js';
 import { BaseErpCommand } from './base/BaseErpCommand.js';
 import { ErpUseCaseResult } from './base/ErpUseCaseResult.js';
 

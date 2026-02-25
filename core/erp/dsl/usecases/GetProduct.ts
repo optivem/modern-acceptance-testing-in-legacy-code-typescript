@@ -1,8 +1,8 @@
 import { UseCaseContext } from '@optivem/commons/dsl';
 import type { Optional } from '@optivem/commons/util';
-import type { ErpDriver } from '@optivem/driver-api/erp/driver/ErpDriver.js';
-import type { GetProductRequest } from '@optivem/driver-api/erp/driver/dtos/GetProductRequest.js';
-import type { GetProductResponse } from '@optivem/driver-api/erp/driver/dtos/GetProductResponse.js';
+import type { ErpDriver } from '@optivem/driver-api/erp/ErpDriver.js';
+import type { GetProductRequest } from '@optivem/driver-api/erp/dtos/GetProductRequest.js';
+import type { GetProductResponse } from '@optivem/driver-api/erp/dtos/GetProductResponse.js';
 import { BaseErpCommand } from './base/BaseErpCommand.js';
 import { ErpUseCaseResult } from './base/ErpUseCaseResult.js';
 import { GetProductVerification } from './GetProductVerification.js';

@@ -1,3 +1,3 @@
 export interface ErpErrorResponse {
-    message?: string;
+	message?: string;
 }

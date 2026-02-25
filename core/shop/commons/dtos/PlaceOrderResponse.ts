@@ -1,1 +1,1 @@
-export type { PlaceOrderResponse } from '@optivem/driver-api/shop/driver/dtos/PlaceOrderResponse.js';
+export type { PlaceOrderResponse } from '@optivem/driver-api/shop/dtos/PlaceOrderResponse.js';
