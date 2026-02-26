@@ -1,4 +1,4 @@
-import { UseCaseContext } from '@optivem/commons/dsl';
+import { UseCaseContext } from '@optivem/dsl-common/dsl';
 import type { Optional } from '@optivem/commons/util';
 import type { ErpDriver } from '@optivem/driver-api/erp/ErpDriver.js';
 import type { GetProductRequest } from '@optivem/driver-api/erp/dtos/GetProductRequest.js';

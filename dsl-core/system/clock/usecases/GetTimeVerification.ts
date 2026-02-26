@@ -1,4 +1,4 @@
-import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
+import { ResponseVerification, UseCaseContext } from '@optivem/dsl-common/dsl';
 import { Converter } from '@optivem/commons/util';
 import { GetTimeResponse } from '@optivem/driver-api/clock/dtos/GetTimeResponse.js';
 import { expect } from '@playwright/test';

@@ -1,4 +1,4 @@
-import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
+import { ResponseVerification, UseCaseContext } from '@optivem/dsl-common/dsl';
 import { Converter, Decimal } from '@optivem/commons/util';
 import { GetProductResponse } from '@optivem/driver-api/erp/dtos/GetProductResponse.js';
 import { expect } from '@playwright/test';

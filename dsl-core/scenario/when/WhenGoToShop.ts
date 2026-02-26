@@ -1,4 +1,4 @@
-import { VoidVerification } from '@optivem/commons/dsl';
+import { VoidVerification } from '@optivem/dsl-common/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import { ExecutionResult } from '../ExecutionResult.js';
 import { ExecutionResultBuilder } from '../ExecutionResultBuilder.js';

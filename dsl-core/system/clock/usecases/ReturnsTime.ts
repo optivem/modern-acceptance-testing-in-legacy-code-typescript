@@ -2,8 +2,8 @@ import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
 import type { ReturnsTimeRequest } from '@optivem/driver-api/clock/dtos/ReturnsTimeRequest.js';
 import { BaseClockCommand } from './base/BaseClockCommand.js';
 import { ClockUseCaseResult } from './base/ClockUseCaseResult.js';
-import { VoidVerification } from '@optivem/commons/dsl';
-import { UseCaseContext } from '@optivem/commons/dsl';
+import { VoidVerification } from '@optivem/dsl-common/dsl';
+import { UseCaseContext } from '@optivem/dsl-common/dsl';
 import type { Optional } from '@optivem/commons/util';
 
 export class ReturnsTime extends BaseClockCommand<void, VoidVerification> {

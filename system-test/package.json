@@ -21,6 +21,7 @@
     "@optivem/driver-api": "file:../driver-api",
     "@optivem/driver-core": "file:../driver-core",
     "@optivem/dsl-api": "file:../dsl-api",
+    "@optivem/dsl-common": "file:../dsl-common",
     "@optivem/dsl-core": "file:../dsl-core",
     "@optivem/optivem-testing": "file:../optivem-testing",
     "axios": "^1.13.2",

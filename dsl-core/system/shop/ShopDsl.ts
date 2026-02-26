@@ -1,4 +1,4 @@
-import { UseCaseContext } from '@optivem/commons/dsl';
+import { UseCaseContext } from '@optivem/dsl-common/dsl';
 import { Closer } from '@optivem/commons/util';
 import { ChannelContext } from '@optivem/optivem-testing';
 import { ChannelType } from './ChannelType.js';

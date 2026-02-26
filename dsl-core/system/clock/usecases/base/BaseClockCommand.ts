@@ -1,5 +1,5 @@
 import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
-import { BaseUseCase, UseCaseContext } from '@optivem/commons/dsl';
+import { BaseUseCase, UseCaseContext } from '@optivem/dsl-common/dsl';
 import { ClockErrorResponse } from '@optivem/driver-api/clock/dtos/error/ClockErrorResponse.js';
 import { ClockErrorVerification } from './ClockErrorVerification.js';
 

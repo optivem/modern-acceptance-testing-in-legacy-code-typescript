@@ -1,7 +1,7 @@
 {
   "name": "@optivem/commons",
   "version": "0.0.1",
-  "description": "Shared utilities for Optivem acceptance testing (dsl, util)",
+  "description": "Shared utilities for Optivem acceptance testing (util)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,10 +13,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./dsl": {
-      "types": "./dist/dsl/index.d.ts",
-      "default": "./dist/dsl/index.js"
     },
     "./util": {
       "types": "./dist/util/index.d.ts",

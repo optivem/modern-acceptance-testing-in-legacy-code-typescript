@@ -1,4 +1,4 @@
-import { ExternalSystemMode } from '@optivem/commons/dsl';
+import { ExternalSystemMode } from '@optivem/dsl-common/dsl';
 import { ShopUiDriver } from '@optivem/driver-core/shop/driver/ui/ShopUiDriver.js';
 import { ShopApiDriver } from '@optivem/driver-core/shop/driver/api/ShopApiDriver.js';
 import { ErpRealDriver } from '@optivem/driver-core/erp/driver/ErpRealDriver.js';

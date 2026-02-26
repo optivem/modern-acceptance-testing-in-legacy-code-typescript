@@ -1,4 +1,4 @@
-import { VoidVerification, UseCaseContext } from '@optivem/commons/dsl';
+import { VoidVerification, UseCaseContext } from '@optivem/dsl-common/dsl';
 import type { TaxDriver } from '@optivem/driver-api/tax/TaxDriver.js';
 import { BaseTaxCommand } from './base/BaseTaxCommand.js';
 import { TaxUseCaseResult } from './base/TaxUseCaseResult.js';

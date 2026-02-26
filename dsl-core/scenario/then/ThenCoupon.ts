@@ -1,4 +1,4 @@
-import type { ResponseVerification } from '@optivem/commons/dsl';
+import type { ResponseVerification } from '@optivem/dsl-common/dsl';
 import type { ExecutionResult } from '../ExecutionResult.js';
 import type { ThenClause } from './Then.js';
 

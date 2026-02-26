@@ -1,4 +1,4 @@
-import { assertThatResult, Result } from '../util/index.js';
+import { assertThatResult, Result } from '@optivem/commons/util';
 import { UseCaseContext } from './UseCaseContext.js';
 
 export class UseCaseResult<

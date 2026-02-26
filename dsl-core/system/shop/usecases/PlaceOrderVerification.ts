@@ -1,4 +1,4 @@
-import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
+import { ResponseVerification, UseCaseContext } from '@optivem/dsl-common/dsl';
 import type { PlaceOrderResponse } from '../commons/dtos/index.js';
 import { expect } from '@playwright/test';
 

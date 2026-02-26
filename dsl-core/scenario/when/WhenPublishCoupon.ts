@@ -1,4 +1,4 @@
-import { VoidVerification } from '@optivem/commons/dsl';
+import { VoidVerification } from '@optivem/dsl-common/dsl';
 import { Converter } from '@optivem/commons/util';
 import type { Optional } from '@optivem/commons/util';
 import type { SystemDsl } from '../../system/SystemDsl.js';

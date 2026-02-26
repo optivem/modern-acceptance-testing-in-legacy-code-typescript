@@ -1,4 +1,4 @@
-import { BaseUseCase, UseCaseContext } from '@optivem/commons/dsl';
+import { BaseUseCase, UseCaseContext } from '@optivem/dsl-common/dsl';
 import type { ErpDriver } from '@optivem/driver-api/erp/ErpDriver.js';
 import type { ErpErrorResponse } from '@optivem/driver-api/erp/dtos/error/ErpErrorResponse.js';
 import { ErpErrorVerification } from './ErpErrorVerification.js';

@@ -1,4 +1,4 @@
-import { ExternalSystemMode } from '@optivem/commons/dsl';
+import { ExternalSystemMode } from '@optivem/dsl-common/dsl';
 import type { LoadedConfiguration } from '../configuration/LoadedConfiguration.js';
 
 let configurationLoader: ((mode: ExternalSystemMode) => LoadedConfiguration) | null = null;

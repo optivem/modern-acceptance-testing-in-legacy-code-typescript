@@ -1,4 +1,4 @@
-import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
+import { UseCaseContext, ExternalSystemMode } from '@optivem/dsl-common/dsl';
 import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
 import { ClockStubDriver } from '@optivem/driver-core/clock/driver/ClockStubDriver.js';
 import { ClockRealDriver } from '@optivem/driver-core/clock/driver/ClockRealDriver.js';

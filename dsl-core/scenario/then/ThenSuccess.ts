@@ -1,4 +1,4 @@
-import type { ResponseVerification } from '@optivem/commons/dsl';
+import type { ResponseVerification } from '@optivem/dsl-common/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
 import type { ThenClause } from './Then.js';
 import { ThenSuccessOrderVerifier } from './ThenOrder.js';

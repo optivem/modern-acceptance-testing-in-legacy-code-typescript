@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { Optional } from '../util/index.js';
+import type { Optional } from '@optivem/commons/util';
 import { ExternalSystemMode } from './ExternalSystemMode.js';
 
 export class UseCaseContext {

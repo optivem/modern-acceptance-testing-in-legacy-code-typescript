@@ -1,4 +1,4 @@
-import { UseCaseContext } from '@optivem/commons/dsl';
+import { UseCaseContext } from '@optivem/dsl-common/dsl';
 import { Closer } from '@optivem/commons/util';
 import type { SystemConfiguration } from './SystemConfiguration.js';
 import { ShopDsl } from './shop/ShopDsl.js';

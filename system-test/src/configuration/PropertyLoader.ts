@@ -1,4 +1,4 @@
-import { ExternalSystemMode } from '@optivem/commons/dsl';
+import { ExternalSystemMode } from '@optivem/dsl-common/dsl';
 import { Environment } from './Environment.js';
 
 /**

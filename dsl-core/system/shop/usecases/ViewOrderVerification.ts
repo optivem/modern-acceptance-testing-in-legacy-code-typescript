@@ -1,4 +1,4 @@
-import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
+import { ResponseVerification, UseCaseContext } from '@optivem/dsl-common/dsl';
 import { Converter } from '@optivem/commons/util';
 import type { Decimal } from '@optivem/commons/util';
 import type { ViewOrderResponse } from '../commons/dtos/index.js';

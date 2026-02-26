@@ -3,7 +3,7 @@
  * Runs only for STUB external system mode.
  */
 import '../../../../setup-config.js';
-import { ExternalSystemMode } from '@optivem/commons/dsl';
+import { ExternalSystemMode } from '@optivem/dsl-common/dsl';
 import { test } from '../base/fixtures.js';
 import { getExternalSystemMode } from '../../../../test.config.js';
 

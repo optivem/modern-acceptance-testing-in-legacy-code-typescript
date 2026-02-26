@@ -1,7 +1,7 @@
 import { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { BaseShopCommand } from './base/BaseShopCommand.js';
 import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
-import { UseCaseContext } from '@optivem/commons/dsl';
+import { UseCaseContext } from '@optivem/dsl-common/dsl';
 import type { BrowseCouponsResponse } from '../commons/dtos/index.js';
 import { BrowseCouponsVerification } from './BrowseCouponsVerification.js';
 

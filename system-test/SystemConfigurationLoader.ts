@@ -1,4 +1,4 @@
-import type { ExternalSystemMode } from '@optivem/commons/dsl';
+import type { ExternalSystemMode } from '@optivem/dsl-common/dsl';
 import { SystemConfiguration } from '../dsl-core/system/SystemConfiguration.js';
 import { testConfig } from './test.config.js';
 
