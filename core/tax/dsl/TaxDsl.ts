@@ -1,8 +1,8 @@
 import { UseCaseContext, ExternalSystemMode } from '@optivem/commons/dsl';
 import { Closer } from '@optivem/commons/util';
 import type { TaxDriver } from '@optivem/driver-api/tax/TaxDriver.js';
-import { TaxRealDriver } from '../driver/TaxRealDriver.js';
-import { TaxStubDriver } from '../driver/TaxStubDriver.js';
+import { TaxRealDriver } from '@optivem/driver-core/tax/driver/TaxRealDriver.js';
+import { TaxStubDriver } from '@optivem/driver-core/tax/driver/TaxStubDriver.js';
 import { GoToTax } from './usecases/GoToTax.js';
 import { GetTaxRate } from './usecases/GetTaxRate.js';
 import { ReturnsTaxRate } from './usecases/ReturnsTaxRate.js';

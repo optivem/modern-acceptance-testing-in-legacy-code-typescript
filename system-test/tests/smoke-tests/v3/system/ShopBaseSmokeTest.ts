@@ -2,7 +2,7 @@
  * V3 shop smoke: abstract base with shared test logic (mirrors Java ShopBaseSmokeTest).
  * Subclasses provide the driver via getDriver().
  */
-import type { ShopDriver } from '@optivem/core/shop/driver/ShopDriver.js';
+import type { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { expect } from '@playwright/test';
 
 export abstract class ShopBaseSmokeTest {

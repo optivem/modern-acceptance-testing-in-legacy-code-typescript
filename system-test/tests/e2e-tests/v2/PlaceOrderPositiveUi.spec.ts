@@ -1,5 +1,5 @@
 import '../../../setup-config.js';
-import { NewOrderPage } from '@optivem/core/shop/client/ui/pages/NewOrderPage.js';
+import { NewOrderPage } from '@optivem/driver-core/shop/client/ui/pages/NewOrderPage.js';
 import { OrderStatus } from '@optivem/core/shop/commons/dtos/OrderStatus.js';
 import { Integer } from '@optivem/commons/util';
 import { GherkinDefaults } from '@optivem/dsl-core/gherkin/GherkinDefaults.js';

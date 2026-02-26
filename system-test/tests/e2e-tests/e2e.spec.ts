@@ -9,7 +9,7 @@ test('hello world', () => {
 import { setupResultMatchers } from '@optivem/commons/util';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { shopChannelTest as channelTest } from '@optivem/test-infrastructure';
-import { OrderStatus } from '@optivem/core/shop/driver/dtos/enums/OrderStatus.js';
+import { OrderStatus } from '@optivem/driver-core/shop/commons/dtos/OrderStatus.js';
 import { getExternalSystemMode } from '../../test.config.js';
 
 setupResultMatchers();

@@ -13,6 +13,7 @@
     "@optivem/commons": "file:../commons",
     "@optivem/core": "file:../core",
     "@optivem/driver-api": "file:../driver-api",
+    "@optivem/driver-core": "file:../driver-core",
     "@optivem/optivem-testing": "file:../optivem-testing"
   },
   "devDependencies": {

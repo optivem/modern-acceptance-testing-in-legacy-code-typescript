@@ -1,4 +1,4 @@
-import { ShopDriver } from '../../driver/ShopDriver.js';
+import { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { BaseShopCommand } from './base/BaseShopCommand.js';
 import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';

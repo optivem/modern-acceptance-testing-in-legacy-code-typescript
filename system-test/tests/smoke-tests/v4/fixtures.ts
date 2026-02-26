@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import type { ShopDriver } from '@optivem/core/shop/driver/ShopDriver.js';
+import type { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { ChannelType } from '@optivem/core/shop/ChannelType.js';
 import { ChannelContext } from '@optivem/optivem-testing';
 import { Closer } from '@optivem/commons/util';
