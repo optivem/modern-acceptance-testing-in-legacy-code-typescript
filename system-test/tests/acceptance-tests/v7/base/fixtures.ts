@@ -6,8 +6,8 @@ process.env.EXTERNAL_SYSTEM_MODE = process.env.EXTERNAL_SYSTEM_MODE ?? 'STUB';
 
 import { test as base } from '@playwright/test';
 import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
-import type { ScenarioDslPort } from '@optivem/dsl-api/gherkin/ScenarioDslPort.js';
-import { ScenarioDsl } from '@optivem/dsl-core/gherkin/ScenarioDsl.js';
+import type { ScenarioDslPort } from '@optivem/dsl-api/scenario/ScenarioDslPort.js';
+import { ScenarioDsl } from '@optivem/dsl-core/scenario/ScenarioDsl.js';
 import {
     scenarioChannelTest as sharedScenarioChannelTest,
     type ScenarioChannelFixtures as SharedScenarioChannelFixtures,

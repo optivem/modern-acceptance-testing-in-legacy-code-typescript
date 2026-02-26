@@ -1,7 +1,7 @@
 import '../../../setup-config.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
-import { GherkinDefaults } from '@optivem/dsl-core/gherkin/GherkinDefaults.js';
+import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
 import { channelShopDriverTest, createUniqueSku, expect } from './base/fixtures.js';
 
 channelShopDriverTest([ChannelType.UI, ChannelType.API], 'should view placed order', async ({ shopDriver, erpDriver }) => {

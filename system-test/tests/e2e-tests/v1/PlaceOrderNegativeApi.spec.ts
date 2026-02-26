@@ -1,5 +1,5 @@
 import '../../../setup-config.js';
-import { GherkinDefaults } from '@optivem/dsl-core/gherkin/GherkinDefaults.js';
+import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
 import { emptyArgumentsProvider } from '../../shared/argumentProviders.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 import { testConfig } from '../../../test.config.js';

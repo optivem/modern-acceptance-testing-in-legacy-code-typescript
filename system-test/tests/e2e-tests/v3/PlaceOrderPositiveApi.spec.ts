@@ -1,6 +1,6 @@
 import '../../../setup-config.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
-import { GherkinDefaults } from '@optivem/dsl-core/gherkin/GherkinDefaults.js';
+import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 
 test('should place order with correct subtotal price', async ({ shopApiDriver, erpDriver }) => {

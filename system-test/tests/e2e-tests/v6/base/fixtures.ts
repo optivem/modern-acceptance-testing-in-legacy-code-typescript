@@ -4,7 +4,7 @@
  */
 import { test as base } from '@playwright/test';
 import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
-import { ScenarioDsl } from '@optivem/dsl-core/gherkin/ScenarioDsl.js';
+import { ScenarioDsl } from '@optivem/dsl-core/scenario/ScenarioDsl.js';
 import {
     scenarioChannelTest as sharedScenarioChannelTest,
     type ScenarioChannelFixtures as SharedScenarioChannelFixtures,
