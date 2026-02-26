@@ -1,4 +1,4 @@
-import type { JsonHttpClient } from '@optivem/commons/http';
+import type { JsonHttpClient } from '@optivem/driver-common/http';
 import type { Result } from '@optivem/commons/util';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
 import type { BrowseCouponsResponse, PublishCouponRequest } from '../../../commons/dtos/index.js';

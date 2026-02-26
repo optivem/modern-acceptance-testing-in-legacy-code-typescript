@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/commons/playwright';
+import type { PageClient } from '@optivem/driver-common/playwright';
 import { NewOrderPage } from './NewOrderPage.js';
 import { OrderHistoryPage } from './OrderHistoryPage.js';
 import { CouponManagementPage } from './CouponManagementPage.js';

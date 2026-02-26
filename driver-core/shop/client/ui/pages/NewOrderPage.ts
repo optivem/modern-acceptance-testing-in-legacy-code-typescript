@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/commons/playwright';
+import type { PageClient } from '@optivem/driver-common/playwright';
 import type { Optional } from '@optivem/commons/util';
 
 export class NewOrderPage extends BasePage {

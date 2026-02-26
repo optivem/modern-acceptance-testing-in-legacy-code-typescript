@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons/util';
-import { HttpStatus } from '@optivem/commons/http';
-import { JsonWireMockClient } from '@optivem/commons/wiremock';
+import { HttpStatus } from '@optivem/driver-common/http';
+import { JsonWireMockClient } from '@optivem/driver-common/wiremock';
 import { BaseErpClient } from './BaseErpClient.js';
 import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse.js';
 import { from as toExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';

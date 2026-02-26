@@ -9,11 +9,12 @@
     "driver-common",
     "driver-core",
     "dsl-api",
+    "dsl-common",
     "dsl-core",
     "system-test"
   ],
   "scripts": {
-    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/driver-api && npm run build -w @optivem/driver-common && npm run build -w @optivem/driver-core && npm run build -w @optivem/dsl-api && npm run build -w @optivem/dsl-core",
+    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/driver-api && npm run build -w @optivem/driver-common && npm run build -w @optivem/driver-core && npm run build -w @optivem/dsl-api && npm run build -w @optivem/dsl-common && npm run build -w @optivem/dsl-core",
     "test": "npm run build && npm run test -w system-test"
   }
 }

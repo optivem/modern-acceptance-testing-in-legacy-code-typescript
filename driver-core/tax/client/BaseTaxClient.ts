@@ -1,6 +1,6 @@
 import type { Optional } from '@optivem/commons/util';
 import { Result } from '@optivem/commons/util';
-import { JsonHttpClient } from '@optivem/commons/http';
+import { JsonHttpClient } from '@optivem/driver-common/http';
 import type { ExtCountryDetailsResponse } from './dtos/ExtCountryDetailsResponse.js';
 import type { ExtTaxErrorResponse } from './dtos/error/ExtTaxErrorResponse.js';
 

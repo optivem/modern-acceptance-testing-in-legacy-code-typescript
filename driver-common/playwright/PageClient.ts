@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
-import type { Optional } from '../util/index.js';
-import { Decimal } from '../util/Decimal.js';
+import type { Optional } from '@optivem/commons/util';
+import { Decimal } from '@optivem/commons/util';
 
 /**
  * High-level wrapper for Playwright Page.

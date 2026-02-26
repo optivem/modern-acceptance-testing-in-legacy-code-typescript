@@ -1,6 +1,6 @@
 import type { Optional } from '@optivem/commons/util';
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/commons/playwright';
+import type { PageClient } from '@optivem/driver-common/playwright';
 import { OrderDetailsPage } from './OrderDetailsPage.js';
 
 export class OrderHistoryPage extends BasePage {

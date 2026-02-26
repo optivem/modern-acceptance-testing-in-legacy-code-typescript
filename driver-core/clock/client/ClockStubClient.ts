@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons/util';
-import { JsonHttpClient, HttpStatus } from '@optivem/commons/http';
-import { JsonWireMockClient } from '@optivem/commons/wiremock';
+import { JsonHttpClient, HttpStatus } from '@optivem/driver-common/http';
+import { JsonWireMockClient } from '@optivem/driver-common/wiremock';
 import { ExtGetTimeResponse } from './dtos/ExtGetTimeResponse.js';
 import { ExtClockErrorResponse, from as fromExtClockError } from './dtos/error/ExtClockErrorResponse.js';
 

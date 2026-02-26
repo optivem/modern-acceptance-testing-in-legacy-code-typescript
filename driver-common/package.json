@@ -4,11 +4,31 @@
   "type": "module",
   "private": true,
   "scripts": { "clean": "rimraf dist", "build": "rimraf dist && tsc -p tsconfig.build.json" },
-  "exports": { "./*": "./dist/*" },
+  "exports": {
+    "./*": "./dist/*",
+    "./http": {
+      "types": "./dist/http/index.d.ts",
+      "default": "./dist/http/index.js"
+    },
+    "./playwright": {
+      "types": "./dist/playwright/index.d.ts",
+      "default": "./dist/playwright/index.js"
+    },
+    "./wiremock": {
+      "types": "./dist/wiremock/index.d.ts",
+      "default": "./dist/wiremock/index.js"
+    }
+  },
   "dependencies": {
-    "@optivem/driver-api": "file:../driver-api"
+    "@optivem/commons": "file:../commons",
+    "@optivem/driver-api": "file:../driver-api",
+    "axios": "^1.7.9"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.41.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2"
   }
