@@ -1,0 +1,9 @@
+{
+  "name": "smoke-test",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "playwright test --config ../playwright.config.ts smoke-tests",
+    "test:ui": "playwright test --ui --config ../playwright.config.ts smoke-tests"
+  }
+}

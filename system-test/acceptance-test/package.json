@@ -1,0 +1,9 @@
+{
+  "name": "acceptance-test",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "playwright test --config ../playwright.config.ts acceptance-tests",
+    "test:ui": "playwright test --ui --config ../playwright.config.ts acceptance-tests"
+  }
+}

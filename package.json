@@ -11,11 +11,19 @@
     "dsl-api",
     "dsl-common",
     "dsl-core",
-    "test-infrastructure",
-    "system-test"
+    "system-test",
+    "system-test/test-infrastructure",
+    "system-test/acceptance-test",
+    "system-test/smoke-test",
+    "system-test/e2e-test",
+    "system-test/external-system-contract-test"
   ],
   "scripts": {
     "build": "npm run build -w @optivem/commons && npm run build -w @optivem/optivem-testing && npm run build -w @optivem/driver-api && npm run build -w @optivem/driver-common && npm run build -w @optivem/driver-core && npm run build -w @optivem/dsl-api && npm run build -w @optivem/dsl-common && npm run build -w @optivem/dsl-core && npm run build -w @optivem/test-infrastructure",
-    "test": "npm run build && npm run test -w system-test"
+    "test": "npm run build && npm run test -w acceptance-test && npm run test -w smoke-test && npm run test -w e2e-test && npm run test -w external-system-contract-test",
+    "test:acceptance": "npm run test -w acceptance-test",
+    "test:smoke": "npm run test -w smoke-test",
+    "test:e2e": "npm run test -w e2e-test",
+    "test:external-contract": "npm run test -w external-system-contract-test"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "external-system-contract-test",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "playwright test --config ../playwright.config.ts external-system-contract-tests",
+    "test:ui": "playwright test --ui --config ../playwright.config.ts external-system-contract-tests"
+  }
+}

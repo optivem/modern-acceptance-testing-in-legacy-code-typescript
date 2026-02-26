@@ -1,0 +1,9 @@
+{
+  "name": "e2e-test",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "playwright test --config ../playwright.config.ts e2e-tests",
+    "test:ui": "playwright test --ui --config ../playwright.config.ts e2e-tests"
+  }
+}

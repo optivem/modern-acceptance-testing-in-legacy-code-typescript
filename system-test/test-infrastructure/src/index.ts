@@ -25,3 +25,5 @@ export {
     createErpDriver,
     createTaxApiDriver,
 } from './driver/createDrivers.js';
+export { shopChannelTest, shopChannelTestEach, channelTest } from './shopChannelTest.js';
+export type { ShopFixtures } from './shopChannelTest.js';
