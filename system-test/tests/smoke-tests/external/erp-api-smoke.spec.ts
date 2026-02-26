@@ -2,7 +2,7 @@ import '../../../setup-config.js';
 import { test as base } from '../../fixtures.js';
 import { expect } from '@playwright/test';
 import { Closer } from '@optivem/commons/util';
-import { createErpDriver } from '../../../src/index.js';
+import { createErpDriver } from '@optivem/test-infrastructure';
 import { setupResultMatchers } from '@optivem/commons/util';
 import { getExternalSystemMode } from '../../../test.config.js';
 

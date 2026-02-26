@@ -11,7 +11,7 @@ import {
     createShopApiDriver,
     createErpDriver,
     createTaxApiDriver,
-} from '../../../../src/index.js';
+} from '@optivem/test-infrastructure';
 
 const FIXED_EXTERNAL_SYSTEM_MODE = 'REAL';
 

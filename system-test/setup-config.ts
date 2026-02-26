@@ -2,8 +2,8 @@
 process.env.TZ = 'UTC';
 
 import type { ExternalSystemMode } from '@optivem/dsl-common/dsl';
-import type { LoadedConfiguration } from './src/index.js';
-import { setConfigurationLoader } from './src/index.js';
+import type { LoadedConfiguration } from '@optivem/test-infrastructure';
+import { setConfigurationLoader } from '@optivem/test-infrastructure';
 import { testConfig } from './test.config.js';
 
 setConfigurationLoader((mode: ExternalSystemMode): LoadedConfiguration => ({
