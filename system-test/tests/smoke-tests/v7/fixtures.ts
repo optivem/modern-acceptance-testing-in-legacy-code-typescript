@@ -30,7 +30,7 @@ export { expect } from '@playwright/test';
 export type ScenarioChannelFixtures = SharedScenarioChannelFixtures<ScenarioDsl>;
 
 /**
- * Run the same scenario-based test for each channel (UI/API). Same header style as shopChannelTest.
+ * Run the same scenario-based test for each channel (UI/API).
  * Sets ChannelContext before the test and clears it in finally.
  */
 export function scenarioChannelTest(
