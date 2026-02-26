@@ -1,6 +1,6 @@
-import { Result } from '@optivem/commons/util';
-import type { AsyncCloseable } from '@optivem/commons/util';
-import type { Optional } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
+import type { AsyncCloseable } from '@optivem/common/util';
+import type { Optional } from '@optivem/common/util';
 import type { BrowseCouponsResponse } from './dtos/BrowseCouponsResponse.js';
 import type { PlaceOrderRequest } from './dtos/PlaceOrderRequest.js';
 import type { PlaceOrderResponse } from './dtos/PlaceOrderResponse.js';

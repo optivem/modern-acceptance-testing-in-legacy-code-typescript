@@ -2,7 +2,7 @@ import { UseCaseContext, ExternalSystemMode } from '@optivem/dsl-common/dsl';
 import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
 import { ClockStubDriver } from '@optivem/driver-core/clock/driver/ClockStubDriver.js';
 import { ClockRealDriver } from '@optivem/driver-core/clock/driver/ClockRealDriver.js';
-import { Closer } from '@optivem/commons/util';
+import { Closer } from '@optivem/common/util';
 import { GoToClock } from './usecases/GoToClock.js';
 import { ReturnsTime } from './usecases/ReturnsTime.js';
 import { GetTime } from './usecases/GetTime.js';

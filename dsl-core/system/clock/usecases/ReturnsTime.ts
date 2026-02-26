@@ -4,7 +4,7 @@ import { BaseClockCommand } from './base/BaseClockCommand.js';
 import { ClockUseCaseResult } from './base/ClockUseCaseResult.js';
 import { VoidVerification } from '@optivem/dsl-common/dsl';
 import { UseCaseContext } from '@optivem/dsl-common/dsl';
-import type { Optional } from '@optivem/commons/util';
+import type { Optional } from '@optivem/common/util';
 
 export class ReturnsTime extends BaseClockCommand<void, VoidVerification> {
     private timeValue: Optional<string>;

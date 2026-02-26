@@ -3,7 +3,7 @@ import type { GetTimeResponse } from '@optivem/driver-api/clock/dtos/GetTimeResp
 import type { ReturnsTimeRequest } from '@optivem/driver-api/clock/dtos/ReturnsTimeRequest.js';
 import type { ClockErrorResponse } from '@optivem/driver-api/clock/dtos/error/ClockErrorResponse.js';
 import { ExtGetTimeResponse } from '../client/dtos/ExtGetTimeResponse.js';
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
 import { from as fromGetTimeResponse } from './GetTimeResponseMapper.js';
 import { from as fromClockErrorResponse } from './ClockErrorResponseMapper.js';

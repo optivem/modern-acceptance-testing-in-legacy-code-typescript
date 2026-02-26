@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import { BaseErpClient } from './BaseErpClient.js';
 import type { ExtCreateProductRequest } from './dtos/ExtCreateProductRequest.js';
 import type { ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';

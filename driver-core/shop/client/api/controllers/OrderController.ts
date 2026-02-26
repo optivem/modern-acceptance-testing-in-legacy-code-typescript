@@ -1,5 +1,5 @@
 import type { JsonHttpClient } from '@optivem/driver-common/http';
-import type { Optional, Result } from '@optivem/commons/util';
+import type { Optional, Result } from '@optivem/common/util';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
 import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../../commons/dtos/index.js';
 

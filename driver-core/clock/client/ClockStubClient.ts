@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import { JsonHttpClient, HttpStatus } from '@optivem/driver-common/http';
 import { JsonWireMockClient } from '@optivem/driver-common/wiremock';
 import { ExtGetTimeResponse } from './dtos/ExtGetTimeResponse.js';

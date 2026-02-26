@@ -51,11 +51,11 @@ Test projects get DSL **only** via TestInfrastructure (no direct reference to Ds
 |---------|----------------|
 | **commons** | (none internal) |
 | **driver-api** | (none internal) |
-| **driver-core** | @optivem/commons, @optivem/driver-api |
+| **driver-core** | @optivem/common, @optivem/driver-api |
 | **dsl-api** | @optivem/driver-api |
-| **dsl-core** | @optivem/commons, @optivem/driver-api, @optivem/driver-core, @optivem/dsl-api, @optivem/optivem-testing |
-| **test-infrastructure** | @optivem/commons, @optivem/driver-api, @optivem/driver-core, @optivem/dsl-core, @optivem/optivem-testing |
-| **system-test** | @optivem/commons, @optivem/driver-api, @optivem/driver-core, @optivem/dsl-api, @optivem/dsl-core, @optivem/optivem-testing, @optivem/test-infrastructure |
+| **dsl-core** | @optivem/common, @optivem/driver-api, @optivem/driver-core, @optivem/dsl-api, @optivem/optivem-testing |
+| **test-infrastructure** | @optivem/common, @optivem/driver-api, @optivem/driver-core, @optivem/dsl-core, @optivem/optivem-testing |
+| **system-test** | @optivem/common, @optivem/driver-api, @optivem/driver-core, @optivem/dsl-api, @optivem/dsl-core, @optivem/optivem-testing, @optivem/test-infrastructure |
 
 ---
 

@@ -1,4 +1,4 @@
-import type { Result } from '@optivem/commons/util';
+import type { Result } from '@optivem/common/util';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/dsl-common/dsl';
 import type { SystemError } from '../../commons/dtos/errors/SystemError.js';
 import { SystemErrorFailureVerification } from './SystemErrorFailureVerification.js';

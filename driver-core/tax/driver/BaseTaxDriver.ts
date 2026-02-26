@@ -1,5 +1,5 @@
-import type { Optional } from '@optivem/commons/util';
-import { Result } from '@optivem/commons/util';
+import type { Optional } from '@optivem/common/util';
+import { Result } from '@optivem/common/util';
 import type { BaseTaxClient } from '../client/BaseTaxClient.js';
 import type { TaxDriver } from '@optivem/driver-api/tax/TaxDriver.js';
 import type { GetTaxResponse } from '@optivem/driver-api/tax/dtos/GetTaxResponse.js';

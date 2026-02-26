@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import type { ErpErrorResponse } from './dtos/error/ErpErrorResponse.js';
 import type { GetProductRequest } from './dtos/GetProductRequest.js';
 import type { GetProductResponse } from './dtos/GetProductResponse.js';

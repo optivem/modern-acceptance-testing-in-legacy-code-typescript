@@ -1,4 +1,4 @@
-import { Result, Converter } from '@optivem/commons/util';
+import { Result, Converter } from '@optivem/common/util';
 import { ErpStubClient } from '../client/ErpStubClient.js';
 import type { ExtProductDetailsResponse } from '../client/dtos/ExtProductDetailsResponse.js';
 import type { ErpErrorResponse } from '@optivem/driver-api/erp/dtos/error/ErpErrorResponse.js';

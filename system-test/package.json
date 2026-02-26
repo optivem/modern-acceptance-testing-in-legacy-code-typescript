@@ -17,7 +17,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@optivem/commons": "file:../commons",
+    "@optivem/common": "file:../common",
     "@optivem/driver-api": "file:../driver-api",
     "@optivem/driver-core": "file:../driver-core",
     "@optivem/dsl-api": "file:../dsl-api",

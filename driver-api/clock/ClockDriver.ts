@@ -1,4 +1,4 @@
-import { Result, Closeable } from '@optivem/commons/util';
+import { Result, Closeable } from '@optivem/common/util';
 import type { GetTimeResponse } from './dtos/GetTimeResponse.js';
 import type { ReturnsTimeRequest } from './dtos/ReturnsTimeRequest.js';
 import type { ClockErrorResponse } from './dtos/error/ClockErrorResponse.js';

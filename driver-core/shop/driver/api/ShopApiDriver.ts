@@ -1,9 +1,9 @@
-import type { Result } from '@optivem/commons/util';
+import type { Result } from '@optivem/common/util';
 import type { ShopDriver } from '../ShopDriver.js';
 import type { SystemError } from '../../commons/dtos/errors/SystemError.js';
 import { ShopApiClient } from '../../client/api/ShopApiClient.js';
 import { systemErrorFrom } from '../../commons/dtos/errors/SystemError.js';
-import type { Optional } from '@optivem/commons/util';
+import type { Optional } from '@optivem/common/util';
 import type { PlaceOrderRequest, PlaceOrderResponse, ViewOrderResponse } from '../../commons/dtos/index.js';
 import type { PublishCouponRequest, BrowseCouponsResponse } from '../../commons/dtos/index.js';
 

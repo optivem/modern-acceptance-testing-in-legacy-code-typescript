@@ -1,6 +1,6 @@
 import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/driver-common/playwright';
-import type { Optional } from '@optivem/commons/util';
+import type { Optional } from '@optivem/common/util';
 
 export class NewOrderPage extends BasePage {
     private static readonly SKU_INPUT_SELECTOR = '[aria-label="SKU"]';

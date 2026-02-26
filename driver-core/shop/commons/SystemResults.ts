@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import { systemErrorOf, type SystemError } from './dtos/errors/SystemError.js';
 
 export function success<T>(value: T): Result<T, SystemError> {

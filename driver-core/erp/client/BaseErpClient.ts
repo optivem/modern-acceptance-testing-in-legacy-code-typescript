@@ -1,5 +1,5 @@
-import { Result } from '@optivem/commons/util';
-import type { Optional } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
+import type { Optional } from '@optivem/common/util';
 import { JsonHttpClient } from '@optivem/driver-common/http';
 import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse.js';
 import type { ExtCreateProductRequest } from './dtos/ExtCreateProductRequest.js';

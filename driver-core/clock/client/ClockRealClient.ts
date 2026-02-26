@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import { ExtGetTimeResponse } from './dtos/ExtGetTimeResponse.js';
 import { ExtClockErrorResponse } from './dtos/error/ExtClockErrorResponse.js';
 

@@ -1,5 +1,5 @@
-import type { Decimal, Integer } from '@optivem/commons/util';
-import type { Optional } from '@optivem/commons/util';
+import type { Decimal, Integer } from '@optivem/common/util';
+import type { Optional } from '@optivem/common/util';
 import type { OrderStatus } from './OrderStatus.js';
 
 export interface ViewOrderResponse {

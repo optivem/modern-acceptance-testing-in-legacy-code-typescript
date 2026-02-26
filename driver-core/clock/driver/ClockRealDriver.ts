@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import { ClockRealClient } from '../client/ClockRealClient.js';
 import type { ClockDriver } from '@optivem/driver-api/clock/ClockDriver.js';
 import type { GetTimeResponse } from '@optivem/driver-api/clock/dtos/GetTimeResponse.js';

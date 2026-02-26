@@ -1,5 +1,5 @@
 import { UseCaseContext } from '@optivem/dsl-common/dsl';
-import { Closer } from '@optivem/commons/util';
+import { Closer } from '@optivem/common/util';
 import { ChannelContext } from '@optivem/optivem-testing';
 import { ChannelType } from './ChannelType.js';
 import { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';

@@ -1,7 +1,7 @@
 import { BasePage } from './BasePage.js';
 import type { PageClient } from '@optivem/driver-common/playwright';
-import { Decimal } from '@optivem/commons/util';
-import type { Optional } from '@optivem/commons/util';
+import { Decimal } from '@optivem/common/util';
+import type { Optional } from '@optivem/common/util';
 import type { OrderStatus } from '../../../commons/dtos/OrderStatus.js';
 
 /** Order details view (same DOM as order history details section; used for view/cancel flow). */

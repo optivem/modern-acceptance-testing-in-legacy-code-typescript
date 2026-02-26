@@ -1,4 +1,4 @@
-import type { Optional, Result } from '@optivem/commons/util';
+import type { Optional, Result } from '@optivem/common/util';
 import type { GetTaxResponse } from './dtos/GetTaxResponse.js';
 import type { ReturnsTaxRateRequest } from './dtos/ReturnsTaxRateRequest.js';
 import type { TaxErrorResponse } from './dtos/error/TaxErrorResponse.js';

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import { Result, mapObjectDecimals, DEFAULT_DECIMAL_KEYS, mapObjectIntegers, DEFAULT_INTEGER_KEYS } from '@optivem/commons/util';
+import { Result, mapObjectDecimals, DEFAULT_DECIMAL_KEYS, mapObjectIntegers, DEFAULT_INTEGER_KEYS } from '@optivem/common/util';
 
 export type JsonHttpClientOptions = {
     /**

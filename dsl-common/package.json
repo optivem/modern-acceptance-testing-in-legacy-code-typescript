@@ -16,7 +16,7 @@
     "./*": "./dist/*"
   },
   "dependencies": {
-    "@optivem/commons": "file:../commons",
+    "@optivem/common": "file:../common",
     "@optivem/dsl-api": "file:../dsl-api"
   },
   "devDependencies": {

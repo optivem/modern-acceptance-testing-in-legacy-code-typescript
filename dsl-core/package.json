@@ -6,7 +6,7 @@
   "scripts": { "clean": "rimraf dist", "build": "rimraf dist && tsc -p tsconfig.build.json" },
   "exports": { "./*": "./dist/*" },
   "dependencies": {
-    "@optivem/commons": "file:../commons",
+    "@optivem/common": "file:../common",
     "@optivem/driver-api": "file:../driver-api",
     "@optivem/driver-core": "file:../driver-core",
     "@optivem/dsl-api": "file:../dsl-api",

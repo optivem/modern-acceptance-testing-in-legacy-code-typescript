@@ -3,7 +3,7 @@ import { BaseShopCommand } from './base/BaseShopCommand.js';
 import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/dsl-common/dsl';
 import { VoidVerification } from '@optivem/dsl-common/dsl';
-import type { Optional } from '@optivem/commons/util';
+import type { Optional } from '@optivem/common/util';
 
 export class CancelOrder extends BaseShopCommand<void, VoidVerification> {
     private orderNumberResultAlias: Optional<string>;

@@ -1,6 +1,6 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/dsl-common/dsl';
-import { Converter } from '@optivem/commons/util';
-import type { Decimal } from '@optivem/commons/util';
+import { Converter } from '@optivem/common/util';
+import type { Decimal } from '@optivem/common/util';
 import type { ViewOrderResponse } from '../commons/dtos/index.js';
 import { OrderStatus } from '../commons/dtos/OrderStatus.js';
 import { expect } from '@playwright/test';

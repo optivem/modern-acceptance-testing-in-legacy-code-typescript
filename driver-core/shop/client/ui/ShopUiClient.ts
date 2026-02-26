@@ -1,6 +1,6 @@
 import { chromium, type Browser, type BrowserContext, type Page, type Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
-import { Closer, type AsyncCloseable } from '@optivem/commons/util';
+import { Closer, type AsyncCloseable } from '@optivem/common/util';
 import { PageClient } from '@optivem/driver-common/playwright';
 import { HomePage } from './pages/HomePage.js';
 

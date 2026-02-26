@@ -1,5 +1,5 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/dsl-common/dsl';
-import { Converter, Decimal } from '@optivem/commons/util';
+import { Converter, Decimal } from '@optivem/common/util';
 import { GetProductResponse } from '@optivem/driver-api/erp/dtos/GetProductResponse.js';
 import { expect } from '@playwright/test';
 

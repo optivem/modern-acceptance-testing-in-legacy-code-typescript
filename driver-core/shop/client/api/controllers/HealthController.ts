@@ -1,5 +1,5 @@
 import type { JsonHttpClient } from '@optivem/driver-common/http';
-import type { Result } from '@optivem/commons/util';
+import type { Result } from '@optivem/common/util';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
 
 export class HealthController {

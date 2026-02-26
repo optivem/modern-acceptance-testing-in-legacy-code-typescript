@@ -1,5 +1,5 @@
 import type { ResponseVerification } from '@optivem/dsl-common/dsl';
-import type { Optional } from '@optivem/commons/util';
+import type { Optional } from '@optivem/common/util';
 import type { ShopUseCaseResult } from '../system/shop/usecases/base/ShopUseCaseResult.js';
 import { ExecutionResult } from './ExecutionResult.js';
 

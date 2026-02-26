@@ -1,6 +1,6 @@
 import { PageClient } from '@optivem/driver-common/playwright';
-import { Result } from '@optivem/commons/util';
-import type { Optional } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
+import type { Optional } from '@optivem/common/util';
 import type { SystemError, SystemErrorField } from '../../../commons/dtos/errors/SystemError.js';
 import { systemErrorOf } from '../../../commons/dtos/errors/SystemError.js';
 import { failure, failureWithError, success } from '../../../commons/SystemResults.js';

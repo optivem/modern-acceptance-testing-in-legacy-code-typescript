@@ -5,7 +5,7 @@
 import { randomUUID } from 'node:crypto';
 import { test as base } from '@playwright/test';
 import type { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
-import { Closer, setupResultMatchers } from '@optivem/commons/util';
+import { Closer, setupResultMatchers } from '@optivem/common/util';
 import {
     createShopUiDriver,
     createShopApiDriver,

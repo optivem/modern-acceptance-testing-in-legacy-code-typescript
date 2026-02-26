@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { Closer } from '@optivem/commons/util';
+import { Closer } from '@optivem/common/util';
 
 /**
  * Helper function that mimics @Channel annotation from .NET/Java

@@ -1,7 +1,7 @@
 import '../../../setup-config.js';
 import { NewOrderPage } from '@optivem/driver-core/shop/client/ui/pages/NewOrderPage.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
-import { Integer } from '@optivem/commons/util';
+import { Integer } from '@optivem/common/util';
 import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
 

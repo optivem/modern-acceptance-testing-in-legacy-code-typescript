@@ -1,4 +1,4 @@
-import { Result } from '@optivem/commons/util';
+import { Result } from '@optivem/common/util';
 import { UseCaseResult, UseCaseContext, ResponseVerification } from '@optivem/dsl-common/dsl';
 import { ClockErrorResponse } from '@optivem/driver-api/clock/dtos/error/ClockErrorResponse.js';
 import { ClockErrorVerification } from './ClockErrorVerification.js';
