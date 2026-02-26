@@ -45,49 +45,49 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
                 .fieldErrorMessage('quantity', 'Quantity must be positive');
     });
 
-    test('should reject order with empty SKU', async ({ scenario }) => {
-        for (const sku of emptyArgumentsProvider) {
+    for (const sku of emptyArgumentsProvider) {
+        test(`should reject order with empty SKU (sku=${JSON.stringify(sku)})`, async ({ scenario }) => {
             await scenario
                 .when().placeOrder()
                     .withSku(sku)
                 .then().shouldFail()
                     .errorMessage(validationError)
                     .fieldErrorMessage('sku', 'SKU must not be empty');
-        }
-    });
+        });
+    }
 
-    test('should reject order with empty quantity', async ({ scenario }) => {
-        for (const emptyQuantity of emptyArgumentsProvider) {
+    for (const quantity of emptyArgumentsProvider) {
+        test(`should reject order with empty quantity (quantity=${JSON.stringify(quantity)})`, async ({ scenario }) => {
             await scenario
                 .when().placeOrder()
-                    .withQuantity(emptyQuantity)
+                    .withQuantity(quantity)
                 .then().shouldFail()
                     .errorMessage(validationError)
                     .fieldErrorMessage('quantity', 'Quantity must not be empty');
-        }
-    });
+        });
+    }
 
-    test('should reject order with non-integer quantity', async ({ scenario }) => {
-        for (const nonInteger of ['3.5', 'lala']) {
+    for (const nonInteger of ['3.5', 'lala']) {
+        test(`should reject order with non-integer quantity (quantity=${nonInteger})`, async ({ scenario }) => {
             await scenario
                 .when().placeOrder()
                     .withQuantity(nonInteger)
                 .then().shouldFail()
                     .errorMessage(validationError)
                     .fieldErrorMessage('quantity', 'Quantity must be an integer');
-        }
-    });
+        });
+    }
 
-    test('should reject order with empty country', async ({ scenario }) => {
-        for (const emptyCountry of emptyArgumentsProvider) {
+    for (const country of emptyArgumentsProvider) {
+        test(`should reject order with empty country (country=${JSON.stringify(country)})`, async ({ scenario }) => {
             await scenario
                 .when().placeOrder()
-                    .withCountry(emptyCountry)
+                    .withCountry(country)
                 .then().shouldFail()
                     .errorMessage(validationError)
                     .fieldErrorMessage('country', 'Country must not be empty');
-        }
-    });
+        });
+    }
 
     test('should reject order with invalid country', async ({ scenario }) => {
         await scenario

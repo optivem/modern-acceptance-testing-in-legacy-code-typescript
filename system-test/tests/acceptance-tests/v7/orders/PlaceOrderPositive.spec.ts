@@ -58,8 +58,8 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
                 .hasBasePrice(100);
     });
 
-    test('should place order with correct base price parameterized', async ({ scenario }) => {
-        for (const { unitPrice, quantity, basePrice } of basePriceCases) {
+    for (const { unitPrice, quantity, basePrice } of basePriceCases) {
+        test(`should place order with correct base price parameterized (unitPrice=${unitPrice}, quantity=${quantity}, basePrice=${basePrice})`, async ({ scenario }) => {
             await scenario
                 .given().product()
                     .withUnitPrice(unitPrice)
@@ -68,8 +68,8 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
                 .then().shouldSucceed()
                 .and().order()
                     .hasBasePrice(basePrice);
-        }
-    });
+        });
+    }
 
     test('order prefix should be ORD', async ({ scenario }) => {
         await scenario
@@ -135,8 +135,8 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
                 .hasSubtotalPrice(100);
     });
 
-    test('correct tax rate should be used based on country', async ({ scenario }) => {
-        for (const { country, taxRate } of taxRateCases) {
+    for (const { country, taxRate } of taxRateCases) {
+        test(`correct tax rate should be used based on country (country=${country}, taxRate=${taxRate})`, async ({ scenario }) => {
             await scenario
                 .given().country()
                     .withCode(country)
@@ -146,11 +146,11 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
                 .then().shouldSucceed()
                 .and().order()
                     .hasTaxRate(taxRate);
-        }
-    });
+        });
+    }
 
-    test('total price should be subtotal price plus tax amount', async ({ scenario }) => {
-        for (const { country, taxRate, subtotalPrice, expectedTaxAmount, expectedTotalPrice } of totalPriceCases) {
+    for (const { country, taxRate, subtotalPrice, expectedTaxAmount, expectedTotalPrice } of totalPriceCases) {
+        test(`total price should be subtotal price plus tax amount (country=${country}, taxRate=${taxRate}, subtotalPrice=${subtotalPrice}, expectedTaxAmount=${expectedTaxAmount}, expectedTotalPrice=${expectedTotalPrice})`, async ({ scenario }) => {
             await scenario
                 .given().country()
                     .withCode(country)
@@ -166,8 +166,8 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
                     .hasSubtotalPrice(subtotalPrice)
                     .hasTaxAmount(expectedTaxAmount)
                     .hasTotalPrice(expectedTotalPrice);
-        }
-    });
+        });
+    }
 
     test('coupon usage count has been incremented after its been used', async ({ scenario }) => {
         await scenario
