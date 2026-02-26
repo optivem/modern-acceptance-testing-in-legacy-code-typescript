@@ -10,7 +10,7 @@ export abstract class BaseThenCouponVerifier<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse>
 > implements PromiseLike<void> {
-    protected readonly verifications: Array<(code: string, v: import('@optivem/core/shop/dsl/usecases/BrowseCouponsVerification.js').BrowseCouponsVerification) => void> = [];
+    protected readonly verifications: Array<(code: string, v: import('@optivem/core/shop/usecases/BrowseCouponsVerification.js').BrowseCouponsVerification) => void> = [];
 
     constructor(
         protected readonly thenClause: ThenClause<TSuccessResponse, TSuccessVerification>,
@@ -94,11 +94,11 @@ export class ThenFailureCouponVerifier<
     TSuccessResponse,
     TSuccessVerification extends ResponseVerification<TSuccessResponse>
 > extends BaseThenCouponVerifier<TSuccessResponse, TSuccessVerification> {
-    private readonly failureAssertions: Array<(v: import('@optivem/core/shop/dsl/usecases/base/SystemErrorFailureVerification.js').SystemErrorFailureVerification) => void>;
+    private readonly failureAssertions: Array<(v: import('@optivem/core/shop/usecases/base/SystemErrorFailureVerification.js').SystemErrorFailureVerification) => void>;
 
     constructor(
         thenClause: ThenClause<TSuccessResponse, TSuccessVerification>,
-        failureAssertions: Array<(v: import('@optivem/core/shop/dsl/usecases/base/SystemErrorFailureVerification.js').SystemErrorFailureVerification) => void>,
+        failureAssertions: Array<(v: import('@optivem/core/shop/usecases/base/SystemErrorFailureVerification.js').SystemErrorFailureVerification) => void>,
         couponCodeFactory: () => Promise<string>
     ) {
         super(thenClause, couponCodeFactory);

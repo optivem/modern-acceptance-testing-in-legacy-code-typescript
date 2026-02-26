@@ -1,5 +1,5 @@
 import { ResponseVerification, UseCaseContext } from '@optivem/commons/dsl';
-import type { SystemError } from '../../../commons/dtos/errors/SystemError.js';
+import type { SystemError } from '../../commons/dtos/errors/SystemError.js';
 import { expect } from '@playwright/test';
 
 export class SystemErrorFailureVerification extends ResponseVerification<SystemError> {

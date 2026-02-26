@@ -1,7 +1,7 @@
 import { UseCaseContext } from '@optivem/commons/dsl';
 import { Closer } from '@optivem/commons/util';
 import { ChannelContext } from '@optivem/optivem-testing';
-import { ChannelType } from '../ChannelType.js';
+import { ChannelType } from './ChannelType.js';
 import { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { ShopApiDriver } from '@optivem/driver-core/shop/driver/api/ShopApiDriver.js';
 import { ShopUiDriver } from '@optivem/driver-core/shop/driver/ui/ShopUiDriver.js';

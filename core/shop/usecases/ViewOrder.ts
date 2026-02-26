@@ -3,7 +3,7 @@ import { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { BaseShopCommand } from './base/BaseShopCommand.js';
 import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
-import type { ViewOrderResponse } from '../../commons/dtos/index.js';
+import type { ViewOrderResponse } from '../commons/dtos/index.js';
 import { ViewOrderVerification } from './ViewOrderVerification.js';
 
 export class ViewOrder extends BaseShopCommand<ViewOrderResponse, ViewOrderVerification> {

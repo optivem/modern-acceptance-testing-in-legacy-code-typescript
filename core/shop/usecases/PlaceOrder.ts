@@ -3,8 +3,8 @@ import { BaseShopCommand } from './base/BaseShopCommand.js';
 import { ShopUseCaseResult } from './base/ShopUseCaseResult.js';
 import { UseCaseContext } from '@optivem/commons/dsl';
 import type { Optional } from '@optivem/commons/util';
-import type { PlaceOrderRequest, PlaceOrderResponse } from '../../commons/dtos/index.js';
-import { systemErrorToString } from '../../commons/dtos/errors/SystemError.js';
+import type { PlaceOrderRequest, PlaceOrderResponse } from '../commons/dtos/index.js';
+import { systemErrorToString } from '../commons/dtos/errors/SystemError.js';
 import { PlaceOrderVerification } from './PlaceOrderVerification.js';
 
 export class PlaceOrder extends BaseShopCommand<PlaceOrderResponse, PlaceOrderVerification> {

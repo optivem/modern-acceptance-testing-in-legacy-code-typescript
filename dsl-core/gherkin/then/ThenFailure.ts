@@ -1,6 +1,6 @@
 import type { ResponseVerification } from '@optivem/commons/dsl';
 import type { SystemDsl } from '../../system/SystemDsl.js';
-import type { SystemErrorFailureVerification } from '@optivem/core/shop/dsl/usecases/base/SystemErrorFailureVerification.js';
+import type { SystemErrorFailureVerification } from '@optivem/core/shop/usecases/base/SystemErrorFailureVerification.js';
 import type { ThenClause } from './Then.js';
 import { ThenFailureOrderVerifier } from './ThenOrder.js';
 import { ThenFailureCouponVerifier } from './ThenCoupon.js';
