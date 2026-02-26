@@ -2,7 +2,7 @@
  * V7 acceptance: cancel order (negative). Migrated from Java CancelOrderNegativeTest.
  */
 import '../../../../setup-config.js';
-import { Channel } from '../base/fixtures.js';
+import { test, withChannels } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
 
@@ -12,30 +12,31 @@ const nonExistentOrderCases = [
     { orderNumber: 'NON-EXISTENT-ORDER-77777', message: 'Order NON-EXISTENT-ORDER-77777 does not exist.' },
 ];
 
-Channel(ChannelType.API)('should not cancel non-existent order', async ({ scenario }) => {
-    for (const { orderNumber, message } of nonExistentOrderCases) {
+withChannels(ChannelType.API)(() => {
+    test('should not cancel non-existent order', async ({ scenario }) => {
+        for (const { orderNumber, message } of nonExistentOrderCases) {
+            await scenario
+                .when().cancelOrder()
+                    .withOrderNumber(orderNumber)
+                .then().shouldFail()
+                    .errorMessage(message);
+        }
+    });
+
+    test('should not cancel already cancelled order', async ({ scenario }) => {
+        await scenario
+            .given().order()
+                .withStatus(OrderStatus.CANCELLED)
+            .when().cancelOrder()
+            .then().shouldFail()
+                .errorMessage('Order has already been cancelled');
+    });
+
+    test('cannot cancel non-existent order', async ({ scenario }) => {
         await scenario
             .when().cancelOrder()
-                .withOrderNumber(orderNumber)
+                .withOrderNumber('non-existent-order-12345')
             .then().shouldFail()
-                .errorMessage(message);
-    }
+                .errorMessage('Order non-existent-order-12345 does not exist.');
+    });
 });
-
-Channel(ChannelType.API)('should not cancel already cancelled order', async ({ scenario }) => {
-    await scenario
-        .given().order()
-            .withStatus(OrderStatus.CANCELLED)
-        .when().cancelOrder()
-        .then().shouldFail()
-            .errorMessage('Order has already been cancelled');
-});
-
-Channel(ChannelType.API)('cannot cancel non-existent order', async ({ scenario }) => {
-    await scenario
-        .when().cancelOrder()
-            .withOrderNumber('non-existent-order-12345')
-        .then().shouldFail()
-            .errorMessage('Order non-existent-order-12345 does not exist.');
-});
-

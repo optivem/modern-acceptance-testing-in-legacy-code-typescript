@@ -4,7 +4,7 @@
  * Isolated tests run sequentially (serial mode) to avoid clock state conflicts.
  */
 import '../../../../setup-config.js';
-import { test, Channel } from '../base/fixtures.js';
+import { test, withChannels } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
 
@@ -21,10 +21,9 @@ const times = [
 const BLACKOUT_ERROR = 'Order cancellation is not allowed on December 31st between 22:00 and 23:00';
 
 test.describe('@isolated', () => {
-    for (const time of times) {
-        Channel(ChannelType.UI, ChannelType.API)(
-            `cannot cancel an order on 31st Dec between 22:00 and 22:30 (${time})`,
-            async ({ scenario }) => {
+    withChannels(ChannelType.UI, ChannelType.API)(() => {
+        for (const time of times) {
+            test(`cannot cancel an order on 31st Dec between 22:00 and 22:30 (${time})`, async ({ scenario }) => {
                 await scenario
                     .given().clock()
                         .withTime(time)
@@ -35,8 +34,7 @@ test.describe('@isolated', () => {
                         .errorMessage(BLACKOUT_ERROR)
                     .and().order()
                         .hasStatus(OrderStatus.PLACED);
-            }
-        );
-    }
+            });
+        }
+    });
 });
-

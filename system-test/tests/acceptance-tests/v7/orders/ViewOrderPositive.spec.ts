@@ -2,12 +2,14 @@
  * V7 acceptance: view order (positive). Migrated from Java ViewOrderPositiveTest.
  */
 import '../../../../setup-config.js';
-import { Channel } from '../base/fixtures.js';
+import { test, withChannels } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 
-Channel(ChannelType.UI, ChannelType.API)('should be able to view order', async ({ scenario }) => {
-    await scenario
-        .given().order()
-        .when().viewOrder()
-        .then().shouldSucceed();
+withChannels(ChannelType.UI, ChannelType.API)(() => {
+    test('should be able to view order', async ({ scenario }) => {
+        await scenario
+            .given().order()
+            .when().viewOrder()
+            .then().shouldSucceed();
+    });
 });

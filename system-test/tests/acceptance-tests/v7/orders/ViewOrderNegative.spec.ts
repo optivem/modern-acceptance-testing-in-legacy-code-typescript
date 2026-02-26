@@ -2,7 +2,7 @@
  * V7 acceptance: view order (negative). Migrated from Java ViewOrderNegativeTest.
  */
 import '../../../../setup-config.js';
-import { Channel } from '../base/fixtures.js';
+import { test, withChannels } from '../base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 
 const nonExistentOrderCases = [
@@ -11,12 +11,14 @@ const nonExistentOrderCases = [
     { orderNumber: 'NON-EXISTENT-ORDER-77777', message: 'Order NON-EXISTENT-ORDER-77777 does not exist.' },
 ];
 
-Channel(ChannelType.UI, ChannelType.API)('should not be able to view non-existent order', async ({ scenario }) => {
-    for (const { orderNumber, message } of nonExistentOrderCases) {
-        await scenario
-            .when().viewOrder()
-                .withOrderNumber(orderNumber)
-            .then().shouldFail()
-                .errorMessage(message);
-    }
+withChannels(ChannelType.UI, ChannelType.API)(() => {
+    test('should not be able to view non-existent order', async ({ scenario }) => {
+        for (const { orderNumber, message } of nonExistentOrderCases) {
+            await scenario
+                .when().viewOrder()
+                    .withOrderNumber(orderNumber)
+                .then().shouldFail()
+                    .errorMessage(message);
+        }
+    });
 });

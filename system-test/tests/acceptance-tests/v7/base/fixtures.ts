@@ -11,6 +11,7 @@ import { ScenarioDsl } from '@optivem/dsl-core/gherkin/ScenarioDsl.js';
 import {
     scenarioChannelTest as sharedScenarioChannelTest,
     type ScenarioChannelFixtures as SharedScenarioChannelFixtures,
+    ChannelContext,
 } from '@optivem/optivem-testing';
 import { SystemDslFactory } from '../../../../SystemDslFactory.js';
 import { getExternalSystemMode } from '../../../../test.config.js';
@@ -62,5 +63,26 @@ export function Channel(
 ): (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => void {
     return (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => {
         scenarioChannelTest(getExternalSystemMode(), channelTypes, testName, testFn);
+    };
+}
+
+/**
+ * withChannels(UI, API)(() => { test(...) }) - decorator-style wrapper.
+ * Registers a describe block per channel so inner tests are standard test() calls.
+ */
+export function withChannels(...channelTypes: string[]): (block: () => void) => void {
+    return (block: () => void) => {
+        const channelEnv = process.env.CHANNEL;
+        const channelsToRun = channelEnv
+            ? channelTypes.filter((c) => c === channelEnv)
+            : channelTypes;
+
+        for (const channel of channelsToRun) {
+            test.describe(`[${channel} Channel]`, () => {
+                test.beforeEach(() => { ChannelContext.set(channel); });
+                test.afterEach(() => { ChannelContext.clear(); });
+                block();
+            });
+        }
     };
 }
