@@ -12,12 +12,21 @@
  * );
  * ```
  */
+
+/** Minimal shape of a Playwright test object — just enough to extend with row fixtures. */
+interface ExtendableTest {
+    // Fixture extension is inherently dynamic; the return type is intentionally loose.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    extend(fixtures: Record<string, ({}: Record<never, never>, use: (val: unknown) => Promise<void>) => Promise<void>>): any;
+}
+
 export function bindTestEach(
-    testObj: any,
+    testObj: ExtendableTest,
 ) {
     return <TCase>(
         cases: ReadonlyArray<TCase>,
     ): ((name: string, fn: (args: any) => Promise<void>) => void) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (name: string, fn: (args: any) => Promise<void>): void => {
             const placeholderKeys = Array.from(name.matchAll(/\$(\w+)/g)).map((match) => match[1]);
             const uniquePlaceholderKeys = [...new Set(placeholderKeys)];
@@ -44,9 +53,9 @@ export function bindTestEach(
                 });
                 // Inject each row property as a Playwright fixture so we
                 // never need rest-property syntax in the test callback.
-                const rowFixtures: Record<string, any> = {};
+                const rowFixtures: Record<string, ({}: Record<never, never>, use: (val: unknown) => Promise<void>) => Promise<void>> = {};
                 for (const [key, value] of Object.entries(row)) {
-                    rowFixtures[key] = async ({}: any, use: any) => {
+                    rowFixtures[key] = async ({}: Record<never, never>, use: (val: unknown) => Promise<void>) => {
                         await use(value);
                     };
                 }

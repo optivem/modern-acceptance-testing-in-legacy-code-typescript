@@ -36,18 +36,20 @@ async function tryClose(obj: unknown): Promise<void> {
  * });
  * ```
  */
-export function channelTest(
+export function channelTest<TDriver>(
     channelTypes: string[],
-    driverFactory: (channelType: string) => any,
+    driverFactory: (channelType: string) => TDriver,
     fixtureName: string,
-    additionalFixtures: Record<string, () => any>,
+    additionalFixtures: Record<string, () => unknown>,
     testName: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     testFn: (fixtures: any) => Promise<void>
 ) {
     // Create fixtures from the additional fixtures map
-    const baseFixtures: any = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const baseFixtures: Record<string, (_: unknown, use: (val: unknown) => Promise<void>) => Promise<void>> = {};
     for (const [name, factory] of Object.entries(additionalFixtures)) {
-        baseFixtures[name] = async ({}, use: any) => {
+        baseFixtures[name] = async (_: unknown, use: (val: unknown) => Promise<void>) => {
             const driver = factory();
             await use(driver);
             await tryClose(driver);
@@ -55,11 +57,13 @@ export function channelTest(
     }
 
     // Base test with all additional fixtures
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const testBase = base.extend<any>(baseFixtures);
 
     for (const channelType of channelTypes) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const testWithChannel = testBase.extend<any>({
-            [fixtureName]: async ({}, use: any) => {
+            [fixtureName]: async (_: unknown, use: (val: unknown) => Promise<void>) => {
                 const driver = driverFactory(channelType);
                 await use(driver);
                 await tryClose(driver);

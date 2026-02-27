@@ -1,21 +1,23 @@
-export class ChannelListReporter {
+import type { Reporter, FullConfig, Suite, TestCase, TestResult } from '@playwright/test/reporter';
+
+export class ChannelListReporter implements Reporter {
     private passedTests = 0;
     private failedTests = 0;
     private totalTests = 0;
     private startTime = 0;
 
-    onBegin(config: any, suite: any): void {
+    onBegin(config: FullConfig, suite: Suite): void {
         this.totalTests = suite.allTests().length;
         this.startTime = Date.now();
         console.log(`Running ${this.totalTests} tests using ${config.workers} workers\n`);
     }
 
-    onTestEnd(test: any, result: any): void {
+    onTestEnd(test: TestCase, result: TestResult): void {
         const status = result.status;
         const duration = result.duration;
         
         // Extract channel type and test title
-        const channelMatch = test.titlePath().find((t: string) => t.includes('Channel'));
+        const channelMatch = test.titlePath().find((t) => t.includes('Channel'));
         const testTitle = test.title;
         
         // Extract channel name (UI or API) from "[UI Channel]" or "[API Channel]"
