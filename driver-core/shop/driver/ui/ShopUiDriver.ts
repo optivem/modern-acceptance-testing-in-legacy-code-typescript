@@ -218,12 +218,13 @@ export class ShopUiDriver implements ShopDriver {
     }
 }
 
-enum Page {
-    NONE = 'NONE',
-    HOME = 'HOME',
-    NEW_ORDER = 'NEW_ORDER',
-    ORDER_HISTORY = 'ORDER_HISTORY',
-    ORDER_DETAILS = 'ORDER_DETAILS',
-    COUPON_MANAGEMENT = 'COUPON_MANAGEMENT',
-}
+const Page = {
+    NONE: 'NONE',
+    HOME: 'HOME',
+    NEW_ORDER: 'NEW_ORDER',
+    ORDER_HISTORY: 'ORDER_HISTORY',
+    ORDER_DETAILS: 'ORDER_DETAILS',
+    COUPON_MANAGEMENT: 'COUPON_MANAGEMENT',
+} as const;
+type Page = (typeof Page)[keyof typeof Page];
 

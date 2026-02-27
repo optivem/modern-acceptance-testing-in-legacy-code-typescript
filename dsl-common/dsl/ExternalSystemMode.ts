@@ -3,7 +3,8 @@
  * STUB = use generated/parameterized values (e.g. for contract tests).
  * REAL = use literal values (e.g. for e2e against real services).
  */
-export enum ExternalSystemMode {
-  STUB = 'STUB',
-  REAL = 'REAL',
-}
+export const ExternalSystemMode = {
+  STUB: 'STUB',
+  REAL: 'REAL',
+} as const;
+export type ExternalSystemMode = (typeof ExternalSystemMode)[keyof typeof ExternalSystemMode];
