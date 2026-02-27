@@ -1,12 +1,15 @@
 import { test as base, expect } from '@playwright/test';
 import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
 import {
-    scenarioChannelTest as sharedScenarioChannelTest,
+    registerChannelTest as sharedRegisterChannelTest,
     withChannels as sharedWithChannels,
-    type ScenarioChannelFixtures as SharedScenarioChannelFixtures,
 } from '@optivem/optivem-testing';
 import { getDefaultExternalSystemMode } from '../driver/configurationLoaderRegistry.js';
 import { SystemDslFactory } from '../system/SystemDslFactory.js';
+
+export interface ScenarioChannelFixtures<TScenario> {
+    scenario: TScenario;
+}
 
 export interface ScenarioChannelFixtureBuilderOptions<TScenario> {
     createScenario: (app: SystemDsl) => TScenario;
@@ -20,11 +23,11 @@ export interface ScenarioChannelFixtureBundle<TScenario> {
         _externalSystemMode: unknown,
         channelTypes: string[],
         testName: string,
-        testFn: (fixtures: SharedScenarioChannelFixtures<TScenario>) => Promise<void>
+        testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>
     ) => void;
     Channel: (
         ...channelTypes: string[]
-    ) => (testName: string, testFn: (fixtures: SharedScenarioChannelFixtures<TScenario>) => Promise<void>) => void;
+    ) => (testName: string, testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>) => void;
     withChannels: (...channelTypes: string[]) => (block: () => void) => void;
     testEach: <TCase extends Record<string, unknown>>(
         cases: ReadonlyArray<TCase>
@@ -50,9 +53,9 @@ export function createScenarioChannelFixtures<TScenario>(
         _externalSystemMode: unknown,
         channelTypes: string[],
         testName: string,
-        testFn: (fixtures: SharedScenarioChannelFixtures<TScenario>) => Promise<void>
+        testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>
     ): void => {
-        sharedScenarioChannelTest<TScenario>(
+        sharedRegisterChannelTest<ScenarioChannelFixtures<TScenario>>(
             (name, scenarioTestFn) => {
                 test(name, async ({ scenario }) => {
                     await scenarioTestFn({ scenario });
@@ -66,7 +69,7 @@ export function createScenarioChannelFixtures<TScenario>(
 
     const Channel =
         (...channelTypes: string[]) =>
-        (testName: string, testFn: (fixtures: SharedScenarioChannelFixtures<TScenario>) => Promise<void>): void => {
+        (testName: string, testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>): void => {
             scenarioChannelTest(getDefaultExternalSystemMode(), channelTypes, testName, testFn);
         };
 

@@ -6,7 +6,7 @@ import { ScenarioDsl } from '@optivem/dsl-core/scenario/ScenarioDsl.js';
 import {
     createScenarioChannelFixtures,
 } from '@optivem/test-infrastructure';
-import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/optivem-testing';
+import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/test-infrastructure';
 
 const fixtures = createScenarioChannelFixtures<ScenarioDsl>({
     createScenario: (app) => new ScenarioDsl(app),

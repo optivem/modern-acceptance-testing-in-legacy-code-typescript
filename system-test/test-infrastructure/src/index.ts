@@ -31,3 +31,4 @@ export type { ShopFixtures } from './shopChannelTest.js';
 export { SystemDslFactory } from './system/SystemDslFactory.js';
 export { testConfig } from './configuration/legacyTestConfig.js';
 export { createScenarioChannelFixtures } from './playwright/createScenarioChannelFixtures.js';
+export type { ScenarioChannelFixtures } from './playwright/createScenarioChannelFixtures.js';

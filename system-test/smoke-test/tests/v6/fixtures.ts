@@ -2,7 +2,7 @@ import { ScenarioDsl } from '@optivem/dsl-core/scenario/ScenarioDsl.js';
 import {
     createScenarioChannelFixtures,
 } from '@optivem/test-infrastructure';
-import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/optivem-testing';
+import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/test-infrastructure';
 
 /**
  * V6 base fixtures: app (SystemDsl) and scenario (ScenarioDsl). Shop uses scenario; external uses app.
