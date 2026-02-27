@@ -1,30 +1,8 @@
 import '../../../setup-config.js';
-import { test, Channel, withChannels } from './base/fixtures.js';
+import { test, withChannels } from './base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
 import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
-
-Channel(ChannelType.UI, ChannelType.API)('should place order with correct subtotal price', async ({ app }) => {
-    (await app.erp().returnsProduct()
-        .sku(GherkinDefaults.DEFAULT_SKU)
-        .unitPrice(20.0)
-        .execute())
-        .shouldSucceed();
-
-    (await app.shop().placeOrder()
-        .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
-        .sku(GherkinDefaults.DEFAULT_SKU)
-        .country(GherkinDefaults.DEFAULT_COUNTRY)
-        .quantity(5)
-        .execute())
-        .shouldSucceed();
-
-    (await app.shop().viewOrder()
-        .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
-        .execute())
-        .shouldSucceed()
-        .subtotalPrice(100.0);
-});
 
 const subtotalPriceCases = [
     { unitPrice: '20.00', quantity: '5', subtotalPrice: '100.00' },
@@ -34,6 +12,28 @@ const subtotalPriceCases = [
 ];
 
 withChannels(ChannelType.UI, ChannelType.API)(() => {
+    test('should place order with correct subtotal price', async ({ app }) => {
+        (await app.erp().returnsProduct()
+            .sku(GherkinDefaults.DEFAULT_SKU)
+            .unitPrice(20.0)
+            .execute())
+            .shouldSucceed();
+
+        (await app.shop().placeOrder()
+            .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
+            .sku(GherkinDefaults.DEFAULT_SKU)
+            .country(GherkinDefaults.DEFAULT_COUNTRY)
+            .quantity(5)
+            .execute())
+            .shouldSucceed();
+
+        (await app.shop().viewOrder()
+            .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
+            .execute())
+            .shouldSucceed()
+            .subtotalPrice(100.0);
+    });
+
     test.each(subtotalPriceCases)(
         'should place order with correct subtotal price parameterized (unitPrice=$unitPrice, quantity=$quantity, subtotalPrice=$subtotalPrice)',
         async ({ app, unitPrice, quantity, subtotalPrice }) => {
@@ -59,41 +59,41 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
                 .subtotalPrice(subtotalPrice);
         }
     );
-});
 
-Channel(ChannelType.UI, ChannelType.API)('should place order', async ({ app }) => {
-    (await app.erp().returnsProduct()
-        .sku(GherkinDefaults.DEFAULT_SKU)
-        .unitPrice(20.0)
-        .execute())
-        .shouldSucceed();
+    test('should place order', async ({ app }) => {
+        (await app.erp().returnsProduct()
+            .sku(GherkinDefaults.DEFAULT_SKU)
+            .unitPrice(20.0)
+            .execute())
+            .shouldSucceed();
 
-    (await app.shop().placeOrder()
-        .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
-        .sku(GherkinDefaults.DEFAULT_SKU)
-        .country(GherkinDefaults.DEFAULT_COUNTRY)
-        .quantity(5)
-        .execute())
-        .shouldSucceed()
-        .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
-        .orderNumberStartsWith('ORD-');
+        (await app.shop().placeOrder()
+            .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
+            .sku(GherkinDefaults.DEFAULT_SKU)
+            .country(GherkinDefaults.DEFAULT_COUNTRY)
+            .quantity(5)
+            .execute())
+            .shouldSucceed()
+            .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
+            .orderNumberStartsWith('ORD-');
 
-    (await app.shop().viewOrder()
-        .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
-        .execute())
-        .shouldSucceed()
-        .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
-        .sku(GherkinDefaults.DEFAULT_SKU)
-        .country(GherkinDefaults.DEFAULT_COUNTRY)
-        .quantity(5)
-        .unitPrice(20.0)
-        .subtotalPrice(100.0)
-        .status(OrderStatus.PLACED)
-        .discountRateGreaterThanOrEqualToZero()
-        .discountAmountGreaterThanOrEqualToZero()
-        .subtotalPriceGreaterThanZero()
-        .taxRateGreaterThanOrEqualToZero()
-        .taxAmountGreaterThanOrEqualToZero()
-        .totalPriceGreaterThanZero();
+        (await app.shop().viewOrder()
+            .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
+            .execute())
+            .shouldSucceed()
+            .orderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER)
+            .sku(GherkinDefaults.DEFAULT_SKU)
+            .country(GherkinDefaults.DEFAULT_COUNTRY)
+            .quantity(5)
+            .unitPrice(20.0)
+            .subtotalPrice(100.0)
+            .status(OrderStatus.PLACED)
+            .discountRateGreaterThanOrEqualToZero()
+            .discountAmountGreaterThanOrEqualToZero()
+            .subtotalPriceGreaterThanZero()
+            .taxRateGreaterThanOrEqualToZero()
+            .taxAmountGreaterThanOrEqualToZero()
+            .totalPriceGreaterThanZero();
+    });
 });
 
