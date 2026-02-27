@@ -30,3 +30,4 @@ export { shopChannelTest, shopChannelTestEach, channelTest } from './shopChannel
 export type { ShopFixtures } from './shopChannelTest.js';
 export { SystemDslFactory } from './system/SystemDslFactory.js';
 export { testConfig } from './configuration/legacyTestConfig.js';
+export { createScenarioChannelFixtures } from './playwright/createScenarioChannelFixtures.js';

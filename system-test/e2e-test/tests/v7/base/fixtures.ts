@@ -2,53 +2,23 @@
  * V7 e2e fixtures: app (SystemDsl) and scenario (ScenarioDsl).
  * Uses getExternalSystemMode() so e2e can run against REAL or STUB.
  */
-import { test as base } from '@playwright/test';
-import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
 import { ScenarioDsl } from '@optivem/dsl-core/scenario/ScenarioDsl.js';
 import {
-    scenarioChannelTest as sharedScenarioChannelTest,
-    type ScenarioChannelFixtures as SharedScenarioChannelFixtures,
-} from '@optivem/optivem-testing';
-import { SystemDslFactory, getDefaultExternalSystemMode } from '@optivem/test-infrastructure';
+    createScenarioChannelFixtures,
+} from '@optivem/test-infrastructure';
+import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/optivem-testing';
 
-export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
-    app: async ({}, use) => {
-        const app = SystemDslFactory.create(getDefaultExternalSystemMode());
-        await use(app);
-        await app.close();
-    },
-    scenario: async ({ app }, use) => {
-        const scenario = new ScenarioDsl(app);
-        await use(scenario);
-    },
+const fixtures = createScenarioChannelFixtures<ScenarioDsl>({
+    createScenario: (app) => new ScenarioDsl(app),
 });
 
-export { expect } from '@playwright/test';
+export const {
+    test,
+    expect,
+    scenarioChannelTest,
+    Channel,
+    withChannels,
+    testEach,
+} = fixtures;
 
 export type ScenarioChannelFixtures = SharedScenarioChannelFixtures<ScenarioDsl>;
-
-export function scenarioChannelTest(
-    _externalSystemMode: unknown,
-    channelTypes: string[],
-    testName: string,
-    testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>
-): void {
-    sharedScenarioChannelTest<ScenarioDsl>(
-        (name, scenarioTestFn) => {
-            test(name, async ({ scenario }) => {
-                await scenarioTestFn({ scenario });
-            });
-        },
-        channelTypes,
-        testName,
-        testFn
-    );
-}
-
-export function Channel(
-    ...channelTypes: string[]
-): (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => void {
-    return (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => {
-        scenarioChannelTest(getDefaultExternalSystemMode(), channelTypes, testName, testFn);
-    };
-}
