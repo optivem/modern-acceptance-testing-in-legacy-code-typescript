@@ -2,10 +2,10 @@ import { test as base } from '@playwright/test';
 import { Closer } from '@optivem/commons/util';
 
 /**
- * Helper function that mimics @Channel annotation from .NET/Java
- * 
+ * Runs the same test for each specified channel type.
+ *
  * Supports both simple smoke tests and E2E tests with multiple fixtures.
- * 
+ *
  * Example usage for smoke tests:
  * ```typescript
  * channelTest([ChannelType.UI, ChannelType.API], shopDriverFactory, 'driver', {}, 'should be able to go to shop', async ({ driver }) => {
@@ -13,7 +13,7 @@ import { Closer } from '@optivem/commons/util';
  *     expect(result).toBeSuccess();
  * });
  * ```
- * 
+ *
  * Example usage for E2E tests with additional fixtures:
  * ```typescript
  * const additionalFixtures = {
@@ -25,13 +25,6 @@ import { Closer } from '@optivem/commons/util';
  *     const result = await driver.placeOrder('SKU-123', '5', 'US');
  *     expect(result).toBeSuccess();
  * });
- * ```
- * 
- * This is equivalent to .NET's:
- * ```csharp
- * [Theory]
- * [ChannelData(ChannelType.UI, ChannelType.API)]
- * public void ShouldBeAbleToGoToShop(Channel channel)
  * ```
  */
 export function channelTest(

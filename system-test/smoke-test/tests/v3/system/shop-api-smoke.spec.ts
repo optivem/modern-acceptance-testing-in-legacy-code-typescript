@@ -1,5 +1,5 @@
 /**
- * V3 smoke test: shop API driver (driver layer). Extends ShopBaseSmokeTest like Java/.NET.
+ * V3 smoke test: shop API driver (driver layer). Extends ShopBaseSmokeTest.
  */
 import '../../../../setup-config.js';
 import { test } from '../fixtures.js';

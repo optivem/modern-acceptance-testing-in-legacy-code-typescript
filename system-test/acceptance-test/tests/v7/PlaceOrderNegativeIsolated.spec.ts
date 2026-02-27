@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: place order (negative, isolated). Migrated from Java PlaceOrderNegativeIsolatedTest.
+ * V7 acceptance: place order (negative, isolated).
  * Uses clock stubbing to simulate time-dependent expiry logic.
  * Isolated tests run sequentially (serial mode) to avoid clock state conflicts.
  */

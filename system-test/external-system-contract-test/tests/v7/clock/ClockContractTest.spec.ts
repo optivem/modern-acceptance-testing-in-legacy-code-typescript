@@ -1,5 +1,5 @@
 /**
- * V7 Clock Contract Tests. Migrated from Java BaseClockContractTest + ClockStubContractTest.
+ * V7 Clock Contract Tests.
  * Runs for both STUB and REAL external system modes; stub-only tests are skipped for REAL.
  *
  * Serial mode prevents parallel workers from interfering via the shared stub clock endpoint.

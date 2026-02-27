@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: publish coupon (positive). Migrated from Java PublishCouponPositiveTest.
+ * V7 acceptance: publish coupon (positive).
  */
 import '../../../setup-config.js';
 import { test, withChannels } from './base/fixtures.js';

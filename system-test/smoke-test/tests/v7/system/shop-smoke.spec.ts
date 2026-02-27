@@ -1,5 +1,5 @@
 /**
- * V7 smoke test: Channel(UI, API) mirrors Java's @Channel({ChannelType.UI, ChannelType.API}).
+ * V7 smoke test: shop (UI and API channels).
  * Uses scenario.when().goToShop().then().shouldSucceed().
  */
 import '../../../../setup-config.js';

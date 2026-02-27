@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: view order (negative). Migrated from Java ViewOrderNegativeTest.
+ * V7 acceptance: view order (negative).
  */
 import '../../../setup-config.js';
 import { test, withChannels } from './base/fixtures.js';

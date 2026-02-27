@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: browse coupons (positive). Migrated from Java BrowseCouponsPositiveTest.
+ * V7 acceptance: browse coupons (positive).
  */
 import '../../../setup-config.js';
 import { test, withChannels } from './base/fixtures.js';

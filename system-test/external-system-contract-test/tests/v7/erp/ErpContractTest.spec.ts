@@ -1,5 +1,5 @@
 /**
- * V7 ERP Contract Test. Migrated from Java BaseErpContractTest.
+ * V7 ERP Contract Test.
  * Runs for both STUB and REAL external system modes.
  */
 import '../../../../setup-config.js';

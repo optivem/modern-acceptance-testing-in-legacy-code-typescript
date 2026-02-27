@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: cancel order (negative). Migrated from Java CancelOrderNegativeTest.
+ * V7 acceptance: cancel order (negative).
  */
 import '../../../setup-config.js';
 import { test, withChannels } from './base/fixtures.js';

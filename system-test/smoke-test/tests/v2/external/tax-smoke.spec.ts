@@ -1,5 +1,5 @@
 /**
- * V2 smoke test: external Tax (client layer). Matches Java TaxSmokeTest / .NET TaxSmokeTest.
+ * V2 smoke test: external Tax (client layer).
  */
 import '../../../../setup-config.js';
 import { test } from '../fixtures.js';

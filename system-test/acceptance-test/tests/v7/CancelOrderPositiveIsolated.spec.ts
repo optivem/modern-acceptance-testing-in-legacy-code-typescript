@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: cancel order (positive, isolated). Migrated from Java CancelOrderPositiveIsolatedTest.
+ * V7 acceptance: cancel order (positive, isolated).
  * Verifies that cancellation is allowed outside the December 31st 22:00–23:00 blackout period.
  * Isolated tests run sequentially (serial mode) to avoid clock state conflicts.
  */

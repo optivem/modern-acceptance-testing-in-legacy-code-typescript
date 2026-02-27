@@ -1,6 +1,5 @@
 /**
- * V7 acceptance test fixtures: same as smoke v7 but force STUB external system mode
- * (mirrors Java BaseAcceptanceTest.getFixedExternalSystemMode() = STUB).
+ * V7 acceptance test fixtures: same as smoke v7 but force STUB external system mode.
  */
 process.env.EXTERNAL_SYSTEM_MODE = process.env.EXTERNAL_SYSTEM_MODE ?? 'STUB';
 

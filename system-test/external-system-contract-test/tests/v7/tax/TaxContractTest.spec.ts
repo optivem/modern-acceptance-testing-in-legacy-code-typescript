@@ -1,5 +1,5 @@
 /**
- * V7 Tax Contract Test. Migrated from Java BaseTaxContractTest.
+ * V7 Tax Contract Test.
  * Runs for both STUB and REAL external system modes.
  */
 import '../../../../setup-config.js';

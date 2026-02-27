@@ -1,5 +1,5 @@
 /**
- * V2 smoke test: external ERP (client layer). Matches Java ErpSmokeTest / .NET ErpSmokeTest.
+ * V2 smoke test: external ERP (client layer).
  */
 import '../../../../setup-config.js';
 import { test } from '../fixtures.js';

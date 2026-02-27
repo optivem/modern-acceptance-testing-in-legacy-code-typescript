@@ -49,7 +49,7 @@ export class PlaceOrderBuilder extends BaseWhenBuilder<PlaceOrderResponse, Place
     withCouponCode(couponCode: Optional<string>): this;
     withCouponCode(): this;
     withCouponCode(couponCode?: Optional<string>): this {
-        // Only default when called with no argument (undefined); explicit null means "no coupon" — mirrors Java
+        // Only default when called with no argument (undefined); explicit null means "no coupon"
         this.couponCodeValue = couponCode === undefined ? GherkinDefaults.DEFAULT_COUPON_CODE : couponCode;
         return this;
     }

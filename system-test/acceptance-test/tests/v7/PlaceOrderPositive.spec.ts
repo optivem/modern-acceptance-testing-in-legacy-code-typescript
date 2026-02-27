@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: place order (positive). Migrated from Java PlaceOrderPositiveTest.
+ * V7 acceptance: place order (positive).
  */
 import '../../../setup-config.js';
 import { test, withChannels } from './base/fixtures.js';

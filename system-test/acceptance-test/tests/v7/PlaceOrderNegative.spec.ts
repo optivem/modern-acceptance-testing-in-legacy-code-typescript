@@ -1,5 +1,5 @@
 /**
- * V7 acceptance: place order (negative). Migrated from Java PlaceOrderNegativeTest.
+ * V7 acceptance: place order (negative).
  */
 import '../../../setup-config.js';
 import { test, withChannels } from './base/fixtures.js';

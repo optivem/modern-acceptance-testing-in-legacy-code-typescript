@@ -1,5 +1,5 @@
 /**
- * V7 Tax Stub Contract Test. Migrated from Java TaxStubContractTest.
+ * V7 Tax Stub Contract Test.
  * Stub-only: verifies that the stub returns the configured tax rate exactly.
  * Skipped when EXTERNAL_SYSTEM_MODE is not STUB.
  */

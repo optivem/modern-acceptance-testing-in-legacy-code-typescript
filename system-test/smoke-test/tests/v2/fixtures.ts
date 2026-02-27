@@ -10,7 +10,7 @@ import { testConfig } from '@optivem/test-infrastructure';
 setupResultMatchers();
 
 /**
- * V2 fixtures: client layer only (matches Java/.NET BaseClientTest).
+ * V2 fixtures: client layer only.
  * Exposes shopUiClient, shopApiClient, erpClient, taxClient.
  */
 export const test = base.extend<{
