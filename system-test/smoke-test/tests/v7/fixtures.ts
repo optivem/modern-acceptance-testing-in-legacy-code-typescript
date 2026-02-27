@@ -5,8 +5,7 @@ import {
     scenarioChannelTest as sharedScenarioChannelTest,
     type ScenarioChannelFixtures as SharedScenarioChannelFixtures,
 } from '@optivem/optivem-testing';
-import { SystemDslFactory } from '../../../SystemDslFactory.js';
-import { getExternalSystemMode } from '../../../test.config.js';
+import { SystemDslFactory, getDefaultExternalSystemMode } from '@optivem/test-infrastructure';
 
 /**
  * V7 base fixtures: provides app (SystemDsl) and scenario (ScenarioDsl).
@@ -14,7 +13,7 @@ import { getExternalSystemMode } from '../../../test.config.js';
  */
 export const test = base.extend<{ app: SystemDsl; scenario: ScenarioDsl }>({
     app: async ({}, use) => {
-        const app = SystemDslFactory.create(getExternalSystemMode());
+        const app = SystemDslFactory.create(getDefaultExternalSystemMode());
         await use(app);
         await app.close();
     },
@@ -60,6 +59,6 @@ export function Channel(
     ...channelTypes: string[]
 ): (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => void {
     return (testName: string, testFn: (fixtures: ScenarioChannelFixtures) => Promise<void>) => {
-        scenarioChannelTest(getExternalSystemMode(), channelTypes, testName, testFn);
+        scenarioChannelTest(getDefaultExternalSystemMode(), channelTypes, testName, testFn);
     };
 }

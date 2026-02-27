@@ -1,6 +1,6 @@
 import '../../../setup-config.js';
 import { test, expect } from './base/fixtures.js';
-import { testConfig } from '../../../test.config.js';
+import { testConfig } from '@optivem/test-infrastructure';
 
 const shopApiBaseUrl = testConfig.urls.shopApi;
 

@@ -5,7 +5,7 @@ import { ErpRealClient } from '@optivem/driver-core/erp/client/ErpRealClient.js'
 import { TaxRealClient } from '@optivem/driver-core/tax/client/TaxRealClient.js';
 import { Closer } from '@optivem/commons/util';
 import { setupResultMatchers } from '@optivem/commons/util';
-import { testConfig } from '../../../test.config.js';
+import { testConfig } from '@optivem/test-infrastructure';
 
 setupResultMatchers();
 

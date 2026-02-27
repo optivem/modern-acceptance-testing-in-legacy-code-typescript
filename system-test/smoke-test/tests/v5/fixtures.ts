@@ -1,15 +1,14 @@
 import { test as base } from '@playwright/test';
 import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
 import { ChannelContext } from '@optivem/optivem-testing';
-import { SystemDslFactory } from '../../../SystemDslFactory.js';
-import { getExternalSystemMode } from '../../../test.config.js';
+import { SystemDslFactory, getDefaultExternalSystemMode } from '@optivem/test-infrastructure';
 
 /**
  * V5 base fixtures: provides app (SystemDsl). Same app as V7 but tests use app.shop()/erp()/tax()/clock() directly.
  */
 export const test = base.extend<{ app: SystemDsl }>({
     app: async ({}, use) => {
-        const app = SystemDslFactory.create(getExternalSystemMode());
+        const app = SystemDslFactory.create(getDefaultExternalSystemMode());
         await use(app);
         await app.close();
     },

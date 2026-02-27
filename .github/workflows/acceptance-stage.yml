@@ -108,49 +108,49 @@ jobs:
         working-directory: system-test
 
       - name: Run Acceptance Tests - API Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep-invert "@isolated"
-        working-directory: system-test
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- --grep-invert "@isolated"
+        working-directory: system-test/acceptance-test
 
       - name: Run Acceptance Tests - UI Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep-invert "@isolated"
-        working-directory: system-test
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- --grep-invert "@isolated"
+        working-directory: system-test/acceptance-test
 
       - name: Run Acceptance Tests (Isolated) - API Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- tests/acceptance-tests --grep "@isolated" --workers=1
-        working-directory: system-test
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=API npm test -- --grep "@isolated" --workers=1
+        working-directory: system-test/acceptance-test
 
       - name: Run Acceptance Tests (Isolated) - UI Channel
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- tests/acceptance-tests --grep "@isolated" --workers=1
-        working-directory: system-test
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB CHANNEL=UI npm test -- --grep "@isolated" --workers=1
+        working-directory: system-test/acceptance-test
 
       - name: Run External System Contract Tests (Stubbed External Systems)
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB npm test -- tests/external-system-contract-tests
-        working-directory: system-test
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=STUB npm test
+        working-directory: system-test/external-system-contract-test
 
       - name: Run External System Contract Tests (Real External Systems)
-        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL npm test -- tests/external-system-contract-tests
-        working-directory: system-test
+        run: npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL npm test
+        working-directory: system-test/external-system-contract-test
 
       - name: Run E2E Tests - No Channel
         run: |
           foreach ($v in @('v1', 'v2', 'v3')) {
-            npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL npm test -- "tests/e2e-tests/$v"
+            npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL npm test -- "tests/$v"
           }
         shell: pwsh
-        working-directory: system-test
+        working-directory: system-test/e2e-test
 
       - name: Run E2E Tests - API Channel
         run: |
           foreach ($v in @('v4', 'v5', 'v6', 'v7')) {
-            npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=API npm test -- "tests/e2e-tests/$v"
+            npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=API npm test -- "tests/$v"
           }
         shell: pwsh
-        working-directory: system-test
+        working-directory: system-test/e2e-test
 
       - name: Run E2E Tests - UI Channel
         run: |
           foreach ($v in @('v4', 'v5', 'v6', 'v7')) {
-            npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=UI npm test -- "tests/e2e-tests/$v"
+            npx cross-env ENVIRONMENT=acceptance EXTERNAL_SYSTEM_MODE=REAL CHANNEL=UI npm test -- "tests/$v"
           }
         shell: pwsh
-        working-directory: system-test
+        working-directory: system-test/e2e-test
