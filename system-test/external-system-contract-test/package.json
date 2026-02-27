@@ -2,6 +2,7 @@
   "name": "external-system-contract-test",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "test": "playwright test",
     "test:ui": "playwright test --ui"

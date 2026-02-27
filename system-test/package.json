@@ -1,6 +1,7 @@
 {
   "name": "system-test",
   "version": "0.0.1",
+  "type": "module",
   "description": "E2E tests for Optivem eShop",
   "scripts": {
     "test": "playwright test",
