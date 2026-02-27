@@ -18,6 +18,7 @@ export type {
 export {
     setConfigurationLoader,
     getDefaultExternalSystemMode,
+    getConfiguration,
 } from './driver/configurationLoaderRegistry.js';
 export {
     createShopUiDriver,
@@ -27,3 +28,5 @@ export {
 } from './driver/createDrivers.js';
 export { shopChannelTest, shopChannelTestEach, channelTest } from './shopChannelTest.js';
 export type { ShopFixtures } from './shopChannelTest.js';
+export { SystemDslFactory } from './system/SystemDslFactory.js';
+export { testConfig } from './configuration/legacyTestConfig.js';

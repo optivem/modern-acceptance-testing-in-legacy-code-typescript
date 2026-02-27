@@ -13,8 +13,8 @@ import {
     createShopApiDriver,
     createErpDriver,
     createTaxApiDriver,
+    getExternalSystemMode,
 } from '@optivem/test-infrastructure';
-import { getExternalSystemMode } from '../../../../test.config.js';
 
 setupResultMatchers();
 

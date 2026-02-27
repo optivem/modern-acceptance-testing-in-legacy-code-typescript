@@ -1,7 +1,7 @@
 import '../../../setup-config.js';
 import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
 import { test, expect, createUniqueSku } from './base/fixtures.js';
-import { testConfig } from '../../../test.config.js';
+import { testConfig } from '@optivem/test-infrastructure';
 
 const validationError = 'The request contains one or more validation errors';
 const shopApiBaseUrl = testConfig.urls.shopApi;
