@@ -1,41 +1,12 @@
-import { test as base } from '@playwright/test';
-import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
-import { ChannelContext } from '@optivem/optivem-testing';
-import { SystemDslFactory, getDefaultExternalSystemMode } from '@optivem/test-infrastructure';
+import { createChannelHelpers } from '@optivem/optivem-testing';
+import { withApp } from '@optivem/test-infrastructure';
 
 /**
  * V5 base fixtures: provides app (SystemDsl). Same app as V7 but tests use app.shop()/erp()/tax()/clock() directly.
  */
-export const test = base.extend<{ app: SystemDsl }>({
-    app: async ({}, use) => {
-        const app = SystemDslFactory.create(getDefaultExternalSystemMode());
-        await use(app);
-        await app.close();
-    },
-});
+const test = withApp();
 
+const { withChannels } = createChannelHelpers(test);
+
+export { test, withChannels };
 export { expect } from '@playwright/test';
-
-export interface V5AppFixtures {
-    app: SystemDsl;
-}
-
-/**
- * Run the same app-based test for each channel (UI/API). Sets ChannelContext before the test.
- */
-export function channelAppTest(
-    channelTypes: string[],
-    testName: string,
-    testFn: (fixtures: V5AppFixtures) => Promise<void>
-): void {
-    for (const channel of channelTypes) {
-        test(`[${channel} Channel] ${testName}`, async ({ app }) => {
-            try {
-                ChannelContext.set(channel);
-                await testFn({ app });
-            } finally {
-                ChannelContext.clear();
-            }
-        });
-    }
-}

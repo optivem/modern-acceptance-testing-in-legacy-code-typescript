@@ -1,23 +1,15 @@
+import { createChannelHelpers, createTestEach } from '@optivem/optivem-testing';
 import { ScenarioDsl } from '@optivem/dsl-core/scenario/ScenarioDsl.js';
-import {
-    createScenarioChannelFixtures,
-} from '@optivem/test-infrastructure';
-import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/test-infrastructure';
+import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
+import { withApp, withScenario } from '@optivem/test-infrastructure';
 
 /**
  * V6 base fixtures: app (SystemDsl) and scenario (ScenarioDsl). Shop uses scenario; external uses app.
  */
-const fixtures = createScenarioChannelFixtures<ScenarioDsl>({
-    createScenario: (app) => new ScenarioDsl(app),
-});
+const _test = withScenario(withApp(), (app: SystemDsl) => new ScenarioDsl(app));
+const test = Object.assign(_test, { each: createTestEach(_test) });
 
-export const {
-    test,
-    expect,
-    scenarioChannelTest,
-    Channel,
-    withChannels,
-    testEach,
-} = fixtures;
+const { withChannels } = createChannelHelpers(test);
 
-export type ScenarioChannelFixtures = SharedScenarioChannelFixtures<ScenarioDsl>;
+export { test, withChannels };
+export { expect } from '@playwright/test';

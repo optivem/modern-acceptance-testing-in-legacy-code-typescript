@@ -3,24 +3,15 @@
  */
 process.env.EXTERNAL_SYSTEM_MODE = process.env.EXTERNAL_SYSTEM_MODE ?? 'STUB';
 
-import type { ScenarioDslPort } from '@optivem/dsl-api/scenario/ScenarioDslPort.js';
+import { createChannelHelpers, createTestEach } from '@optivem/optivem-testing';
 import { ScenarioDsl } from '@optivem/dsl-core/scenario/ScenarioDsl.js';
-import {
-    createScenarioChannelFixtures,
-} from '@optivem/test-infrastructure';
-import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@optivem/test-infrastructure';
+import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
+import { withApp, withScenario } from '@optivem/test-infrastructure';
 
-const fixtures = createScenarioChannelFixtures<ScenarioDslPort>({
-    createScenario: (app) => new ScenarioDsl(app),
-});
+const _test = withScenario(withApp(), (app: SystemDsl) => new ScenarioDsl(app));
+const test = Object.assign(_test, { each: createTestEach(_test) });
 
-export const {
-    test,
-    expect,
-    scenarioChannelTest,
-    Channel,
-    withChannels,
-    testEach,
-} = fixtures;
+const { withChannels } = createChannelHelpers(test);
 
-export type ScenarioChannelFixtures = SharedScenarioChannelFixtures<ScenarioDslPort>;
+export { test, withChannels };
+export { expect } from '@playwright/test';
