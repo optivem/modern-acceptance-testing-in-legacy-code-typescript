@@ -126,12 +126,12 @@ runs:
       shell: bash
     
     - name: Install Playwright Browsers
-      run: npx playwright install
+      run: npx playwright install --with-deps chromium
       shell: bash
-      working-directory: system-test
+      working-directory: system-test/smoke-test
         
     - name: Run Smoke Tests
-      run: npm test -- tests/smoke-tests
+      run: npx cross-env ENVIRONMENT=${{ inputs.environment }} EXTERNAL_SYSTEM_MODE=${{ inputs.external-system-mode }} npm test
       shell: bash
-      working-directory: system-test
+      working-directory: system-test/smoke-test
 
