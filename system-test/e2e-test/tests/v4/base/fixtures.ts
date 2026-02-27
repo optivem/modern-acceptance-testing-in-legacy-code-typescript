@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { test as base } from '@playwright/test';
 import type { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
-import { ChannelContext, forChannels as sharedForChannels } from '@optivem/optivem-testing';
+import { bindTestEach, ChannelContext, forChannels as sharedForChannels } from '@optivem/optivem-testing';
 import { Closer, setupResultMatchers } from '@optivem/commons/util';
 import {
     createShopUiDriver,
@@ -34,43 +34,8 @@ const testBase = base.extend<{
     },
 });
 
-const testEach = <TCase>(
-    cases: ReadonlyArray<TCase>
-): ((name: string, fn: (args: any) => Promise<void>) => void) => {
-    return (name: string, fn: (args: any) => Promise<void>): void => {
-        const placeholderKeys = Array.from(name.matchAll(/\$(\w+)/g)).map((match) => match[1]);
-        const uniquePlaceholderKeys = [...new Set(placeholderKeys)];
-
-        cases.forEach((rawRow) => {
-            let row: Record<string, unknown>;
-            if (rawRow != null && typeof rawRow === 'object' && !Array.isArray(rawRow)) {
-                row = rawRow as Record<string, unknown>;
-            } else if (uniquePlaceholderKeys.length === 1) {
-                row = { [uniquePlaceholderKeys[0]]: rawRow };
-            } else if (uniquePlaceholderKeys.length === 0) {
-                row = { value: rawRow };
-            } else {
-                throw new Error(
-                    `test.each: scalar rows require exactly one placeholder in test name, but got ${uniquePlaceholderKeys.length}`,
-                );
-            }
-
-            const testName = name.replace(/\$(\w+)/g, (_: string, key: string) => {
-                const value = row[key];
-                if (typeof value === 'string') return value;
-                if (typeof value === 'number') return value.toString();
-                return '';
-            });
-
-            testBase(testName, async ({ erpDriver, taxDriver }) => {
-                await fn({ erpDriver, taxDriver, ...row });
-            });
-        });
-    };
-};
-
-export const test = testBase as typeof testBase & { each: typeof testEach };
-test.each = testEach;
+type TestEach = ReturnType<typeof bindTestEach>;
+export const test: typeof testBase & { each: TestEach } = Object.assign(testBase, { each: bindTestEach(testBase) });
 
 export { expect } from '@playwright/test';
 
