@@ -12,7 +12,6 @@ import type { ScenarioChannelFixtures as SharedScenarioChannelFixtures } from '@
 
 const fixtures = createScenarioChannelFixtures<ScenarioDslPort>({
     createScenario: (app) => new ScenarioDsl(app),
-    enableTestEachAlias: true,
 });
 
 export const {

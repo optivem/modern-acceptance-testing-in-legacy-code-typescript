@@ -1,119 +1,16 @@
-import { test as base, expect } from '@playwright/test';
+import { createScenarioChannelFixtures as sharedCreate } from '@optivem/optivem-testing';
 import type { SystemDsl } from '@optivem/dsl-core/system/SystemDsl.js';
-import {
-    registerChannelTest as sharedRegisterChannelTest,
-    withChannels as sharedWithChannels,
-} from '@optivem/optivem-testing';
 import { getDefaultExternalSystemMode } from '../driver/configurationLoaderRegistry.js';
 import { SystemDslFactory } from '../system/SystemDslFactory.js';
 
-export interface ScenarioChannelFixtures<TScenario> {
-    scenario: TScenario;
-}
+export type { ScenarioChannelFixtures } from '@optivem/optivem-testing';
 
-export interface ScenarioChannelFixtureBuilderOptions<TScenario> {
+export function createScenarioChannelFixtures<TScenario>(options: {
     createScenario: (app: SystemDsl) => TScenario;
-    enableTestEachAlias?: boolean;
-}
-
-export interface ScenarioChannelFixtureBundle<TScenario> {
-    test: ReturnType<typeof base.extend<{ app: SystemDsl; scenario: TScenario }>> & {
-        each: <TCase extends Record<string, unknown>>(
-            cases: ReadonlyArray<TCase>
-        ) => (name: string, fn: (args: { scenario: TScenario } & TCase) => Promise<void>) => void;
-    };
-    expect: typeof expect;
-    scenarioChannelTest: (
-        _externalSystemMode: unknown,
-        channelTypes: string[],
-        testName: string,
-        testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>
-    ) => void;
-    Channel: (
-        ...channelTypes: string[]
-    ) => (testName: string, testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>) => void;
-    withChannels: (...channelTypes: string[]) => (block: () => void) => void;
-    testEach: <TCase extends Record<string, unknown>>(
-        cases: ReadonlyArray<TCase>
-    ) => (name: string, fn: (args: { scenario: TScenario } & TCase) => Promise<void>) => void;
-}
-
-export function createScenarioChannelFixtures<TScenario>(
-    options: ScenarioChannelFixtureBuilderOptions<TScenario>
-): ScenarioChannelFixtureBundle<TScenario> {
-    const test = base.extend<{ app: SystemDsl; scenario: TScenario }>({
-        app: async ({}, use) => {
-            const app = SystemDslFactory.create(getDefaultExternalSystemMode());
-            await use(app);
-            await app.close();
-        },
-        scenario: async ({ app }, use) => {
-            const scenario = options.createScenario(app);
-            await use(scenario);
-        },
+}) {
+    return sharedCreate<SystemDsl, TScenario>({
+        createApp: () => SystemDslFactory.create(getDefaultExternalSystemMode()),
+        closeApp: (app: SystemDsl) => app.close(),
+        createScenario: options.createScenario,
     });
-
-    const scenarioChannelTest = (
-        _externalSystemMode: unknown,
-        channelTypes: string[],
-        testName: string,
-        testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>
-    ): void => {
-        sharedRegisterChannelTest<ScenarioChannelFixtures<TScenario>>(
-            (name, scenarioTestFn) => {
-                test(name, async ({ scenario }) => {
-                    await scenarioTestFn({ scenario });
-                });
-            },
-            channelTypes,
-            testName,
-            testFn
-        );
-    };
-
-    const Channel =
-        (...channelTypes: string[]) =>
-        (testName: string, testFn: (fixtures: ScenarioChannelFixtures<TScenario>) => Promise<void>): void => {
-            scenarioChannelTest(getDefaultExternalSystemMode(), channelTypes, testName, testFn);
-        };
-
-    const testEach = <TCase extends Record<string, unknown>>(
-        cases: ReadonlyArray<TCase>
-    ): ((name: string, fn: (args: { scenario: TScenario } & TCase) => Promise<void>) => void) => {
-        return (name: string, fn: (args: { scenario: TScenario } & TCase) => Promise<void>): void => {
-            cases.forEach((row) => {
-                const testName = name.replaceAll(/\$(\w+)/g, (_, key) => {
-                    const value = row[key];
-                    if (typeof value === 'string') return value;
-                    if (typeof value === 'number') return value.toString();
-                    return '';
-                });
-                test(testName, async ({ scenario }) => {
-                    await fn({ scenario, ...row } as { scenario: TScenario } & TCase);
-                });
-            });
-        };
-    };
-
-    (test as unknown as { each: typeof testEach }).each = testEach;
-
-    const withChannels = (...channelTypes: string[]): ((block: () => void) => void) => {
-        return sharedWithChannels(
-            {
-                describe: (name, callback) => test.describe(name, callback),
-                beforeEach: (callback) => test.beforeEach(callback),
-                afterEach: (callback) => test.afterEach(callback),
-            },
-            ...channelTypes
-        );
-    };
-
-    return {
-        test: test as ScenarioChannelFixtureBundle<TScenario>['test'],
-        expect,
-        scenarioChannelTest,
-        Channel,
-        withChannels,
-        testEach,
-    };
 }
