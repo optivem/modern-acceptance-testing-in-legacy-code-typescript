@@ -1,5 +1,5 @@
-import { CustomListReporter } from '@optivem/optivem-testing';
+import { ChannelListReporter } from '@optivem/optivem-testing';
 
-export default CustomListReporter;
+export default ChannelListReporter;
 
 

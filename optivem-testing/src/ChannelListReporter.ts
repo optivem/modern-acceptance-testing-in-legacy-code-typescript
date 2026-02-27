@@ -1,4 +1,4 @@
-export class CustomListReporter {
+export class ChannelListReporter {
     private passedTests = 0;
     private failedTests = 0;
     private totalTests = 0;
