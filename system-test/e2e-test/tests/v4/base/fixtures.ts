@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { test as base } from '@playwright/test';
 import type { ShopDriver } from '@optivem/driver-core/shop/driver/ShopDriver.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
-import { ChannelContext, withChannels as sharedWithChannels } from '@optivem/optivem-testing';
+import { ChannelContext, forChannels as sharedForChannels } from '@optivem/optivem-testing';
 import { Closer, setupResultMatchers } from '@optivem/commons/util';
 import {
     createShopUiDriver,
@@ -93,7 +93,7 @@ export async function withChannelShopDriver<T>(
 ): Promise<T> {
     const resolvedChannel = channel ?? ChannelContext.get();
     if (resolvedChannel == null || resolvedChannel === '') {
-        throw new Error('Channel is not set. Use withChannels(...) or pass channel explicitly to withChannelShopDriver.');
+        throw new Error('Channel is not set. Use forChannels(...) or pass channel explicitly to withChannelShopDriver.');
     }
 
     const manageContext = channel != null && channel !== '';
@@ -111,8 +111,8 @@ export async function withChannelShopDriver<T>(
     }
 }
 
-export function withChannels(...channelTypes: string[]): (block: () => void) => void {
-    return sharedWithChannels(
+export function forChannels(...channelTypes: string[]): (block: () => void) => void {
+    return sharedForChannels(
         {
             describe: (name, callback) => test.describe(name, callback),
             beforeEach: (callback) => test.beforeEach(callback),

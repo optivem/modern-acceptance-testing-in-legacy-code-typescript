@@ -2,7 +2,7 @@
  * V7 acceptance: view order (negative).
  */
 import '../../../setup-config.js';
-import { test, withChannels } from './base/fixtures.js';
+import { test, forChannels } from './base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 
 const nonExistentOrderCases = [
@@ -11,7 +11,7 @@ const nonExistentOrderCases = [
     { orderNumber: 'NON-EXISTENT-ORDER-77777', message: 'Order NON-EXISTENT-ORDER-77777 does not exist.' },
 ];
 
-withChannels(ChannelType.UI, ChannelType.API)(() => {
+forChannels(ChannelType.UI, ChannelType.API)(() => {
     test.each(nonExistentOrderCases)(
         'should not be able to view non-existent order (orderNumber=$orderNumber)',
         async ({ scenario, orderNumber, message }) => {

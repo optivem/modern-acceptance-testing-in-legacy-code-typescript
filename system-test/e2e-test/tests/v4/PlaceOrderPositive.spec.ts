@@ -2,9 +2,9 @@ import '../../../setup-config.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
 import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
-import { createUniqueSku, expect, test, withChannelShopDriver, withChannels } from './base/fixtures.js';
+import { createUniqueSku, expect, test, withChannelShopDriver, forChannels } from './base/fixtures.js';
 
-withChannels(ChannelType.UI, ChannelType.API)(() => {
+forChannels(ChannelType.UI, ChannelType.API)(() => {
     test('should place order with correct subtotal price', async ({ erpDriver }) => {
         const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
         expect(await erpDriver.returnsProduct({ sku, price: '20.00' })).toBeSuccess();

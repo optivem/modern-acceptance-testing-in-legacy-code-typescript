@@ -1,10 +1,10 @@
 import '../../../setup-config.js';
-import { test, withChannels } from './base/fixtures.js';
+import { test, forChannels } from './base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
 import { GherkinDefaults } from '../../../../dsl-core/scenario/GherkinDefaults.js';
 
-withChannels(ChannelType.UI, ChannelType.API)(() => {
+forChannels(ChannelType.UI, ChannelType.API)(() => {
     test('should view placed order', async ({ scenario }) => {
     await scenario
         .given().product()

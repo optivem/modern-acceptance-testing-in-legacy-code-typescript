@@ -2,12 +2,12 @@
  * V7 acceptance: publish coupon (negative).
  */
 import '../../../setup-config.js';
-import { test, withChannels } from './base/fixtures.js';
+import { test, forChannels } from './base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 
 const validationError = 'The request contains one or more validation errors';
 
-withChannels(ChannelType.UI, ChannelType.API)(() => {
+forChannels(ChannelType.UI, ChannelType.API)(() => {
     test.each(['0.0', '-0.01', '-0.15'])('cannot publish coupon with zero or negative discount (discountRate=$discountRate)', async ({ scenario, discountRate }) => {
         await scenario
             .when().publishCoupon()

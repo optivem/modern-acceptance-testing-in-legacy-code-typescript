@@ -4,13 +4,13 @@
  */
 process.env.EXTERNAL_SYSTEM_MODE = process.env.EXTERNAL_SYSTEM_MODE ?? 'REAL';
 
-import { createChannelHelpers, createTestEach } from '@optivem/optivem-testing';
+import { bindChannels, bindTestEach } from '@optivem/optivem-testing';
 import { withApp } from '@optivem/test-infrastructure';
 
 const _test = withApp();
-const test = Object.assign(_test, { each: createTestEach(_test) });
+const test = Object.assign(_test, { each: bindTestEach(_test) });
 
-const { withChannels } = createChannelHelpers(test);
+const { forChannels } = bindChannels(test);
 
-export { test, withChannels };
+export { test, forChannels };
 export { expect } from '@playwright/test';

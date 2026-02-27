@@ -2,7 +2,7 @@
  * V7 acceptance: cancel order (negative).
  */
 import '../../../setup-config.js';
-import { test, withChannels } from './base/fixtures.js';
+import { test, forChannels } from './base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
 
@@ -12,7 +12,7 @@ const nonExistentOrderCases = [
     { orderNumber: 'NON-EXISTENT-ORDER-77777', message: 'Order NON-EXISTENT-ORDER-77777 does not exist.' },
 ];
 
-withChannels(ChannelType.API)(() => {
+forChannels(ChannelType.API)(() => {
     test.each(nonExistentOrderCases)('should not cancel non-existent order (orderNumber=$orderNumber)', async ({ scenario, orderNumber, message }) => {
         await scenario
             .when().cancelOrder()

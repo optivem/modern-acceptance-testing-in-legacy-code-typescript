@@ -2,11 +2,11 @@ import '../../../setup-config.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
 import { emptyArgumentsProvider } from '../shared/argumentProviders.js';
-import { createUniqueSku, expect, test, withChannelShopDriver, withChannels } from './base/fixtures.js';
+import { createUniqueSku, expect, test, withChannelShopDriver, forChannels } from './base/fixtures.js';
 
 const validationError = 'The request contains one or more validation errors';
 
-withChannels(ChannelType.UI, ChannelType.API)(() => {
+forChannels(ChannelType.UI, ChannelType.API)(() => {
     test('should reject order with invalid quantity', async () => {
         await withChannelShopDriver(async (shopDriver) => {
             const result = await shopDriver.placeOrder({
@@ -140,7 +140,7 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
     });
 });
 
-withChannels(ChannelType.API)(() => {
+forChannels(ChannelType.API)(() => {
     test('should reject order with null quantity', async () => {
         await withChannelShopDriver(async (shopDriver) => {
             const result = await shopDriver.placeOrder({

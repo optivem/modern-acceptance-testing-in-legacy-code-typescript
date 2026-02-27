@@ -4,13 +4,13 @@
  * Isolated tests run sequentially (serial mode) to avoid clock state conflicts.
  */
 import '../../../setup-config.js';
-import { test, withChannels } from './base/fixtures.js';
+import { test, forChannels } from './base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 
 test.describe.configure({ mode: 'serial' });
 
 test.describe('@isolated', () => {
-    withChannels(ChannelType.UI, ChannelType.API)(() => {
+    forChannels(ChannelType.UI, ChannelType.API)(() => {
         test('cannot place order with expired coupon', async ({ scenario }) => {
             await scenario
                 .given().clock()

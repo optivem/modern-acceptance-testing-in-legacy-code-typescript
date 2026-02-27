@@ -1,4 +1,4 @@
-import { createChannelHelpers } from '@optivem/optivem-testing';
+import { bindChannels } from '@optivem/optivem-testing';
 import { withApp } from '@optivem/test-infrastructure';
 
 /**
@@ -6,7 +6,7 @@ import { withApp } from '@optivem/test-infrastructure';
  */
 const test = withApp();
 
-const { withChannels } = createChannelHelpers(test);
+const { forChannels } = bindChannels(test);
 
-export { test, withChannels };
+export { test, forChannels };
 export { expect } from '@playwright/test';

@@ -1,11 +1,11 @@
 import '../../../setup-config.js';
-import { test, withChannels } from './base/fixtures.js';
+import { test, forChannels } from './base/fixtures.js';
 import { ChannelType } from '@optivem/dsl-core/system/shop/ChannelType.js';
 import { emptyArgumentsProvider } from '../shared/argumentProviders.js';
 
 const validationError = 'The request contains one or more validation errors';
 
-withChannels(ChannelType.UI, ChannelType.API)(() => {
+forChannels(ChannelType.UI, ChannelType.API)(() => {
     test('should reject order with invalid quantity', async ({ scenario }) => {
         await scenario
             .given().product()
@@ -102,7 +102,7 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
     });
 });
 
-withChannels(ChannelType.API)(() => {
+forChannels(ChannelType.API)(() => {
     test('should reject order with null quantity', async ({ scenario }) => {
         await scenario
             .when().placeOrder()
