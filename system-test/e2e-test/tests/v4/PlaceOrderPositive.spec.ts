@@ -4,13 +4,6 @@ import { OrderStatus } from '@optivem/driver-api/shop/dtos/OrderStatus.js';
 import { GherkinDefaults } from '@optivem/dsl-core/scenario/GherkinDefaults.js';
 import { createUniqueSku, expect, test, withChannelShopDriver, withChannels } from './base/fixtures.js';
 
-const subtotalPriceCases = [
-    { unitPrice: '20.00', quantity: '5', subtotalPrice: '100.00' },
-    { unitPrice: '10.00', quantity: '3', subtotalPrice: '30.00' },
-    { unitPrice: '15.50', quantity: '4', subtotalPrice: '62.00' },
-    { unitPrice: '99.99', quantity: '1', subtotalPrice: '99.99' },
-];
-
 withChannels(ChannelType.UI, ChannelType.API)(() => {
     test('should place order with correct subtotal price', async ({ erpDriver }) => {
         const sku = createUniqueSku(GherkinDefaults.DEFAULT_SKU);
@@ -26,6 +19,13 @@ withChannels(ChannelType.UI, ChannelType.API)(() => {
             expect(viewOrderResult.getValue().subtotalPrice).toEqualDecimal(100.0);
         });
     });
+
+    const subtotalPriceCases = [
+        { unitPrice: '20.00', quantity: '5', subtotalPrice: '100.00' },
+        { unitPrice: '10.00', quantity: '3', subtotalPrice: '30.00' },
+        { unitPrice: '15.50', quantity: '4', subtotalPrice: '62.00' },
+        { unitPrice: '99.99', quantity: '1', subtotalPrice: '99.99' },
+    ];
 
     test.each(subtotalPriceCases)(
         'should place order with correct subtotal price parameterized (unitPrice=$unitPrice, quantity=$quantity, subtotalPrice=$subtotalPrice)',
