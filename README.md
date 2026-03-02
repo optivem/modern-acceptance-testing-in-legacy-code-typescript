@@ -1,6 +1,6 @@
 # Modern Acceptance Testing in Legacy Code (TypeScript)
 
-[![acceptance-stage](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-typescript/actions/workflows/acceptance-stage.yml/badge.svg)](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-typescript/actions/workflows/acceptance-stage.yml)
+[![acceptance-stage](https://github.com/optivem/eshop-tests-typescript/actions/workflows/acceptance-stage.yml/badge.svg)](https://github.com/optivem/eshop-tests-typescript/actions/workflows/acceptance-stage.yml)
 
 ## Prerequisites
 
@@ -193,7 +193,7 @@ test('should place an order via API', async () => {
 
 ### Reference
 
-This Client Layer implementation is based on the [Java reference project](https://github.com/optivem/modern-acceptance-testing-in-legacy-code-java/tree/main/system-test/src/test/java/com/optivem/eshop/systemtest/core/clients).
+This Client Layer implementation is based on the [Java reference project](https://github.com/optivem/eshop-tests-java/tree/main/system-test/src/test/java/com/optivem/eshop/systemtest/core/clients).
 
 ## License
 

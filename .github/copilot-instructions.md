@@ -3,8 +3,8 @@
 ## Reference projects - dependency comparison
 
 Checked against:
-- **Java:** `C:\GitHub\optivem\modern-acceptance-testing-in-legacy-code-java`
-- **.NET:** `C:\GitHub\optivem\modern-acceptance-testing-in-legacy-code-dotnet`
+- **Java:** `C:\GitHub\optivem\eshop-tests-java`
+- **.NET:** `C:\GitHub\optivem\eshop-tests-dotnet`
 
 ---
 
