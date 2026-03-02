@@ -1,4 +1,4 @@
-# Modern Acceptance Testing in Legacy Code (TypeScript)
+# eShop Tests (TypeScript)
 
 [![acceptance-stage](https://github.com/optivem/eshop-tests-typescript/actions/workflows/acceptance-stage.yml/badge.svg)](https://github.com/optivem/eshop-tests-typescript/actions/workflows/acceptance-stage.yml)
 
