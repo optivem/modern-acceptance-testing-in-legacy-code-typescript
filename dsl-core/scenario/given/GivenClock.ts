@@ -9,7 +9,7 @@ export class GivenClockBuilder extends BaseGivenBuilder {
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
-        this.withTime(GherkinDefaults.DEFAULT_TIME);
+        this.time = GherkinDefaults.DEFAULT_TIME;
     }
 
     withTime(time: Optional<string>): this {

@@ -16,12 +16,12 @@ export class GivenOrderBuilder extends BaseGivenBuilder {
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
-        this.withOrderNumber(GherkinDefaults.DEFAULT_ORDER_NUMBER);
-        this.withSku(GherkinDefaults.DEFAULT_SKU);
-        this.withQuantity(GherkinDefaults.DEFAULT_QUANTITY);
-        this.withCountry(GherkinDefaults.DEFAULT_COUNTRY);
-        this.withCouponCode(GherkinDefaults.EMPTY);
-        this.withStatus(GherkinDefaults.DEFAULT_ORDER_STATUS);
+        this.orderNumber = GherkinDefaults.DEFAULT_ORDER_NUMBER;
+        this.sku = GherkinDefaults.DEFAULT_SKU;
+        this.quantity = GherkinDefaults.DEFAULT_QUANTITY;
+        this.country = GherkinDefaults.DEFAULT_COUNTRY;
+        this.couponCodeAlias = GherkinDefaults.EMPTY;
+        this.status = GherkinDefaults.DEFAULT_ORDER_STATUS;
     }
 
     withOrderNumber(orderNumber: Optional<string>): this {

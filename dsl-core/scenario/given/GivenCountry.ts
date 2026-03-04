@@ -11,8 +11,8 @@ export class GivenCountryBuilder extends BaseGivenBuilder {
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
-        this.withCode(GherkinDefaults.DEFAULT_COUNTRY);
-        this.withTaxRate(GherkinDefaults.DEFAULT_TAX_RATE);
+        this.country = GherkinDefaults.DEFAULT_COUNTRY;
+        this.taxRate = GherkinDefaults.DEFAULT_TAX_RATE;
     }
 
     withCode(country: Optional<string>): this {

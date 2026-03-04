@@ -11,8 +11,8 @@ export class GivenProductBuilder extends BaseGivenBuilder {
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
-        this.withSku(GherkinDefaults.DEFAULT_SKU);
-        this.withUnitPrice(GherkinDefaults.DEFAULT_UNIT_PRICE);
+        this.sku = GherkinDefaults.DEFAULT_SKU;
+        this.unitPrice = GherkinDefaults.DEFAULT_UNIT_PRICE;
     }
 
     withSku(sku: Optional<string>): this {

@@ -14,11 +14,11 @@ export class GivenCouponBuilder extends BaseGivenBuilder {
 
     constructor(givenClause: GivenClause) {
         super(givenClause);
-        this.withCouponCode(GherkinDefaults.DEFAULT_COUPON_CODE);
-        this.withDiscountRate(GherkinDefaults.DEFAULT_DISCOUNT_RATE);
-        this.withValidFrom(GherkinDefaults.EMPTY);
-        this.withValidTo(GherkinDefaults.EMPTY);
-        this.withUsageLimit(GherkinDefaults.EMPTY);
+        this.couponCode = GherkinDefaults.DEFAULT_COUPON_CODE;
+        this.discountRate = GherkinDefaults.DEFAULT_DISCOUNT_RATE;
+        this.validFrom = GherkinDefaults.EMPTY;
+        this.validTo = GherkinDefaults.EMPTY;
+        this.usageLimit = GherkinDefaults.EMPTY;
     }
 
     withCouponCode(couponCode: Optional<string>): this {
