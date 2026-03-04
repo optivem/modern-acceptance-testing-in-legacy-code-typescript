@@ -7,8 +7,6 @@ import { ChannelType } from '@optivem/dsl-core/app/shop/ChannelType.js';
 
 forChannels(ChannelType.UI, ChannelType.API)(() => {
     test('should be able to go to shop', async ({ scenario }) => {
-        await scenario
-            .when().goToShop()
-            .then().shouldSucceed();
+        await scenario.assume().shop().shouldBeRunning();
     });
 });
