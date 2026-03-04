@@ -29,6 +29,7 @@ export interface GivenClausePort {
     country(): GivenCountryPort;
     coupon(): GivenCouponPort;
     when(): WhenClausePort;
+    then(): ThenGivenStagePort;
     and(): GivenClausePort;
 }
 
@@ -37,6 +38,7 @@ export interface GivenProductPort {
     withUnitPrice(unitPrice: NumberLikeInput | undefined): this;
     and(): GivenClausePort;
     when(): WhenClausePort;
+    then(): ThenGivenStagePort;
 }
 
 export interface GivenOrderPort {
@@ -48,12 +50,14 @@ export interface GivenOrderPort {
     withStatus(status: OrderStatus): this;
     and(): GivenClausePort;
     when(): WhenClausePort;
+    then(): ThenGivenStagePort;
 }
 
 export interface GivenClockPort {
     withTime(time: StringInput): this;
     and(): GivenClausePort;
     when(): WhenClausePort;
+    then(): ThenGivenStagePort;
 }
 
 export interface GivenCountryPort {
@@ -71,6 +75,7 @@ export interface GivenCouponPort {
     withUsageLimit(usageLimit: number | string | null | undefined): this;
     and(): GivenClausePort;
     when(): WhenClausePort;
+    then(): ThenGivenStagePort;
 }
 
 export interface WhenClausePort {
@@ -113,6 +118,28 @@ export interface WhenPublishCouponPort {
     withValidTo(validTo: StringInput): this;
     withUsageLimit(usageLimit: number | string | null | undefined): this;
     then(): ThenClausePort;
+}
+
+export interface ThenGivenStagePort {
+    clock(): Promise<ThenGivenClockPort>;
+    product(skuAlias: string): Promise<ThenGivenProductPort>;
+    country(countryAlias: string): Promise<ThenGivenCountryPort>;
+}
+
+export interface ThenGivenClockPort {
+    hasTime(time: string): ThenGivenClockPort;
+    hasTime(): ThenGivenClockPort;
+}
+
+export interface ThenGivenProductPort {
+    hasSku(sku: string): ThenGivenProductPort;
+    hasPrice(price: number): ThenGivenProductPort;
+}
+
+export interface ThenGivenCountryPort {
+    hasCountry(country: string): ThenGivenCountryPort;
+    hasTaxRate(taxRate: number): ThenGivenCountryPort;
+    hasTaxRateIsPositive(): ThenGivenCountryPort;
 }
 
 export interface ThenClausePort {

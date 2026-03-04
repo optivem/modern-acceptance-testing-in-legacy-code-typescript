@@ -1,5 +1,7 @@
 import type { AppDsl } from '../../app/AppDsl.js';
+import type { ThenGivenStagePort } from '@optivem/dsl-port/scenario/ScenarioDslPort.js';
 import { WhenClause } from '../when/When.js';
+import { ThenGivenStage } from '../then/ThenGivenStage.js';
 import { GivenProductBuilder } from './GivenProduct.js';
 import { GivenOrderBuilder } from './GivenOrder.js';
 import { GivenClockBuilder } from './GivenClock.js';
@@ -13,7 +15,7 @@ export class GivenClause {
     private readonly app: AppDsl;
     private readonly products: GivenProductBuilder[];
     private readonly orders: GivenOrderBuilder[];
-    private clockBuilder: GivenClockBuilder;
+    private clockBuilder: GivenClockBuilder | null;
     private readonly countries: GivenCountryBuilder[];
     private readonly coupons: GivenCouponBuilder[];
 
@@ -21,7 +23,7 @@ export class GivenClause {
         this.app = app;
         this.products = [];
         this.orders = [];
-        this.clockBuilder = new GivenClockBuilder(this);
+        this.clockBuilder = null;
         this.countries = [];
         this.coupons = [];
     }
@@ -64,6 +66,10 @@ export class GivenClause {
         );
     }
 
+    then(): ThenGivenStagePort {
+        return new ThenGivenStage(this.app, () => this.setupGiven());
+    }
+
     and(): GivenClause {
         return this;
     }
@@ -76,7 +82,9 @@ export class GivenClause {
     }
 
     private async setupClock(): Promise<void> {
-        await this.clockBuilder.execute(this.app);
+        if (this.clockBuilder !== null) {
+            await this.clockBuilder.execute(this.app);
+        }
     }
 
     private async setupErp(): Promise<void> {
