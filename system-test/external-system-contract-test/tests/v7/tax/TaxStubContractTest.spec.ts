@@ -14,18 +14,11 @@ test.describe('Tax Stub Contract Tests', () => {
         'Stub-only tests — skipped when EXTERNAL_SYSTEM_MODE is not STUB'
     );
 
-    test('should be able to get configured tax rate', async ({ app }) => {
-        (await app.tax().returnsTaxRate()
-            .country('LALA')
-            .taxRate(0.23)
-            .execute())
-            .shouldSucceed();
-
-        (await app.tax().getTaxRate()
-            .country('LALA')
-            .execute())
-            .shouldSucceed()
-            .country('LALA')
-            .taxRate(0.23);
+    test('should be able to get configured tax rate', async ({ scenario }) => {
+        (await scenario
+            .given().country().withCode('LALA').withTaxRate(0.23)
+            .then().country('LALA'))
+            .hasCountry('LALA')
+            .hasTaxRate(0.23);
     });
 });

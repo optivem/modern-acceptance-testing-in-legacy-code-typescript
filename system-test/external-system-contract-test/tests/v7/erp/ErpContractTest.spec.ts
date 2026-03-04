@@ -6,18 +6,11 @@ import '../../../../setup-config.js';
 import { test } from '../base/fixtures.js';
 
 test.describe('ERP Contract Tests', () => {
-    test('should be able to get product', async ({ app }) => {
-        (await app.erp().returnsProduct()
-            .sku('SKU-123')
-            .unitPrice(12.0)
-            .execute())
-            .shouldSucceed();
-
-        (await app.erp().getProduct()
-            .sku('SKU-123')
-            .execute())
-            .shouldSucceed()
-            .sku('SKU-123')
-            .price('12.0');
+    test('should be able to get product', async ({ scenario }) => {
+        (await scenario
+            .given().product().withSku('SKU-123').withUnitPrice(12.0)
+            .then().product('SKU-123'))
+            .hasSku('SKU-123')
+            .hasPrice(12.0);
     });
 });
