@@ -3,6 +3,10 @@ import type { AppDsl } from '../../app/AppDsl.js';
 import type { ThenClause } from './Then.js';
 import { ThenSuccessOrderVerifier } from './ThenSuccessOrder.js';
 import { ThenSuccessCouponVerifier } from './ThenSuccessCoupon.js';
+import type { ThenGivenClockPort, ThenGivenProductPort, ThenGivenCountryPort } from '@optivem/dsl-port/scenario/ScenarioDslPort.js';
+import { ThenGivenClock } from './ThenGivenClock.js';
+import { ThenGivenProduct } from './ThenGivenProduct.js';
+import { ThenGivenCountry } from './ThenGivenCountry.js';
 
 /**
  * Deferred success verifier.  Awaiting it runs shouldSucceed().
@@ -62,6 +66,21 @@ export class ThenSuccessVerifier<
             return resolved;
         };
         return new ThenSuccessCouponVerifier<TSuccessResponse, TSuccessVerification>(this.thenClause, couponCodeFactory);
+    }
+
+    async clock(): Promise<ThenGivenClockPort> {
+        const verification = (await this.app.clock().getTime().execute()).shouldSucceed();
+        return new ThenGivenClock(verification);
+    }
+
+    async product(skuAlias: string): Promise<ThenGivenProductPort> {
+        const verification = (await this.app.erp().getProduct().sku(skuAlias).execute()).shouldSucceed();
+        return new ThenGivenProduct(verification);
+    }
+
+    async country(countryAlias: string): Promise<ThenGivenCountryPort> {
+        const verification = (await this.app.tax().getTaxRate().country(countryAlias).execute()).shouldSucceed();
+        return new ThenGivenCountry(verification);
     }
 
     /** Makes the verifier awaitable — runs I/O and verifies success. Resolves to void. */

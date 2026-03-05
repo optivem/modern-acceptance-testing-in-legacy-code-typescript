@@ -1,4 +1,5 @@
 import type { OrderStatus } from '@optivem/driver-port/shop/dtos/OrderStatus.js';
+import type { ThenGivenClockPort, ThenGivenProductPort, ThenGivenCountryPort } from './ThenGivenPort.js';
 
 export interface ThenClausePort {
     shouldSucceed(): ThenSuccessPort;
@@ -9,6 +10,9 @@ export interface ThenSuccessPort extends PromiseLike<void> {
     and(): this;
     order(orderNumber?: string): ThenOrderPort;
     coupon(couponCode?: string): ThenCouponPort;
+    clock(): Promise<ThenGivenClockPort>;
+    product(skuAlias: string): Promise<ThenGivenProductPort>;
+    country(countryAlias: string): Promise<ThenGivenCountryPort>;
 }
 
 export interface ThenFailurePort extends PromiseLike<void> {
@@ -20,6 +24,9 @@ export interface ThenFailurePort extends PromiseLike<void> {
 export interface ThenFailureAndPort {
     order(orderNumber?: string): ThenOrderPort;
     coupon(couponCode?: string): ThenCouponPort;
+    clock(): Promise<ThenGivenClockPort>;
+    product(skuAlias: string): Promise<ThenGivenProductPort>;
+    country(countryAlias: string): Promise<ThenGivenCountryPort>;
 }
 
 export interface ThenOrderPort extends PromiseLike<void> {

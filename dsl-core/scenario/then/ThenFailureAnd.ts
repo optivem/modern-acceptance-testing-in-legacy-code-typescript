@@ -4,6 +4,10 @@ import type { SystemErrorFailureVerification } from '../../app/shop/usecases/bas
 import type { ThenClause } from './Then.js';
 import { ThenFailureOrderVerifier } from './ThenFailureOrder.js';
 import { ThenFailureCouponVerifier } from './ThenFailureCoupon.js';
+import type { ThenGivenClockPort, ThenGivenProductPort, ThenGivenCountryPort } from '@optivem/dsl-port/scenario/ScenarioDslPort.js';
+import { ThenGivenClock } from './ThenGivenClock.js';
+import { ThenGivenProduct } from './ThenGivenProduct.js';
+import { ThenGivenCountry } from './ThenGivenCountry.js';
 
 /**
  * Returned by .shouldFail().and() — bridges to .order() / .coupon() on the failure path.
@@ -48,6 +52,21 @@ export class ThenFailureAnd<
             return resolved;
         };
         return new ThenFailureCouponVerifier<TSuccessResponse, TSuccessVerification>(thenClause, assertions, couponCodeFactory);
+    }
+
+    async clock(): Promise<ThenGivenClockPort> {
+        const verification = (await this.app.clock().getTime().execute()).shouldSucceed();
+        return new ThenGivenClock(verification);
+    }
+
+    async product(skuAlias: string): Promise<ThenGivenProductPort> {
+        const verification = (await this.app.erp().getProduct().sku(skuAlias).execute()).shouldSucceed();
+        return new ThenGivenProduct(verification);
+    }
+
+    async country(countryAlias: string): Promise<ThenGivenCountryPort> {
+        const verification = (await this.app.tax().getTaxRate().country(countryAlias).execute()).shouldSucceed();
+        return new ThenGivenCountry(verification);
     }
 }
 
