@@ -6,7 +6,7 @@ export type {
 
 export type {
     AssumeStagePort,
-    ShouldPort,
+    AssumeRunningPort,
 } from './assume/AssumeStagePort.js';
 
 export type {

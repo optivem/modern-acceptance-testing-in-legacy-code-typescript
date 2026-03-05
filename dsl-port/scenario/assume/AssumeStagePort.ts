@@ -1,10 +1,10 @@
 export interface AssumeStagePort {
-    shop(): ShouldPort;
-    erp(): ShouldPort;
-    tax(): ShouldPort;
-    clock(): ShouldPort;
+    shop(): AssumeRunningPort;
+    erp(): AssumeRunningPort;
+    tax(): AssumeRunningPort;
+    clock(): AssumeRunningPort;
 }
 
-export interface ShouldPort {
+export interface AssumeRunningPort {
     shouldBeRunning(): Promise<AssumeStagePort>;
 }

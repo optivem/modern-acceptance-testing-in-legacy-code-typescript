@@ -1,35 +1,35 @@
-import type { AssumeStagePort, ShouldPort } from '@optivem/dsl-port/scenario/ScenarioDslPort.js';
+import type { AssumeRunningPort, AssumeStagePort } from '@optivem/dsl-port/scenario/ScenarioDslPort.js';
 import type { AppDsl } from '../../app/AppDsl.js';
 
 export class AssumeStage implements AssumeStagePort {
     constructor(private readonly app: AppDsl) {}
 
-    shop(): ShouldPort {
-        return new ShouldAction(async () => {
+    shop(): AssumeRunningPort {
+        return new AssumeRunningAction(async () => {
             (await this.app.shop().goToShop().execute()).shouldSucceed();
         }, this);
     }
 
-    erp(): ShouldPort {
-        return new ShouldAction(async () => {
+    erp(): AssumeRunningPort {
+        return new AssumeRunningAction(async () => {
             (await this.app.erp().goToErp().execute()).shouldSucceed();
         }, this);
     }
 
-    tax(): ShouldPort {
-        return new ShouldAction(async () => {
+    tax(): AssumeRunningPort {
+        return new AssumeRunningAction(async () => {
             (await this.app.tax().goToTax().execute()).shouldSucceed();
         }, this);
     }
 
-    clock(): ShouldPort {
-        return new ShouldAction(async () => {
+    clock(): AssumeRunningPort {
+        return new AssumeRunningAction(async () => {
             (await this.app.clock().goToClock().execute()).shouldSucceed();
         }, this);
     }
 }
 
-class ShouldAction implements ShouldPort {
+class AssumeRunningAction implements AssumeRunningPort {
     constructor(
         private readonly action: () => Promise<void>,
         private readonly assumeStage: AssumeStagePort
