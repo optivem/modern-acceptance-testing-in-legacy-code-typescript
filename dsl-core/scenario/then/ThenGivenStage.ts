@@ -27,7 +27,7 @@ export class ThenGivenStage implements ThenGivenStagePort {
     async clock(): Promise<ThenGivenClockPort> {
         await this.ensureSetup();
         const verification = (await this.app.clock().getTime().execute()).shouldSucceed();
-        return new ThenGivenClock(verification);
+        return new ThenGivenClock(this.app, verification);
     }
 
     async product(skuAlias: string): Promise<ThenGivenProductPort> {
@@ -35,7 +35,7 @@ export class ThenGivenStage implements ThenGivenStagePort {
         const verification = (
             await this.app.erp().getProduct().sku(skuAlias).execute()
         ).shouldSucceed();
-        return new ThenGivenProduct(verification);
+        return new ThenGivenProduct(this.app, verification);
     }
 
     async country(countryAlias: string): Promise<ThenGivenCountryPort> {
@@ -43,6 +43,6 @@ export class ThenGivenStage implements ThenGivenStagePort {
         const verification = (
             await this.app.tax().getTaxRate().country(countryAlias).execute()
         ).shouldSucceed();
-        return new ThenGivenCountry(verification);
+        return new ThenGivenCountry(this.app, verification);
     }
 }
