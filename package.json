@@ -10,20 +10,15 @@
     "driver-adapter",
     "dsl-port",
     "dsl-core",
-    "system-test",
-    "system-test/test-infrastructure",
-    "system-test/acceptance-test",
-    "system-test/smoke-test",
-    "system-test/e2e-test",
-    "system-test/external-system-contract-test"
+    "system-test"
   ],
   "scripts": {
-    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/channel && npm run build -w @optivem/driver-port && npm run build -w @optivem/driver-adapter && npm run build -w @optivem/dsl-port && npm run build -w @optivem/dsl-core && npm run build -w @optivem/test-infrastructure",
-    "test": "npm run build && npm run test -w acceptance-test && npm run test -w smoke-test && npm run test -w e2e-test && npm run test -w external-system-contract-test",
-    "test:acceptance": "npm run test -w acceptance-test",
-    "test:smoke": "npm run test -w smoke-test",
-    "test:e2e": "npm run test -w e2e-test",
-    "test:external-contract": "npm run test -w external-system-contract-test"
+    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/channel && npm run build -w @optivem/driver-port && npm run build -w @optivem/driver-adapter && npm run build -w @optivem/dsl-port && npm run build -w @optivem/dsl-core",
+    "test": "npm run build && npm run test -w system-test",
+    "test:acceptance": "npm run test:acceptance -w system-test",
+    "test:smoke": "npm run test:smoke -w system-test",
+    "test:e2e": "npm run test:e2e -w system-test",
+    "test:external-contract": "npm run test:external-contract -w system-test"
   }
 }
 
