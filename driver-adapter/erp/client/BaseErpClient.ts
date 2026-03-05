@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons';
 import type { Optional } from '@optivem/commons';
-import { JsonHttpClient } from '@optivem/driver-common/client/http';
+import { JsonHttpClient } from '@optivem/driver-adapter/client/http';
 import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse.js';
 import type { ExtCreateProductRequest } from './dtos/ExtCreateProductRequest.js';
 import type { ExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
@@ -27,3 +27,6 @@ export abstract class BaseErpClient {
         return this.httpClient.putAsync<void>(`${BaseErpClient.PRODUCTS_ENDPOINT}/${sku}`, request);
     }
 }
+
+
+

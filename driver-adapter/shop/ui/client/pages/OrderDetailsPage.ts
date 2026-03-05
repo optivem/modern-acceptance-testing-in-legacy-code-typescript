@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/driver-common/client/playwright';
+import type { PageClient } from '@optivem/driver-adapter/client/playwright';
 import { Decimal } from '@optivem/commons';
 import type { Optional } from '@optivem/commons';
 import type { OrderStatus } from '../../../commons/dtos/OrderStatus.js';
@@ -125,4 +125,7 @@ export class OrderDetailsPage extends BasePage {
         return Decimal.fromString(cleaned).div(Decimal.fromNumber(100));
     }
 }
+
+
+
 

@@ -1,6 +1,6 @@
 import type { Optional } from '@optivem/commons';
 import { Result } from '@optivem/commons';
-import { JsonHttpClient } from '@optivem/driver-common/client/http';
+import { JsonHttpClient } from '@optivem/driver-adapter/client/http';
 import type { ExtCountryDetailsResponse } from './dtos/ExtCountryDetailsResponse.js';
 import type { ExtTaxErrorResponse } from './dtos/error/ExtTaxErrorResponse.js';
 
@@ -24,3 +24,6 @@ export abstract class BaseTaxClient {
         );
     }
 }
+
+
+

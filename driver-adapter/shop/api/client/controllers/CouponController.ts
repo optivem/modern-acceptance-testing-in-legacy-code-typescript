@@ -1,4 +1,4 @@
-import type { JsonHttpClient } from '@optivem/driver-common/client/http';
+import type { JsonHttpClient } from '@optivem/driver-adapter/client/http';
 import type { Result } from '@optivem/commons';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
 import type { BrowseCouponsResponse, PublishCouponRequest } from '../../../commons/dtos/index.js';
@@ -16,4 +16,7 @@ export class CouponController {
         return this.httpClient.getAsync<BrowseCouponsResponse>(CouponController.ENDPOINT);
     }
 }
+
+
+
 

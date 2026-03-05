@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons';
-import { HttpStatus } from '@optivem/driver-common/client/http';
-import { JsonWireMockClient } from '@optivem/driver-common/client/wiremock';
+import { HttpStatus } from '@optivem/driver-adapter/client/http';
+import { JsonWireMockClient } from '@optivem/driver-adapter/client/wiremock';
 import { BaseErpClient } from './BaseErpClient.js';
 import type { ExtProductDetailsResponse } from './dtos/ExtProductDetailsResponse.js';
 import { from as toExtErpErrorResponse } from './dtos/error/ExtErpErrorResponse.js';
@@ -21,3 +21,6 @@ export class ErpStubClient extends BaseErpClient {
         return this.wireMockClient.stubGet(path, HttpStatus.OK, response).then((r) => r.mapError(toExtErpErrorResponse));
     }
 }
+
+
+

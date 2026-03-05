@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/driver-common/client/playwright';
+import type { PageClient } from '@optivem/driver-adapter/client/playwright';
 import { Integer } from '@optivem/commons';
 import type { Optional } from '@optivem/commons';
 import type { CouponDto } from '../../../commons/dtos/BrowseCouponsResponse.js';
@@ -134,4 +134,7 @@ export class CouponManagementPage extends BasePage {
         return coupons;
     }
 }
+
+
+
 

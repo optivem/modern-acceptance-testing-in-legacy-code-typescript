@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/driver-common/client/playwright';
+import type { PageClient } from '@optivem/driver-adapter/client/playwright';
 import type { Optional } from '@optivem/commons';
 
 export class NewOrderPage extends BasePage {
@@ -42,3 +42,6 @@ export class NewOrderPage extends BasePage {
         return match[NewOrderPage.ORDER_NUMBER_MATCHER_GROUP];
     }
 }
+
+
+

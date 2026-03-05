@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/driver-common/client/playwright';
+import type { PageClient } from '@optivem/driver-adapter/client/playwright';
 import { NewOrderPage } from './NewOrderPage.js';
 import { OrderHistoryPage } from './OrderHistoryPage.js';
 import { CouponManagementPage } from './CouponManagementPage.js';
@@ -28,3 +28,6 @@ export class HomePage extends BasePage {
         return new CouponManagementPage(this.pageClient);
     }
 }
+
+
+

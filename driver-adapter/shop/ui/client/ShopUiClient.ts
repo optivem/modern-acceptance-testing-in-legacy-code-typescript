@@ -1,7 +1,7 @@
 import { chromium, type Browser, type BrowserContext, type Page, type Response } from '@playwright/test';
 import { StatusCodes } from 'http-status-codes';
 import { Closer, type AsyncCloseable } from '@optivem/commons';
-import { PageClient } from '@optivem/driver-common/client/playwright';
+import { PageClient } from '@optivem/driver-adapter/client/playwright';
 import { HomePage } from './pages/HomePage.js';
 
 export class ShopUiClient implements AsyncCloseable {
@@ -70,3 +70,6 @@ export class ShopUiClient implements AsyncCloseable {
         if (this.browser) await Closer.close(this.browser);
     }
 }
+
+
+

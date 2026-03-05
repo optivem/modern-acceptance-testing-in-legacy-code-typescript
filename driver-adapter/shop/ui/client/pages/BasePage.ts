@@ -1,4 +1,4 @@
-import { PageClient } from '@optivem/driver-common/client/playwright';
+import { PageClient } from '@optivem/driver-adapter/client/playwright';
 import { Result } from '@optivem/commons';
 import type { Optional } from '@optivem/commons';
 import type { SystemError, SystemErrorField } from '../../../commons/dtos/errors/SystemError.js';
@@ -140,3 +140,6 @@ export abstract class BasePage {
         );
     }
 }
+
+
+

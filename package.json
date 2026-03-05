@@ -7,7 +7,6 @@
     "common",
     "channel",
     "driver-port",
-    "driver-common",
     "driver-adapter",
     "dsl-port",
     "dsl-common",
@@ -20,7 +19,7 @@
     "system-test/external-system-contract-test"
   ],
   "scripts": {
-    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/channel && npm run build -w @optivem/driver-port && npm run build -w @optivem/driver-common && npm run build -w @optivem/driver-adapter && npm run build -w @optivem/dsl-port && npm run build -w @optivem/dsl-common && npm run build -w @optivem/dsl-core && npm run build -w @optivem/test-infrastructure",
+    "build": "npm run build -w @optivem/commons && npm run build -w @optivem/channel && npm run build -w @optivem/driver-port && npm run build -w @optivem/driver-adapter && npm run build -w @optivem/dsl-port && npm run build -w @optivem/dsl-common && npm run build -w @optivem/dsl-core && npm run build -w @optivem/test-infrastructure",
     "test": "npm run build && npm run test -w acceptance-test && npm run test -w smoke-test && npm run test -w e2e-test && npm run test -w external-system-contract-test",
     "test:acceptance": "npm run test -w acceptance-test",
     "test:smoke": "npm run test -w smoke-test",
@@ -28,3 +27,6 @@
     "test:external-contract": "npm run test -w external-system-contract-test"
   }
 }
+
+
+

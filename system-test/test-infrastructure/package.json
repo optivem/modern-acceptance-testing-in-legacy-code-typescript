@@ -12,7 +12,6 @@
   "dependencies": {
     "@optivem/commons": "file:../../common",
     "@optivem/driver-port": "file:../../driver-port",
-    "@optivem/driver-common": "file:../../driver-common",
     "@optivem/driver-adapter": "file:../../driver-adapter",
     "@optivem/dsl-core": "file:../../dsl-core",
     "@optivem/optivem-testing": "1.0.12"
@@ -22,3 +21,5 @@
     "typescript": "^5.7.2"
   }
 }
+
+

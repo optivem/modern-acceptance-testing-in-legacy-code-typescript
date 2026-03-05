@@ -1,4 +1,4 @@
-import type { JsonHttpClient } from '@optivem/driver-common/client/http';
+import type { JsonHttpClient } from '@optivem/driver-adapter/client/http';
 import type { Result } from '@optivem/commons';
 import type { ProblemDetailResponse } from '../dtos/errors/ProblemDetailResponse.js';
 
@@ -11,3 +11,6 @@ export class HealthController {
         return this.httpClient.getAsync<void>(HealthController.HEALTH_PATH);
     }
 }
+
+
+

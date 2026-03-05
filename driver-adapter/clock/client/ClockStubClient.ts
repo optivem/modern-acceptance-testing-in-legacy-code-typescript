@@ -1,6 +1,6 @@
 import { Result } from '@optivem/commons';
-import { JsonHttpClient, HttpStatus } from '@optivem/driver-common/client/http';
-import { JsonWireMockClient } from '@optivem/driver-common/client/wiremock';
+import { JsonHttpClient, HttpStatus } from '@optivem/driver-adapter/client/http';
+import { JsonWireMockClient } from '@optivem/driver-adapter/client/wiremock';
 import { ExtGetTimeResponse } from './dtos/ExtGetTimeResponse.js';
 import { ExtClockErrorResponse, from as fromExtClockError } from './dtos/error/ExtClockErrorResponse.js';
 
@@ -30,3 +30,6 @@ export class ClockStubClient {
             .then((r) => r.mapError(fromExtClockError));
     }
 }
+
+
+

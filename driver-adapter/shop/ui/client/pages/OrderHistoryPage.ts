@@ -1,6 +1,6 @@
 import type { Optional } from '@optivem/commons';
 import { BasePage } from './BasePage.js';
-import type { PageClient } from '@optivem/driver-common/client/playwright';
+import type { PageClient } from '@optivem/driver-adapter/client/playwright';
 import { OrderDetailsPage } from './OrderDetailsPage.js';
 
 export class OrderHistoryPage extends BasePage {
@@ -50,3 +50,6 @@ export class OrderHistoryPage extends BasePage {
         return OrderHistoryPage.ROW_SELECTOR_TEMPLATE.replace('%s', String(orderNumber));
     }
 }
+
+
+

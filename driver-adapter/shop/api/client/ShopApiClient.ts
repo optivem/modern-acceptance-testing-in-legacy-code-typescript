@@ -1,4 +1,4 @@
-import { JsonHttpClient } from '@optivem/driver-common/client/http';
+import { JsonHttpClient } from '@optivem/driver-adapter/client/http';
 import type { ProblemDetailResponse } from './dtos/errors/ProblemDetailResponse.js';
 import { HealthController } from './controllers/HealthController.js';
 import { OrderController } from './controllers/OrderController.js';
@@ -33,3 +33,6 @@ export class ShopApiClient {
         // JsonHttpClient has no resources to release; no-op for API consistency.
     }
 }
+
+
+
