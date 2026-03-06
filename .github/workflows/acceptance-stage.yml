@@ -109,63 +109,63 @@ jobs:
 
       # === v1 ===
       - name: v1 - Smoke
-        run: npx playwright test --project=smoke-test tests/smoke-test/v1
+        run: npx playwright test --project=smoke-test tests/v1/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           EXTERNAL_SYSTEM_MODE: REAL
 
       - name: v1 - E2E
-        run: npx playwright test --project=e2e-test tests/e2e-test/v1
+        run: npx playwright test --project=e2e-test tests/v1/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
 
       # === v2 ===
       - name: v2 - Smoke
-        run: npx playwright test --project=smoke-test tests/smoke-test/v2
+        run: npx playwright test --project=smoke-test tests/v2/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           EXTERNAL_SYSTEM_MODE: REAL
 
       - name: v2 - E2E
-        run: npx playwright test --project=e2e-test tests/e2e-test/v2
+        run: npx playwright test --project=e2e-test tests/v2/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
 
       # === v3 ===
       - name: v3 - Smoke
-        run: npx playwright test --project=smoke-test tests/smoke-test/v3
+        run: npx playwright test --project=smoke-test tests/v3/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           EXTERNAL_SYSTEM_MODE: REAL
 
       - name: v3 - E2E
-        run: npx playwright test --project=e2e-test tests/e2e-test/v3
+        run: npx playwright test --project=e2e-test tests/v3/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
 
       # === v4 ===
       - name: v4 - Smoke
-        run: npx playwright test --project=smoke-test tests/smoke-test/v4
+        run: npx playwright test --project=smoke-test tests/v4/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           EXTERNAL_SYSTEM_MODE: REAL
 
       - name: v4 - E2E - API Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v4
+        run: npx playwright test --project=e2e-test tests/v4/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           CHANNEL: API
 
       - name: v4 - E2E - UI Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v4
+        run: npx playwright test --project=e2e-test tests/v4/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
@@ -173,21 +173,21 @@ jobs:
 
       # === v5 ===
       - name: v5 - Smoke
-        run: npx playwright test --project=smoke-test tests/smoke-test/v5
+        run: npx playwright test --project=smoke-test tests/v5/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           EXTERNAL_SYSTEM_MODE: REAL
 
       - name: v5 - E2E - API Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v5
+        run: npx playwright test --project=e2e-test tests/v5/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           CHANNEL: API
 
       - name: v5 - E2E - UI Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v5
+        run: npx playwright test --project=e2e-test tests/v5/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
@@ -195,21 +195,21 @@ jobs:
 
       # === v6 ===
       - name: v6 - Smoke
-        run: npx playwright test --project=smoke-test tests/smoke-test/v6
+        run: npx playwright test --project=smoke-test tests/v6/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           EXTERNAL_SYSTEM_MODE: REAL
 
       - name: v6 - E2E - API Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v6
+        run: npx playwright test --project=e2e-test tests/v6/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           CHANNEL: API
 
       - name: v6 - E2E - UI Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v6
+        run: npx playwright test --project=e2e-test tests/v6/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
@@ -217,14 +217,14 @@ jobs:
 
       # === v7 ===
       - name: v7 - Smoke (Stub)
-        run: npx playwright test --project=smoke-test tests/smoke-test/v7
+        run: npx playwright test --project=smoke-test tests/v7/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           EXTERNAL_SYSTEM_MODE: STUB
 
       - name: v7 - Smoke (Real)
-        run: npx playwright test --project=smoke-test tests/smoke-test/v7
+        run: npx playwright test --project=smoke-test tests/v7/smoke
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
@@ -277,14 +277,14 @@ jobs:
           EXTERNAL_SYSTEM_MODE: REAL
 
       - name: v7 - E2E - API Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v7
+        run: npx playwright test --project=e2e-test tests/v7/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
           CHANNEL: API
 
       - name: v7 - E2E - UI Channel
-        run: npx playwright test --project=e2e-test tests/e2e-test/v7
+        run: npx playwright test --project=e2e-test tests/v7/e2e
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
