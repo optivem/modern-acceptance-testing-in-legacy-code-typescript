@@ -148,6 +148,7 @@ jobs:
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
+          EXTERNAL_SYSTEM_MODE: REAL
 
       # === v4 ===
       - name: v4 - Smoke
@@ -162,6 +163,7 @@ jobs:
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
+          EXTERNAL_SYSTEM_MODE: REAL
           CHANNEL: API
 
       - name: v4 - E2E - UI Channel
@@ -169,6 +171,7 @@ jobs:
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
+          EXTERNAL_SYSTEM_MODE: REAL
           CHANNEL: UI
 
       # === v5 ===
@@ -184,6 +187,7 @@ jobs:
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
+          EXTERNAL_SYSTEM_MODE: REAL
           CHANNEL: API
 
       - name: v5 - E2E - UI Channel
@@ -191,6 +195,7 @@ jobs:
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
+          EXTERNAL_SYSTEM_MODE: REAL
           CHANNEL: UI
 
       # === v6 ===
@@ -206,6 +211,7 @@ jobs:
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
+          EXTERNAL_SYSTEM_MODE: REAL
           CHANNEL: API
 
       - name: v6 - E2E - UI Channel
@@ -213,6 +219,7 @@ jobs:
         working-directory: system-test
         env:
           ENVIRONMENT: acceptance
+          EXTERNAL_SYSTEM_MODE: REAL
           CHANNEL: UI
 
       # === v7 ===
